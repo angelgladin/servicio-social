@@ -1,6 +1,6 @@
 # Servicio Social
 
-![](assets/lambda.jpg)
+<img src="/assets/lambda.png" width="100">
 
 ## Documentos
 
