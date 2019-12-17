@@ -1,0 +1,165 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+\usepackage[section]{placeins}
+
+\usepackage{url}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 10, Gramáticas libres de contexto} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Ambig\"{u}edad}
+Puede ser que dos derivaciones distintas tengan un mismo \'arbol de 
+derivaci\'on y tambi\'en puede suceder que haya m\'as de un \'arbol de 
+derivaci\'on para una cadena. Lo ideal es que cada cadena tenga s\'olo un 
+\'arbol asociado. Si sucede lo anterior, implica que el lenguaje 
+\textbf{no es ambiguo}. Desafortunadamente existen lenguajes ambiguos.
+Veamos una definici\'on formal de este fen\'omeno:
+
+\defin{
+Una gram\'atica se dice \textbf{ambigua} si existe una palabra~$w$ con dos o 
+m\'as \'arboles de derivaci\'on distintos.
+En general una palabra puede tener m\'as de una derivaci\'on, pero  
+\textnormal{un s\'olo \'arbol} y en tal caso no hay ambig\"{u}edad.
+}
+
+Algunas veces se puede suprimir la ambig\"{u}edad directamente. Sin embargo 
+\textbf{no} hay un algoritmo para remover ambig\"{u}edad.
+As\'i tambi\'en hay algunos lenguajes cuya ambig\"{u}edad es inevitable.
+
+\vspace*{-7pt}
+
+\paragraph{Ejemplo:}
+Considere la siguiente gram\'atica: 
+$$ \qquad \qquad S\imp AA \quad A\imp aSa \mid a $$
+
+\noindent La palabra $a^5$ tiene las siguientes derivaciones diferentes y por 
+la izquierda:
+\bi
+ \item[] $S\imp AA\imp aA \imp aaSa\imp aaAAa\imp aaaAa\imp aaaaa$
+ \item[] $S\imp AA\imp aSaA \imp aAAaA\imp aaAaA\imp aaaaA\imp aaaaa $
+\ei
+\noindent Las dos derivaciones generan \'arboles distintos:
+
+
+\begin{small}
+\begin{minipage}{.4\textwidth}
+  \centering
+  \begin{tikzpicture}[level distance=12mm]
+  \tikzstyle{level 1}=[sibling distance=20mm]
+  \tikzstyle{level 2}=[sibling distance=10mm]
+ 
+  \node {$S$}
+    child {node {$A$}
+      child {node {$a$}}
+     }
+      child {node {$A$}
+        child {node {$aSa$}}
+        child {node {$AA$}
+	  child {node {$a$}}
+	  child {node {$a$}}
+	}
+    };
+ \end{tikzpicture}
+ \end{minipage}
+\begin{minipage}{.4\textwidth}
+ \centering
+ \begin{tikzpicture}[level distance=12mm]
+  \tikzstyle{level 1}=[sibling distance=20mm]
+  \tikzstyle{level 2}=[sibling distance=10mm]
+ 
+  \node {$S$}
+    child {node {$A$}
+      child {node {$aSa$}
+	child {node {$AA$}
+	  child {node {$a$}}
+	  child {node {$a$}}
+	}
+     }
+    }
+      child {node {$A$}
+        child {node {$a$}}
+    };
+ \end{tikzpicture}
+ \end{minipage}
+\end{small}
+
+
+\subsection{Lenguajes Ambiguos}
+
+\defin{
+Un lenguaje~$L$ es ambiguo si existe una gram\'atica ambigua $G$ que 
+genera a $L$.\\
+Un lenguaje es \textbf{inherentemente} ambiguo si \textit{todas} las 
+gram\'aticas que lo generan son ambiguas.
+}
+
+\paragraph{Ejemplo:}
+El lenguaje~$L = \{a^{2+3i} \mid i\geq 0\}$ es ambiguo por ser generado por la 
+siguiente gram\'atica ambigua:
+$$ S\imp AA \qquad \qquad A\imp aSa \mid a $$
+Sin embargo este lenguaje tambi\'en es generado por una gram\'atica no ambigua:
+$$ S\imp aa \mid aaU \qquad \qquad U\imp aaaU \mid aaa $$
+En este caso la derivaci\'on de $a^5$ es:
+$$S\imp aaU\imp aaaaa$$
+y por lo tanto $L$ no es un lenguaje inherentemente ambiguo.
+
+\paragraph{Ejemplo:}
+El lenguaje 
+$$L = \{a^nb^nc^md^m \mid n,m\geq 1\}\cup\{a^nb^mc^md^n \mid n,m\geq 1\}$$
+es generado por la gram\'atica:
+\[
+ \ba{lll}
+  S\imp AB \mid C & \qquad A\imp aAb \mid ab &\qquad B\imp cBd \mid cd \\
+  C\imp aCd \mid aDd &\qquad  D\imp bDc \mid bc & 
+ \ea
+\]
+La cadena~$aabbccdd$ tiene dos derivaciones por la izquierda:
+\bi
+\item[] $S\imp AB\imp aAbB\imp aabbB\imp aabbcBd\imp aabbccdd$
+\item[] $S\imp C\imp aCd\imp aaDdd\imp aabDcdd\imp aabbccdd$
+\ei
+
+Como se coment\'o antes, la ambig\"{u}edad no puede ser eliminada con un 
+m\'etodo y en general, probar la ambig\"{u}edad inherente es complicado.  
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

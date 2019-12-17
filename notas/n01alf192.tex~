@@ -1,0 +1,586 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II\\ 
+%Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 1: Introducción, cadenas y lenguajes} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes del Carmen Gonz\'alez Huesca}
+\date{\today}
+
+\hyphenation{res-pon-sa-bles}
+
+
+\begin{document}
+\maketitle
+
+%\section{Introducción}
+\section{Fundamentos de la computación}
+
+Las ciencias de la computación como un conglomerado de disciplinas   
+científicas y de ingeniería relacionadas con el estudio y aplicación del 
+cómputo van desde las m\'as puras y básicas dedicadas a los fundamentos de
+la computación, hasta las ingenierías dedicadas a aplicaciones especificas.
+
+\vspace*{10pt}
+
+\noindent Los fundamentos de la computación se dividen esencialmente en dos 
+partes:
+\bi
+\item \textbf{Teoría de la Programación:}\\
+ Dedicada a estudiar los lenguajes de programación, los cuales nos sirven para 
+implementar procesos de cómputo.
+ \item \textbf{Teoría de la Computación:}  Dedicada a entender la naturaleza 
+del cómputo, sus posibilidades y limitaciones.
+\ei
+
+\paragraph{Teoría de la Programación}
+Se divide en diversas disciplinas, como son:
+\bi
+ \item Lógica Computacional.
+ \item Teoría de lenguajes de programación:  estilos (lógico, funcional,
+   imperativo, orientado a objetos, etc), semántica operacional, tipado, etc.
+ \item Métodos formales: especificación y verificación
+\ei
+
+\paragraph{Teoría de la Computación}
+Algunas de las disciplinas que conforman esta \'area son:
+\bi
+ \item Algoritmos y estructuras de datos
+ \item Complejidad computacional
+ \item C\'omputo paralelo y distribuido
+ \item Teor\'ia de aut\'omatas
+\ei
+
+Mediante la teoría del cómputo, especificamente mediante la teoría de autómatas 
+y lenguajes formales, podemos tratar preguntas como:
+\bi
+ \item ?`Qué es un dispositivo de cómputo?
+ \item ?`Qué se puede computar?
+ \item ?`Qué \textbf{no} se puede computar?
+ \item ?`Cu\'al es el costo de un cómputo?
+ \item ?`Qué se puede computar \textbf{eficientemente}?
+ \item ?`C\'omo clasificar un problema de acuerdo a su dificultad?
+\ei
+
+Al responder a estas preguntas, la teoría de la computación nos permitirá 
+entender cu\'ales son las capacidades y limitaciones fundamentales de una
+computadora. Las nociones de \emph{cómputo} y \emph{computabilidad efectiva} 
+ser\'an capturadas mediante abstracción matemática y la modelaci\'on de 
+aut\'omatas.
+
+%  \section{Fundamentos de la Computación}
+% Nosotros nos dedicaremos exclusivamente
+%  a dos aspectos de la teoría de la computación:\espc
+%  \bi
+%    \item Introducción al análisis de algoritmos.   
+%  \ei
+
+%  \section{Importancia de la Teoría de la Computación}
+%   \bi
+
+% %    
+
+%\section{Motivación}
+\section{Abstracción del concepto de computadora}
+Una computadora es una máquina que transforma ciertos datos de entrada dados en 
+resultados o datos de salida.
+Podemos pensar que una computadora es una \emph{función} que transforma sus 
+argumentos de entrada en resultados.
+\bi
+ \item ?` Cual sería el dominio/codominio de tal función? es decir, qu\'e tipos 
+  de datos se esperan como entrada: números, palabras, textos, im\'agenes, etc.
+ \item ?` Cómo podemos representar los datos de entrada de manera uniforme?
+\ei
+Cualesquiera datos de entrada para una computadora pueden ser codificados 
+mediante una \emph{cadena} o sucesión de símbolos.
+\bi
+ \item ?`Qué cadenas son aceptables como entrada ? 
+ \item ?` Qué cadenas se obtienen como salida ? 
+ \item ?`Será posible caracterizar de manera finita a estos conjuntos de 
+  cadenas, los cuales pueden ser infinitos?
+%  \item Si el número de cadenas aceptadas es infinito ?` Será posible 
+%   caracterizar a este conjunto de manera finita ?
+\ei
+
+  
+\section{Conceptos Fundamentales}
+Los tres conceptos fundamentales a estudiar en aut\'omatas y lenguajes formales 
+son:
+\bi
+ \item Lenguajes: conjuntos de cadenas.
+ \item Gramáticas: mecanismos para generar cadenas.
+ \item Autómatas: mecanismos para procesar cadenas.
+\ei 
+Nuestro objetivo principal es estudiar las relaciones entre estos tres 
+conceptos para responder a las preguntas hechas al principio de esta nota.
+
+\vspace*{10pt}
+
+Primero daremos una breve introducci\'on a las gram\'aticas y los aut\'omatas 
+as\'i como un poco de sus or\'igenes y aplicaciones. Despu\'es continuaremos 
+con una teor\'ia de cadenas para seguir con los lenguajes.
+El estudio a fondo de los aut\'omatas ser\'a el resto del curso.
+
+\subsection{Gramáticas}
+Un mecanismo relevante para generar un lenguaje es mediante el concepto de 
+gramática formal.
+
+Las gramáticas formales fueron introducidas por Chomsky en 1956 cuya intención 
+era tener un modelo para la descripción de lenguajes naturales.
+Posteriormente se utilizaron como herramienta para presentar la sintaxis 
+de lenguajes de programación y para el diseño de analizadores léxicos de 
+compiladores. %Volveremos a éllas más tarde.
+
+\subsection{Autómatas}
+\bi
+ \item Un autómata es una representación abstracta de una máquina
+ \item Los aspectos relevantes para nosotros son el diseño y la especificación 
+  de autómatas.
+ \item La abstracción captura únicamente el comportamiento de una máquina, es
+  decir, las secuencias de eventos que ocurren.
+ \item Estas m\'aquinas abstractas nos ser\'an \'utiles en el procesamiento y 
+  an\'alisis de lenguajes, al procesar cadenas \emph{aceptándolas o 
+  rechazándolas.}
+\ei
+
+
+\subsubsection{Un poco de historia}
+
+\bi
+%\item Alonzo Church trabajo en la verificación y el diseño de circuitos.
+ \item En su artículo \enquote{On Computable Numbers, with an Application to 
+  the Entscheidungsproblem} de 1936, Turing reformula los resultados de Kurt
+  Gödel de 1931 acerca de las limitaciones de pruebas y cómputos.
+  Reemplaza el lenguaje formal universal de Gödel con lo que hoy llamamos 
+  máquinas de Turing que son dispositivos formales y simples de una 
+computadora. 
+  Turing demostr\'o que tales máquinas podrían der capaces de llevar a cabo 
+  cualquier cómputo matemático concebible, si este se representaba mediante un 
+  algoritmo. 
+ 
+ \item En el artículo \enquote{A logical calculus of the ideas immanent in 
+  nervous activity} que apareci\'o en el Bull. Math. Biophysics 5 (1943), pp. 
+  115-133, el neurofisíologo Warren McCulloch y el lógico Walter Pitts, 
+  desarrollaron modelos de redes neuronales con ciclos de retroalimentación 
+  basados en su visión de la neurología. 
+  Este fue un intento para modelar la estructura de los nervios.
+  
+ \item El modelo de Pitts-McCulloch fue simplificado por el lógico Stephen
+  C. Kleene en 1956, en el que se considera el primer artículo acerca de
+  autómatas finitos y expresiones regulares, \enquote{Representation of events 
+  in nerve nets and finite automata}.
+  
+ \item En 1959 Rabin y Scott presentan una máquina con un número finito de
+  estados que simplifica a la máquina de Turing. Por su artículo \enquote{Finite
+  Automata and Their Decision Problem}, que introduce la idea de máquinas no
+  deterministicas, un concepto invaluable, ambos reciben el premio Turing en 
+  1976.
+  
+ \item En 1968 Ken Thompson usa la noción de expresión regular definida por
+  Kleene en el sistema UNIX.
+\ei
+
+\subsubsection{Aplicaciones}
+Los autómatas tienen diversas aplicaciones en computación, por ejemplo:
+\bi
+ \item Software para hallar patrones en una gran cantidad de texto, por ejemplo
+  en colecciones de páginas web.
+ \item Diseño de circuitos digitales.
+ \item Analizadores léxicos para compiladores.
+ \item Búsqueda de palabras clave en internet.
+ \item Verificación de sistemas con un número finito de estados 
+  (por ejemplo protocolos de comunicación).
+ \item Verificación de modelos, modelado y verificación de sistemas empotrables 
+  o embebidos.
+ \item Aplicaciones en genética, patrones regulares en proteinas.
+ \item Aplicaciones en lingüistica, construcción de diccionarios grandes,
+  correctores de ortografía.
+ \item Modelado de máquinas reales: relojes, telefonos, seguros de auto, etc. 
+ \item Modelado de sistemas discretos en general.
+\ei   
+Existen diversos tipos de autómatas, nosotros estudiaremos:
+\bi
+ \item Autómatas con un número finito de estados: determinísticos, no 
+  determinísticos.
+ \item Autómatas de pila
+ \item Autómatas Linealmente Acotados
+ \item Máquinas de Turing.
+\ei
+Otras clases de autómatas que no estudiaremos aquí son los probabilísticos,
+celulares, paralelos, de árbol, etc.
+
+
+
+\section{Cadenas}
+Las cadenas son los objetos fundamentales para la mayoría de los 
+sistemas formales. 
+En esta sección revisamos las operaciones de importancia entre cadenas.
+
+\vspace*{10pt}
+
+Los \textit{símbolos} son los objetos más simples con los que trataremos, ellos 
+conforman a las cadenas. 
+Una definición formal de símbolo nos llevaría al ámbito de la filosofía del
+lenguaje, así que para nuestros propositos basta decir que:
+
+\defin{
+Un símbolo o caracter es una entidad considerada indivisible.
+}
+Por comodidad utilizaremos como símbolos:
+\bi
+ \item a,b,c,d,e, \ldots
+ \item 0,1,2,3, \ldots, 9
+\ei
+\paragraph{Ejemplos:} $\#,\;\%,\; \$,\; \leftarrow,\;\land,\; a,\;7$ 
+
+\defin{
+Un alfabeto es un conjunto finito de símbolos.
+}
+Por lo general usaremos las letras griegas $\Sigma$ y $\Gamma$ 
+% letras mayúsculas del final del alfabeto $(X,Y,Z)$
+para denotar alfabetos.
+\paragraph{Ejemplos:}
+\bi
+ \item El alfabeto del español: $a,b,c,d,e,f,\ldots,z$. 
+ \item El alfabeto binario: $0,1$. 
+ \item El alfabeto ASCII: a, \ldots ,z , A, \ldots, Z, \$, \%, \#, \ldots 
+\ei
+
+
+\defin{
+Una \emph{cadena, expresión o palabra} es una sucesión \textbf{finita} de 
+símbolos tomados de un alfabeto dado $\Sigma$. 
+}
+En otros ámbitos se permiten cadenas con un número infinito de símbolos pero
+nunca en nuestro curso.
+\paragraph{Ejemplos:}
+\bi
+ \item En el alfabeto del español: $abc,\; def,\; feo,\; bonito,\; dsp,\; 
+  guajolote,\; uizcm$. 
+ \item En el alfabeto binario: $0,\; 101010,\; 00,\; 1100,\; 001,\; 11010$.
+ \item En el alfabeto ASCII: @zA\$ 
+\ei
+  
+Obsérvese que los símbolos son a su vez cadenas que constan de un solo
+caracter. Más aún podemos referirnos a la \textit{cadena vacía} (i.e. la 
+sucesión vacía de símbolos) que se denotará con el metasímbolo 
+$\vacia$~\footnote{Algunos autores denotan a la cadena vacía con $\lambda$ o 
+$\Lambda$.}. 
+Este metasímbolo no es ni una palabra ni un símbolo. Es decir estará prohibido 
+considerar a $\vacia$ como símbolo de un alfabeto $\Sigma$.
+
+\defin{
+  Al conjunto infinito de todas las cadenas sobre un alfabeto dado~$\Sigma$
+  se le denota como~$\Sigma^\star$ y es llamado la estrella o cerradura de
+  Kleene\footnote{Stephen Cole Kleene, 1909--1994, prominente lógico matemático.}
+  de $\Sigma$. 
+  Es decir $\Sigma^\star=\{a_1\!\ldots a_n \mid a_i\in\Sigma\}$ donde 
+  $a_1\!\ldots a_n$ es una cadena.
+}
+
+\subsection{Operaciones con cadenas}
+Las cadenas son objetos que se manipulan para estudiar los lenguajes, para ello 
+se consideran algunas operaciones sobre cadenas:
+
+\defin{La longitud de una cadena~$w$ es el número de símbolos en~$w$. Esta 
+ funci\'on se  define como~$|\cdot|:\sest\to\N$.
+ Si $w = a_1\!\ldots a_n$ entonces $|w| = n$.
+}
+
+\defin{La operación básica entre cadenas es la 
+ concatenación~$\cdot:\sest\times\sest\imp\sest$.
+ Consiste en unir cadenas en orden de izquierda a derecha: si $v, w$ son 
+ cadenas entonces $v\cdot w$ será la cadena obtenida al pegar $v$ con $w$. 
+ Usualmente el operador $\cdot$ no se usa expl\'icitamente y escribimos 
+ simplemente $uw$ en lugar de $u\cdot w$.
+}
+
+\paragraph{Ejemplos:}
+\bi
+ \item La concatenación de \emph{cala} y \emph{baza} es la cadena 
+  \emph{calabaza}.
+ \item Si $v=broco$ y $w=li$ entonces $vw=brocoli$.
+ \item Si $x=champu$ y $y=rrado$ entonces $yx=rradochampu$.
+\ei
+ 
+Algunas propiedades de esta operaci\'on son las siguientes:
+\bi
+ \item Asociatividad: $(uv)w = u(vw)$.
+ \item Identidad: $v\vacia = \vacia v= v$.
+ \item Longitud: $|vw| = |v| + |w|$.
+\ei
+Además es claro que no es una operación conmutativa, por ejemplo si $w=ja$ y 
+$v=rrito$ entonces $wv = jarrito\neq rritoja = vw$.
+
+En particular podemos denotar la concatenaci\'on repetida de una misma cadena 
+como sigue: $w = w^1$, $ww = w^2 $, \dots, 
+$\underbrace{w\,\dots\,w}_\text{ n-veces } = w^n$ y en particular 
+$w^0 = \vacia$.
+
+\defin{La reversa de una cadena $u$, denotada $u^R$, contiene los s\'imbolos 
+del \'ultimo al primero, es decir si $u=a_1a_2\ldots a_n$ entonces 
+$u^R=a_na_{n-1}\ldots a_2a_1$.
+}
+Adem\'as cumple las siguientes propiedades: 
+  \bi
+  \item $(u^R)^R=u$
+    \item $(uv)^R=v^Ru^R$
+  \ei
+
+\subsection{Subcadenas, prefijos y sufijos}{}
+
+Las cadenas pueden subdividirse para su estudio:
+\bi
+ \item Decimos que $v$ es una subcadena de $u$ si existen cadenas 
+  $x,y\in\Sigma^\star$ tales que $u=xvy$.
+ \item Un prefijo de $u$ es una cadena $v$ tal que $u=vw$ para alguna cadena 
+  $w\in\Sigma^\star$. Se dice que $v$ es un prefijo propio si $v\neq u$.
+ \item Similarmente, un sufijo de $u$ es una cadena $v$ tal que $u=wv$ 
+  para alguna cadena $w\in\Sigma^\star$. Se dice que $v$ es un sufijo 
+  propio si $v\neq u$.
+ \item Obsérvese que tanto $\vacia$ como $u$ son siempre sufijos y 
+  prefijos de $u$.
+\ei
+
+\section{Recursión}
+
+La recursi\'on como mecanismo de definición de tipos de datos, de definición de 
+funciones y como una herramienta fundamental en programación ser\'a de gran 
+utilidad.
+
+\subsection{Definiciones recursivas: recordatorio}
+
+\paragraph{N\'umeros Naturales}
+$\N$ es el conjunto m\'as peque\~no tal que:
+\bi
+\item $0\in\N$ %(condición inicial)
+\item Si $x\in\N$ entonces $sx\in\N$ %(condición iterativa)
+\ei
+Esta definición de $\N$ permite definir funciones recursivamente, por ejemplo 
+la suma de n\'umeros naturales
+\beqs
+sum(x,0)=x \qquad \qquad sum(x,sy) = s(sum(x,y))
+\eeqs
+
+\paragraph{Listas de objetos}
+Dado una coleccion $A$, $\mathcal{L}(A)$ es el conjunto m\'as peque\~no tal que:
+\bi
+ \item $nil\in\mathcal{L}(A)$ (lista vac\'ia)
+ \item Si $a\in A$ y $\ell\in\mathcal{L}(A)$ entonces 
+  $cons(a,\ell)\in\mathcal{L}(A)$.
+\ei
+As\'i también podemos definir funciones recursivas como por ejemplo la 
+función que calcula la longitud de una lista $len:\mathcal{A}\imp\N$ dada por:
+\beqs
+len(nil)=0 \qquad \qquad len(cons(a,\ell))=len(\ell)+1
+\eeqs
+
+\subsection{Modelación Inductiva}
+
+% \begin{frame}
+%   \titulos{Paradigma de Modelación Inductiva}{Inducción}
+De los ejemplos anteriores podemos concluir:
+\bi
+ \item La inducción es un proceso de definición y razonamiento que
+  determina conjuntos (tipos de datos) numerables cuyos elementos son
+  estructuras finitas construibles a partir de ciertos objetos básicos.
+  
+ \item La inducción permite definir funciones del estilo $f:\I\imp A$ mediante
+  principios de recursión, definiendo el valor de $f$ en cada constructor 
+  de~$I$.\\
+  Por ejemplo en el caso de $\I=\N$, s\'olo es necesario dar ecuaciones
+  de la forma:
+  \[
+   (0)=a \qquad \qquad f(s(n))=g(f(n))\quad \text{donde } a\in A,\; g:A\imp A
+  \]
+\ei
+
+Cualquier estructura definida recursivamente genera un principio de
+inducción útil como herramienta de demostración.
+\bi
+\item El principio de inducción para naturales: si $0\in P$ y si para
+  cada $x\in P$ se verifica tambien $sx\in P$ entonces $\N\inc P$.\espc
+\item El principio de inducción para listas: si $nil\in P$ y si para
+  cada $a\in A$ y $x\in P$ se verifica tambien $cons(a,x)\in P$ entonces $\L(A)\inc P$.
+\ei
+ 
+
+\subsection{Inducción en cadenas}
+% \begin{frame}
+%   \titulos{Símbolos y Alfabetos}{Recordatorio}
+% \bi
+% \item Símbolo: entidad indivisible.\espc
+% \item Alfabeto: conjunto \alert{finito} de símbolos.\espc
+%   \item Cadena: sucesión \alert{finita} de símbolos.\espc
+%     \item Lenguaje: conjunto de cadenas.
+% \ei
+%   \end{frame}
+
+%   \titulos{Definición recursiva de $\Sigma^\star$}{}
+Dado un alfabeto $\Sigma$, el conjunto $\Sigma^\star$ que consta de
+todas las cadenas de símbolos de $\Sigma$ puede definirse
+recursivamente como sigue:
+\bi
+ \item $\cv\in\sest$.
+ \item Si $w\in\sest$ y $a\in\Sigma$ entonces 
+$wa\in\sest$~\footnote{Opcionalmente se puede dar una definci\'on equivalente 
+en donde los s\'imbolos se agregen al inicio de una cadena: si $w\in\sest$ y 
+$a\in\Sigma$ entonces $aw\in\sest$. El la literatura es m\'as usada la 
+convenci\'on que aparece en nuestra definci\'on.}
+ \item Son todas.
+\ei
+Esta definición recursiva genera el siguiente principio de inducción
+estructural: 
+\bi
+\item[] Sea $P\inc\sest$ un conjunto de cadenas. 
+Si
+\be
+ \item $\cv\in P$ y 
+ \item si para cualquier $a\in\Sigma$ y $w\in P$ se verifica que $wa\in P$
+\ee
+Entonces cualquier $u\in\sest$ pertenece a $P$. Es decir, $\sest=P$.
+\ei
+
+\noindent Siguiendo la estructura anterior, se definen las funciones anteriores 
+recursivamente como sigue:
+\bi
+ \item La concatenación de cadenas es una función
+  $\cdot:\sest\times\sest\imp\sest$ tal que:
+  $$u\cdot\cv = u \qquad \qquad u\cdot(va)=(u\cdot v)a$$
+
+ \item La longitud $|\cdot|:\sest\imp\N$ se define como:
+  $$ |\vacia|=0  \qquad \qquad |va|=|v|+1$$
+
+ \item La reversa de una cadena $\cdot^R:\sest\imp\sest$ est\'a definida por:
+  $$ \vacia^R=\vacia \qquad \qquad (va)^R=av^R $$
+\ei
+ 
+
+\section{Lenguajes}
+
+\defin{
+Un \textit{lenguaje} $\mathcal{L}$ sobre un alfabeto $\Sigma$ es
+simplemente un conjunto de cadenas de $\Sigma$, es decir 
+$\mathcal{L}\inc\Sigma^\star$.
+}
+\paragraph{Ejemplo:}
+Si $\Sigma=\{m,u\}$ entonces algunos lenguajes sobre $\Sigma$ son:
+\bi
+ \item $\mathcal{L}_1=\{m,u\}=\Sigma$
+ \item $\mathcal{L}_2=\{u,uu,uuu,uuuu,uuuuu,uuuuuu,\ldots\}$.
+ \item $\mathcal{L}_3=\{mu, um, mum, umu,mmu, ummm, mumumum\}$.
+ \item $\mathcal{L}_4=\{mu,muu,muuu,muuuu,\ldots\}$.
+ \item $\mathcal{L}_5=\{m,mmm,mmmmm,\ldots, m\ldots, uuum, m\ldots\}$.
+\ei
+
+Obsérvese que un lenguaje puede ser finito o infinito, que $\vacio$ es
+un lenguaje, llamado \textit{lenguaje vacío} y que $\Sigma^\star$ es un lenguaje
+llamado el \textit{lenguaje total}. Además $\Sigma$ y $\{\cv\}$ también son
+lenguajes.
+
+
+\subsection{Operaciones con Lenguajes}
+Dado que los lenguajes son conjuntos todas las operaciones
+conjuntistas son aplicables a lenguajes. Si $L,M\inc\Sigma^\star$
+entonces
+$$ L\cup M \qquad L\cap M \qquad L-M \qquad \bar{L}=\Sigma^\star-L$$
+tambien son lenguajes.
+Adicionalmente tenemos las siguientes operaciones relevantes:
+
+\subsubsection{Concatenación de Lenguajes}
+\noindent Al igual que en el caso de cadenas, podemos definir la concatenación 
+entre lenguajes como sigue:
+$$  LM=\{uv\;|\;u\in L\;\mbox{y}\;v\in M\} $$
+Y cumple las siguientes propiedades:
+\bi
+ \item $L\varnothing=\varnothing L=\varnothing$
+ \item $L\{\vacia\}=\{\vacia\}L=L$
+ \item $L(MN)=(LM)N$
+ \item $L(M\cup N)=LM\cup LN \qquad \qquad (M\cup N)L=ML\cup NL$
+\ei
+\noindent Tambi\'en consideramos la concatenaci\'on repetida de un mismo 
+lenguaje llamada \textit{potencia} de un lenguaje como: 
+$$L^n = \underbrace{L\,\dots\, L}_\text{ n-veces }$$
+
+\subsubsection{Reversa de un Lenguaje}
+\noindent La reversa de un lenguaje se define como
+$$ L^R=\{u^R\;|\;u\in L\}$$
+Y cumple las siguientes propiedades:
+\bi
+ \item $(L^R)^R=L$
+ \item $(LM)^R=M^RL^R$
+ \item $(L\cup M)^R=L^R\cup M^R$
+ \item $(L\cap M)^R=L^R\cap M^R$
+\ei
+
+\subsubsection{Cerradura de Kleene}
+\noindent La cerradura o estrella de Kleene de un lenguaje se define como
+ \[
+   L^\star=\{u_1\ldots u_n\;|\;u_i\in L\;n\geq 0\} 
+   = \bigcup_{i=0}^\infty L^i
+ \]
+donde $L^i$ es la potencia $i$-ésima de $L$.
+
+\subsubsection{Cerradura Positiva}
+\noindent La cerradura positiva de un lenguaje se define como
+\[
+  L^+ = \{u_1\ldots u_n\;|\;u_i\in L\;n> 0\}
+  = \bigcup_{i=1}^\infty L^i
+\]
+  %  donde $L^i=LL\ldots L$, $i$ veces.
+
+\subsubsection{Propiedades de los operadores de cerradura}
+Se cumplen las siguientes propiedades
+\bi
+ \item $L^\star=L^+\cup\{\vacia\}$
+ \item $L^\star=L^+$ si y sólo si $\vacia\in L$.
+ \item $(L^\star)^\star=L^\star$
+ \item $L^\star L^\star=L^\star$
+ \item $(L^+)^\star=(L^\star)^+=L^\star$
+ \item $(L^+)^+=L^+$
+ \item $L^+L^+\inc L^+$
+\ei
+
+\section{Lenguajes y Computadoras}
+Con el concepto de lenguaje podemos reformular las preguntas acerca
+de los datos de entrada y salida en una computadora:
+\bi
+ \item ?` Cual es el lenguaje de entrada de una computadora dada? 
+ \item ?` Cual es el lenguaje de salida ? 
+ \item ?` Serán estos lenguajes describibles finitamente? 
+\ei
+
+
+% \section{Ejercicios}
+% 
+% \bi
+% \item Martin, 3a. edición en español: 1.38--1.47, 1.69--1.71, 2.34--2.37, 2.39--2.43, 2.59--2.66, 
+% \ei
+     
+\end{document}

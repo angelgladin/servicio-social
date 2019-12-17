@@ -1,0 +1,266 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+
+\usepackage[section]{placeins}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2017-1 \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 14} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introducci\'on}
+Las m\'aquinas de Turing como modelos de c\'omputo que tienen varios usos, como 
+aceptadoras de lenguajes, como generadoras de lenguajes y como calculadoras de 
+funciones, tienen una generalizaci\'on para realizar c\'omputos de forma 
+\enquote{universal}.
+
+La idea de proporcionar una m\'aquina capaz de realizar cualquier c\'omputo 
+utilizando una memoria para almacenar datos fue propuesta por A. Turing en 1936 
+en un art\'iculo donde describe estas m\'aquinas pero sobre todo resalta la 
+idea de que las m\'aquinas pueden realizar los c\'alculos de cualquier 
+algoritmo concebido.
+
+La tesis de Church-Turing afirma que la noci\'on intuitiva de algoritmo es 
+capturada de manera exacta por la noci\'on matem\'atica de m\'aquina de Turing:
+\begin{center}
+\textbf{
+Tesis de Church-Turing: Un problema es soluble 
+algor\'itmicamente \\si y s\'olo si es soluble mediante una m\'aquina de 
+Turing.}
+\end{center}
+
+Es decir, las m\'aquinas de Turing implementan a cualquier algoritmo.      
+Equivalentemente, una funci\'on es computable si y s\'olo si es soluble mediante 
+una m\'aquina de Turing.
+
+Estudiaremos en esta nota las m\'aquinas universales as\'i como sus 
+codificiaciones. 
+
+\subsection{La M\'aquina Universal}
+Pensar en la existencia de una m\'aquina de Turing que se comporte de la 
+misma forma que una computadora real es posible. 
+Es decir, una m\'aquina que sea \'util para m\'ultiples prop\'ositos y que sea 
+tambi\'en capaz de programar y ejecutar m\'aquinas de Turing.
+
+A. Turing describi\'o a la m\'aquina universal~$\mathcal{M}$ como una m\'aquina 
+que tiene programa para resolver un problema que es codificado como una 
+m\'aquina espec\'ifica o de prop\'osito especial $M_1$ y un conjunto de datos a 
+procesarse que ser\'a la entrada de $M_1$.
+
+As\'i la m\'aquina universal~$\mathcal{M}$ simular\'a el comportamiento de 
+$M_1$ que procesar\'a los datos de entrada. 
+
+
+
+\section{Una codificaci\'on de m\'aquinas de Turing}
+Para llevar a cabo la simulaci\'on es necesario que las m\'aquinas de 
+prop\'osito especial junto con sus datos de entrada sean codificados en cadenas 
+para que~$\mathcal{M}$ pueda procesarlos.
+Veamos una forma de codificaci\'on de una m\'aquina espec\'ifica para obtener 
+una cadena.
+
+\noindent Se tienen las siguientes convenciones:
+\bi
+ \item Se fija un alfabeto de entrada $\Sigma$.
+ \item Se asume $Q=\{q_0,\ldots,q_n\}$ siendo $q_0$ el estado inicial y     
+  $q_1$ el \'unico estado final.
+ \item El alfabeto de la cinta es de la forma $\Gamma=\{s_1,s_2,\ldots, s_p\}$
+   siendo $s_1=\blanks$. 
+\ei
+
+\paragraph{Codificaci\'on de una cinta}
+Las siguientes caracter\'isticas definen una codificaci\'on para la cinta de 
+una m\'aquina dada:
+\bi
+ \item El s\'imbolo $s_i$ se codifica como $1^i$.
+ \item Las cadenas $\Gamma^\star$ se codifican separando cada s\'imbolo con 
+  un~$0$.
+ \item En general, si $w=s_{n_1}s_{n_2}\ldots s_{n_k}$ la codificaci\'on de $w$ 
+  es: $01^{n_1}01^{n_2}0\ldots 01^{n_k}0$
+\ei 
+Por ejemplo, si $\Gamma=\{\blanks,a,b\}$ entonces codificamos 
+$\blanks:=1,\;a:=11,\;b:=111$.
+As\'i, la palabra $bab\blanks aa$ se codifica como: $01110110111010110110$
+
+
+\paragraph{Codificaci\'on de los estados}
+Considerando que los estados de una m\'aquina est\'an dados por 
+$Q=\{q_0,q_1,\ldots,q_n\}$ entonces se pueden codificar de la siguiente forma:
+\bi
+ \item El estado $q_i$ (en la posici\'on $i$ del conjunto~$Q$ visto como lista) 
+  se codifica an\'alogamente a los s\'imbolos, es decir mediante cadenas de 
+  $1$'s pero con un s\'imbolo m\'as que la posici\'on del estado:
+   $$  q_i \text{ se codifica como } 1^{i+1}$$
+  \item As\'i el estado inicial $q_0$ se codifica con $1$ y el estado final 
+  $q_1$ con $11$.
+\ei
+
+\paragraph{Codificaci\'on de las direcciones de desplazamiento}
+Consideramos que una m\'aquina puede tener tres desplazamientos 
+$\{\der,\izq, -\}$ codificados respectivamente como $1$, $11$ y $111$.
+
+\paragraph{Codificaci\'on de las transiciones}
+Recordemos que una transici\'on en una m\'aquina de Turing es  
+$\delta(q_i,s_k) = (q_j,b_\ell,D)$. 
+Entones, los estados, s\'imbolos y direcci\'on de desplazamiento se codifican de 
+la manera indicada anteriormente.
+Y la transici\'on se codifica escribiendo en orden los c\'odigos respectivos 
+separados por ceros:
+$$ 01^{i+1}01^k01^{j+1}01^\ell01^n0\;\; \text{ donde } n=1,2,3$$
+Por ejemplo $\delta(q_2,s_3)=(q_0,s_5,\izq)$ se codifica como 
+$01^301^30101^501^20$
+
+\vspace*{10pt}
+
+Una m\'aquina de Turing queda completamente determinada mediante su funci\'on de
+transici\'on~$\delta$.
+Y se codifica mediante la sucesi\'on de los c\'odigos de sus transiciones 
+sin separaciones. 
+Es decir, si $C_1,\ldots,C_k$ son los c\'odigos de todas las transiciones 
+de~$M$. Entonces~$M$ se codifica mediante $ C_1C_2\ldots C_k$
+
+Obs\'ervese que no hay ambig\"uedad pues cada transici\'on tiene      
+exactamente seis ceros, adem\'as dos ceros consecutivos indican que inicia otra 
+transici\'on.
+
+
+\paragraph{Ejemplo:}
+Considere la m\'aquina~$M$ dada por:
+\[
+ \begin{array}{cc}
+  \delta(q_0,a)=(q_2,b,\der) & \delta(q_2,b)=(q_3,c,\der)  \\
+  \delta(q_3,a)=(q_1,c,\der) & \delta(q_1,b)=(q_3,\blanks,-) 
+ \end{array}
+\]
+Se codifica mediante $a:=11,\;b:=111,c:=1111$ como sigue:
+$$  0101101110111010011101110111101111010 $$
+$$  01111011011011110100110111011110101110 $$
+
+\paragraph{Ejemplo:}
+Considere el siguiente macro que modifica la $a$ de m\'as a la izquierda de una 
+cadena cambi\'andola por una $b$ y dejando la cabeza lectora al inicio de la 
+cadena:
+\begin{center}
+\begin{tikzpicture}[node distance=3.3cm,every node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=] (q0) {$q_{0}$};
+    \node[state] (q2) [right of=q0] {$p$};
+    \node[state,accepting by double] (q3) [right of=q2] {$q_1$};
+    \path[->] (q0) edge node [above] {$a/b,\izq$} node
+     [above=12pt]  {$\blanks/\blanks,\izq$} (q2);
+    \path[->] (q2) edge node [above] {$\blanks/\blanks,\der$} (q3);
+    \path[->] (q0) edge [loop above] node [above] {$b/b,\der$} (q0);
+    \path[->] (q2) edge [loop above] node [above] {$b/b,\izq$} (q2);
+\end{tikzpicture}
+\end{center}
+La codificaci\'on es la siguiente:
+$$ 010111010111010 01011011101110110 $$
+$$ 01010111010110 01110111011101110110 $$
+$$ 01110101101010 $$ 
+donde $\blanks:= 1$, $a:=11$, $b:= 111$ y los estados se definen como 
+$q_0 := 1$, $q_1 := 11$ y $p:= 111$.
+
+\vspace*{10pt}
+
+\noindent Observaciones:
+\bi
+ \item La codificaci\'on de una m\'aquina de Turing no es \'unica, puesto que 
+  el orden de las transiciones no importa y un orden distinto genera una 
+  codificaci\'on distinta.
+  \item De hecho si una m\'aquina~$M$ tiene $n$ transiciones, existen $n!$
+   codificaciones distintas para $M$.
+  \item El proceso de codificaci\'on puede revertirse, no es dif\'icil definir 
+  un algoritmo que decida si una secuencia binaria representa un c\'odigo 
+  v\'alido para una m\'aquina de Turing y en tal caso lo decodifique.
+\ei
+
+
+\section{Uso de la M\'aquina Universal}
+Como mencionamos antes, la m\'aquina universal como dispositivo de 
+programaci\'on y ejecuci\'on de programas es principalmente la simulaci\'on de 
+una m\'aquina con un prop\'osito espec\'ifico.
+
+Veamos una forma de c\'omo simular una m\'aquina de Turing~$M$ que se 
+ejecutar\'a con cierta entrada~$w$ en la m\'aquina universal~$\mathcal{M}$:
+\bi
+ \item Codificar~$M$ y $w$, respectivamente las llamaremos $\mathcal{C}_M$ y 
+  $\mathcal{C}_w$
+ \item La m\'aquina universal~$\mathcal{M}$ tiene 5 cintas:
+ \begin{itemize}
+  \item[T1] la cinta de entrada que s\'olo almacenar\'a la cadena de entrada 
+    codificada~$\mathcal{C}_w$.
+  \item[T2] la cinta de descripci\'on que contiene la 
+    codificaci\'on~$\mathcal{C}_M$ y la cual no se reescribir\'a.
+  \item[T3] la cinta de trabajo que contendr\'a exactamente la cinta de~$M$.
+  \item[T4] la cinta para saber el estado actual de~$M$.
+  \item[T5] una cinta especial para guardar la direcci\'on en que se mover\'a 
+    la cabeza de~$M$.
+ \end{itemize}
+ \item La fase de inicializaci\'on tiene las siguentes acciones:
+  \begin{enumerate}
+   \item copiar la cadena de entrada en la cinta T3
+   \item inicializar T4 con el c\'odigo del estado inicial de~$M$
+   \item almacenar los c\'odigos de las direcciones en T5
+   \item mover las cabezas de las 5 cintas a la parte m\'as izquierda de las 
+    cadenas que almacenan.
+  \end{enumerate}
+ \item La m\'aquina universal~$\mathcal{M}$ est\'a en un ciclo continuo para la 
+  simulaci\'on, es decir que simular\'a cada transici\'on~$M$ en cada 
+  iteraci\'on.
+ \item El ciclo de la m\'aquina inicia siempre con las cabezas de las cintas lo 
+  m\'as la izquierda de los datos almacenados excepto por la cinta T3 cuya 
+  cabeza est\'a en el estado actual.
+ \item El ciclo tiene varios pasos:
+  \begin{enumerate}
+   \item La m\'aquina universal~$\mathcal{M}$ se mueve en la 
+    codificaci\'on~$\mathcal{C}_M$ para escoger una transici\'on adecuada al 
+    comparar las entradas y los datos en las otras cintas correspondientes.
+   \item Cuando encuentra la transici\'on deseada copia el nuevo estado en T4, 
+    el s\'imbolo en T3 y mueve la cabeza de T3 seg\'un la direcci\'on. 
+   \item Al final del ciclo mueve las cabezas de T2 y T4 a la izquierda.
+  \end{enumerate}  
+\ei
+Esta codificaci\'on es exagerada en el n\'umero de cintas en~$\mathcal{M}$ ya 
+que se pueden simplificar a menos e incluso se puede usar una s\'ola cinta. 
+El hecho de tener los datos en diferentes cintas facilita la selecci\'on de la 
+transici\'on dado que todo est\'a codificado.
+
+
+La parte de simulaci\'on s\'olo se describir\'a dado que la m\'aquina universal 
+es un aparato muy complejo pero se puede pensar que se tienen macros para 
+cada una de las acciones de la m\'aquina. 
+
+\end{document}

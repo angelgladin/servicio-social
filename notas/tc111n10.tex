@@ -1,0 +1,1497 @@
+\documentclass[11pt]{article}
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+%\usepackage{epsfig}
+%\usepackage{fancyheadings}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+%\usepackage{pstricks}
+%\usepackage{vaucanson-g}
+\usepackage[margin=2.5cm,includefoot]{geometry} 
+%\pagestyle{fancyplain}
+\input{macros2007}
+%\newcommand{\espc}{\vspace{0.5cm}}
+\newcommand{\cv}{\varepsilon}
+\newcommand{\bl}{\sqcup}
+\newcommand{\izq}{{\sc I}} %\leftarrow}
+\newcommand{\der}{{\sc D}} %\rightarrow}
+
+\title{Teoria de la Computación 2011-1\\ Nota de Clase 10} 
+
+
+\author{Favio E. Miranda Perea %\footnote{Las figuras utilizadas fueron
+%  tomadas de las notas del Prof. Rodrigo de Castro de la Universidad
+%  Nacional de Colombia.}
+\\ Facultad de Ciencias UNAM
+}
+\hyphenation{res-pon-sa-bles}
+
+
+
+\newcommand{\U}{\mathcal{U}}
+%\newcommand{\cv}{\ensuremath{\varepsilon}}
+%\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\dest}{\delta^\star}
+
+\begin{document}
+
+\maketitle
+
+
+
+\section{?`Qué es un algoritmo?}
+  \bi
+    \item ?` Podemos reconocer cuando un procedimiento sistemático es
+      un algoritmo?
+      \item ?`Podemos dar una definición precisa del concepto de
+        algoritmo?
+        \item ?`Por qué es importante tener una definición precisa
+          (matemática) de algoritmo?
+  \item Un algoritmo es una colección de instrucciones simples para
+    realizar una tarea o problema particular (procedimientos o recetas)
+\item Si se tiene un algoritmo para un problema dado $P$ significa
+  tener una manera para calcular efectivamente o resolver $P$.
+  \item Un algoritmo es un proceso \emph{potencialmente} realizable
+    \bi
+    \item Las operaciones del proceso se pueden realizar
+      inequívocamente.
+      \item El número de operaciones o pasos del proceso es finito.
+        \ei
+
+  \ei
+
+
+\subsection{Existencia y Formalización de Algoritmos}
+  \bi
+  \item Décimo problema de Hilbert: Hallar un proceso de acuerdo al
+    cual pueda determinarse en un número finito de pasos (un
+    algoritmo) si un polinomio dado tiene una raiz entera.
+    \item Se creia que todo problema $P$ tenia una solución
+      algorítmica.
+      \item Más aún se pensaba en la existencia de un algoritmo
+        universal $U$ que pudiera resolver todos los problemas
+        matemáticos.
+        \item Los intentos por hallar el algoritmo universal $U$
+          fallaron. Tal vez $U$ no existía.
+            \item ?`Cómo probar la no existencia de $U$?
+              \item Era necesario definir el concepto de algoritmo de
+                una manera precisa y hallar un formalismo para poder probar propiedades de
+                los mismos.
+                \item Un formalismo que intente representar el
+                  concepto de  algoritmo deberia ser preciso
+                  y libre de ambigüedades, simple y general.
+        \ei
+
+
+\subsection{Formalismos para representar el concepto de algoritmo}
+
+  %%\titulos{Formalización del concepto de algoritmo}{Introducción}
+ \bi
+ \item Máquinas de Turing (Alan Turing, Cambridge 1936)
+   \item Cálculo Lambda (Alonzo Church, Princeton 1936)
+     \item Sistemas de Post (Emile Post)
+       \item Funciones $\mu$-recursivas (Gödel, Herbrand, Kleene)
+         \item Lógica Combinatoria (Curry, Schönfinkel)
+           \item Máquinas de registro (Sheperdson, Sturgis)
+\ei
+Sorprendentemente todos los formalismos han resultado
+    equivalentes. Es decir, un problema tiene solución en un formalismo si y sólo si
+      tiene solución en cualquiera de los otros. Tal afirmación es un teorema, o una serie de teoremas
+        rigurosamente demostrados. Esta supuesta coincidencia nos lleva a conjeturar que existe una
+          única noción de computabilidad, esto se expresa mediante la
+          llamada Tesis de Church-Turing:
+    
+
+
+\subsection{La Tesis de Church-Turing}
+
+ La tesis de Church-Turing afirma que la noción intuitiva de
+    algoritmo es capturada de manera exacta por la noción matemática
+    de máquina de Turing.
+  %  \item Tesis de Church-Turing:
+      \bc
+      \emph{Un problema es soluble algorítmicamente si y sólo si es
+        soluble mediante una máquina de Turing}
+      \ec
+ Es decir, las máquinas de Turing implementan a cualquier
+        algoritmo. Equivalentemente, una función es computable si y sólo si
+          es computable mediante una máquina de Turing.
+ 
+%   \bc
+%      \emph{Un problema es soluble algorítmicamente si y sólo si es
+%        soluble mediante una máquina de Turing}
+%      \ec
+ Las siguientes observaciones son relevantes:     
+         \bi
+          \item La afirmación es una tesis indemostrable pues la
+            noción de algoritmo es intuitiva.
+            \item Por otro lado la tesis es refutable y se destruiría
+              mostrando un algoritmo que no pudiera ser implementado
+              en una máquina de Turing.
+
+            \item Existen fuertes evidencias a favor de la tesis,
+              algunas de éllas son:
+              \bi
+  \item Intuitivamente cualquier algoritmo detallado para el cálculo
+    manual puede programarse en una MT.
+    \item La equivalencia con otros formalismos mas modernos.
+      \item Existen demasiados ejemplos a favor y por supuesto ningún
+        contraejemplo.
+        \item La comunidad tanto en matemáticas como en ciencias de la
+          computación acepta ampiamente la tesis.
+          \ei
+  \ei
+
+\subsection{Computabilidad y Complejidad}
+
+
+  %%\titulos{Computabilidad y Complejidad}{Introducción}
+ Aceptamos la tesis de Church-Turing bajo la cual nos interesa
+   discutir lo siguiente para un problema específico $P$.
+   \bi
+   \item Computabilidad:  ?`Es $P$
+     efectivamente computable?, es decir, ?` Podemos resolver $P$ mediante una máquina
+     de Turing ?
+   \item Complejidad: ?`Es $P$ eficientemente computable?, es decir,
+     ?`Puede $P$ calcularse o implementarse de manera eficiente?
+     \ei
+
+\subsubsection{Observaciones acerca de la computabilidad}
+
+  \bi
+    \item Según la tesis de Church-Turing, las máquinas de Turing pueden computar todo lo
+      que es computable. Sin embargo existe solamente un número infinito numerable de MT.
+      \item Por otra parte el número de funciones digamos $f:\N\imp\N$ {\bf no} es
+        numerable, es decir, hay más funciones que máquinas de Turing.
+        \item Por lo tanto deben existir funciones no computables.
+          \item Ejemplo prominente: el problema de la detención
+            (Halting problem)
+  \ei
+
+
+
+
+\subsubsection{Observaciones acerca de la complejidad}
+
+  \bi
+  \item La complejidad es acerca de los problemas no de las
+    soluciones. 
+    \item La pregunta de interés es ?`Qué tan complejo es resolver el
+      problema? y {\bf no} ?`Qué tan complejo es implementar la solución?
+        \item La complejidad se divide en clases de problemas que
+          comparten ciertas características computacionales.
+          \item {\bf P}: problemas que pueden resolverse por una MT en
+            tiempo polinomial.
+            \item {\bf NP}: problemas que pueden resolverse por una MT
+              no-determinística en tiempo polinomial.
+              \item El problema más famoso en complejidad es el problema $P$ vs. $NP$.
+  \ei
+
+
+
+
+\section{Máquinas de Turing}
+
+\subsection{Generalidades}
+
+
+  %%\titulos{Máquinas de Turing}{Introducción}
+  \bi
+  \item Las máquinas de Turing son máquinas idealizadas capaces de
+    realizar cómputos más complicados que los autómatas finitos o de pila.
+    \item Una MT consiste de una cinta potencialmente infinita dividida en sectores (cuadros) y una
+      cabeza de lectoescritura.
+      \item Cada sector de la cinta contiene un símbolo de cierto
+        alfabeto de entrada o bien el símbolo blanco.
+        \item La cabeza lee el sector y puede escribir sobre él.
+          \item La cabeza puede moverse a izquierda o derecha.
+  \ei
+
+
+
+\defin{Una máquina de Turing es una septupla:
+  \beqs
+  M=\pt{Q,\S,\G,\de,q_0, \bl, F}
+  \eeqs
+donde
+\bi
+\item $Q\neq\vacio$ es un conjunto finito de estados.
+  \item $\S$ es el alfabeto de entrada.
+    \item $\G$ es el alfabeto de la cinta, el cual incluye a $\S$, es
+      decir, $\S\inc\G$.
+      \item $\de:Q\times\G\imp Q\times\G\times\{\izq,\der\}$ es la
+               función de transición
+        \item $q_0\in Q$ es el estado inicial.
+          \item $\bl\in\G$ es el símbolo blanco tal que $\bl\notin\S$.
+            \item $F\inc Q$ es el conjunto de estados finales, el cual
+              podría ser vacío.
+\ei
+}
+
+
+
+Analizemos ahora el funcionamiento de la función de transición:
+
+  %%\titulos{Función de transición}{Máquinas de Turing}
+  \beqs
+  \de:Q\times\G\imp Q\times\G\times\{\izq,\der\}
+  \eeqs
+La transición   
+  $\de(q,a)=(p,b,d)$
+significa:
+  \bi
+  \item El estado actual es $q$ y el símbolo a leer es $a$.
+    \item La transición es hacia el estado $p$
+      \item $b$ es el símbolo escrito en lugar de $a$.
+        \item La cabeza se mueve una celda según la dirección dada
+          por $d\in\{\izq,\der\}$. Dicho movimiento se realiza después de leer $a$ y escribir $b$. 
+  \ei
+
+
+%\subsection{Ejemplos}
+
+  %%\titulos{Ejemplos}{Máquinas de Turing}
+ Por ejemplo  
+  $\de(q,a)=(p,b,\der)$
+significa que el estado actual es $q$ y el símbolo a leer es $a$. Al
+ejecutarse la transición la cabeza borra $a$, escribe $b$ en su lugar, el estado actual
+ cambia a $p$ y la cabeza se mueve una celda a la derecha.
+ 
+Veamos algunos ejemplos:
+
+\bi 
+  %%\titulos{Ejemplos}{Máquinas de Turing}
+ 
+\item $M=\pt{\{q_0,q_1\},\{a,b\},\{a,b,\bl\},\de,q_0,\bl,\{q_1\}}$
+  ?`Qué lenguaje se acepta?
+ \bi
+\item[] $\de(q_0,a)=(q_0,b,\der)$
+  \item[] $\de(q_0,b)=(q_0,b,\der)$
+    \item[] $\de(q_0,\bl)=(q_1,\bl,\izq)$
+\ei
+
+
+
+
+  %%\titulos{Ejemplos}{Máquinas de Turing}
+
+\item $M=\pt{\{q_0,q_1\},\{a,b\},\{a,b,\bl\},\de,q_0,\bl,\varnothing}$
+ ?`Qué lenguaje se acepta?
+\bi
+\item[] $\de(q_0,a)=(q_1,a,\der)$
+  \item[] $\de(q_0,b)=(q_1,b,\der)$
+    \item[] $\de(q_0,\bl)=(q_1,\bl,\der)$
+     \item[] $\de(q_1,a)=(q_0,a,\izq)$
+       \item[] $\de(q_1,b)=(q_0,b,\izq)$
+         \item[] $\de(q_1,\bl)=(q_0,\bl,\izq)$
+\ei
+\ei
+%\newpage
+La función de transición también puede darse mediante una tabla como
+en los siguientes ejemplos de máquinas que reconocen los lenguajes dados.
+\bi
+\item $L=\{a^nb^n\;|\;n\geq 1\}$
+  \bc
+  \begin{tabular}{c|c|c|c|c|c}
+$\de$ & $a$ & $b$ & $X$ & $Y$ & $\bl$ \\ \hline
+$q_0$ & $(q_1,X,\der)$ & & & $(q_3,Y,\der)$ & \\ \hline
+$q_1$ & $(q_1,a,\der)$ & $(q_2,Y,\izq)$ & & $(q_1,Y,\der)$ & \\ \hline
+$q_2$ & $(q_2,a,\izq)$ &  & $(q_0,X,\der)$ & $(q_2,Y,\izq)$ & \\ \hline
+$q_3$ &  &  &  & $(q_3,Y,\der)$ & $(q_4,\bl,\der)$ \\ \hline
+$q_4$ &  &  &  &  &  \\ 
+  \end{tabular}
+  \ec
+
+
+
+
+\item $L=\{w\in\{0,1\}^\star\;|\;w\;\mbox{tiene un número par de ceros}\;\}$
+  \bc
+  \begin{tabular}{c|c|c|c}
+$\de$ & $0$ & $1$ & $\bl$  \\ \hline
+$q_0$ & $(q_1,0,\der)$ & $(q_0,1,\der)$ & $(q_f,\bl,-)$  \\ \hline
+$q_1$ & $(q_0,0,\der)$ & $(q_1,1,\der)$ &   \\ \hline
+$q_f$ &  &  &   \\ 
+  \end{tabular}
+  \ec
+\ei
+En la transición $\de(q_0,\bl)=(q_f,\bl,-)$, $-$ significa que la
+cabeza no se mueve.  
+
+\subsection{La Máquina Estandar de Turing}
+
+Existen diversas definiciones de MT, sin embargo hay una máquina
+estandar, que es a la que nos referiremos si no se indica lo
+contrario. Dicha máquina tiene las siguientes características:
+
+  \bi
+  \item La cinta es infinita en ambas direcciones.
+    \item Se permite un número arbitrario de movimientos en cualquier
+      dirección.
+      \item La máquina es determinista, $\de$ define a lo más un
+        movimiento para cada configuración posible.
+        \item No hay transiciones desde estados finales, es decir,
+          transiciones $\de(q,a)$ si $q\in F$.
+        \item No hay un archivo especial de entrada o salida, se asume
+          que la máquina contiene algo al final y al principio del proceso.
+  \ei
+
+
+\subsection{Configuraciones y Lenguaje de Aceptación}
+
+  %%\titulos{Configuraciones}{Máquinas de Turing}
+
+\defin{Una configuración o descripción instantanea es un par
+  forma
+\beqs
+\pt{q,u\underline{a}v}
+%a_1a_2\ldots a_{k-1}\emph{q}a_ka_{k+1}\ldots a_n
+\eeqs
+
+determinada por:
+  \bi
+  \item El estado actual de la unidad de control (cabeza) $q\in Q$.
+    \item El contenido total de la cinta $uav\in\G^\star$
+      \item La posición de la unidad de control (dada por el símbolo subrayado $a\in\G$)
+  
+  \ei
+
+Obsérvese que en la cadena $u\underline{a}v$ sobre la cinta la parte a la izquierda de 
+$a$, es decir $u$, se ha consumido mientras que la parte de la derecha, $v$, debe aún
+procesarse.
+En particular una configuración inicial es de la forma $\pt{q_0,\underline{a}w}$ con $a\in\S,w\in\S^\star$.
+}
+
+
+  %%\titulos{Cómputos}{Máquinas de Turing}
+\defin{Un cómputo o paso de computación es el cambio de una configuración a
+  otra mediante una transición dada por $\de$. Formalmente
+  \beqs
+\pt{q,u\underline{a}cv}\vdash\pt{p,ub\underline{c}v}
+ % u\emph{q}av\vdash ub\emph{p}v
+  \eeqs
+ si y sólo si $\de(q,a)=(p,b,\der)$
+y 
+ \beqs
+  \pt{q,uc\underline{a}v}\vdash\pt{p,u\underline{c}bv} %uc\emph{q}av\vdash u\emph{p}cbv
+  \eeqs
+ si y sólo si $\de(q,a)=(p,b,\izq)$
+\espc \\
+La relación $\vdash^\star$ se define de la manera usual como la cerradura
+reflexiva y transitiva de $\vdash$
+}
+
+
+  %%\titulos{Cómputos}{Casos especiales con $\cv$}
+Los casos particulares que involucrán el inicio y final de una cadena
+sobre la cinta se definen de la misma manera, usando el símbolo blanco
+$\bl$.
+  \beqs
+\pt{q,u\underline{a}}\vdash\pt{p,ub\underline{\bl}}  %u\emph{q}a\vdash ub\emph{p}\bl
+  \eeqs
+ si y sólo si $\de(q,a)=(p,b,\der)$
+
+ \beqs
+  \pt{q,\underline{a}v}\vdash\pt{p,\underline{\bl}bv} %\emph{q}av\vdash \emph{p}\bl bv
+  \eeqs
+ si y sólo si $\de(q,a)=(p,b,\izq)$  
+
+
+Pueden existir cómputos bloqueados o infinitos:
+  \bi
+  \item Cómputos bloqueados: el cómputo se bloquea porque la siguiente
+    transición no está definida. En tal caso escribimos
+    \beqs
+\pt{q,u\underline{a}v}\not\vdash    %u\emph{q}v\not\vdash^\star
+    \eeqs
+    \item Cómputos infinitos: el cómputo entra en un ciclo infinito,
+      saltando de derecha a izquierda por ejemplo. En tal caso escribimos
+      \beqs
+      \pt{q,u\underline{a}v}\vdash^\star\infty %u\emph{q}v\vdash^\star\infty
+      \eeqs
+  \ei
+
+Con la noción formal de cómputo podemos definir al lenguaje aceptado
+por una máquina $M$ de la manera usual:
+
+
+
+
+%
+%  %%\titulos{Transiciones $\cv$ vs. $\bl$}{Máquinas de Turing}
+%  \bi
+%  \item $\cv$-transición: $\de(q,\cv)=(p,a,D)$
+%  \ei
+%
+
+
+
+  %%\titulos{Lenguaje de aceptación}{Máquinas de Turing}
+
+\beqs
+L(M)=\{w\in\sest\;|\;\pt{q_0,\underline{a}w'}\vdash^\star\pt{q_f,w_1\underline{a}w_2}
+%q_0w\vdash^\star w_1q_fw_2
+\;\;q_f\in F\}
+\eeqs
+donde $w=aw'$ es decir, la configuración inicial coloca a la cabeza de la
+máquina en el primer símbolo de $w$. De importancia es notar que si $w=\cv$
+entonces agregamos un blanco siendo la configuración inicial $\pt{q_0,\underline{\bl}\cv}$.
+De esta manera $L(M)$ es el conjunto de todas aquellas cadenas de entrada con
+las cuales la máquina se detiene en un estado final.
+
+
+Las siguientes observaciones son importantes:
+\bi
+\item A diferencia con los autómatas se acepta una cadena en el
+  momento en que el proceso llega a un estado final.
+  \item No es necesario consumir toda la cadena.
+    %\item Recordemos que se asume en el modelo estandar que
+%      no hay transición alguna desde un estado final, lo cual evita
+%      ambigüedades.
+      \item Si no hay estados finales se acepta una cadena en el
+        momento en que la máquina se detiene, es decir, se aceptan
+        todas las cadenas cuyos cómputos se bloquean.
+\ei
+
+
+
+
+
+\section{Otros modelos de MT}
+
+
+  %%\titulos{Variaciones}{MT}
+  \bi
+  \item Existen diversas variaciones en la definición de MT.
+    \item Todas ellas resultan equi\-va\-len\-tes, es decir, el poder de
+      computación de cualquier modelo resulta equi\-va\-len\-te al de la
+      máquina estandar.
+      \item Las variaciones son útiles para simplificar la
+        presentación o programación de diversos problemas.
+  \ei
+
+
+
+ \subsection{MT con cabeza lectora estacionaria}
+  \bi
+  \item Se permite que al leer y escribir un símbolo la cabeza no
+    realice movimiento alguno.
+    \item El conjunto de direcciones se amplia a $\{\izq,\der,-\}$.
+    \item La transición
+      \beqs
+      \de(q,a)=(p,b,-)
+      \eeqs
+      significa que la cabeza lee $a$, escribe $b$ y no se mueve
+      \item Tales transiciones pueden simularse mediante un nuevo
+        estado y movimientos consecutivos a la izquierda y a la derecha.
+  \ei
+
+
+
+
+\subsection{MT con múltiples pistas}
+  \bi
+  \item Idea: la cinta se divide en multiples pistas.
+    \item La función de transición es:
+  \beqs
+  \de:Q\times\G^n\imp Q\times\G^n\times\{\izq,\der\}
+  \eeqs
+  
+  \beqs
+  \de(q,\pt{a_1,\ldots,a_n})=(p,\pt{b_1,\ldots,b_n},d)
+  \eeqs      
+  \ei
+
+
+
+\subsection{MT con múltiples cintas}
+  \bi
+  \item Idea: se agregan más cintas a la máquina
+     \item La función de transición es:
+  \beqs
+  \de:Q\times\G^n\imp Q\times(\G\times\{\izq,\der\})^n
+  \eeqs
+  
+  \beqs
+  \de(q,\pt{a_1,\ldots,a_n})=(p,\pt{b_1,d_1},\ldots,\pt{b_n,d_n})
+  \eeqs      
+  \ei
+
+
+
+
+ \subsection{MT No-determinista}
+  \bi
+     \item Se permite más de una transición en un estado y símbolos
+       dados. La función de transición se modifica como sigue:
+  \beqs
+  \de:Q\times\G^n\imp \Pe(Q\times\G\times\{\izq,\der\})
+  \eeqs
+  
+  \beqs
+  \de(q,\pt{a_1,\ldots,a_n})=\{\pt{b_1,d_1},\ldots,\pt{b_n,d_n}\}
+  \eeqs
+  \espc
+  \item Las máquinas no-deterministas juegan un papel central en la
+    teoría de la complejidad.
+  \ei
+\section{Otras aplicaciones de las MT}
+\subsection{MT Generadoras}
+%%\titulos{Generación de lenguajes}{Máquinas de Turing}
+\bi
+\item Las MT tienen suficiente poder como para generar lenguajes y
+  calcular funciones.\espc
+  \item Una MT $M$ genera al lenguaje $L\inc\sest$ si
+    \bi
+    \item $M$ comienza a operar con la cinta en blanco en $q_0$.\espc
+      \item Cada vez que $M$ regresa a $q_0$ hay una cadena de $L$
+        escrita sobre la cinta.\espc
+        \item Eventualmente se generan todas las cadenas de $L$.
+    \ei
+\ei
+
+\subsection{MT Calculadoras}
+
+
+  %%\titulos{Cálculo de funciones}{Máquinas de Turing}
+La máquina de Turing $M=\pt{\{q_0,q_f\},\S,\G,\de,q_0,\bl,\varnothing}$ calcula una
+función $f:\sest\imp\G^\star$ si 
+\beqs
+%q_0w\vdash^\star q_fv\;\;\;
+\pt{q_0,\underline{a}w}\vdash\pt{q_f,\underline{b}v}\;\;\;\mbox{donde}\;f(aw)=bv
+\eeqs
+Observaciones:
+\bi
+\item No hay estados finales, el estado $q_f$ se usa para detener la
+  máquina, es decir, no hay transiciones desde $q_f$.
+  \item Al terminar el proceso la cabeza debe estar
+    leyendo el primer símbolo de la salida $bv$.
+\ei
+
+
+
+\section{Lenguajes Recursivos y Recursivamente Enumerables}
+
+
+  %%\titulos{Lenguajes recursivos y recursivamente
+  %  enumerables}{Aceptación en MT}
+\bi
+\item Un lenguaje $L$ es \emph{recursivamente enumerable} si es reconocido
+  por una máquina de Turing, es decir, si existe una máquina de Turing
+  $M$ tal que $L=L(M)$.\espc
+  \item un lenguaje $L$ es \emph{recursivo} si es reconocido por una máquina
+    de Turing que siempre se detiene, es decir, si existe una máquina
+    de Turing $M$ que se detiene con todas las cadenas de entrada y $L=L(M)$.
+\ei
+
+
+
+  %%\titulos{Propiedades de Cerradura}{Lenguajes recursivos y R.E.}
+  \bi
+  \item Si $L$ es recursivo entonces $\overline{L}$ es recursivo.\espc
+    \item Si $L,M$ son recursivos entonces $L\cup M$ es recursivo.\espc
+      \item Si $L,M$ son rec. enumerables entonces $L\cup M$ es
+        rec. enumerable.\espc
+        \item $L$ es recursivo si y sólo si $L$ y $\overline{L}$ son
+          rec. enumerables.
+  \ei
+
+
+\section{MT y gramáticas}
+
+
+  %%\titulos{Jerarquía de Chomsky}{su relación con autómatas}
+  \bi
+  \item Las gramáticas tipo 3 (regulares) son equivalentes a los
+    autómatas finitos.
+    \item Las gramáticas tipo 2 (libres de contexto) son equivalentes
+      a los autómatas de pila (no-determinísticos).
+      \item ?`Qué pasa con las gramáticas tipo 1 (sensibles al contexto)?
+       \item ?`Qué pasa con las gramáticas tipo 0 (irrestrictas)?
+  \ei
+
+
+
+
+  %%\titulos{$L=\{a^ib^ic^i\;|\;i\geq 0\}$}{Gramática sensible al
+ %   contexto}
+  \bi
+  \item $S\imp A$
+    \item $A\imp aABC\;|\;abC$
+      \item $CB\imp BC$
+        \item $bB\imp bb$
+          \item $bC\imp bc$
+            \item $cC\imp cc$
+  \ei
+
+
+
+\subsection{Autómatas Linealmente Acotados}
+
+
+
+  %%\titulos{Autómatas Linealmente Acotados}{Definición}
+\bi
+\item Un autómata linealmente acotado (ALA) es una máquina de Turing
+  que satisface las siguientes condiciones:\espc
+  \item El alfabeto de entrada $\S$ incluye dos símbolos especiales
+    $[,]$ que sirven como marcas de fin de cinta izquierda y derecha
+    respectivamente.\espc
+    \item La cabeza lectora no puede desplazarse más allá de dichos
+      límites y no puede sobreescribir tales sectores.
+\ei
+
+%%\titulos{Autómatas Linealmente Acotados}{Definición}
+\bi
+\item Formalmente tenemos
+        \beqs
+          M=\pt{Q,\S,\G,\de,q_0,\bl,[,],F}
+        \eeqs
+        con $[,]\in\S$.
+        \item El lenguaje de aceptación es 
+      \beqs  
+L(M)=\{w\in\S^\star-\{[,]\}\;|\;\pt{q_0,[\underline{a}w]}\vdash^\star \pt{q_f,w_1\underline{b}w_2}\;\;q_f\in F\}
+%q_0[w]\vdash^\star w_1q_fw_2\;\;q_f\in F\}
+\eeqs
+      Las marcas $[,]$ no son consideradas como parte de la cadena a
+      procesar.
+      \item Un ALA no puede moverse fuera de la cadena de entrada.
+\ei
+
+
+
+  %%\titulos{ALA y Gramáticas}{Equivalencia}
+  \bi
+  \item Dada una gramática sensible al contexto $G$, existe un
+    autómata linealmente acotado $M$ tal que $L(G)=L(M)$. Es decir,
+    los lenguajes sensibles al contexto son reconocidos por autómatas
+    linealmente acotados.
+    \espc
+    \item Si $L=L(M)$ es un lenguaje reconocido por un autómata linealmente
+      acotado $M$ entonces existe una gramática sensible al contexto
+      $G$ tal que $L(M)=L(G)$. Es decir, los lenguajes reconocidos por
+      ALA son sensibles al contexto.
+  \ei
+
+
+\subsection{MT y gramáticas irrestrictas}
+
+
+  %%\titulos{Máquinas de Turing y gramáticas irrestrictas}{Equivalencia}
+  \bi
+  \item Para toda gramática $G$ de tipo 0 existe una máquina de Turing
+    $M$ tal que $L(M)=L(G)$. Es decir, los lenguajes tipo 0 son
+    recursivamente enumerables.
+    \espc
+    \item Para toda máquina de Turing $M$ existe una gramática $G$ de tipo
+      0 tal que $L(G)=L(M)$. Es decir, los lenguajes recursivamente
+      enumerables son lenguajes tipo 0.
+  \ei
+
+
+
+  %%\titulos{Jerarquía de Chomsky}{su relación con autómatas}
+  \bi
+  \item Las gramáticas tipo 3 (regulares) son equivalentes a los
+    autómatas finitos.
+    \item Las gramáticas tipo 2 (libres de contexto) son equivalentes
+      a los autómatas de pila (no-determinísticos).
+      \item Las gramáticas tipo 1 (sensibles al contexto) son
+        equivalentes a los autómatas linealmente acotados.
+       \item Las gramáticas tipo 0 (irrestrictas) son equivalentes a
+         las máquinas de Turing.
+  \ei
+
+
+
+\section{La Máquina Universal}
+\subsection{Introducción}
+
+
+  %\titulos{Máquinas de Turing vs. Computadoras}{Introducción}
+  \bi
+  \item Una computadora es capaz de interpretar algoritmos arbitrarios
+    y obtener la misma respuesta que cada algoritmo particular.
+    \item Entonces una computadora es una máquina útil para
+      propósitos generales
+      \item Las MT en cambio son diseñadas para propositos
+        particulares.
+        \item Conclusión: el poder computacional de las MT  no puede
+          ser equiparable al de las computadoras actuales.
+          \item Las computadoras son programables, las MT no.
+  \ei
+
+
+
+  %\titulos{La Máquina Universal de Turing}{Introducción}
+  \bi
+  \item ?`Será factible pensar en la existencia de una MT que se
+    comporte de la misma forma que una computadora real?\espc
+    \item Es decir, una MT que sea útil para propósitos multiples.\espc
+      \item Dicha máquina sería capaz de programar y ejecutar máquinas
+        de Turing.
+  \ei
+
+
+
+
+  %\titulos{La Máquina Universal de Turing}{Introducción}
+  \bi
+  \item Tal máquina existe y se conoce como máquina universal de
+    Turing (MUT).\espc
+    \item La MUT recibe como entrada una descripción de una MT, $M$ y
+      una cadena $w$ y simula el comportamiento de $M$ sobre $w$.\espc
+      \item Los datos de entrada $M$ y $w$ deben ser codificados de
+        manera adecuada.
+  \ei
+
+
+\subsection{Codificación de MT}
+
+  %\titulos{Codificación de MT}{Convenciones}
+  \bi
+  \item Se fija un alfabeto de entrada $\S$.
+    \item Se asume $Q=\{q_0,\ldots,q_n\}$ siendo $q_0$ el estado inicial y
+      $q_1$ el {\bf único} estado final.
+      \item El alfabeto de cinta es de la forma
+        \beqs
+        \G=\{s_1,s_2,\ldots, s_p\}
+        \eeqs
+        siendo $s_1=\bl$.
+  \ei
+
+
+
+  %\titulos{Alfabeto de Cinta}{Codificación de MT}
+        \beqs
+        \G=\{s_1,s_2,\ldots, s_p\}
+        \eeqs
+ \bi
+ \item El símbolo $s_i$ se codifica como $1^i$.
+   \item Las cadenas $\G^\star$ se codifican separando cada símbolo
+     con $0$.
+  \item Por ejemplo, si $\G=\{\bl,a,b\}$ entonces codificamos
+    $\bl:=1,\;a:=11,\;b:=111$.
+    \item La palabra $bab\bl aa$ se codifica como:
+      \beqs
+      01110110111010110110
+      \eeqs
+ \ei
+
+
+
+  %\titulos{Alfabeto de Cinta}{Codificación de MT}
+  \beqs
+        \G=\{s_1,s_2,\ldots, s_p\}
+        \eeqs 
+  \bi 
+  \item En general, si $w=s_{n_1}s_{n_2}\ldots s_{n_k}$ la
+    codificación de $w$ es:
+    \beqs
+    01^{n_1}01^{n_2}0\ldots 01^{n_k}0
+    \eeqs
+  \ei
+
+
+
+
+  %\titulos{Estados}{Codificación de MT}
+  \beqs
+  Q=\{q_0,q_1,\ldots,q_n\}
+  \eeqs 
+  \bi
+  \item El estado $q_i$ se codifica, análogamente a los
+    símbolos, mediante cadenas de unos pero con un símbolo más que el
+    índice del estado
+    \beqs
+    q_i\;\mbox{se codifica como}\;1^{i+1}
+    \eeqs
+    \item Con la convención tomada, el estado inicial $q_0$ se codifica con
+      $1$ y el estado final $q_1$ con $11$.
+  \ei
+
+
+
+
+  %\titulos{Direcciones de desplazamiento}{Codificación de MT}
+  \beqs
+  \{\der,\izq, -\}
+  \eeqs
+
+  \bi
+  \item $\der$ se codifica con $1$.\espc
+    \item $\izq$ se codifica con $11$.\espc
+      \item $-$ se codifica con $111$.
+  \ei
+
+
+
+  %\titulos{Transiciones}{Codificación de MT}
+  \beqs
+  \de(q_i,s_k)=(q_j,b_\ell,D)
+  \eeqs\vspace{-0.5cm}
+  \bi
+  \item Los estados, símbolos y dirección de desplazamiento se codifican de la manera
+    indicada anteriormente.
+    \item La transición se codifica escribiendo en orden los códigos
+      respectivos separados por ceros:
+      \beqs
+      01^{i+1}01^k01^{j+1}01^\ell01^n0
+      \eeqs
+      donde $n=1,2,3$.
+      \item Por ejemplo $\de(q_2,s_3)=(q_0,s_5,\izq)$ se codifica como
+        \beqs
+        01^301^30101^501^20
+        \eeqs
+  \ei
+
+
+
+
+  %\titulos{Máquinas de Turing}{Codificación de MT}
+  \bi
+  \item Una MT queda completamente determinada mediante su función de
+    transición $\de$.
+    \item La MT se codifica mediante la sucesión de los códigos de
+      sus transiciones sin separaciones. Es decir, si $C_1,\ldots,C_k$
+      son los códigos de todas las transiciones de $M$. Entonces $M$
+      se codifica mediante
+      \beqs
+      C_1C_2\ldots C_k
+      \eeqs
+      \item Obsérvese que no hay ambigüedad pues cada transición tiene
+        exactamente seis ceros, además dos ceros consecutivos indican
+        que inicia otra transición.
+  \ei
+
+
+
+
+  %\titulos{Codificación de MT}{Ejemplo}
+  La máquina $M$ dada por:
+  \beqs
+  \de(q_0,a)=(q_2,b,\der)\;\;\;\;\;\de(q_2,b)=(q_3,c,\der) 
+  \eeqs
+  \beqs
+  \de(q_3,a)=(q_1,c,\der)\;\;\;\;\;\de(q_1,b)=(q_3,\bl,-) 
+  \eeqs
+  se codifica mediante $a:=11,\;b:=111,c:=1111$ como sigue:
+  \beqs
+  0101101110111010011101110111101111010
+\eeqs
+\beqs
+  01111011011011110100110111011110101110
+  \eeqs
+
+
+
+
+  %\titulos{Codificación de MT}{Observaciones}
+  \bi
+  \item La codificación de una MT no es única, puesto que el orden de
+    las transiciones no importa y un orden distinto genera una codificación
+    distinta.
+    \item De hecho si $M$ tiene $n$ transiciones, existen $n!$
+      codificaciones distintas para $M$.
+      \item El proceso de codificación puede revertirse, no es dificil
+        definir un algoritmo que decida si una secuencia binaria
+        representa un código válido para MT y en tal caso lo decodifique.
+  \ei
+
+
+\subsection{Enumerabilidad de las MT}
+
+  %\titulos{Enumerabilidad de las MT}{}
+  \bi
+  \item En conclusión toda MT puede representarse como una cadena
+    binaria.
+    \item No todas las cadenas binarias representan MT válidas, por
+      ejemplo, las cadenas que empiezan o terminan con $1$ o las que
+      tienen más de dos ceros consecutivos.
+      \item Cada cadena binaria, representa por otra parte un número
+        natural y viceversa. Es decir, hay tantas cadenas binarias
+        como números  naturales.
+        \item De lo anterior se concluye que hay sólo un número
+          numerable de MT.
+  \ei
+
+
+
+
+  %\titulos{Enumerabilidad de las MT}{}
+  \bi
+  \item Las cadenas binarias pueden enumerarse en orden lexicográfico
+    con $0<1$:
+    \beqs
+    0,1,00,01,10,11,000,001,010,011,100,101,110,111,\ldots
+    \eeqs
+    \item Cada MT figura varias veces en esta lista.
+      \item Por motivos prácticos si una cadena no codifica
+        directamente a una MT entonces acordamos que codifica a la
+        máquina sin transiciones que acepta el lenguaje vacío.
+        \item De esta manera cada cadena binaria codifica a una MT.
+  \ei
+
+
+
+
+  %\titulos{Existencia de funciones no computables}{Enumerabilidad de
+  %  MT}
+  \bi
+  \item Dado que las cadenas binarias son tantas como los números
+    naturales y cada cadena codifica a una MT concluimos que sólo hay
+    un número infinito numerable de MT.
+    \item Por otro lado si consideramos las funciones $f:\N\imp \N$ es
+      bien sábido que son un número {\bf no} numerable (tantas como
+      números reales)
+      \item De donde se concluye que existen funciones, que {\bf no}
+        pueden calcularse mediante una MT.
+        \item Lo cual bajo la tesis de Church-Turing equivale a que
+          existen funciones que no pueden ser calculadas mediante una computadora.
+  \ei
+
+
+
+\subsection{Descripción y funcionamiento de MUT}
+
+
+  %\titulos{La Máquina Universal de Turing $\U$}{Descripción}
+  \bi
+  \item La máquina universal de Turing $\U$ simula el comportamiento
+    de cualquier MT sobre un alfabeto $\S$ dado.
+    \item $\U$ recibe como entrada (el código de) una máquina $M$ y una
+      cadena $w$
+      \item Los datos de entrada se representan como $M0w$, es decir,
+        la entrada es una cadena binaria que consta del código de $M$
+        y el código de $w$ en orden separados por un cero.
+        \item En tal caso la cadena tiene una única sucesión de tres
+          ceros que separa a $M$ y $w$.
+  \ei
+
+
+
+
+  %\titulos{La Máquina Universal de Turing $\U$}{Descripción}
+  \bi
+  \item $\U$ es una máquina con tres cintas y alfabeto
+    $\G=\{0,1,\bl\}$.\espc
+    \item La primera cinta recibe el código de una máquina cualquiera
+      $M$.\espc
+      \item La segunda cinta recibe el código de una cadena $w$.\espc
+        \item La tercera cinta almacena el código del estado actual de $M$ 
+  \ei
+
+
+
+
+  %\titulos{La Máquina Universal de Turing $\U$}{Funcionamiento}
+  \bi
+  \item $\U$ examina el código de $M$ para saber si es una máquina
+    válida, en caso contrario $\U$ para sin aceptar.
+    \item $\U$ lee las cintas dos y tres para buscar en la cinta uno
+      la transición necesaria.
+      \item Se aplica la transición modificando la cadena en la cinta
+        dos y cambiando el estado en la cinta 3, como $M$ lo haría. La
+        unidad de control vuelve a la primera posición en las cintas
+        uno y tres.
+        
+  \ei
+
+
+
+
+  %\titulos{La Máquina Universal de Turing $\U$}{Funcionamiento}
+  \bi
+  \item Si al procesar $w$ $\U$ se detiene en el único estado de
+    aceptación entonces se acepta $w$, como el estado de aceptación es
+    el mismo que el de $M$ entonces $M$ tambien aceptaba a $w$.
+    \item Si no hay transición aplicable en la cinta uno o si $\U$ se
+      detiene en un estado distinto al de aceptación $w$ no se acepta,
+      al igual que en $M$.
+      \item $\U$ acepta a $w$ si y sólo si $M$ acepta a $w$.
+  \ei
+
+
+\subsection{Lenguaje universal y diagonal}
+
+
+%\titulos{El lenguaje universal $\mathcal{L}_\U$}{Definición}
+\begin{itemize}
+\item El lenguaje aceptado por la máquina universal $\U$ se conoce
+  como lenguaje universal, denotado $\mathcal{L}_\U$.
+\beqs
+\mathcal{L}_\U=\{M0w\;|\;M\;\mbox{acepta}\;w\in\sest\}
+\eeqs
+\item Por definición $\mathcal{L}_\U$ es un lenguaje recursivamente enumerable.
+\end{itemize}
+
+
+
+
+  %\titulos{El lenguaje diagonal $\mathcal{L}_D$}{}
+  \bi
+  \item Consideremos la enumeración de las máquinas de Turing
+    $M_1,M_2,\ldots$ así como la enumeración de todas las cadenas de
+    $\sest$, digamos $w_1,w_2,\ldots,w_n,\ldots$.
+  \item Podemos entonces dar como entrada la $i$-ésima palabra $w_i$ a
+    la $i$-ésima máquina $M_i$.
+    \item El lenguaje diagonal se define como:
+      \beqs
+      \mathcal{L}_D=\{w_i\;|\;w_i\;\mbox{no es aceptada por}\;M_i\}
+      \eeqs
+      \item Es decir $\mathcal{L}_D$ contiene a la $i$-ésima cadena
+        si y sólo si ésta no es aceptada por la $i$-ésima máquina. 
+  \ei
+
+
+
+
+
+  %\titulos{$\mathcal{L}_D$ \emph{no} es recursivamente enumerable}{}
+  \bi
+  \item Si $\mathcal{L}_D$ fuera R.E. sería aceptado por una MT,
+    digamos la $k$-ésima máquina $M_k$.
+    \item En tal caso $\mathcal{L}_D=L(M_k)$.
+      \item Podemos preguntarnos entonces si $w_k\in \mathcal{L}_D$.
+        \bi
+        \item $w_k\in\mathcal{L}_D\Imp w_k$ no es aceptada por
+          $M_k\Imp w_k\notin L(M_k)=\mathcal{L}_D$.
+          \item $w_k\notin\mathcal{L}_D\Imp
+            w_k\notin\mathcal{L}_D\Imp$ $w_k$ es aceptada por $M_k\Imp
+            w_k\in L(M_k)=\mathcal{L}_D$.
+        \ei
+        \item Por lo que se tendría \beqs w_k\in\mathcal{L}_D\;\mbox{ si y sólo si
+          }\;w_k\notin\mathcal{L}_D\eeqs
+          \item Lo cual es absurdo.
+          
+  \ei
+
+
+
+
+
+  %\titulos{Lenguajes Recursivos y R.E.}{}
+  \bi
+  \item Todo lenguaje recursivo es recursivamente enumerable.\espc
+    \item  Existen lenguajes recursivamente enumerables que no son
+      recursivos. En particular el lenguaje universal $\mathcal{L}_\U$
+      no es recursivo.\espc
+      \item Existen lenguajes no recursivamente enumerables como
+        $\mathcal{L}_D$.
+      \ei
+
+
+
+\section{Computabilidad}
+
+\subsection{Introducción}
+
+  %\titulos{Preguntas y Problemas}{Introducción}
+  \bi
+  \item Preguntas:
+    \bi
+    \item ?`Qué $x$ real cumple $2x^2-3x+5=0$?
+      \item Dadas las ciudades $a,b,c,d$ ?`Cual es la forma óptima de
+        visitarlas sin pasar dos veces por la misma ciudad?
+    \ei
+    \item Una problema es una clase de preguntas:
+      \bi
+      \item ?`Cuales son las soluciones de ?`$ax^2+bx+c=0$?
+      \item ?` Dados $n$ vértices en un grafo existira un camino hamiltoniano?
+      \ei
+    \item Cada caso particular de un problema es un ejemplo, ejemplar o
+      instancia de éste. 
+  \ei
+
+
+
+
+  %\titulos{Tipos de Problemas}{Introducción}
+
+\bi
+\item La mayoría de los problemas de interén en ciencias de la
+  computación son de dos tipos.
+  \item Problemas de cómputo: obtener el valor de una función en un
+    argumento dado.
+    \bi
+    \item Por ejemplo obtener la raiz cuadrada de un número dado $x$
+      con exactitud de milésimas.
+    \ei
+    \item Problemas de decisión: estos problemas tienen como respuesta
+      si o no.
+      \bi
+    \item Por ejemplo, decidir la existencia de un camino óptimo en costos para
+      recorrer varias ciudades.
+    \ei
+    \item Si bien los problemas de decisión también podrían
+      considerarse problemas de cómputo, es útil hacer la distinción.
+\ei
+  
+
+
+\subsection{Algoritmos y problemas}
+
+  %\titulos{Algoritmos y problemas}{}
+  \bi
+  \item Un algoritmo para un problema consiste de una serie de
+    instrucciones capaces de responder cualquier instancia del
+    problema dado.
+    \item Un problema $P$ se dice soluble si existe un algoritmo para
+      $P$. En otro caso se dice insoluble.
+      \item Si un problema de decisión $P$ es soluble entonces decimos que
+        $P$ es decidible. En caso contrario el problema se dice
+        indecidible.
+        \item Un proceso o algoritmo para un problema de decisión se
+          conoce como un proceso o algoritmo de decisión.
+  \ei
+
+
+
+
+  %\titulos{Algoritmos y funciones}{}
+  \bi
+  \item Cualquier algoritmo puede verse como una función:
+    \beqs
+    \mbox{entrada}\;x \imp \;\mbox{algoritmo}\; \imp \; \mbox{salida}\; y
+    \eeqs
+    \item La salida está en función de la entrada
+      \beqs
+      f(x)=y
+      \eeqs
+      \item Una función es computable si existe un algoritmo que la
+        calcule.
+        \item La teoría de la computabilidad se encarga esencialmente
+          a contestar la pregunta \emph{?`Qué funciones son computables?}
+          \item Lo cual equivale entonces a responder que problemas
+            son solubles.
+  \ei
+
+
+\subsection{Problemas no computables}
+
+  %\titulos{Problemas no computables}{Introducción}
+  \bi
+  \item ?`Por qué nos interesa averiguar qué problemas no son
+    computables mediante un algoritmo o proceso?
+    \item Tales problemas son aquellos que {\bf no} podemos resolver
+      \item Son resultados fundamentales y debemos conocerlos para
+        tener una visión general de las ciencias de la computación.
+        \item Debemos conocerlos para evitar intentar resolverlos.
+          \item Debemos entender que tales problemas son insolubles
+            independientemente del desarrollo futuro del hardware.
+  \ei
+
+
+
+
+
+  %\titulos{Recursividad y decidibilidad}{Problemas insolubles}
+  \bi
+  \item Considérese una propiedad $\Pe$ acerca de máquinas de Turing.
+    \item$\Pe$ genera el problema de decisión siguiente:\\
+      \bc
+      ?`Satisface la máquina $M$ la propiedad $\Pe$ ?
+      \ec
+      \item Asumiendo la tesis de Church-Turing, tal problema de
+        decisión será decidible (soluble) si y sólo si el lenguaje
+        \beqs
+        L=\{M\;|\;M\;\mbox{es el código de una MT que satisface}\;\Pe\}
+        \eeqs
+        es recursivo.
+  \ei
+
+
+
+%\subsection{El problema de la detención}
+
+  %\titulos{El problema de la detención}{\emph{Halting problem}}
+
+ \bc
+ Dada una máquina $M$ y una cadena $w$ ?`Se detendrá $M$ al procesar $w$?
+ \ec 
+\bi
+\item El problema sería soluble si pudieramos hallar una máquina $H$
+   tal que al recibir como entrada a cualquier cadena $M0w$ se
+   detuviera si y sólo si $M$ se detiene al procesar $w$.
+   \item Podría pensarse que una máquina universal puede hacer el
+     trabajo.
+     \ei
+  
+
+    %\titulos{El problema de la detención}{\emph{Halting problem}}
+  \bi
+    \item El problema de la detención resulta indecidible, es decir,
+       no existe tal máquina $H$.\espc
+\item Además es quizas el problema indecidible
+  más relevante en la teoría de la computabilidad.\espc
+\item Una consecuencia inmediata de su indecidibilidad es que no puede
+  existir un programa que verifique si cualquier programa dado se cicla.
+\ei
+
+
+
+  %\titulos{El problema universal}{Problemas no computables}
+  \bc
+  Dada una máquina de Turing cualquiera $M$ y una cadena $w$\\ ?`Acepta
+  $M$ a $w$?
+  \ec 
+  \bi
+  \item El problema universal equivale a que el lenguaje universal
+    \beqs
+     \mathcal{L}_\U=\{M0w\;|\;M\;\mbox{acepta}\;w\in\sest\}
+    \eeqs
+    sea recursivo.
+    \item Ya mencionamos que $\mathcal{L}_{\U}$ no es recursivo.
+      \item Por lo tanto el problema universal es indecidible.
+  \ei
+
+
+
+\subsection{Reducibilidad de problemas}
+
+
+  %\titulos{Reducibilidad de problemas}{}
+  \bi
+  \item La reducibilidad de problemas es una técnica de gran utilidad
+    para probar la indecidibilidad de un problema dado a partir de la
+    indedidibilidad de un problema conocido.\espc
+    \item Dados dos problemas $\Pe_1,\Pe_2$ decimos que $\Pe_1$ se
+      reduce a $\Pe_2$ si un algoritmo para decidir $\Pe_2$ puede
+      emplearse para decidir $\Pe_1$.
+\ei
+
+
+
+  %\titulos{Reducibilidad de problemas}{}
+  \bi      
+      \item Formalmente decimos que $\Pe_1$ se reduce a $\Pe_2$,
+        denotado $\Pe_1\prec\Pe_2$ si existe una MT $M$ tal que:
+      \item $M$ recibe como entrada una instancia $I_1$ de $\Pe_1$
+        \item $M$ devuelve como salida una instancia $I_2$ de $\Pe_2$.
+          \item $M$ decide a $I_1$ de la misma manera que $I_2$.
+            \item Es decir, $M$ responde con \emph{sí} a $I_1$ si y sólo si
+              responde con \emph{sí} a $I_2$.
+              \item De esta manera se tiene que $\Pe_1$ es decidible
+                si y sólo si $\Pe_2$ es decidible.
+  \ei
+
+
+%\titulos{PD $\prec$ PU}{Reducibilidad}
+  \bi
+  \item El problema universal puede reducirse al problema de la
+    detención
+    \item Supongamos que existe una máquina $H$ que decide el
+      problema de la detención.
+      \item En tal caso $H$ decide también al problema universal.
+        \item Al recibir una entrada $M0w$, $H$ decide si $M$ se
+          detiene o no con entrada $w$.
+          \item Si $M$ no se detiene con $w$ entonces $M$ no acepta a
+            $w$.
+            \item Si $M$ se detiene con $w$ entonces $M$ procesa a $w$
+              y decide si la acepta o no.
+              \item De manera que el problema universal se decide, lo
+                cual es absurdo.
+  \ei
+
+
+
+  %\titulos{Otros problemas indecidibles}{Reducibilidad}
+  \bi
+  \item Detención con cinta en blanco: ?` se detiene la máquina $M$ al
+    iniciar con la cinta en blanco?
+    \item Impresión de un símbolo: Dada $M$ y $s\in\S$ ?`Escribirá $M$
+      en algún momento a $s$ sobre la cinta?
+      \item Dada una gramática libre de contexto $G$  ?`Es $G$
+        ambigua?
+        \item Determinar si dos GLC son equivalentes.
+        \item Cualquier propiedad no trivial acerca de MT (Teorema de Rice) 
+  \ei
+
+
+
+\section{Complejidad}
+\subsection{Introducción}
+
+
+  %\titulos{Complejidad}{Introducción}
+  \bi
+  \item Las MT son el formalismo más útil en el análisis de
+    algoritmos, debido a que modelan de manera precisa los conceptos
+    centrales de cómputo, almacenamiento, espacio y tiempo.
+    \item La noción formal de cómputo permite precisar sin
+      ambigüedades el tiempo de computación de un problema.
+      \item Las celdas de la cinta formalizan de manera clara la
+        noción de espacio de almacenamiento (memoria)
+        \item Así las nociones de tiempo y espacio se
+          modelan de forma muy realista mediante una MT, lo cual
+          permite analizar la complejidad computacional de un problema. 
+  \ei
+
+
+
+
+    %\titulos{Complejidad}{Introducción}
+    \bi
+    \item La teoría de complejidad se interesa por el estudio de la
+      complejidad necesaria para resolver un problema.
+      \item En particular por el consumo de recursos (espacio y
+        tiempo).
+        \item No le conciernen los problemas insolubles.
+          \item Pero tampoco todos los problemas solubles, en la
+            práctica aquellos problemas solubles que no pueden
+            resolverse en un tiempo razonable son tan despreciables
+            como un problema insoluble.
+            \item Los problemas se clasifican en clases de complejidad
+              de acuerdo a que tan dificil es resolverlos.
+     \ei
+
+
+
+  %\titulos{La función de tiempo de ejecución de una MT}{Complejidad}
+  \bi
+  \item[] La función tiempo de ejecucion de una MT $M$ se define como
+    \beqs t_M:\N\imp\N\cup\{\infty\}\eeqs \espc
+   \item[] $t_M(n):=\;$ máximo número de pasos de ejecución de $M$ para una
+           entrada de longitud $n$.
+  
+  \ei
+
+
+
+  %\titulos{Máquinas que corren en tiempo polinomial}{Complejidad}
+  \bi
+  \item Una máquina de Turing $M$ corre en tiempo polinomial si:
+    \item Existe un polinomio con coeficientes enteros no negativos
+      \beqs p(x)=a_nx^n+a_{n-1}x^{n-1}+\ldots +
+      a_1x+a_0\eeqs 
+      \item tal que $t_M(n)\leq p(n)$ para toda $n\in\N$.
+        \item Es decir, si la función de tiempo de ejecución de $M$
+          está acotada superiormente por un polinomio.
+        \item Una máquina que corre en tiempo polinomial siempre se detiene.
+  \ei
+
+
+\subsection{Clases de complejidad}
+
+  %\titulos{{\bf P}}{Clases de complejidad}
+  \bi
+  \item Clase de problemas que pueden ser resueltos eficientemente
+    \item Eficientemente significa que existe un algoritmo que corre
+      en \emph{tiempo polinomial}.
+      \item {\bf P} se conoce también como la clase de problemas
+        \emph{tratables}.
+        \item En contraste, un problema es \emph{intratable} si es
+          soluble pero cualquier solución algorítmica corre en tiempo
+          exponencial en el peor de los casos.
+          \item Un problema intratable es prácticamente insoluble,
+            excepto para entradas muy pequeñas, a no ser que el caso
+            promedio sea mucho mejor que el peor caso.
+  \ei
+
+
+
+
+
+
+  %\titulos{{\bf NP}}{Clases de complejidad}
+  \bi
+  \item Clase de problemas que pueden ser resueltos en tiempo
+    polinomial pero sólo por un algoritmo no determinista.
+    \item Es decir son los problemas solubles por una MT
+      no-determinista en tiempo polinomial.
+      \item Sabemos que las MT no-deterministas equivalen a las MT
+        deterministas.
+        \item Sin embargo no se sabe en general si un problema soluble mediante
+          un algoritmo no-determinista tendrá una solución
+          determinista.
+  \ei
+
+
+
+
+  %\titulos{{\bf P} vs {\bf NP}}{Clases de complejidad}
+  \bi
+  \item Dado un problema $\Pe\in\;${\bf NP} en general no sabemos si
+    existirá una solución determinista.
+    \item Si {\bf P} = {\bf NP} entonces la respuesta es afirmativa.
+      \item Aun no se ha probado ni refutado si {\bf P}={\bf NP}.
+        \item En caso positivo siempre habría un algoritmo determinista
+          para un problema cuya solución no-determinista se conoce.
+          \item Se sospecha que {\bf P}$\neq${\bf NP} y esta es la
+            pregunta más importante en la teoria de la complejidad (la
+            respuesta vale 1 millón de dolares)
+  \ei
+
+\subsection{Problemas {\bf NP}-completos}
+%\titulos{Problemas {\bf NP}-completos}{Complejidad}
+\begin{itemize}
+\item Los problemas {\bf NP}-completos son los más dificiles de la
+  clase {\bf NP}.\espc
+  \item Cualquier problema de la clase {\bf NP} puede reducirse a
+    cualquier problema {\bf NP}-completo.\espc
+    \item Existen muchos problemas {\bf NP}-completos, el más
+      relevante es probablemente el problema {\bf SAT} (Teorema de Cook).
+\end{itemize}  
+
+
+
+
+  %\titulos{Problemas {\bf NP}-completos}{Complejidad}
+\bi
+\item Un problema $\Pe$ es {\bf NP}-completo ($\Pe\in\;${\bf NPC}) si:
+\bi
+\item $\Pe\in\;${\bf NP}.
+    \item $\mathcal{Q}\prec\Pe$ en tiempo polinomial para cualquier problema
+      $\mathcal{Q}\in{\bf NP}$.
+\ei \espc
+\item Todos los problemas en la clase {\bf NPC} son equivalentes, es
+  decir, si $A,B\in\;${\bf NPC} entonces $A\prec B$ y $B\prec A$.\espc
+  \item La segunda condición de la definición se puede intercambiar
+    por: $C\prec \Pe$ para algún problema {\bf NP}-completo $C$.
+\ei
+
+
+
+  %\titulos{El problema de satisfacción {\bf SAT}}{Algunos problemas {\bf NP}-completos}
+\bi
+\item Dada una fórmula de la lógica proposicional en forma normal
+  conjuntiva:
+  \beqs
+  P:= C_1\lor C_2\lor C_3\ldots C_n
+  \eeqs
+\item ?`Existe una asignación de verdad que satisfaga a $P$?\espc
+  \item Teorema de Cook (1971): {\bf SAT} es {\bf NP}-completo.\espc
+  \item Este es el primer problema {\bf NP}-completo.
+\ei
+
+
+
+  %\titulos{Circuito Hamiltoniano {\bf PCH}}{Algunos problemas {\bf NP}-completos}
+\bi
+\item Un circuito hamiltoniano es un cámino que inicia y termina en un
+  mismo vértice de un grafo conexo y que
+  visita a todos los vértices exactamente una vez (el vértice de
+  inicio y fin cuenta solo una vez).\espc
+  
+  \item {\bf PCH}: ?`Dado un grafo conexo $G$, tiene $G$ un circuito hamiltoniano?
+\ei
+
+
+
+  %\titulos{Problema del agente viajero {\bf PAV}}{Algunos problemas {\bf NP}-completos}
+\bi
+\item Se tienen dadas $m$ ciudades, las distancias entre cualesquiera dos de
+  ellas y un entero $N$.\espc
+  
+  \item {\bf PAV}: ?`Existe un recorrido que visite cada ciudad
+    exactamente una vez y cuya longitud sea menor o igual que $N$ ?
+\ei
+
+
+
+  
+
+
+\end{document}

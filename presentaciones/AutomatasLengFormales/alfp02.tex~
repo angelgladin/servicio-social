@@ -1,0 +1,594 @@
+% $Header: /cvsroot/latex-beamer/latex-beamer/solutions/conference-talks/conference-ornate-20min.en.tex,v 1.6 2004/10/07 20:53:08 tantau Exp $
+%\documentclass[xcolor=dvipsnames,handout]{beamer}
+\documentclass[xcolor=dvipsnames]{beamer}
+%\documentclass[handout]{beamer}
+\input{macros2006}
+
+
+
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+
+\newcommand{\espc}{\vspace{.5cm}}
+
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\cv}{\ensuremath{\varepsilon}}
+\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\newtheorem{teorema}{Teorema}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\usepackage{BeamerColor}
+%\usecolortheme[RGB={33,66,33}]{structure}
+\usecolortheme[named=NavyBlue]{structure}
+%\usefonttheme{}
+\setbeamercovered{invisible}
+%\setbeamertemplate{headline}{\insertshortinstitute}
+%\setbeamertemplate{footline}[page number]{\insertshortinstitute}
+%\insertshortinstitute
+}
+
+% \mode<presentation>
+% {
+%   \usetheme[hideallsubsections]{Berkeley}
+% %\usecolortheme{sidebartab}
+% \usecolortheme{dolphin}
+% \useoutertheme{sidebar}
+%   % or ...
+
+%   \setbeamercovered{transparent}
+%   % or whatever (possibly just delete it)
+
+
+
+% %\setbeamertemplate{headline}{\insertshortinstitute}
+% \setbeamertemplate{footline}[page number]{\insertshortinstitute}
+% %\insertshortinstitute
+% }
+
+\usepackage[spanish]{babel}
+% or whatever
+
+\usepackage[latin1]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+
+\title[AyLF MCIC] % (optional, use only with long paper titles)
+{Autómatas y Lenguajes Formales}
+\subtitle
+{%Maestría en Ciencia e Ingeniería de la Computación UNAM\\
+  Tema 2: Lenguajes regulares y autómatas finitos}
+
+\author[Favio E. Miranda Perea] % (optional, use only with lots of authors)
+{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[FC UNAM] % (optional, but mostly needed)
+{Facultad de Ciencias UNAM\footnote{Con el apoyo del proyecto PAPIME PE102117}
+}
+%  \and
+%  \inst{2}%
+%  Department of Theoretical Philosophy\\
+%  University of Elsewhere}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+\date % (optional, should be abbreviation of conference name)
+{\today}
+% - Either use conference name or its abbreviation.
+% - Not really informative to the audience, more for people (including
+%   yourself) who are reading the slides online
+
+\subject{Theoretical Computer Science}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+% \pgfdeclareimage[height=0.5cm]{LogoTecBueno}{LogoTecBueno.eps}
+\logo{\includegraphics[height=1cm]{fc2.png}}
+
+
+
+\begin{document}
+
+\beamerdefaultoverlayspecification{<+->}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+  
+\section{Lenguajes Regulares}
+
+%\subsection{Lenguajes Regulares}
+\begin{frame}
+  \titulos{Lenguajes Regulares}{Definición}
+Un lenguaje $L\inc\sest$ es regular si es generado a partir de los
+lenguajes básicos $\vacio,\{\cv\},\{a\}$ (donde $a\in\S$)
+mediante las operaciones de unión, concatenación y estrella de
+Kleene.\\ \pause
+Recursivamente:
+\bi
+\item $\vacio$ y $\{\cv\}$ son lenguajes regulares.\espc
+  \item Si $a\in\S$ entonces $\{a\}$ es regular.\espc
+    \item Si $L,M$ son regulares entonces $L\cup M, LM$ y $L^\star$
+      son regulares.\espc
+      \item Son todos.
+\ei
+\end{frame}
+
+
+\begin{frame}
+\titulos{Ejemplos}{Lenguajes regulares}
+\bi
+\item Cualquier lenguaje finito es regular. \espc
+\item En efecto si
+  $L=\{w_1,\ldots,w_n\}\inc\sest$ entonces $L=L_1\cup L_2\cup\ldots\cup
+  L_n$ con $L_i=\{w_i\}$. Cada lenguaje $L_i$ es regular puesto que si
+  $w_i=a_1\ldots a_{k_i}$ con $a_j\in\Sigma$  entonces
+  $L_i=\{a_1\}\{a_2\}\ldots\{a_{k_i}\}$ y cada $\{a_j\}$ es regular por
+  definición.\espc
+  \item En particular cualquier alfabeto $\Sigma$ es un lenguaje
+    regular.
+\ei   
+\end{frame}
+
+\begin{frame}
+\titulos{Ejemplos}{Lenguajes regulares}
+\bi
+\item Sobre el alfabeto $\S=\{a,b\}$ tenemos los siguientes lenguajes
+regulares infinitos:
+\bi
+\item $L_1=\{w\in\sest\;|\;w\;\mbox{empieza con}\;b\}=\{b\}\sest$\espc
+  \item $L_2=\{w\in\sest\;|\;w\;\mbox{contiene exactamente
+      una}\;a\}=\{b\}^\star\{a\}\{b\}^\star$\espc
+      \item $L_3=\{w\in\sest\;|\;w\;\mbox{contiene la
+          subcadena}\;ba\}=\sest\{ba\}\sest$\espc
+        \item $L_4=\{w\in\sest\;|\;w\;\mbox{contiene exactamente
+      dos }\text{bes}\}=\{a\}^\star\{b\}\{a\}^\star\{b\}\{a\}^\star$\espc
+    \item $L_5=\{w\in\sest\;|\;w\;\mbox{contiene un número par 
+      de}\;\text{aes}\}=\{b\}^\star\cup\big(\{b\}^\star\{a\}\{b\}^\star\{a\}\{b\}^\star\big)^\star$
+   
+        
+\ei
+\item No todo lenguaje infinito es regular% , mas adelante veremos que
+  % el lenguaje $L=\{a^nb^n\;|\;n\in\N\}$ no es regular.
+\ei
+\end{frame}
+
+\begin{frame}
+\titulos{Problemas de interés acerca de lenguajes regulares}{}
+
+Dado un lenguaje regular $L\inc\Sigma^\star$ existen diversas problemas de decisión (es decir,
+problemas cuya respuesta es sí o no) acerca de $L$, enunciamos algunos de
+ellos que tienen solución algorítmica.
+
+\be
+\item Problema de vacuidad: ?` Es $L$ el lenguaje vacío ?\espc
+\item Problema de finitud: ?` Es $L$ finito ?\espc
+\item Problema de la pertenencia: Dada $w\in\Sigma^\star$, ?` $w\in L$ ?   \espc
+\item Problema de la equivalencia: Dado $M\inc\Sigma^\star$, ?` $M=L$ ?
+\ee
+\end{frame}
+
+\subsection{Expresiones Regulares}
+\begin{frame}\titulos{Expresiones regulares}{Definición}
+Un mecanismo de suma importancia para denotar lenguajes regulares es por
+medio de las llamadas expresiones regulares, definidas recursivamente como
+sigue:\espc
+\bi
+\item $\vacio$ es una expresión regular.
+\item $\cv$ es una expresión regular.
+\item Si $a\in\S$ entonces $a$ es una expresión regular.
+\item Si $\al,\beta$ son expresiones regulares entonces $\al\beta,\;\al+\beta,\;\al^\star$ son expresiones
+  regulares.
+\item Son todas.
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Significado de una ER}{Expresiones Regulares}
+
+Dada una expresión regular $\al$, su significado es un lenguaje regular,
+denotado $L(\al)$, definido como
+sigue:\espc
+\bi
+\item $L(\vacio)=\vacio$
+\item $L(\cv)=\cv$
+\item $L(a)=\{a\}\;\;\;\mbox{ si }\al\in\S$
+\item $L(\al\beta)=L(\al)L(\beta)$
+\item $L(\al+\beta)=L(\al)\cup L(\beta)$
+\item $L(\al^\star)=L(\al)^\star$
+\ei
+
+\end{frame}
+
+\begin{frame}
+  \titulos{Lenguajes y Expresiones Regulares}{}
+Se cumple la siguiente relación entre lenguajes y expresiones regulares:
+
+\begin{proposition}
+Un lenguaje $M\inc\sest$ es regular si y sólo si existe una expresión regular
+$\al$ tal que $M=L(\al)$.
+\end{proposition}
+\begin{proof}
+La dirección $\Leftarrow$ es directa. Para la otra dirección hacemos inducción estructural.
+\end{proof}
+\end{frame}
+
+
+\begin{frame}
+\titulos{Equivalencia de Expresiones regulares}{}
+\defin{Dadas dos expresiones regulares $\al,\beta$, decimos que son
+  equivalentes y escribimos $\al=\beta$, si y sólo si $\al$ y $\beta$ tienen el mismo significado,
+  es decir, si y sólo si $L(\al)=L(\beta)$.
+  }
+\end{frame}
+
+\subsection{Propiedades}
+\begin{frame}
+  \titulos{Propiedades}{Expresiones Regulares}
+\beqs
+\al+(\beta+\ga)=(\al+\beta)+\ga\;\;\;\;\;\;\;\;\al+\beta=\beta+\al
+\eeqs\pause
+\beqs
+\al+\vacio=\al\;\;\;\;\;\;\;\;\al+\al=\al
+\eeqs\pause
+\beqs
+\al\cv=\al\;\;\;\;\;\;\;\al\vacio=\vacio
+\eeqs\pause
+\beqs
+\al(\beta\ga)=(\al\beta)\ga
+\eeqs
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Propiedades}{Expresiones Regulares}
+\beqs
+\al(\beta+\ga)=\al\beta+\al\ga\;\;\;\;\;\;(\beta+\ga)\al=\beta\al+\ga\al
+\eeqs
+\pause
+\beqs
+\cv^\star=\cv\;\;\;\;\;\;\vacio^\star=\cv
+\eeqs
+\pause
+\beqs
+\al\al^\star=\al^\star\al\;\;\;\;\;\;\al^\star=\al^\star\al^\star=(\al^\star)^\star
+\eeqs
+\pause
+\beqs
+\al^\star=\cv+\al\al^\star\;\;\;\;\;\;(\al+\beta)^\star=(\al^\star+\beta^\star)^\star
+\eeqs
+\pause
+\bc
+Si $L(\al)\inc L(\beta)$ entonces $\al+\beta=\beta$
+\ec  
+\end{frame}
+
+
+
+
+
+\subsection{Propiedades de Cerradura}
+\begin{frame}
+  \titulos{Propiedades de cerradura}{Lenguajes regulares}
+Las propiedades de cerradura nos permiten construir nuevos lenguajes
+regulares a partir de lenguajes ya conocidos por medio de algunas operaciones
+entre lenguajes.\\ \pause
+Si $L,M$ son lenguajes regulares entonces:
+\bi
+\item $L\cup M$ es regular.
+\item $LM$ es regular.
+\item $L^\star$ es regular.
+\item $L^+$ es regular.
+\item $\overline{L}$ es regular
+\item $L\cap M$ es regular.
+\item $L-M$ es regular.
+\ei
+
+\end{frame}
+
+
+\begin{frame}
+\titulos{Aplicaciones de las expresiones regulares}{}
+
+\bi
+\item Búsqueda y sustitución en editores de texto (vi, emacs, etc.)\espc
+\item Caza de patrones (pattern matching) y procesamiento de textos y
+  conjuntos de datos, por ejemplo en minería de datos (grep, sed, awk, perl, etc.)
+\item Implementación de lenguajes de programación (fase de análisis léxico):
+conversión del programa fuente en una sucesión de elementos léxicos (lexemas o
+tokens), en esta sucesión se identifican las distintas componentes de un
+programa, como son palabras reservadas, identificadores, tipos de datos, etc.
+(lex, flex, etc.)
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{?`Cuando no es $L$ regular?}{Lenguajes Regulares}
+  No todos los lenguajes son regulares, por ejemplo:
+  \beqs
+  L=\{a^nb^n\;|\;n\geq 1\}
+  \eeqs
+  no es definible mediante una expresión regular.\pause
+  \bi
+  \item ?`Cómo decidir cuando un lenguaje no es regular?\espc
+    \item Mediante propiedades de cerradura.\espc
+      \item Mediante el lema del bombeo (pendiente).
+  \ei
+\end{frame}
+
+
+
+
+
+
+\section{Autómatas Finitos}
+
+\begin{frame}
+  \titulos{Autómatas}{Introducción}
+\bi
+\item Un autómata es una representación abstracta de una máquina.\espc
+\item Los aspectos relevantes para nosotros son  diseño y especificación de
+  autómatas. \espc
+\item La abstracción captura únicamente el comportamiento de una máquina, es
+  decir, las secuencias de eventos que ocurren.
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Autómatas}{Aplicaciones}
+\bi
+      \item Diseño de circuitos digitales.\espc
+        \item Analizadores léxicos para compiladores.\espc
+          \item Búsqueda de palabras clave en internet.\espc
+            \item Verificación de sistemas de estados finitos.
+              (por ejemplo protocolos de comunicación).\espc
+\item Modelado de sistemas discretos en general.\espc
+      \ei
+\end{frame}
+\subsection{Tipos de Autómatas}
+\begin{frame}
+  \titulos{Tipos de Autómatas}{}
+  \bi
+  \item Autómatas finitos: deterministas, no deterministas.\espc
+    \item Autómatas de Pila.\espc
+      \item Autómatas Linealmente Acotados.\espc
+        \item Máquinas de Turing.\espc
+          \item Otros: probabilísticos, celulares, paralelos,etc.
+  \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Tipos de Autómatas}{?`Cómo se diferencian?}
+  \bi
+  \item Detalles particulares del modelo.\espc
+    \item Complejidad.\espc
+          \item Funciones que pueden calcular.\espc
+          \item Lenguajes que pueden reconocer o aceptar.
+  \ei
+\end{frame}
+\subsection{Modelo General}
+\begin{frame}\titulos{Modelo General}{Autómatas}
+  Un autómata finito es una máquina abstracta que procesa cadenas
+  aceptándolas o rechazándolas.
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.5]{cap2g1.png}
+\end{figure}
+  \end{frame}
+
+\begin{frame}
+  \titulos{Lectura y unidad de control}{Autómatas}
+ Las cadenas de entrada se escriben sobre una cinta potencialmente
+ infinita hacia la izquierda dividida en casillas y posee una unidad de control o
+ \alert{cabeza lectora} que lee desde la primera casilla y puede cambiar el
+ estado interno de la máquina dependiendo del símbolo leido.
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.6]{cap2g2.png}
+\end{figure}
+  \end{frame}
+
+\subsection{Autómatas Deterministas}
+  \begin{frame}
+    \titulos{Autómatas Finitos Deterministas}{Definición}
+    Un autómata finito determinista (AFD) es una quintupla
+    \beqs
+    M=\pt{Q,\S,\de,q_0,F}
+    \eeqs\pause
+    donde\espc
+    \bi
+    \item $Q$ es un conjunto finito de estados.
+      \item $\S$ es el alfabeto de entrada.
+        \item $\de:Q\times\S\imp Q$ es la función de transición.
+          \item $q_0\in Q$ es el estado inicial.
+            \item $F\inc Q$ es el conjunto de estados finales.
+    \ei
+  \end{frame}
+
+
+  \begin{frame}\titulos{Autómatas Finitos Deterministas}{Ejemplo}
+    $\Sigma=\{a, b\}$
+
+$Q=\{q_{0}, q_{1}, q_{2}\}$
+
+$q_{0}:$ estado inicial
+
+$F=\{q_{0}, q_{2}\}$, estados de aceptaci\'{o}n.
+
+Funci\'{o}n de transici\'{o}n $\delta$:%
+
+\[
+\renewcommand{\arraystretch}{1.3}
+\begin{array}
+[c]{|c|c|c|}\hline \delta &  a & b\\\hline q_{0} & q_{0} & q_{1}\\\hline q_{1} & q_{1} & q_{2}\\\hline q_{2} & q_{1} &
+q_{1}\\\hline
+\end{array}
+\qquad\qquad%
+\begin{array}
+[c]{cc}%
+\qquad\delta(q_{0}, a)=q_{0} & \qquad\delta(q_{0}, b)=q_{1}\\
+\qquad\delta(q_{1}, a)=q_{1} & \qquad\delta(q_{1}, b)=q_{2}\\
+\qquad\delta(q_{2}, a)=q_{1} & \qquad\delta(q_{2}, b)=q_{1}%
+\end{array}
+\]
+  \end{frame}
+
+  \begin{frame}\titulos{Determinismo}{Autómatas finitos}
+    Los aut\'omatas finitos descritos arriba se denominan
+\textbf{aut\'omatas finitos deterministas} ya que para cada estado $q$ y para cada s\'{\i}mbolo $a\in\Sigma$, la
+funci\'on de transici\'on $\delta(q,a)$ siempre est\'a definida. Es decir, la funci\'on de transici\'on $\delta$
+\emph{determina un\'{i}vocamente} la acci\'on que el aut\'omata realiza cuando el control finito se encuentra en un
+estado $q$ leyendo un s\'{i}mbolo $a$ sobre la cinta:
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.6]{cap2g6.png}
+\end{figure}
+\end{frame}
+\begin{frame}\titulos{Lenguaje de aceptación}{Autómatas Finitos
+  }
+Dado un aut\'{o}mata $M$, el \alert{lenguaje aceptado o reconocido} por $M$ se denota $L(M)$ y se define por
+\[
+\boxed{\begin{array}{lcl}
+L(M)&:=& \{u\in\Sigma^*: M\ \text{se detiene al procesar }\\
+&& \phantom{algoooooo} \text{$u$ en un estado $q\in F$}\}.
+\end{array}}%
+\]
+  \end{frame}
+\subsection{Diagramas de Estados}
+  \begin{frame}
+    \titulos{Diagrama de estados}{Autómatas finitos}
+    Un autómata finito se puede representar por medio de un grafo dirigido y etiquetado. %Recuérdese que un \textbf{grafo}
+%es un conjunto de vértices o nodos unidos por aristas o conectores; si las aristas tienen tanto direcci\'on como
+%etiquetas, el grafo se denomina \textbf{grafo dirigido y etiquetado} o \textbf{digrafo etiquetado}.
+\pause
+\smallskip
+El grafo de un autómata se obtiene como sigue:
+
+\bi
+\item Los vértices o nodos son los estados del autómata.
+
+\item El estado $q$ se representa por:
+\begin{figure}[!htb]
+  \includegraphics[scale=0.6]{cap2g7.png}
+\end{figure}
+\item El estado inicial $q_0$ se representa por:
+\begin{figure}[!htb]
+  \includegraphics[scale=0.6]{cap2g8.png}
+\end{figure}
+\ei
+\end{frame}
+
+\begin{frame}
+    \titulos{Diagrama de estados}{Autómatas finitos}
+
+    \bi
+\item Un estado final $q$ se representa por:
+\begin{figure}
+  \includegraphics[scale=0.6]{cap2g9.png}
+\end{figure}
+\item La transición $\delta=(q,a)= p$ se representa en la forma:
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.6]{cap2gg10.png}
+\end{figure}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}\titulos{Diagrama de estados}{Ejemplo}
+  $\Sigma=\{a, b\}$
+
+$Q=\{q_0, q_1, q_2\}$
+
+$q_0:$ estado inicial
+
+$F=\{q_0, q_2\}$, estados de aceptación.
+
+Función de transición $\delta$:
+\vspace{-0.5cm}\[
+\renewcommand{\arraystretch}{1.3}
+\begin{array}{|c|c|c|}\hline
+\delta & a & b \\
+\hline
+q_0 & q_0 & q_1\\
+\hline
+q_1 & q_1 & q_2\\
+\hline
+q_2 & q_1 & q_1\\
+\hline
+\end{array}
+\qquad\qquad
+%\begin{figure}[!htb]
+%\centering
+\includegraphics[scale=0.6]{cap2gg11.png}
+%\end{figure}
+                                %\begin{array}{cc}
+%\qquad\delta(q_0, a)=q_0 &\qquad \delta(q_0, b)=q_1\\
+%\qquad\delta(q_1, a)=q_1 & \qquad \delta(q_1, b)=q_2\\
+%\qquad\delta(q_2, a)=q_1  & \qquad \delta(q_2, b)=q_1
+%\end{array}
+\]
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Estado de error}{Diagrama de estados}
+Para aut\'omatas deterministas se adopta la siguiente convenci\'on
+adicional con respecto a los diagramas de estados:\espc\pause
+\bi
+\item Se asume que las aristas no dibujadas
+  ex\-pl\'{\i}\-ci\-ta\-men\-te conducen a un estado de
+  no-aceptaci\'on llamado estado de error.\espc
+  \item Es decir, en el diagrama de estados se indican \'unicamente las aristas que conduzcan a trayectorias de aceptaci\'on. Esto
+permite simplificar considerablemente los diagramas.
+\ei
+\end{frame}
+\subsection{Problemas Importantes}
+\begin{frame}\titulos{Problemas de interés}{Autómatas finitos}
+Los problemas que nos interesa resolver son:\espc\pause
+
+\bi
+\item Dado un autómata $M$ determinar el lenguaje aceptado por $M$.\espc
+\item Dado un lenguaje regular $L$ dise\~nar un aut\'omata finito
+  determinista $M$ que acepte o reconozca a $L$, es decir, tal que $L(M)=L$.\espc
+\item M\'as adelante se demostrar\'a que estos problemas
+  \alert{siempre} tienen soluci\'on.
+  \ei
+\end{frame}
+
+
+\end{document}
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fcem7"
+%%% End: 

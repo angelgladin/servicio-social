@@ -1,0 +1,1021 @@
+%\documentclass[xcolor=dvipsnames,table]{beamer}
+\documentclass[xcolor=dvipsnames,table,handout,10pt,mathserif]{beamer}
+
+\usepackage{times}
+\usepackage{mathptmx}
+\usepackage[scaled=0.9]{helvet}
+\usepackage{courier}
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage[ruled,vlined,lined]{algorithm2e}
+\usepackage{textcomp}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{txfonts}
+\usepackage{verbatim}
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{bbding}
+\usepackage{color}
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+
+\uselanguage{spanish}
+\languagepath{spanish}
+\deftranslation[to=spanish]{Definition}{Definici\'on}
+\deftranslation[to=spanish]{definition}{definici\'on}
+\deftranslation[to=spanish]{Theorem}{Teorema}
+\deftranslation[to=spanish]{theorem}{teorema}
+\deftranslation[to=spanish]{Proof}{Demostraci\'on}
+\deftranslation[to=spanish]{proof}{demostraci\'on}
+\deftranslation[to=spanish]{Example}{Ejemplo}
+\deftranslation[to=spanish]{example}{ejemplo}
+\deftranslation[to=spanish]{Problem}{Problema}
+\deftranslation[to=spanish]{problem}{problema}
+
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+\useoutertheme{infolines}
+\usecolortheme[RGB={0,0,128}]{structure}
+\setbeamercovered{invisible}
+}
+
+\title[Expresiones Regulares]{Autómatas: casando cadenas con expresiones regulares}
+
+\subtitle{Universidad Autónoma de la Ciudad de México}
+\author[Liliana Reyes, Rafael Reyes]{Liliana Reyes \inst{1} \and Rafael Reyes \inst{2}}
+\institute[UACM--FC-UNAM]{\inst{1} Universidad Autónoma de la Ciudad de México \and \inst{2} Facultad de Ciencias UNAM}
+\date{14 de noviembre de 2013}
+
+\titlegraphic{\includegraphics[width=3cm]{Img/UACM.jpg}\hspace*{4.75cm}~
+   \includegraphics[width=2cm]{Img/Ciencias.pdf}
+}
+
+\beamerdefaultoverlayspecification{<+->}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\titulos{Derivadas de Lenguajes Regulares}{Introducción}
+\begin{itemize}
+\item \textquestiondown Alguna vez has visto algo como esto?
+
+[a-zA-Z0-9\_-] @[a-zA-Z0-9\_-]$\backslash .$[a-zA-Z]($\backslash .$[a-zA-Z])
+
+\[
+/ \ast \lnot (\Sigma^{\ast} \ast / \Sigma^{\ast}) \ast /
+\]
+\item La derivada de un conjunto de cadenas $S$ respecto a un símbolo $a$ es el conjunto generado por la eliminación del símbolo precedente $a$ de las cadenas $S$
+%\item En 1964 Janusz Brzozowski presenta este método para la construcción de un analizador léxico basado en derivadas de expresiones regulares
+\item Las derivadas de un lenguaje se utilizan principalmente para poder determinar si una palabra pertenece o no a un lenguaje
+\item Proporciona una útil herramienta para los analizadores léxicos
+\item Un método diferente y sencillo para la conversión de una expresión regular a un \textit{autómata finito}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\titulos{Alfabeto}{Preliminares}
+\begin{definition}
+Un \textit{alfabeto} $\Sigma$ es un conjunto finito y ordenado de símbolos a partir del cual se construyen palabras
+\end{definition}
+\begin{example}
+\[
+\Sigma = \{a ,b, c, d\} \qquad \text{palabra } \quad aabbbccccddddd
+\]
+\end{example}
+\begin{example}
+\[
+\Sigma = \{ 0, 1 \} \qquad \text{palabra } \quad 10101010101
+\]
+\end{example}
+\begin{example}
+\[
+\Sigma = \{ a, e, i, o, u \} \qquad \text{palabra } \quad auiaue
+\]
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Lenguaje formal}{Preliminares}
+\begin{definition}
+Un \textit{lenguaje formal}, es el conjunto de palabras $u,v,w$ de longitud finita formadas a partir de un alfabeto finito $\Sigma$
+\end{definition}
+\begin{example}
+El lenguaje de todas la palabras sobre el alfabeto $\Sigma = \{0, 1 \}$ tales que las palabras sólo constan de ceros y un uno al final.
+\[
+\{ 01, 001, 0001, 00001, 000001, 0000001, \dots \}
+\]
+\end{example}
+\begin{example}
+El conjunto de palabras sobre el alfabeto $\Sigma = \{ a \}$ tales que, las palabras tienen longitud par
+\[
+\{ \varepsilon, aa, aaaa, aaaaaa, aaaaaaaa, aaaaaaaaaa, \dots \}
+\]
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Autómata}{Preliminares}
+\begin{definition}
+Un autómata finito es un modelo matemático de una máquina que acepta cadenas de un lenguaje definido sobre un alfabeto $\Sigma$.
+
+\vspace*{3mm}
+Formalmente un autómata finito se define como una 5--tupla de la forma
+\[
+FA = (Q, \Sigma, \delta, q_0, F)
+\]
+donde\\
+\begin{itemize}
+\item $Q$: conjunto finito de estados
+\item $\Sigma$: alfabeto o conjunto finito de símbolos de entrada
+\item $\delta$: función de transición de estados, que se define como:
+\[
+\delta \colon Q \times \Sigma \to Q
+\]
+\item $q_0$: estado inicial; $q_0 \in Q$
+\item $F$: conjunto de estados finales o estados de aceptación; $F \subseteq Q$
+\end{itemize}
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\titulos{Autómata}{Preliminares}
+\begin{example}
+Este autómata reconoce cadenas de $a$'s y $b$'s, tales que el número de $b$'s es múltiplo de tres.\\
+Donde: $FA = (Q,\Sigma, \delta, q_0, F)$.
+\end{example}
+
+\begin{figure}[h]
+\begin{minipage}{0.3 \textwidth}
+$Q = \{ q_0, q_1, q_2 \}$\\
+$\Sigma = \{ a , b \}$\\
+Estado inicial $q_0$\\
+Estado final $q_0$\\
+$\delta(q_0, a) = q_0$\\
+$\delta(q_0, b) = q_1$\\
+$\delta(q_1, a) = q_1$\\
+$\delta(q_1, b) = q_2$\\
+$\delta(q_2, a) = q_2$\\
+$\delta(q_2, b) = q_0$\\
+\end{minipage}
+\  \
+\hfill \begin{minipage}{0.65 \textwidth}
+\begin{center}
+\includegraphics[width=1\textwidth]{Img/EjemploDFA.pdf}
+\end{center}
+\end{minipage}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\titulos{Lenguaje Regular}{Preliminares}
+\begin{definition}
+Un lenguaje $\mathcal{L}$ es regular si y sólo si, existe un autómata finito que lo acepta.
+\end{definition}
+\begin{example}
+\[
+\mathcal{L} = \{a^i b^j \; | \; i \ge 0, \; j \ge 0 \}
+\]
+Esto es suponiendo que el alfabeto es $\Sigma = \{ a, b \}$
+\end{example}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.57\textwidth]{Img/Automata.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\titulos{Expresiones Regulares}{Preliminares}
+\begin{definition}
+Dado un alfabeto $\Sigma$, las \textit{expresiones regulares} sobre $\Sigma$ están formadas por las siguientes reglas recursivas:
+\begin{itemize}
+\item $\varnothing$
+\item $\varepsilon$
+\item $a$, $a \in \Sigma$
+\end{itemize}
+Si $r$ y $s$ son expresiones regulares,
+\begin{itemize}
+\item $r + s$
+\item $r \cdot s$
+\item $r^{\ast}$
+\end{itemize}
+Éstas y sólo estas son expresiones regulares
+\end{definition}
+\begin{example}
+\[
+((a + b)^{\ast} c (a + b)^{\ast} c)^{\ast} (a + b)^{\ast}
+\]
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Expresiones regulares}{Lenguaje asociado}
+\begin{definition}
+El \textit{lenguaje asociado a una expresión regular} $r$, es el conjunto de cadenas $\mathcal{L} \llbracket r \rrbracket \subseteq \Sigma^{\ast}$ generado por las siguientes reglas
+\begin{align*}
+\mathcal{L} \llbracket \varnothing \rrbracket &= \varnothing\\
+\mathcal{L} \llbracket \varepsilon \rrbracket &= \{ \varepsilon \}\\
+\mathcal{L} \llbracket a \rrbracket &= \{ a\}\\
+\mathcal{L} \llbracket r \cdot s \rrbracket &= \{ u \cdot v | u \in \mathcal{L} \llbracket r \rrbracket \textrm{ y } v \in L \llbracket s \rrbracket \}\\
+\mathcal{L} \llbracket r + s \rrbracket &= \mathcal{L} \llbracket r \rrbracket \cup \mathcal{L} \llbracket s \rrbracket\\
+\mathcal{L} \llbracket r^{\ast} \rrbracket &= \{ \varepsilon \} \cup \mathcal{L} \llbracket r \cdot r^{\ast} \rrbracket\\
+\end{align*}
+\end{definition}
+\begin{theorem}
+$\mathcal{L}$ es regular si y sólo si existe $r$ expresión regular tal que $\mathcal{L} = \mathcal{L} \llbracket r \rrbracket$
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Preliminares}
+\begin{definition}
+La \textit{derivada de un lenguaje} $\mathcal{L} \subseteq \Sigma^{\ast}$ con respecto a una cadena $u \in \Sigma^{\ast}$ se define como
+\[
+\partial_u \mathcal{L} = \{ v | u \cdot v \in \mathcal{L} \}
+\]
+\end{definition}
+\begin{example}
+\[
+\mathcal{L} = \{ ab, abb, abbb, abbbb, abbbbb, abbbbbb, \dots \} = \mathcal{L} \llbracket (ab) \cdot b^{\ast} \rrbracket
+\]
+\[
+\partial_{ab} \mathcal{L} = \{ \varepsilon, b, bb, bbb, bbbb, bbbbb, \dots \} = \mathcal{L} \llbracket b^{\ast} \rrbracket
+\]
+\end{example}
+\begin{theorem}
+Si $\mathcal{L} \subseteq \Sigma^{\ast}$ es regular, entonces $\partial_u \mathcal{L}$ también es regular.
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Problema}
+\begin{problem}
+Dada una expresión regular $r$ y una cadena $u \in \Sigma^{\ast}$, determinar si $u \in L \llbracket r \rrbracket$.
+\end{problem}
+
+Resolver el problema es equivalente a resolver:
+\[
+u \in L \llbracket r \rrbracket \Leftrightarrow \varepsilon \in L \llbracket \partial_u r \rrbracket
+\]
+Lo cual sucede si y sólo si
+\[
+\nu(\partial_u r) = \varepsilon
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{}
+Decimos que una expresión regular $r$ es anulable, si el lenguaje definido contiene a la cadena vacía, esto es si $\varepsilon \in \mathcal{L} \llbracket r \rrbracket$ la función $\nu : RE \to RE$ tiene la siguiente propiedad:
+\[
+\nu(r) = \left\{
+\begin{array}{ll}
+\varepsilon & \text{Si } r \text{ es anulable}\\
+\varnothing & \text{otro caso}
+\end{array}
+\right.
+\]
+Y está definida como sigue
+\begin{align*}
+\nu(\varepsilon) &= \varepsilon\\
+\nu(\varnothing) &= \varnothing\\
+\nu(a) &= \varnothing\\
+\nu(r \cdot s) &= \nu(r) \cap \nu(s)\\
+\nu(r + s) &= \nu(r) + \nu(s)\\
+\nu(r^{\ast}) &= \varepsilon\\
+\end{align*}
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Problema}
+Usando lo anterior y la definición de $\partial_u$, generamos un algoritmo que verifique si $u \in L \llbracket r \rrbracket$. 
+\begin{definition}
+Expresandolo en términos de la relación $r \sim u$ ($u$ caza con $r$).
+\begin{gather*}
+r \sim \varepsilon \Leftrightarrow \nu(r) = \varepsilon\\
+r \sim a \cdot \omega \Leftrightarrow \partial_a r \sim \omega
+\end{gather*}
+\end{definition}
+\begin{theorem}
+\[
+r \sim u \Leftrightarrow u \in L \llbracket r \rrbracket
+\]
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Expresiones regulares}
+Reglas de Brzozowski para expresiones regulares con respecto a un símbolo $a \in \Sigma^{\ast}$.
+\begin{align*}
+\partial_a \varepsilon &= \varnothing\\
+\partial_a a &= \varepsilon\\
+\partial_a b &= \varnothing \; \text{si } b \ne a\\
+\partial_a \varnothing &= \varnothing\\
+\partial_a (r \cdot s) &= (\partial_a r) \cdot s + \nu(r) \cdot \partial_a s\\
+\partial_a (r + s) &= \partial_a r + \partial_a s\\
+\partial_a (r^{\ast}) &= \partial_a r \cdot r^{\ast}
+\end{align*}
+La reglas se puede extender a cadenas como:
+\begin{gather*}
+\partial_{\varepsilon} r = r\\
+\partial_{u \cdot a} r = \partial_a ( \partial_u r)
+\end{gather*}
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\phantom{\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb} & &\phantom{\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba}\\
+\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba}\\
+\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba}\\
+\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow b^{\ast} \sim bb} & &\phantom{\Leftrightarrow b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim b} & &\phantom{\Leftrightarrow \partial_b b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+%%%%%%%%%
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba}\\
+\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba}\\
+\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow b^{\ast} \sim bb} & &\phantom{\Leftrightarrow b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim b} & &\phantom{\Leftrightarrow \partial_b b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba}\\
+\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow b^{\ast} \sim bb} & &\phantom{\Leftrightarrow b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim b} & &\phantom{\Leftrightarrow \partial_b b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow b^{\ast} \sim bb} & &\phantom{\Leftrightarrow b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim b} & &\phantom{\Leftrightarrow \partial_b b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow b^{\ast} \sim bb} & &\phantom{\Leftrightarrow b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim b} & &\phantom{\Leftrightarrow \partial_b b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\phantom{\Leftrightarrow b^{\ast} \sim bb} & &\phantom{\Leftrightarrow b^{\ast} \sim ba}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim b} & &\phantom{\Leftrightarrow \partial_b b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim b} & &\phantom{\Leftrightarrow \partial_b b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\Leftrightarrow \partial_b b^{\ast} \sim b & &\Leftrightarrow \partial_b b^{\ast} \sim a\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\Leftrightarrow \partial_b b^{\ast} \sim b & &\Leftrightarrow \partial_b b^{\ast} \sim a\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b & &\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\Leftrightarrow \partial_b b^{\ast} \sim b & &\Leftrightarrow \partial_b b^{\ast} \sim a\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b & &\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a\\
+\phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\Leftrightarrow \partial_b b^{\ast} \sim b & &\Leftrightarrow \partial_b b^{\ast} \sim a\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b & &\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a\\
+\Leftrightarrow b^{\ast} \sim b & &\Leftrightarrow b^{\ast} \sim a\\
+\phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\Leftrightarrow \partial_b b^{\ast} \sim b & &\Leftrightarrow \partial_b b^{\ast} \sim a\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b & &\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a\\
+\Leftrightarrow b^{\ast} \sim b & &\Leftrightarrow b^{\ast} \sim a\\
+\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon & &\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon\\
+\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\Leftrightarrow \partial_b b^{\ast} \sim b & &\Leftrightarrow \partial_b b^{\ast} \sim a\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b & &\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a\\
+\Leftrightarrow b^{\ast} \sim b & &\Leftrightarrow b^{\ast} \sim a\\
+\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon & &\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon & &\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon\\
+\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\Leftrightarrow \partial_b b^{\ast} \sim b & &\Leftrightarrow \partial_b b^{\ast} \sim a\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b & &\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a\\
+\Leftrightarrow b^{\ast} \sim b & &\Leftrightarrow b^{\ast} \sim a\\
+\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon & &\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon & &\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon & &\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon\\
+\phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\Leftrightarrow \partial_b b^{\ast} \sim b & &\Leftrightarrow \partial_b b^{\ast} \sim a\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b & &\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a\\
+\Leftrightarrow b^{\ast} \sim b & &\Leftrightarrow b^{\ast} \sim a\\
+\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon & &\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon & &\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon & &\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon\\
+\Leftrightarrow b^{\ast} \sim \varepsilon & &\Leftrightarrow \varnothing \sim \varepsilon\\
+\phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Derivadas}{Ejemplos}
+\[
+\begin{array}{|l|cl|}
+\hline
+\multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+\hline
+a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb & &\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba\\
+\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb & &\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba\\
+\Leftrightarrow b^{\ast} \sim bb & &\Leftrightarrow b^{\ast} \sim ba\\
+\Leftrightarrow \partial_b b^{\ast} \sim b & &\Leftrightarrow \partial_b b^{\ast} \sim a\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b & &\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b & &\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a\\
+\Leftrightarrow b^{\ast} \sim b & &\Leftrightarrow b^{\ast} \sim a\\
+\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon & &\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon\\
+\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon & &\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon\\
+\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon & &\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon\\
+\Leftrightarrow b^{\ast} \sim \varepsilon & &\Leftrightarrow \varnothing \sim \varepsilon\\
+\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}& &\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}\\
+\hline
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\Sigma= \{a,b,c\}$
+\begin{enumerate}
+\item $q_0 = \partial_{\varepsilon} (a \cdot b + a \cdot c) = a \cdot b + a \cdot c$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-1.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{1}
+\item $\partial_a q_0 = \partial_a (a \cdot b + a \cdot c) = b + c$, el cual es un estado nuevo, lo llamamos $q_1$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-2.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item $\partial_a q_1 = \partial_a (b + c) = \varnothing$, el cual es un nuevo estado y lo llamaremos $q_2$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-3.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item $\partial_a q_2 = \partial_a (\varnothing) = \varnothing = q_2$, pues el estado ya existe
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-4.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item $\partial_b q_2 = \partial_b (\varnothing) = \varnothing = q_2$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-5.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{5}
+\item $\partial_c q_2 = \partial_c (\varnothing) = \varnothing = q_2$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-6.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{6}
+\item $\partial_b q_1 = \partial_b (b + c) = (\varepsilon + \varnothing) \equiv \varepsilon$, es un nuevo estado llamado $q_3$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-7.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{7}
+\item $\partial_a q_3 = \partial_a (\varepsilon) = \varnothing = q_2$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-8.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{8}
+\item $\partial_b q_3 = \partial_b (\varepsilon) = \varnothing = q_2$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-9.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{9}
+\item $\partial_c q_3 = \partial_c (\varepsilon) = \varnothing = q_2$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-10.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{10}
+\item $\partial_c q_1 = \partial_c (b + c) = (\varnothing + \varepsilon) \equiv \varepsilon = q_3$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-11.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{11}
+\item $\partial_b q_0 = \partial_b (a \cdot b + a \cdot c) = \varnothing = q_2$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-12.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\begin{enumerate}
+\setcounter{enumi}{12}
+\item $\partial_c q_0 = \partial_c (a \cdot b + a \cdot c) = \varnothing = q_2$
+\end{enumerate}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA-13.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{Construcción de DFA}
+\begin{example}
+Consideremos la expresión regular $r = a \cdot b + a \cdot c$ sobre el alfabeto $\{a,b,c\}$
+\\
+Los estados finales son todos aquellos estados que sean anulables, en este caso únicamente es anulable $\nu(q_3) = \varepsilon$
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{Img/DFA.pdf}
+\end{figure}
+\end{example}
+\end{frame}
+
+\begin{frame}
+\titulos{Algoritmo}{}
+\textbf{fun} goto $q \;(c,(Q,\delta))=$\\
+$\qquad \textbf{let  } q_c = \partial_c q$\\
+$\qquad \textbf{in}$\\
+$\qquad \quad \textbf{if } \exists q' \in Q$ tal que $q' \equiv q_c$\\
+$\qquad \qquad \textbf{then } (Q, \delta \cup \{(q,c) \to q'\})$\\
+$\qquad \quad \textbf{else }$\\
+$\qquad \qquad \textbf{let } Q' = Q \cup \{q_c\}$\\
+$\qquad \qquad \textbf{let } \delta' = \delta \cup \{(q,c) \to q_c\}$\\
+$\qquad \qquad \textbf{in } \text{explora }(Q',\delta',q_c)$\\
+$\phantom{a}$\\
+\textbf{and } explora $(Q,\delta,q) = \text{fold }(\text{goto } q) \; (Q,\delta) \;\; \Sigma$\\
+$\phantom{a}$\\
+\textbf{fun} mkDFA $r =$\\
+$\qquad \textbf{let  } q_0 = \partial_{\varepsilon}r$\\
+$\qquad \textbf{let  } (Q,\delta) = \text{explora } (\{q_0\}, \{ \}, q_0)$\\
+$\qquad \textbf{let  } F = \{ q | q \in Q \text{ y } \nu(q) = \varepsilon \}$\\
+$\qquad \textbf{in  } (Q,\Sigma, q_0,F,\delta)$\\
+\end{frame}
+
+\begin{frame}
+\titulos{Conclusiones}{}
+\begin{itemize}
+\item Determinamos si una palabra $u$ pertenece o no a un lenguaje $\mathcal{L}$
+\item El método genera un autómata finito sin transiciones epsilon
+\item El autómata finito generado es un autómata determinista
+\item Se puede generalizar a expresiones regulares extendidas, que son los operadores lógicos
+\end{itemize}
+Desventajas
+\begin{itemize}
+\item Dificultad al comparar las expresiones regulares
+\item Gran tiempo de procesamiento
+\end{itemize}
+\end{frame}
+
+\end{document}

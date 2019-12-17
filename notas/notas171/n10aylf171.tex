@@ -1,0 +1,711 @@
+
+
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+
+\usepackage[section]{placeins}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2017-1 \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 10,  Gramáticas libres de contexto} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+La normalizaci\'on de gram\'aticas  consiste en transformar todas las 
+producciones de una gram\'atica de manera que tengan cierta forma sint\'actica 
+en particular.
+As\'i la normalizaci\'on de gram\'aticas libres de contexto es \'util para    
+homogeneizar la forma de las producciones adem\'as para optimizar los
+procesos de derivaci\'on de cadenas.
+Con las \textbf{formas normales} se facilita una soluci\'on al problema de 
+la pertenencia, es decir decidir si una cadena pertenece o no a un lenguaje:
+\bi
+ \item[] \begin{center} Dada una gram\'atica~$G$ y una palabra $w$, 
+  ?`se cumple que $w\in L(G)$ ? \\Es decir, pertenece $w$ al lenguaje generado 
+  por~$G$.\end{center}
+ \item Si la palabra $w$ es generada por $G$, el proceso para la 
+construcci\'on 
+  de un \'arbol de derivaci\'on terminar\'a eventualmente.
+ \item En caso contrario \textbf{no} podemos saber cu\'ando parar en la 
+  construcci\'on  de un \'arbol de derivaci\'on.
+\ei
+
+\section{Normalizaci\'on de Gram\'aticas}
+
+Para obtener gram\'aticas normales, son necesarias varias transformaciones 
+que simplificar\'an y reorganizar\'an las producciones.
+
+\subsection{Eliminaci\'on de variables in\'utiles}
+
+\defin{
+Decimos que una variable~$A$ es \textbf{accesible} o \textbf{alcanzable} si  
+existen $u,v\in(V\cup T)^\star$ tales que $S\imp^\star uAv$. 
+Obs\'ervese que seg\'un esta definic\'on~$S$ siempre es alcanzable.
+}
+
+\defin{
+Una variable~$A$ es \textbf{productiva} o \textbf{terminable} si existe 
+$w\in T^\star$ tal que $A\imp^\star w$. En particular si $A\imp\vacia$ es una 
+producci\'on entonces $A$ es productiva.
+}
+
+\defin{
+Una variable~$A$ es \textbf{in\'util} si no es alcanzable o no es productiva.
+}  
+
+\newpage
+
+\noindent A continuaci\'on damos un algoritmo para hallar variables 
+productivas, mediante la transformaci\'on de una gram\'atica:
+\bi
+ \item[] \textbf{Iniciar}
+  \begin{small}
+    el conjunto $Prod$ con todas las producciones que contienen cadenas de 
+    terminales a la derecha de $\imp$:   
+  \end{small}
+  $$ Prod :=\{A\in V\mid A\imp w\;\in P,\;w\in T^\star\}$$
+ \item[] {\bf Repetir}
+  \begin{small}
+    la incorporaci\'on de variables cuyas producciones contienen variables 
+    productivas y s\'imbolos terminales a la derecha de   $\imp$:
+  \end{small}
+  $$ Prod:=Prod\cup\{A\in V \mid A\imp w,\;w\in(T\cup Prod)^\star\} $$
+ \item[] {\bf Hasta} 
+   \begin{small} que no se a\~naden nuevas variables a $Prod$\end{small}
+ \ei 
+
+ 
+\paragraph{Ejemplo:}
+Calculemos las variables productivas de la gram\'atica:
+\[
+\ba{rl}
+  S \imp & ACD \mid bBd \mid ab \\
+  A\imp & aB \mid aA \mid  C \\
+  B\imp & aDS \mid aB \\
+  C\imp & aCS \mid CB \mid CC \\
+  D\imp & bD \mid ba \\
+  E\imp & AB \mid aDb
+\ea 
+\]
+Iniciamos con $Prod=\{S,D\}$.
+Las iteraciones nos llevan a que $C$ es la \'unica variable improductiva, se 
+elimina esta variable junto con todas las reglas donde figure:
+\[
+  \ba{rl}
+  S \imp & bBd \mid ab \\
+  A\imp & aB \mid aA \\
+  B\imp & aDS \mid aB \\
+%  C\imp & aCS \mid CB \mid CC \\
+  D\imp & bD \mid ba \\
+  E\imp & AB \mid aDb
+  \ea
+\]
+
+\vspace*{10pt}
+
+\noindent El siguiente algoritmo permite hallar variables accesibles:
+\bi
+ \item[] \textbf{Iniciar} $$Acc:=\{S\}$$
+ \item[] \textbf{Repetir} 
+  \begin{small}
+   la incorporaci\'on de variables que aparecen a la derecha de $\imp$ en  
+   producciones de variables accesibles:
+  \end{small}
+  \[
+    Acc :=  Acc\cup\{A\in V \mid \exists\;B \imp uAv\in P,\;B\in Acc,
+        \;u,v\in(V\cup T)^\star\}
+    \]
+ \item[] \textbf{Hasta}
+ \begin{small} que no se a\~naden nuevas variables a $Acc$ \end{small}
+\ei 
+
+\paragraph{Ejemplo:}
+Calculemos las variables accesibles de la gram\'atica:
+\[
+ \ba{rlcrl}
+  S \imp & aS \mid AaB \mid ACS & \qquad \qquad & D\imp & aD \mid DD \mid ab \\
+  A\imp & aS \mid AaB \mid  AC &  & E\imp & FF \mid aa \\
+  B\imp & bB \mid DB \mid BB & & F\imp & aE \mid EF \\
+  C\imp & aDa \mid ABD \mid ab 
+  \ea
+\]
+Iniciamos con $Acc = \{S\}$. 
+El resultado es: $  Acc=\{S,A,B,C,D\} $  ya que  $E$ y $F$ son variables 
+inaccesibles, se eliminan junto con todas las reglas donde figuren:
+\[
+  \ba{rl}
+  S \imp & aS \mid AaB \mid ACS \\
+  A\imp & aS \mid AaB \mid  AC \\
+  B\imp & bB \mid DB \mid BB \\
+  C\imp & aDa \mid ABD \mid ab \\
+  D\imp & aD \mid DD \mid ab \\
+%  E\imp & FF \mid aa \\
+%  F\imp & aE \mid EF
+  \ea
+\]
+
+
+\noindent Para eliminar variables in\'utiles se aplican los dos 
+algoritmos  anteriores \textbf{en el siguiente orden}:
+\be
+ \item Eliminar variables no productivas.
+ \item Eliminar variables no accesibles.
+\ee
+
+La importancia del orden de los algoritmos radica en que si se aplican los 
+algoritmos en orden inverso el resultado puede ser una gram\'atica que a\'un 
+contenga variable in\'utiles. Veamos un ejemplo:
+\paragraph{Ejemplo:}
+Considere la siguiente gram\'atica
+\[
+  S\imp a \mid AB \qquad \qquad A\imp aA \mid \vacia
+\]
+Al eliminar primero las variables no accesibles se obtiene la misma 
+gram\'atica, 
+al ser todas las variables accesibles.\\
+Posteriormente al eliminar variables improductivas resulta
+$$S\imp a \qquad \qquad A\imp aA \mid \vacia$$
+y claramente $A$ es in\'util por ser inaccesible.
+
+\subsection{Eliminaci\'on de \texorpdfstring{$\vacia$}--producciones}
+Las gram\'aticas libres de contexto permiten el uso de producciones de la 
+forma 
+$A\imp \vacia$. La eliminaci\'on de estas producciones llamadas 
+$\cv$-producciones genera una transformaci\'on.
+
+\defin{
+Una variable $A$ se llama \textbf{anulable} si $A\imp^\star\vacia$, es decir si 
+una derivaci\'on que empieza en $A$ genera la cadena vac\'ia.
+}
+
+\noindent Veamos un algoritmo para hallar variables anulables:
+\bi
+ \item[] \textbf{Iniciar} 
+  \begin{small}
+   el conjunto $Anul$ con las variables que tienen $\vacia$ como producci\'on
+  \end{small}
+  $$Anul:=\{A\in V \mid A\imp \vacia \;\in P\}$$
+ \item[] \textbf{Repetir} 
+  \begin{small}
+   la incorporaci\'on de variables que tienen producciones cadenas de variables 
+   anulables
+  \end{small}
+  \[
+    Anul:=Anul\cup\{A\in V \mid \exists\;A\imp w\,\in P,\;\;w \in 
+    Anul^\star\}
+  \]
+ \item[] \textbf{Hasta}
+  \begin{small} que no se a\~naden nuevas variables a $Anul$\end{small}
+\ei 
+
+Una vez que se han identificado las variables anulables, la siguiente 
+transformaci\'on de una gram\'atica libre de contexto elimina exactamente las 
+$\cv$-producciones:
+\bi
+ \item[] Para cada producci\'on en la gram\'atica que tenga la 
+  forma~$A\imp w_1\ldots w_n$ se deben agregar las producciones  
+  $A\imp v_1\ldots v_n$ que son resultantes de los cambios de s\'imbolos donde:
+  \bi
+   \item $v_i = w_i$ si $w_i \notin Anul$, se respetan las variables no 
+    anulables
+   \item $v_i = w_i$ \'o $v_i = \vacia$ si $w_i\in Anul$, las variables 
+    anulables pueden dejarse o eliminarse
+  \ei
+ \item[] Verificando que no se anulen todos los $v_i$ al mismo tiempo.
+\ei
+Es decir, se van a respetar las producciones existentes y si alguna 
+contiene las variables anulables se agregar\'an las producciones que resulten 
+de eliminar las variables anulables en esa producci\'on. Las 
+$\vacia$-producciones desaparecer\'an.
+
+\paragraph{Ejemplo:}
+Eliminaci\'on de $\vacia$-producciones de la gram\'atica
+\[
+  \ba{rl}
+  S \imp & AB \mid ACA \mid ab \\
+  A\imp & aAa \mid B \mid  CD \\
+  B\imp & bB \mid bA \\
+  C\imp & cC \mid \cv \\
+  D\imp & aDc \mid CC \mid ABb \\
+%  E\imp & FF \mid aa \\
+%  F\imp & aE \mid EF
+  \ea
+\]
+Primero obtenemos las variables anulables, iniciando con $ Anul = \{C\}$:
+$$  Anul=\{C,D,A,S\}$$
+El proceso de anulaci\'on de variables hace que se elimine la 
+producci\'on~$C\imp\vacia$, se dejan las producciones existentes y se agregan 
+las producciones que eliminan los elementos de $Anul$. Se obtiene la siguiente 
+gram\'atica:
+\[
+ \ba{rl}
+  S \imp & AB \mid ACA \mid ab \mid \mathbf{B} \mid \mathbf{CA} \mid 
+  \mathbf{AA} \mid \mathbf{AC} \mid \mathbf{A} \mid \mathbf{C} \\
+  A\imp & aAa \mid B \mid  CD \mid \mathbf{aa} \mid \mathbf{C} \mid \mathbf{D}\\
+  B\imp & bB \mid bA \mid \mathbf{b} \\
+  C\imp & cC \mid \mathbf{c} \\
+  D\imp & aDc \mid CC \mid ABb \mid \mathbf{ac} \mid \mathbf{C} \mid\mathbf{Bb}
+%  E\imp & FF \mid aa \\
+%  F\imp & aE \mid EF
+  \ea
+\]
+
+\paragraph{Acerca de la palabra vac\'ia}
+Si originalmente se ten\'ia $\vacia\in L(G)$ la eliminaci\'on de
+$\vacia$-producciones genera una gram\'atica que \textbf{no} genera a $\vacia$.
+Es posible saber si se pierde la palabra vac\'ia al eliminar 
+$\vacia$-producciones verificando si $S\in Anul$. \\
+Si se quiere recuperar a $\vacia$ debe agregarse un nuevo s\'imbolo inicial 
+$S'$ 
+as\'i como las producciones $S'\imp S$ y  $S'\imp\cv$.
+De esta forma, $S'\imp\cv$ es la \'unica $\vacia$-producci\'on permitida.
+
+    
+\subsection{Eliminaci\'on de producciones unitarias} 
+\defin{
+Una producci\'on de la forma $A\imp B$ donde $A$ y $B$ son ambas variables se 
+llama \textbf{producci\'on unitaria}. 
+El \textbf{conjunto unitario} de $A$ se define como sigue:
+\[
+  Unit(A) = \{B\in V\mid A\imp^\star B \text{ usando s\'olo 
+  producciones unitarias }\} 
+\]
+}
+Obs\'ervese que por definici\'on se tiene $A\in Unit(A)$ si existe $A\imp B$.
+
+\noindent Ahora veamos un algoritmo para hallar el conjunto $Unit(A)$ para 
+cualquier variable o s\'imbolo no-terminal:
+\bi
+ \item[] \textbf{Iniciar} $$Unit(A):=\{A\}$$
+ \item[] \textbf{Repetir} 
+ \begin{small}
+  la incorporaci\'on de variables que tengan producciones unitarias 
+ \end{small}
+
+  \[
+    Unit(A):=Unit(A)\cup\{B\in V \mid \exists\;C\imp B,\;\;C \in
+    Unit(A)\;\}
+  \]
+ \item[] \textbf{Hasta} que no se a\~naden nuevas variables a $Unit(A)$.
+\ei 
+
+\noindent Para la eliminaci\'on de producciones unitarias en una gram\'atica 
+se debe realizar la siguiente transformaci\'on, para cada variable se debe 
+calcular su conjunto unitario y realizar las siguientes acciones:
+\bi
+ \item Para cada $B\in Unit(A)$ y cada producci\'on $A\imp w$ agregar
+  la producci\'on $$ B\imp w $$
+ \item Eliminar todas las producciones unitarias
+\ei 
+
+\paragraph{Ejemplo:}
+Eliminaci\'on de producciones unitarias de la gram\'atica:
+\[
+ \ba{rl}
+  S \imp & AS \mid AA \mid BA \mid \cv \\
+  A\imp & aA \mid a \\
+  B\imp & bB \mid bC \mid C \\
+  C\imp & aA \mid bA \mid B \mid ab \\
+ \ea
+\]
+Los conjuntos unitarios para cada variable son:
+\[
+  \ba{cc}
+   Unit(S)=\{S\} & \qquad \qquad Unit(A)=\{A\}\\
+   Unit(B)=\{B,C\} & \qquad \qquad  Unit(C)=\{C,B\}
+  \ea
+\]
+As\'i la gram\'atica obtenida al eliminar producciones unitarias es:
+\[
+ \ba{rl}
+  S \imp & AS \mid AA \mid BA \mid \cv \\
+  A\imp & aA \mid a \\
+  B\imp & bB \mid bC \mid aA \mid bA \mid ab \\
+  C\imp & aA \mid bA \mid ab \mid bB \mid bC \\
+ \ea
+\]
+
+\subsection{Remplazo simple de producciones}
+Esta transformaci\'on eliminar\'a reglas de la forma $A \imp u B v$ donde 
+$ B\imp w_1 \mid w_2 \mid \dots \mid w_n$.
+Esto se logra al redefinir el conjunto de reglas $P$ en la gram\'atica~$G$ con 
+\[ 
+ P' = \big(P -\{A \imp u B v\}\big) \cup \{A \imp u w_1 v \mid u w_2 
+  v\mid\dots u w_n v  \} 
+\]
+
+\paragraph{Ejemplo:}
+Reemplazar la regla $D \imp ABF $ de la gram\'atica siguiente:
+\[
+ \ba{rl}
+  S \imp & DA \mid aF \\
+  D \imp & ABF \mid a\\
+  A \imp & a\\
+  B \imp & b \mid ba \\
+  F \imp & AF \mid A
+ \ea
+\]
+Se obtiene:
+\[
+ \ba{rl}
+  S \imp & DA \mid aF \\
+  D \imp & AbF \mid AbaF \mid a\\
+  A \imp & a\\
+  B \imp & b \mid ba \\
+  F \imp & AF \mid A
+ \ea
+\]
+
+
+\subsection{Remoci\'on de producciones recursivas por la izquierda}
+Una producci\'on recursiva por la izquierda es de la forma $A \imp A w$ con 
+$w\in (V\cup T)^*$.\\
+Ellas ser\'an reemplazadas por producciones cuya recursi\'on es por la 
+derecha de la siguiente forma, 
+para cada variable o s\'imbolo no-terminal $A$ crear dos categor\'ias de reglas:
+\be
+ \item $ A_{izq} = \{ A\imp A u_i \in P \mid u_i \in (V\cup T)^* \}$
+ \item $ A_{der} = \{ A\imp v_j \in P \mid v_j \in (V\cup T)^* \}$
+\ee
+A continuaci\'on se obtendr\'an las reglas para la variable $A$ como sigue:
+$$ A\imp v_1 \mid \dots \mid v_m \mid v_1 Z \mid \dots \mid v_n Z$$
+Adem\'as se incorporar\'an las siguientes reglas a $P$:
+$$ Z \imp u_1 Z \mid \dots \mid u_n Z \mid u_1 \mid \dots \mid u_n$$
+
+
+\paragraph{Ejemplo:}
+Considere las siguientes producciones:
+$$ A \imp Aa \mid Aab \mid bb \mid b$$
+Se eliminar\'an las producciones recursivas por la izquierda:
+$$A_{izq}=\{A\imp Aa,\;A\imp Aab\}\qquad\qquad A_{der}=\{A\imp bb,\;A\imp b\}$$
+generando la siguiente gram\'atica:
+\[
+ \ba{rl}
+ A \imp &  bb \mid b\mid bbZ \mid bZ\\
+ Z \imp & aZ \mid abZ \mid a \mid ab
+ \ea
+\]
+
+\subsection{Problema de la pertenencia}
+\noindent Dada una gram\'atica~$G$ \textit{sin $\cv$-producciones ni 
+producciones unitarias} y una palabra~$w$ de longitud~$n$, 
+?`se cumple que~$w\in L(G)$ ?
+% Es decir, pertenece $w$ al lenguaje generado por~$G$.\\
+Analicemos esta situaci\'on:
+\bi
+ \item Si la palabra $w$ es generada por $G$ la construcci\'on de un \'arbol 
+  de derivaci\'on terminar\'a eventualmente.
+ \item En caso contrario basta con construir un \'arbol hasta el nivel 
+  $\mathbf{2n-1}$ para concluir que~$w\notin L(G)$, es decir un \'arbol que 
+  pueda tener como hojas a la cadena~$w$.
+ \item En cada paso de la construcci\'on de un \'arbol se obtiene un nuevo 
+  terminal (a lo m\'as $n$ pasos) o se aumenta la longitud de la palabra en 
+  $1$ (a lo m\'as $n-1$ pasos)
+\ei
+
+
+\section{Formas Normales}
+
+Despu\'es de haber introducido varias transformaciones de gram\'aticas libres 
+de contexto, veamos ahora dos formas normales de gran utilidad.
+
+\subsection{Forma Normal de Chomsky}
+\defin{
+Una gram\'atica libre de contexto~$G$ est\'a en \textbf{forma normal de 
+Chomsky (FNC)}~si:
+\bi
+ \item $G$ no contiene variables in\'utiles.
+ \item $G$ no contiene producciones unitarias ni $\cv$-producciones (salvo 
+  $S\imp\vacia$)
+ \item Todas las producciones son binarias con variables o terminales, es decir 
+  de la forma:
+  \[ 
+   A\imp BC\quad\text{ \'o }\quad A\imp a\qquad\text{ donde }B,C\in V,\,a\in T
+  \]
+\ei
+}
+ 
+\noindent Cualquier gram\'atica libre de contexto es equivalente a una 
+gram\'atica en \textbf{FNC}, lo cual se logra parcialmente como sigue:
+\be
+ \item Eliminar las variables in\'utiles.
+ \item Eliminar las $\cv$-producciones, salvo cuando la cadena 
+  $\vacia$ pertenece al lenguaje original $L(G)$ y en ese caso se 
+  agrega un nuevo s\'imbolo inicial $S'$ y $S' \imp\vacia \mid S$ .
+ \item Eliminar producciones unitarias.
+ \item Las producciones restantes son todas de la forma $A\imp a$ con 
+  $a\in T$ \'o $A\imp w$ con $|w|\geq 2$      
+\ee
+
+El proceso restante es la eliminaci\'on de producciones $A\imp w$ donde 
+$|w|\geq 2$. A este proceso le llamaremos \textbf{simulaci\'on de 
+producciones}, para ello basta hacer lo siguiente para cada producci\'on $P$ 
+de la forma $A\imp \alpha_1\alpha_2\ldots\alpha_n$ con $\alpha_i\in V\cup T$ y
+$n\geq 2$ (obs\'ervese que si $n=2$, al menos uno de $\alpha_1,\alpha_2$ debe 
+ser terminal, pues si no la producci\'on ya es v\'alida para FNC)
+\bi
+ \item Si $\alpha_i\in T$, digamos $\alpha_i=a$, entonces
+  \be
+   \item Agregar la producci\'on $T_a\imp a$, donde $T_a$ es una nueva 
+  variable.
+   \item Cambiar $\alpha_i$ por $T_a$ en la producci\'on $P$ 
+    %$A\imp\alpha_1\alpha_2\ldots\alpha_n$
+  \ee    
+ \item Para cada producci\'on $P$ de la forma $A\imp B_1B_2\ldots B_m$
+   con $B_i\in V,\;m\geq 3$
+   \be
+    \item Agregar $(m-2)$ nuevas variables $D_1,\ldots, D_{m-2}$ y reemplazar 
+      a  $P$ %$A\imp B_1\ldots B_m$ 
+      con las siguientes producciones:
+    \[
+      A\imp B_1D_1 \quad D_1\imp B_2D_2\quad \ldots\quad D_{m-2}\imp B_{m-1}B_m
+    \]
+   \ee
+\ei
+
+\paragraph{Ejemplo:}
+Simulaci\'on de producciones $A\imp w_1w_2\ldots w_n,\;n\geq 2$.\\
+La producci\'on $A\imp abBaC$ se simula con producciones simples y binarias 
+como sigue:
+\bi
+ \item Agregamos las nuevas variables $T_a,T_b$ y las producciones
+  \[
+  A\imp T_aT_bBT_aC \qquad T_a\imp a \qquad T_b\imp b
+  \]
+ \item Para simular la producci\'on $A\imp T_aT_bBT_aC$ agregamos
+   nuevas variables $D_1,D_2,D_3$ y las producciones binarias
+   necesarias obteniendo finalmente la gram\'atica:
+   \[
+    A\imp T_aD_1 \qquad D_1\imp T_bD_2 \qquad D_2\imp BD_3\qquad D_3\imp T_aC
+   \]
+   \[
+    T_a\imp a \qquad T_b\imp b
+  \]
+\ei
+
+
+\paragraph{Ejemplo:}
+Transformar la siguiente gram\'atica a \textbf{FNC}:
+\[
+  \ba{rlcrl}
+  S \imp & AB \mid aBC \mid SBS &\qquad \qquad &
+  A\imp & aA \mid C \\ 
+  B\imp & bbB \mid b &\qquad \qquad &
+  C\imp & cC \mid \vacia 
+  \ea
+\]
+La gram\'atica equivalente es:
+\[  
+  \ba{rl}
+  S \imp & AB \mid T_aD_1 \mid SD_2 \mid T_aB \mid T_bD_3 \mid b \\
+  A\imp & T_aA \mid T_cC \mid a \mid c \\
+  B\imp & T_bD_3 \mid b \\
+  C\imp & T_cC \mid c 
+  \ea
+  \hspace*{20pt}
+  \ba{rlcrl}
+  D_1\imp & BC &\qquad \qquad &  T_a\imp & a \\
+  D_2\imp & BS &\qquad \qquad &  T_b\imp & b \\
+  D_3\imp & T_bB &\qquad \qquad &  T_c\imp & c 
+ \ea
+\]
+
+
+\subsection{Forma Normal de Greibach}
+Otra forma normal es la llamada de Greibach, esta forma normal es \'util en 
+algoritmos de parsing ya que se da prioridad a los prefijos terminales de las 
+cadenas generadas por las reglas de producci\'on de la gram\'atica.
+Esto asegura que no existe recursi\'on por la izquierda de ninguna forma. 
+
+\defin{
+Una gram\'atica libre de contexto~$G$ est\'a en \textbf{forma normal de 
+Greibach (FNG)}~si:
+\bi
+ \item La variable inicial $S$ no es recursiva, es decir, no figura en
+  el lado derecho de las producciones.
+ \item $G$ no tiene variables in\'utiles ni $\vacia$-producciones salvo 
+  $S\imp\vacia$.
+ \item Todas las producciones son de la forma $A\imp a\alpha$ con $a\in T$ y
+  $\alpha \in V^\star$.
+\ei
+}
+
+Veamos c\'omo transformar una gram\'atica en una equivalente en forma normal de 
+Greibach, obs\'ervese que cualquier gram\'atica libre de contexto es 
+equivalente a una gram\'atica en \textbf{FNG}.
+
+\vspace*{10pt}
+
+El proceso requiere primero que la gram\'atica est\'e en Forma Normal de 
+Chomsky, de esta forma se eliminan las producciones in\'utiles y las 
+$\vacia$-producciones.\\
+Despu\'es, se aplica el siguiente m\'etodo para transformar a \textbf{FNG}:
+\be
+ \item Verificar que el s\'imbolo inicial no sea recursivo, si lo es entonces 
+  agregar un nuevo s\'imbolo inicial con las producciones del anterior.
+  
+ \item Eliminar las producciones recursivas por izquierda.
+ 
+ \item Enumerar u ordenar las variables o s\'imbolos no-terminales de la 
+  gram\'atica: 
+  iniciar con el s\'imbolo inicial y el resto de las variables siguen 
+  cualquier orden.
+ 
+ \item Reemplazar las producciones que contengan variables de orden mayor en el 
+  lado derecho de~$\imp$, es decir todas las reglas deben tener la forma:
+  \bi
+  \item $ A \imp  B w $ donde la variable $A$ debe estar por debajo de la 
+    variable   $B$ en el orden propuesto.
+  \item $ A\imp aw$ con $a\in T$
+  \ei
+\ee 
+
+
+Finalmente la gram\'atica resultante est\'a en forma normal de Greibach, esta 
+transformaci\'on permite simplificar el problema de la pertenencia:
+dada una gram\'atica $G$ \textbf{en forma normal de Greibach} y una 
+palabra $w$ de longitud $n$, ?`Se cumple $w\in L(G)$ ? Es decir, 
+pertenece $w$ al lenguaje generado por $G$.
+\bi
+ \item Si $w$ es generada por $G$ la construcci\'on de un \'arbol 
+  de derivaci\'on entonces debe terminar\'a eventualmente.
+ \item En caso contrario basta con construir el \'arbol hasta el nivel 
+  $\mathbf{n}$ para concluir que $w\notin L(G)$.
+ \item En cada paso se obtiene un nuevo terminal (a lo m\'as~$n$ pasos) y por 
+  lo general hay una menor ramificaci\'on.
+\ei
+
+\paragraph{Ejemplo:}
+Transformar la siguiente gram\'atica a \textbf{FNG}.
+$$ S \imp S a B \mid a B \qquad \qquad B \imp b B \mid \vacia$$
+\be
+ \item Eliminaci\'on de variables in\'utiles\\
+ $$ Prod = \{ B \} \qquad \qquad Acc = \{S, B\}$$
+ \item Eliminaci\'on de $\vacia$-producciones\\
+ \[
+  \ba{lrl}
+   Anul = \{ B \}  & \qquad S \imp & SaB \mid aB \mid Sa \mid a\\
+   & \qquad B \imp & bB \mid b
+  \ea
+ \]
+ \item Eliminaci\'on de producciones unitarias\\
+ $$ Unit(S) = \{S\} \qquad \qquad Unit(B) = \{B\} $$
+ \item Simulaci\'on de producciones \\
+ S\'imbolos terminales:\\
+ \[
+  \ba{rlcrl}
+   S \imp & ST_a B \mid T_a B \mid ST_a \mid a & \qquad \qquad T_a \imp& a\\
+   B \imp & T_b B \mid b & \qquad \qquad T_b\imp & b
+  \ea
+ \]
+ Producciones binarias:\\
+ \[
+  \ba{rlcrl}
+   S \imp & SD_1 \mid T_a B \mid ST_a \mid a & \qquad \qquad T_a \imp& a\\
+   B \imp & T_b B \mid b & \qquad \qquad T_b\imp & b \\
+   D_1 \imp & T_a B & &   
+  \ea
+ \]
+
+ \item S\'imbolo inicial no-recursivo\\
+ \[
+  \ba{rlcrl}
+   S' \imp & SD_1 \mid T_a B \mid ST_a \mid a & \qquad \qquad T_a \imp& a\\
+   S \imp & SD_1 \mid T_a B \mid ST_a \mid a & \qquad \qquad T_b \imp& b\\
+   B \imp & T_b B \mid b & & \\
+   D_1 \imp & T_a B & &   
+  \ea
+ \]
+
+ \item Eliminaci\'on de producciones recursivas por la izquierda\\
+ \[
+  \ba{ccc}
+   S'_{izq} = \vacio & \hspace{20pt} & S_{izq} = \{S\imp SD_1,\; S\imp ST_a\} \\
+   B_{izq} = \vacio & & {D_1}_{izq} = \vacio \\
+   {T_b}_{izq} = \vacio & & {T_b}_{izq} = \vacio 
+   \ea
+ \]
+ 
+ \[
+  \ba{rlcrl}
+   S' \imp & SD_1 \mid T_a B \mid ST_a \mid a & \qquad \qquad T_a \imp& a\\
+   S \imp & SD_1 \mid T_a B \mid ST_a \mid a \mid T_a BZ & 
+    \qquad \qquad T_b \imp& b\\
+   B \imp & T_b B \mid b &  &  \\
+   D_1 \imp & T_a B & &    \\
+   Z \imp & D_1 Z \mid T_a Z \mid D_1\mid T_a
+  \ea
+ \]
+ 
+ \item Reemplazo simple de producciones\\
+ \begin{small}
+ \[
+  \ba{c|rl|cl}
+   orden &  & &reemplazar\\
+   0  & S' \imp & SD_1 \mid T_a B \mid ST_a \mid a & T_a 
+    & \text{ ya que se debe empezar con un terminal } \\    
+   1  & S \imp & SD_1 \mid T_a B \mid ST_a \mid a \mid T_a BZ & T_a 
+    & \text{ ya que se debe empezar con un terminal } \\
+   2 & B \imp & T_b B \mid b & T_b 
+   & \text{ ya que se debe empezar con un terminal } \\
+   3 & D_1 \imp & T_a B  & T_a 
+   & \text{ ya que se debe empezar con un terminal } \\
+   4 & Z \imp & D_1 Z \mid T_a Z \mid D_1\mid T_a & D_1 & 
+   \text{ ya que el orden de } D_1 \text{ es menor que el de } Z\\
+   &&&T_a & \text{ ya que se debe empezar con un terminal } \\
+   5 & T_a \imp& a & --\\
+   6 & T_b \imp& b & --\\
+  \ea
+ \]
+
+
+ \[
+  \ba{rlcrl}
+   S' \imp & aBD_1 \mid aD_1 \mid aBZD_1 \mid aZD_1\mid aB \mid aBT_a \mid 
+    aT_a \mid aBZT_a     \mid aZT_a \mid a \\
+   S \imp & aB \mid a \mid aBZ \mid aZ \\
+   B \imp & bB \mid b \\
+   D_1 \imp & aB \\
+   Z \imp & aBZ \mid aZ \mid aB\mid a \\
+   T_a \imp& a \\
+   T_b \imp& b
+  \ea
+ \]
+  \end{small}
+\ee
+
+\end{document}

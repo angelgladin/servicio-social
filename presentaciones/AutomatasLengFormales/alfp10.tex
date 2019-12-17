@@ -1,0 +1,314 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+%\documentclass[xcolor=dvipsnames,handout]{beamer}
+
+\input{macros2006}
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+\newcommand{\espc}{\vspace{.5cm}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\cv}{\ensuremath{\varepsilon}}
+\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\newtheorem{teorema}{Teorema}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+\newcommand{\dest}{\ensuremath{\delta^\star}}
+
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\usepackage{BeamerColor}
+%\usecolortheme[RGB={33,66,33}]{structure}
+\usecolortheme[named=NavyBlue]{structure}
+%\usefonttheme{}
+\setbeamercovered{invisible}
+%\setbeamertemplate{headline}{\insertshortinstitute}
+%\setbeamertemplate{footline}[page number]{\insertshortinstitute}
+%\insertshortinstitute
+}
+
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+
+\title[AyLF]{Autómatas y Lenguajes Formales}
+\subtitle
+{%Maestría en Ciencia e Ingeniería de la Computación UNAM\\
+  Tema 10:  Ambigüedad y gramáticas libres de contexto en lenguajes de programación}
+
+\author[Favio E. Miranda Perea]{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+
+
+\institute[FC UNAM]{Facultad de Ciencias UNAM\footnote{Con el apoyo del proyecto PAPIME PE102117}}
+
+\date{\today}
+
+\subject{Theoretical Computer Science}
+
+% \pgfdeclareimage[height=0.5cm]{LogoTecBueno}{LogoTecBueno.eps}
+\logo{\includegraphics[height=1cm]{fc2.png}}
+
+
+
+
+\begin{document}
+
+\beamerdefaultoverlayspecification{<+->}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+
+\begin{frame}
+\titulos{Ambigüedad}{}
+\bi
+\item  Está probado que no puede existir un algoritmo que determine con certeza si una gramática es
+ambigua o no, y que en tal caso elimine dicha ambigüedad produciendo una
+gramática no ambigua equivalente a la original. 
+\item Es decir, el problema de ambigüedad es indecidible. Lo más que se
+sabe es que hay ciertas condiciones que determinan ambigüedad pero en
+caso de no cumplirse éstas nada puede decirse de la gramática en
+cuestión.
+\item En algunos casos, dada una gramática ambigua, se puede encontrar otra
+gramática equivalente no ambigua, por ejemplo agregando precedencia de
+operadores y asociatividad. 
+\item Sin embargo existen lenguajes cuya
+ambigüedad es inevitable.
+\ei
+\end{frame}
+ 
+
+
+\begin{frame}
+\titulos{Gramatícas libres de contexto en lenguajes de programación}{}
+\bi
+\item  El estudio formal de los lenguajes de programación se divide en sintaxis, pragmática y semántica.
+\item La semántica se encarga de definir el significado de las expresiones, enunciados
+y unidades de programa.
+\item La pragmática define la implementación del lenguaje basada en la metodología y estrategias de programación deseadas
+\item La sintaxis se encarga de definir la forma de
+las expresiones y enunciados de un lenguaje y se sirve fundamentalmente de los
+conceptos y herramientas de nuestro curso. 
+\item Antes del proceso de evaluación, un compilador e intérprete necesita realizar
+los procesos de análisis léxico y sintáctico, describimos a
+continuación a grandes rasgos.
+\ei
+\end{frame}
+
+
+\begin{frame}
+\titulos{Análisis léxico y sintáctico}{}
+\bi
+\item Análisis léxico: se encarga de transformar el programa fuente en una
+  lista de unidades sintácticas de bajo nivel llamadas lexemas, los cuales se
+  clasifican en distintas categorías llamadas {\em tokens}, como pueden ser
+  identificadores, constantes, separadores, etc. 
+\item El análisis léxico se sirve
+  fundamentalmente de expresiones regulares para su definición y reconocimiento.
+\item Análisis sintáctico: se encarga de transformar la lista de lexemas en un
+  programa objeto, el cual es una 
+  expresión válida de la llamada sintaxis abstracta del lenguaje. Este
+  programa es esencialmente un árbol de derivación dictado por
+  una gramática libre de contexto que define al lenguaje de programación. 
+\item Por
+  lo tanto el análisis sintáctico es esencialmente una forma del problema de
+  la pertenencia en gramáticas libres de contexto.
+\ei
+\end{frame}
+
+\begin{frame}
+\titulos{Forma de Backus-Naur}{}  
+\bi
+\item Las gramáticas libres de contexto para lenguajes de programación suelen
+escribirse en la forma de Backus-Naur o BNF.
+\item Este método de definición de gramáticas fue introducido por John Backus para el lenguaje {\sc Algol} 58 en 1959 y fue mejorado por Peter Naur para la definición de {\sc Algol} 60.
+\item Este sistema notacional para definir lenguajes libres de contexto 
+ sigue las siguientes convenciones:
+
+\bi
+\item El símbolo de reescritura $\to$ se reemplaza con $::=$.\medskip
+\item El símbolo $\mid$ significa {\em o} y abreviar la definición de producciones de una misma variable.\medskip
+\item Las variables se escriben entre paréntesis triangulares y por lo general
+  utilizan nombres largos que ayuden a la descripción de \\ las categorías del lenguaje.
+\ei
+\ei
+\end{frame}
+
+
+\begin{frame}
+\titulos{Gramáticas en forma de Backus-Naur}{Ejemplos}
+
+\bi
+\item Lenguaje de paréntesis balanceados
+\beqs
+\ba{rll}
+<parent\_balanc> & ::= & \cv \;|\; \\
+                 & & (<parent\_balanc>)\;|\; \\
+                 & & <parent\_balanc><parent\_balanc> 
+\ea
+\eeqs
+\item Expresiones aritméticas:
+\beqs
+\ba{rll}
+<expr> & ::= & <expr>\,<op>\,<expr>\;|\; \\
+       & & (<expr>)\;|\;<id>\\
+<op> & := & +\;|\;-\;|\;*\;|\;/\\
+<id> & := & a\;|\;b\;|\;c
+\ea
+\eeqs
+\ei
+\end{frame}
+
+\begin{frame}
+\titulos{Bloques de asignación de expresiones aritméticas:}
+{{\tt begin}\;a {\tt :=} b/c\; ; \; b {\tt :=} a*(b+c)\;{\tt end}}
+%{Gramáticas en forma de Backus-Naur}
+\beqs
+\ba{rll}
+<programa> & ::= & {\tt begin}\;<sec\_enunc>\;{\tt end}\\ \\
+<sec\_enunc> & ::= & <enunc>\;|\;<enunc>\,;\,<sec\_enunc>\\ \\
+<enunc> & ::= & <id>\;{\tt :=}\;<expr>\\ \\
+<expr> & ::= & <expr>\,<op>\,<expr>\;|\; \\ \\
+       & & (<expr>)\;|\;<id>\\ \\
+<op> & := & +\;|\;-\;|\;*\;|\;/\\ \\
+<id> & := & a\;|\;b\;|\;c
+\ea
+\eeqs
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\titulos{Gramáticas en forma de Backus-Naur}{Ejemplos}
+\bi
+\item Expresiones condicionales:
+\beqs
+\ba{rll}
+<enunc> & ::= & <condicional>\;|\;<otras>\\
+<condicional> & := & {\tt if}\;<expr>\;{\tt then}\;<enunc> \;|\; \\
+              &    & {\tt if}\;<expr>\;{\tt then}\;<enunc> \\
+              &    & \;{\tt            else}\;<enunc>
+\ea
+\eeqs
+\item Problema del {\tt if} colgante:
+\begin{verbatim}
+if false then if false then 0 else 1
+\end{verbatim}
+\item Dos significados:
+\begin{verbatim}
+if false then (if false then 0) else 1
+if false then (if false then 0 else 1)
+\end{verbatim}
+%\ec
+\ei
+\end{frame}
+
+\begin{frame}
+\titulos{Paréntesis balanceados}{Eliminación de la ambigüedad}
+  \bi 
+
+\item Paréntesis balanceados:
+\beqs
+S \to \cv\;|\;(S)\;|\;SS
+\eeqs
+\item Ambigüedad: $()()()$ tiene dos árboles de derivación %es ambigua pero equivalente a la siguientes gramática no ambigua:
+\item Gramática no ambigua equivalente:
+\beqs
+S \to \cv\;|\;(S)S
+\eeqs
+\ei
+\end{frame}
+\begin{frame}
+\titulos{Expresiones aritméticas}{Eliminación de la ambigüedad}
+\bi
+\item Expresiones aritméticas: % este lenguaje es generado por la siguiente
+  % gramática ambigua
+\beqs
+S \to S + S\;|\;S*S\;|\;a
+\eeqs
+donde $a$ es un terminal que representa a los identificadores y constantes.
+\item Ambigüedad: a + a * a
+
+\item Gramática no ambigua equivalente:  se obtiene modelando la precedencia de
+operadores como sigue:
+\beqs
+\ba{rll}
+S & \to & S+T\;|\;T \\
+T & \to & T*F\;|\;F\\
+F & \to & (S)\;|\;a
+\ea
+\eeqs
+\ei
+\end{frame}
+\begin{frame}
+\titulos{Expresiones condicionales}{Eliminación de la ambigüedad}
+\bi
+\item Expresiones condicionales:
+\beqs
+\ba{rll}
+S & \to & C\;|\;O\\
+C & \to & {\tt if}\;E\;{\tt then}\;S \;|\; %\\
+              %&    & 
+{\tt if}\;E\;{\tt then}\;S\;{\tt else}\;S
+\ea
+\eeqs
+\item Una gramática equivalente no ambigua es:
+\beqs
+\ba{rll}
+S & \to & C\;|\;O\\
+C & \to & C1\;|\;C2\\
+C1 & \to & {\tt if}\;E\;{\tt then}\;C1\;{\tt else}\;C1  \\
+C2 & \to   & {\tt if}\;E\;{\tt then}\;S\;|\; %\\
+%   & & 
+{\tt if}\;E\;{\tt then}\;C1\;{\tt else}\;C2
+\ea
+\eeqs
+\item Idea: $C1$ genera condicionales dobles (if-then-else) balanceados; $C2$ representa condicionales
+simples (if-then) y condicionales dobles pero de forma que un if-then sólo figura colgando \\ al final (en el else). %único lugar donde puede quedar un condicional sencillo es en la condición else.
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Ejercicio presencial}{}
+
+Muestre que la siguiente gramática es ambigua:
+
+\[
+\ba{rll}
+S & \to & AS\mid\varepsilon \\ \\
+A & \to & A1\mid 0A1\mid\varepsilon
+\ea
+\]
+
+\end{frame}
+
+\begin{frame}
+  \titulos{Ejercicio del tema anterior}{}
+Transformar la siguiente gramática a la forma normal de Chomsky:
+
+\[
+\ba{rll}
+S & \to & 0S1\mid A\mid AB \\ \\
+A & \to & 1A0\mid S\mid\varepsilon \\ \\
+B & \to & 0B\mid 1C\\ \\
+C & \to & 0C\mid 0\mid\varepsilon\\ \\
+D & \to & 0C\mid 1D\mid F\\ \\
+F & \to & 1F\mid\varepsilon\\ \\
+\ea
+\]
+\end{frame}
+
+
+
+
+
+\end{document}

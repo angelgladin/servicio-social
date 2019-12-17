@@ -1,0 +1,654 @@
+
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+
+\usepackage[section]{placeins}
+\usepackage{wrapfig}
+\usepackage{multicol}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
+  PAPIME PE102117}\\ 
+Nota de Clase 8: Autómatas de Pila} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\vspace*{-30pt}
+
+\section{Introducci\'on}
+
+Los lenguajes regulares como lenguajes sencillos de reconocer por una m\'aquina 
+encuentran su mancuerna con los aut\'omatas finitos, los cuales son 
+dispositivos cuya memoria es limitada: s\'olo son \'utiles al recordar estado 
+por estado alguna propiedad sin poder hacerlo a lo largo de todo una secuencia 
+de estados. 
+
+Para poder reconocer lenguajes m\'as expresivos, como los lenguajes libres de 
+contexto podemos pensar en un alguna generalizaci\'on de los aut\'omatas 
+finitos, la puede realizarse de diversos modos:
+\bi
+ \item permitir que el aut\'omata \textit{lea} una entrada un n\'umero 
+  arbitrario de veces;
+%   lo cual requiere que la cabeza de lectura se mueva
+%    (m\'aquinas bidireccionales con el mismo poder que AF).
+ \item a\~nadir un dispositivo de conteo (m\'aquinas contadoras);
+ \item a\~nadir dispositivos de salida (traductores, aut\'omatas de Mealy y 
+  Moore);
+ \item agregar un dispositivo de memoria, por ejemplo mediante una pila para 
+  almacenar datos.
+\ei
+De las generalizaciones anteriores, la \'ultima permite abstraer 
+caracter\'isticas m\'as complejas de un lenguaje al tener m\'as memoria que 
+almacene.
+Los aut\'omatas que ser\'an de utilidad para reconocer lenguajes libres de 
+contexto son los que generalizan a los aut\'omatas finitos al incluir una pila.
+
+\vspace*{-10pt}
+
+\section{Aut\'omatas de pila}
+Los aut\'omatas de pila son una generalizaci\'on de los aut\'omatas finitos, el 
+dispositivo de memoria es una pila que una estructura de datos para almacenar 
+objetos. 
+
+\vspace*{7pt}
+
+\begin{wrapfigure}{r}{0.45\textwidth}
+ \begin{center}
+  \vspace*{-30pt}
+  \includegraphics[scale=0.20]{pila.jpeg}
+ \end{center}
+\end{wrapfigure}
+Una pila es una estructura que puede almacenar elementos utilizando una
+funci\'on llamada \verb=PUSH= y se puede acceder a los datos almacenados 
+mediante dos funciones: obtener un elemento al \enquote{sacarlo} mediante la 
+funci\'on \verb=POP= o s\'olamente \enquote{ver} (\verb-PEEK-) un elemento. 
+Estas funciones s\'olo acceden al tope de la pila.
+El tope de la pila es exactamente el \'ultimo elemento en ser almacenado y si 
+no hay elementos almacenados decimos que la pila est\'a vac\'ia.
+
+Esta caracter\'istica le da otro nombre a las pilas \textbf{\enquote{Last In 
+First Out} (LIFO)} es decir que el \'ultimo elemento en ser almacenado ser\'a 
+el primero en salir de la pila.\\
+El manejo de pilas en los aut\'omatas considera algunas variantes:
+\bi 
+ \item cada pila tiene un alfabeto que contiene los s\'imbolos permitidos para 
+  almacenarse en la pila. Este alfabeto debe incluir el s\'imbolo inicial de la 
+  pila o \enquote{fondo} de la pila;
+ \item la pila ser\'a tratada como una cadena de s\'imbolos del alfabeto 
+  mencionado en donde el tope ser\'a el s\'imbolo m\'as a la izquierda de la 
+  cadena y el tope ser\'a el s\'imbolo m\'as a la derecha;
+ \item diremos que una pila est\'a vac\'ia si est\'a representada por la cadena 
+  vac\'ia.
+\ei
+
+\vspace*{10pt}
+
+Una visi\'on panor\'amica de los aut\'omatas de pila distingue tres 
+par\'ametros: el estado actual, el s\'imbolo que se est\'a procesando adem\'as 
+del s\'imbolo que se encuentra en el tope de la pila. 
+Tambi\'en caracteriza su funcionamiento central: la m\'aquina es capaz de leer 
+el s\'imbolo a procesar de la cadena de entrada, cambiar de estado y sustituir 
+el s\'imbolo en el tope de la pila por una secuencia de s\'imbolos.
+
+Al igual que los aut\'omatas finitos, se puede incluir el no-determinismo, se 
+har\'a \'enfasis en la diferencia entre determinismo y no-determinismo dentro 
+de estas m\'aquinas m\'as adelante. Ahora se presentan formalmente los 
+aut\'omatas no deterministas as\'i como los conceptos que detallan su 
+funcionamiento y el procesamiento de cadenas.
+
+\defin{
+Un aut\'omata de pila \textbf{no determinista} es una s\'eptupla:
+$$ M = \pt{Q,\Sigma,\Gamma,\delta,q_0,Z_0,F} $$ 
+donde:
+\begin{multicols}{2}
+\bi
+ \item $Q\neq\vacio$ es un conjunto finito de estados.
+ \item $\Sigma$ es el alfabeto de entrada.
+ \item $\Gamma$ es el alfabeto de la pila.
+ \item 
+ $\delta : 
+Q\times(\Sigma\cup\{\vacia\})\times\Gamma\imp\Pe(Q\times\Gamma^\star)$ 
+%   es la funci\'on de transici\'on.
+ \item $q_0\in Q$ es el estado inicial.
+ \item $Z_0\in\Gamma$ es el s\'imbolo inicial de la pila.
+ \item $F\inc Q$ es el conjunto de estados finales.
+\ei
+\end{multicols}
+}
+Analicemos con detalle la funci\'on de transici\'on: 
+\[
+\delta : Q\times(\Sigma\cup\{\vacia\})\times\Gamma\imp\Pe(Q\times\Gamma^\star)
+\]
+esta funci\'on recibe tres argumentos: un estado, un s\'imbolo o la cadena 
+vac\'ia y el s\'imbolo al tope de la pila; devuelve un par con el nuevo estado 
+y los s\'imbolos que ser\'an el nuevo tope de la pila.
+
+% \newpage
+Las transiciones son los pares que devuelve la funci\'on $\delta$:
+si $(p,\gamma)\in \delta(q,a,\sigma)$ entonces estando en el estado $q$ y leyendo 
+$a$ con $\sigma$ en el tope de la pila, el aut\'omata hace lo siguiente:
+\bi
+ \item consume el s\'imbolo $a$
+ \item elimina $s$ del tope de la pila, es decir \verb=POP=($\sigma$)
+ \item escribe $\gamma$ en el tope de la pila, es decir \verb=PUSH=($\ga$) 
+ \item cambia al estado $p$.
+\ei
+Es posible consumir, leer o escribir la cadena vac\'ia $\vacia$, de ah\'i que 
+estos aut\'omatas sean no-deterministas.
+
+
+\paragraph{Transiciones especiales}
+Los siguientes tipos de transiciones son de especial inter\'es:
+\bi
+ \item $(q',\sigma)\in\delta(q,a,\sigma)$\\
+  en este caso el contenido de la pila no se ha alterado.
+ \item $(q',\vacia)\in\delta(q,a,\sigma)$\\
+  el s\'imbolo $\sigma$ se borra y el aut\'omata tiene un nuevo tope en la 
+  pila, es decir, el s\'imbolo colocado inmediatamente abajo de $\sigma$.
+ \item $(q',\gamma)\in\delta(q,\vacia,\sigma)$\\
+  esta es una $\vacia$-transici\'on, el s\'imbolo de entrada no se 
+  procesa, se cambi\'o de estado y adem\'as el tope de la pila $\sigma$ se 
+  reemplaza por $\gamma$.
+\ei
+    
+\subsection{Aceptaci\'on de palabras por un aut\'omata}
+\defin{
+Una configuraci\'on o descripci\'on instant\'anea de un aut\'omata de pila es 
+una terna  $$  \pt{q,aw,\sigma\beta} $$
+que representa lo siguiente:
+\bi
+ \item el aut\'omata est\'a en el estado $q$
+ \item $aw$ es la parte a\'un \textbf{no} procesada de la cadena de entrada,
+  siendo $a$ el siguiente s\'imbolo a leer
+ \item $\sigma\beta$ es el contenido total de la pila, siendo $\sigma$ el        
+  s\'imbolo colocado en el tope.
+\ei
+}
+
+La noci\'on informal de c\'omputo se formaliza mediante una 
+relaci\'on~$\vdash_M$ entre configuraciones, llamada \textbf{paso de
+computaci\'on} tal que 
+\[
+\pt{q,aw,\sigma\beta}\vdash_M \pt{p,w,\gamma\beta}\;\;\text{ si y s\'olo si } \;\;
+(p,\gamma)\in\delta(q,a,\sigma)
+\]
+% \bi
+%  \item $q$ es el estado actual de la m\'aquina $M$
+%  \item $aw$ es la parte de la cadena de entrada que falta por procesar con $a$ 
+%   el siguiente s\'imbolo a procesar
+%  \item $p$ es el nuevo estado de la m\'aquina
+%  \item $w$ es la nueva cadena a procesar
+%  \item $\gamma \beta$ es el contenido de la pila en donde $\gamma$ est\'a en el 
+%     tope
+% \ei  
+Es importante remarcar que del lado derecho, en el contenido de la pila, que es
+$\gamma\beta$, se entiende que el tope de la pila contiene al primer símbolo
+de $\gamma$.
+
+\medskip
+
+\noindent Existen diferentes tipos de configuraciones que debemos enfatizar:
+\bi
+ \item Configuraci\'on inicial: $\pt{q_0,w,Z_0}$ para cualquier $w\in\sest$.
+ \item Configuraci\'on de aceptaci\'on con estados finales: 
+  $\pt{q_f,\vacia,\beta}$ con $q_f\in F$.
+ \item Configuraci\'on de aceptaci\'on por pila vac\'ia:          
+   $\pt{q_f,\vacia,\vacia}$.
+\ei
+Las configuraciones descritas son importantes y las dos \'ultimas distinguen 
+dos formas de aceptar cadenas, una verificando el estado de la m\'aquina y la 
+otra considerando el contenido de la pila. Estas formas ser\'an m\'as claras 
+despu\'es de introducir el concepto de procesamiento de cadenas.
+
+     
+
+% El procesamiento de una cadena en un aut\'omata de pila no-determinista puede 
+% hacerse mediante un \'arbol que analice los posibles c\'omputos. La ra\'iz del 
+% \'arbol ser\'a la configuraci\'on inicial $\pt{q_0,w,Z_0}$ y sus descendientes 
+% los pasos de computaci\'on generados por la m\'aquina. 
+% Las hojas del \'arbol pueden ser c\'omputos bloqueados o alguna de las 
+% configuraciones de aceptaci\'on descritas antes.
+\newcommand{\C}{\mathcal{C}}
+\subsection{Lenguaje aceptado por un aut\'omata de pila}
+Con la noci\'on de paso de computaci\'on se formaliza la noci\'on de lenguaje 
+aceptado por un aut\'omata por estados finales.
+% de manera an\'aloga al caso de los au\'tomatas finitos:
+La relaci\'on $\vdash^\star$ entre configuraciones $\C,\C'$ es la
+cerradura reflexiva transitiva de $\vdash$ y formaliza la 
+noción de múltiples pasos de c\'omputo). se define mediante las siguientes reglas:
+\begin{itemize}
+\item La relación $\vdash^\star$ incluye cero pasos de reescritura
+\[
+\frac{}{\C\vdash^\star \C}\;(C1)
+\]
+\item $\vdash^\star$ consiste en dar muchos pasos (tal vez cero) y un paso de reescritura
+\[
+\frac{\C\vdash^\star\C'\;\;\;\C'\vdash\C''}{\C\vdash^\star\C''}\;(C2)
+\] 
+\item Alternativamente, $\vdash^\star$ consisten en dar primero un paso de
+  reescritura, seguido de muchos pasos (tal vez cero).
+\[
+\frac{\C\vdash\C'\;\;\;\C'\vdash^\star\C''}{\C\vdash^\star\C''}\;(C3)
+\] 
+\end{itemize}
+
+
+
+
+Se define el lenguaje de aceptaci\'on de un aut\'omata de pila 
+como se hizo con los aut\'omatas finitos: al procesar una cadena, 
+el aut\'omata ha alcanzado un estado final
+\[ 
+L(M) = \{w\in\sest \mid 
+  \pt{q_0,w,Z_0}\vdash_M^\star\pt{q_f,\vacia,\beta} \text{ y } q_f\in F\}
+\]
+Obs\'ervese que el contenido de la pila $\beta$ es irrelevante y la cadena ha 
+sido aceptada ya que se termin\'o de procesar llegando al estado final $q_f$.
+
+\vspace*{10pt}
+
+Otra forma de aceptaci\'on para los aut\'omatas de pila es mediante la pila 
+vac\'ia:
+\[  
+V(M) = \{w\in\sest \mid \pt{q_0,w,Z_0}\vdash_M^\star\pt{p,\vacia,\vacia} \} 
+\]
+En este caso, obs\'ervese que el estado $p$ es irrelevante pero lo importante 
+es procesar por completo la cadena y que la pila est\'e vac\'ia.
+
+\vspace*{10pt}
+
+Estos dos tipos de aceptaci\'on son equivalentes como veremos m\'as adelante, 
+ahora veamos ejemplos de estas m\'aquinas.
+\paragraph{Ejemplo:}
+Considere el lenguaje $L_1 = \{a^ib^i \mid i\geq 0\}$, el siguente aut\'omata 
+de pila reconoce a $L_1$: 
+$$ M_1 =\pt{\{q_0,q_1,q_2\},\{a,b\},\{X,Z_0\},\delta,q_0,Z_0,\{q_2\}} $$
+donde:
+\[
+ \begin{array}{rclcrcl}
+  \delta(q_0,a,Z_0) & = &\{(q_0,XZ_0)\} & \qquad \qquad 
+    & \delta(q_0,a,X) & = & \{(q_0,XX)\} \\
+  \delta(q_0,\vacia,Z_0) & =& \{(q_2,\vacia)\} & \qquad \qquad
+    & \delta(q_0,b,X) & = & \{(q_1,\vacia)\}  \\
+  \delta(q_1,b,X) & = & \{(q_1,\vacia)\} & \qquad \qquad 
+    & \delta(q_1,\vacia,Z_0) & = &\{(q_2,\vacia)\}
+ \end{array}
+\]
+La aceptaci\'on de cadenas es por medio de estados finales.
+
+\paragraph{Ejemplo:}
+Ahora veamos un aut\'omata que reconoce a $L_1$ por medio de la pila vac\'ia:
+$$ M_1'=\pt{\{q_0,q_1\},\{a,b\},\{X,Z_0\},\delta,q_0,Z_0,\vacio} $$
+\[
+ \begin{array}{rclcrcl}
+  \delta(q_0,a,Z_0) & = & \{(q_0,XZ_0)\}\qquad \qquad 
+   &\delta(q_0,a,X) & = & \{(q_0,XX)\} \\
+  \delta(q_0,\vacia,Z_0) & = & \{(q_0,\vacia)\} \qquad \qquad 
+   &\delta(q_0,b,X)& = &\{(q_1,\vacia)\}\\
+  \delta (q_1,b,X) & = & \{(q_1,\vacia)\}  \qquad \qquad  
+    & \delta(q_1,\vacia,Z_0) & = &\{(q_1,\vacia)\}
+ \end{array}
+\]
+
+\paragraph{Ejemplo:}
+Sea $L_2=\{a^ib^j \mid i\geq j\geq 0\}$, el siguiente aut\'omata acepta por 
+pila vac\'ia el lenguaje:
+$$  M_2=\pt{\{q_0,q_1\},\{a,b\},\{X,Z_0\},\delta,q_0,Z_0,\vacio}$$
+\[
+ \begin{array}{rclcrcl}
+  \delta(q_0,a,Z_0) & = & \{(q_0,XZ_0)\} \qquad \qquad 
+   & \delta(q_0,a,X) & = & \{(q_0,XX)\}\\
+  \delta(q_0,\vacia,Z_0) & = &\{(q_0,\vacia)\}\qquad \qquad 
+   & \delta(q_0,b,X)& = & \{(q_1,\vacia)\}\\
+  \delta(q_1,b,X) & = & \{(q_1,\vacia)\} \qquad \qquad 
+   & \delta(q_1,\vacia,Z_0) & = & \{(q_1,\vacia)\} \\
+  \delta(q_1,\vacia,X) & = & \{(q_1,\vacia)\} & & &
+ \end{array}
+\]
+
+Al igual que los aut\'omatas finitos, los aut\'omatas de pila tienen una 
+representaci\'on gr\'afica usando v\'ertices o nodos y transiciones entre 
+ellos.
+Las transiciones estar\'an etiquetadas por los pares que representan el 
+s\'imbolo a procesar y el \textit{antes/despu\'es} del tope en la pila. Veamos 
+un ejemplo:
+
+\paragraph{Ejemplo:}
+El lenguaje $L_3 = \{wcw^R \mid w\in\{a,b\}^\star\}$ es aceptado por el 
+aut\'omata 
+$$ M_3 = \pt{\{q_0,q_1\},\{a,b,c\},\{A,B,Z_0\},\delta,q_0,Z_0,\vacio}$$
+\[
+ \begin{array}{rclcrcl}
+ \delta(q_0,a,Z_0) & = & \{(q_0,AZ_0)\} & \qquad \qquad 
+  & \delta(q_0,b,Z_0)&  =& \{(q_0,BZ_0)\}\\
+ \delta(q_0,a,A)& = & \{(q_0,AA)\} & \qquad \qquad
+  & \delta(q_0,b,A) & =& \{(q_0,BA)\}\\
+ \delta(q_0,a,B) & = & \{(q_0,AB)\} &\qquad \qquad 
+   & \delta(q_0,b,B)& = &\{(q_0,BB)\}\\
+ \delta(q_0,c,Z_0) & = & \{(q_1,Z_0)\} &\qquad \qquad 
+  & \delta(q_0,c,A) & = &\{(q_1,A)\}\\
+ \delta(q_0,c,B)& = &\{(q_1,B)\} & \qquad \qquad 
+  & \delta(q_1,a,A)& =& \{(q_1,\vacia)\}\\
+ \delta(q_1,b,B) & = & \{(q_1,\vacia)\} & \qquad \qquad 
+  & \delta(q_1,\vacia,Z_0) & = & \{(q_1,\vacia)\}
+ \end{array}
+\]
+
+\vspace*{10pt}
+
+\noindent Tambi\'en es aceptado por el siguiente aut\'omata:
+\begin{center}
+\begin{tikzpicture}[node distance=6cm,every node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=] (q0) {$q_{0}$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state,accepting by double] (q2) [right of=q1] {$q_2$};
+    \path[->] (q0) edge [in=160,out=130,loop] node [left] {$a,\,Z_0/aZ_0$} 
+    (q0);
+    \path[->] (q0) edge [in=110,out=80,loop] node [above] {$b,\,Z_0/bZ_0$} (q0);
+    \path[->] (q0) edge [in=30,out=60,loop] node [right] {$a,\,a/aa$} (q0);
+    \path[->] (q0) edge [in=200,out=230,loop] node [left] {$a,\,b/ab$} (q0);
+    \path[->] (q0) edge [in=260,out=290,loop] node [below] {$b,\,a/ba$} (q0);
+    \path[->] (q0) edge [in=310,out=340,loop] node [right] {$b,\,b/bb$} (q0);
+    \path[->] (q0) edge node [above] {$\qquad\qquad c,\,a/a\quad c,\,Z_0/Z_0$} 
+      node [below] {$c,\,b/b$} (q1);
+    \path[->] (q1) edge [loop above] node [above] {$a,\,a/\vacia$} (q1);
+    \path[->] (q1) edge [loop below] node [below] {$b,\,b/\vacia$} (q1);
+    \path[->] (q1) edge node [above] {$\vacia,\, Z_0/Z_0$} (q2);
+ \end{tikzpicture}
+\end{center}
+
+\subsection{Equivalencia de la aceptaci\'on}
+Veamos las demostraciones para justificar que los dos tipos de aceptaci\'on 
+en un aut\'omata de pila, por estados finales o por pila vac\'ia, son 
+equivalentes.
+
+\paragraph{De estados finales a pila vac\'ia}
+\lema{
+Dado un lenguaje $L$ tal que $L=L(M)$ para alg\'un aut\'omata de pila~$M$, 
+existe un aut\'omata de pila $M'$ tal que $L=V(M')$. Es decir, todo lenguaje 
+aceptado por estados finales es aceptado por pila vac\'ia.}
+La prueba consiste en construir un nuevo aut\'omata que acepta el mismo 
+lenguaje con la pila vac\'ia.\\ 
+Sea $M=\pt{Q,\Sigma,\Gamma,\delta,q_0,Z_0,F}$ entonces definimos a $M'$ como 
+sigue:
+$$ M'=\pt{Q\cup\{p_0,p\},\Sigma,\Gamma\cup\{N_0\},\delta,p_0,N_0,F} $$
+en donde
+\bi
+ \item se agregan dos estados $p_0,\;p$ siendo $p_0$ el nuevo estado inicial;
+ \item se agrega un s\'imbolo $N_0$ a $\Gamma$, el cual ser\'a el nuevo
+    s\'imbolo inicial de la pila;
+ \item la funci\'on de transici\'on conserva todas las transiciones de~$M$ 
+  adem\'as de las siguientes:
+  \bi
+   \item[] $\delta(p_0,\vacia,N_0)=\{(q_0,Z_0N_0)\}$
+   \item[] $(p,s)\in\delta(q_f,\vacia,s)$, para todo 
+   $q_f\in F,\;s\in\Gamma\cup\{N_0\}$   \item[] 
+$\delta(p,\vacia,s)=\{(p,\vacia)\}$
+  \ei
+\ei      
+ 
+\paragraph{De pila vac\'ia a estados finales}
+\lema{
+Dado un lenguaje $L$ tal que $L=V(M)$ para un aut\'omata de pila~$M$, existe un 
+aut\'omata de pila $M'$ tal que $L=L(M')$. Es decir, todo lenguaje aceptado 
+por pila vac\'ia es aceptado por estados finales.}
+Esta prueba consiste en construir los estados finales del aut\'omata.\\
+Sea $M=\pt{Q,\Sigma,\Gamma,\delta,q_0,Z_0,F}$ entonces definimos a $M'$ como 
+sigue:
+  $$M'=\pt{Q\cup\{p_0,p_f\},\Sigma,\Gamma\cup\{N_0\},\delta,p_0,N_0,\{p_f\}}$$
+es decir
+\bi
+ \item se agregan dos estados, $p_0,p_f$ siendo $p_0$ el nuevo estado
+   inicial y $p_f$ el \textbf{\'unico} estado final;
+ \item se agrega un s\'imbolo $N_0$ a $\Gamma$, el cual ser\'a el nuevo
+   s\'imbolo inicial de la pila;
+ \item la funci\'on de transici\'on conserva todas las transiciones de~$M$ y 
+  se agregan:
+  \bi
+   \item[] $\delta(p_0,\vacia,N_0)=\{(q_0,Z_0N_0)\}$
+   \item[] $(p_f,s)\in\delta(q,\vacia,N_0)$, para todo $q\in Q$
+  \ei  
+\ei
+
+Dado que las formas de aceptación son equivalentes, definimos lo siguiente: 
+
+\begin{definition}Un lenguaje $L\inc\sest$ es de tipo 2 (o libre de
+  contexto\footnote{Más adelante sabremos la razón de este nombre}) si $L$ es
+  aceptado por un autómata de pila.
+\end{definition}
+
+
+  
+\subsection{Aut\'omatas de pila deterministas}
+
+Los aut\'omatas presentados hasta ahora son no-deterministas. La capacidad de 
+ser determinista est\'a dada por que s\'olo hay un estado en la transici\'on 
+de cualquier estado leyendo un s\'imbolo del alfabeto.
+
+En los aut\'omatas de pila se logra al modificar la funci\'on de transici\'on:
+\[
+ \delta : Q\times(\Sigma\cup\{\vacia\})\times\Gamma\imp Q\times\Gamma^\star
+\]
+es decir hay a lo m\'as una transici\'on en un estado y s\'imbolo dados: 
+\bi
+ \item $\delta(q,a,s)=(p,\gamma)$ para $p,\gamma$ \'unicos 
+ \item o bien $\delta(q,a,s)$ no est\'a definida, es decir, $\delta$ es una 
+  funci\'on parcial
+\ei
+  
+\noindent Al permitirse las $\vacia$-transiciones necesitamos la siguiente 
+convenci\'on para mantener el determinismo cuando son retiradas:
+\bi
+ \item[] Si $\delta(q,a,s)$ est\'a definida entonces $\delta(q,\vacia,s)$ 
+  est\'a indefinida y viceversa. Es decir, ambas transiciones no pueden estar 
+  definidas al mismo tiempo.
+\ei
+
+\subsection{Determinismo vs. No-determinismo}
+El poder expresivo que proporciona el no-determinismo en una m\'aquina puede 
+ser valioso pero tambi\'en puede agregar complejidades que no son deseadas al 
+momento de una implementaci\'on seria.
+
+Obviamente un aut\'omata de pila determinista es un caso particular de un 
+aut\'omata de pila no-determinista. 
+A diferencia de los aut\'omatas finitos, en el caso de los aut\'omatas de 
+pila no hay equivalencia entre los aut\'omatas deterministas y los 
+no-deterministas.
+
+Existen lenguajes que s\'olo pueden ser reconocidos mediante un aut\'omata de 
+pila no-determinista.
+Por ejemplo, $L = \{w\in\{a,b\}^\star \mid w=w^R\}$ el lenguaje de 
+los pal\'indromos. 
+Esto implica que hay lenguajes tipo 2 que no pueden ser 
+reconocidos por un aut\'omata de pila determinista.
+
+% En lo siguiente estudiaremos a fondo la equivalencia entre estas m\'aquinas 
+% con memoria y los lenguajes libres de contexto.
+
+% \section{Equivalencia con Lenguajes Libres de Contexto}
+
+% \teo{ Un lenguaje es libre de contexto si y s\'olo si es aceptado 
+% por un aut\'omata de pila (no-determinista).
+% }
+% \vspace*{-20pt}
+% \begin{proof}
+%  La prueba es en dos partes:
+%  \bi
+%   \item[I] S\'intesis: Dado un lenguaje libre de contexto~$L$ existe un 
+%     aut\'omata de pila~$M$ tal que $L=L(M)$.
+%   \item[II] An\'alisis: Dado un aut\'omata de pila~$M$ existe una gram\'atica
+%     libre de contexto~$G$ tal que $L(M)=L(G)$. Es decir, $L(M)$ es libre 
+%   de contexto.
+%  \ei
+% \end{proof}
+
+
+% \subsection{De una Gram\'atica Libre de Contexto a un Aut\'omata de Pila}
+% Como vimos anteriormente, un lenguaje libre de contexto est\'a determinado 
+% por una gram\'atica libre de contexto que lo genere. 
+% Sea $G=\pt{V,T,S,P}$ una gram\'atica libre de contexto, definimos un  
+% aut\'omata de pila~$M_G$ como sigue:
+% \bi
+%  \item $Q=\{q_0,q_1,q_2\}$
+%  \item $\Sigma = T, \; \Gamma = V \cup \{Z_0\}$
+%  \item $F=\{q_2\}$
+%  \item $\delta$ se define mediante:
+%   \[
+%    \begin{array}{rcl}
+%      \delta(q_0,\vacia,Z_0) & = & \{(q_1,SZ_0)\} \\
+%      \delta(q_1,\vacia,A) & = & \{(q_1,\alpha) \mid A\imp\alpha\in P\} \\
+%      \delta(q_1,a,a) & = & \{(q_1,\vacia)\} \;\;\fa a\in\Sigma \\
+%      \delta(q_1,\vacia,Z_0) & = & \{(q_2,Z_0)\}
+%    \end{array}
+%   \]
+% \ei
+% Se cumple $L(G)=L(M_G)$.
+
+% \paragraph{Ejemplo:}
+% Dada $G$ mediante 
+% $$  S\imp aSb \mid  cSbS \mid  a $$
+% el aut\'omata de pila correspondiente es:
+% \[
+%  \begin{array}{rclcrcl}
+%   \delta(q_0,\vacia,Z_0) & = & \{(q_1,SZ_0)\} & \qquad \qquad &
+%   \delta(q_1,\vacia,S)& =&\{(q_1,aSb),\;(q_1,cSb),\;(q_1,a)\} \\
+%   \delta(q_1,a,a)& =& \{(q_1,\vacia)\}  & \qquad \qquad &
+%   \delta(q_1,b,b)& =& \{(q_1,\vacia)\} \\
+%   \delta(q_1,c,c) &=& \{(q_1,\vacia)\}  & \qquad \qquad &
+%   \delta(q_1,\vacia,Z_0) & = &\{(q_2,Z_0)\}
+%  \end{array}
+% \]
+
+% \subsection{De un Aut\'omata de Pila a una Gram\'atica Libre de Contexto}
+% Dado un aut\'omata de pila~$M$ que acepta por pila vac\'ia, vamos a construir 
+% una gram\'atica libre de contexto~$G_M$ tal que $L(M)=L(G_M)$.
+% Este m\'etodo genera gram\'aticas bastante complejas, con un gran n\'umero 
+% de variables y producciones. Adem\'as de que pueden generarse variables 
+% in\'utiles, pero ya se han estudiado los m\'etodos de transformaci\'on de 
+% gram\'aticas para simplificarlas o normalizarlas.
+
+% \vspace*{10pt}
+
+% \noindent Las variables de la gram\'atica ser\'an $S$ como s\'imbolo inicial y 
+% las expresiones de la forma:
+% $$[p,X,q] \quad \text{ donde } p,q\in Q,\;X\in\Gamma$$
+% La idea b\'asica es simular con derivaciones los c\'omputos de~$M$:
+% la variable $[p,X,q]$ debe generar todas las cadenas que llevan al 
+% aut\'omata de $p$ a $q$ al eliminar $X$ de la pila.
+
+% Las producciones de la gram\'atica son:
+% \bi
+%   \item Las producciones iniciales: $S\imp [q_0,Z_0,p]$ para todo $p\in Q$.
+
+%   \item Si $(p,\vacia)\in\delta(q,a,X)$ entonces leyendo~$a$ el aut\'omata pasa 
+%     de $q$ a $p$ y elimina a $X$ de la pila.
+%     Se agrega $ [q,X,p]\imp a $, esto incluye el caso $a=\vacia$.
+
+%  \item Si $(p,Y_1Y_2\ldots Y_m)\in\delta(q,a,X)$ entonces leyendo $a$ el 
+%   aut\'omata pasa de $q$ a $p$ y sustituye a $X$ por $Y_1Y_2\ldots Y_m$ en 
+%   la pila. 
+%   Se agrega $ [q,X,p_m]\imp a[p,Y_1,p_1][p_1,Y_2,p_2]\ldots[p_{m-1}Y_mp_m]$
+%   para todas las elecciones posibles de $p_1,\ldots,p_m\in Q$. 
+%   Esto incluye el caso $a=\vacia$.
+% \ei
+
+% \paragraph{Ejemplo:}
+% Considere el lenguaje $ L=\{a^ib^i \mid i\geq 0\} $ cuyo aut\'omata de pila es:
+% \[
+%  \begin{array}{rclcrcl}
+%   \delta(q_0,a,Z_0) & =& \{(q_0,XZ_0)\}& \qquad \qquad &
+%   \delta(q_0,a,X)& = &\{(q_0,XX)\} \\
+%   \delta(q_0,\vacia,Z_0) & = & \{(q_0,\vacia)\} & \qquad \qquad &
+%   \delta(q_0,b,X)&=& \{(q_1,\vacia)\} \\
+%   \delta(q_1,b,X) & = &\{(q_1,\vacia)\} & \qquad \qquad &
+%   \delta(q_1,\vacia,Z_0) & =&\{(q_1,\vacia)\}
+%  \end{array}
+% \]
+% La gram\'atica correspondiente tiene las siguientes producciones iniciales:
+%  \[
+%   S \imp [q_0,Z_0,q_0] \qquad \qquad S \imp [q_0,Z_0,q_1]
+%  \]
+% Adem\'as de las producciones correspondientes a las transiciones
+% \[
+%  \begin{array}{rclcrcl}
+%  \delta(q_0,\vacia,Z_0) & = & \{(q_0,\vacia)\} &  \qquad \qquad &
+%   [q_0,Z_0,q_0] & \imp & \vacia \\
+%  \delta(q_0,b,X) & = & \{(q_1,\vacia)\}  &  \qquad \qquad &
+%   [q_0,X,q_1]  & \imp & b \\
+%  \delta(q_1,b,X) & = & \{(q_1,\vacia)\} &  \qquad \qquad &
+%   [q_1,X,q_1]  & \imp & b \\
+%  \delta(q_1,\vacia,Z_0) & = & \{(q_1,\vacia)\} &  \qquad \qquad &
+%   [q_1,Z_0,q_1]  & \imp & \vacia 
+%  \end{array}
+% \]
+% Para la transici\'on $\delta(q_0,a,Z_0) = \{(q_0,XZ_0)\}$ se tienen 
+% las siguientes producciones:
+% \[
+%  \begin{array}{rcl}
+%  [q_0,Z_0,q_1] & \imp & a[q_0,X,q_0][q_0,Z_0,q_1] \\
+ 
+%  [q_0,Z_0,q_0] & \imp & a[q_0,X,q_1][q_1,Z_0,q_0] \\
+ 
+%  [q_0,Z_0,q_0]  & \imp & a[q_0,X,q_0][q_0 ,Z_0,q_0 ] \\
+
+%  [q_0,Z_0,q_1]  & \imp & a[q_0,X,q_1][q_1 ,Z_0,q_1 ] 
+%  \end{array}
+% \]
+% Y finalmente para $\delta(q_0,a,X)=\{(q_0,XX)\}$ las producciones:
+% \[
+%  \begin{array}{rcl}
+%  [q_0,X,q_0] & \imp &  a[q_0,X,q_0][q_0 ,X,q_0 ] \\
+ 
+%  [q_0,X,q_0]  & \imp & a[q_0,X,q_1][q_1 ,X,q_0 ] \\
+ 
+%  [q_0,X,q_1]  & \imp & a[q_0,X,q_0][q_0 ,X,q_1 ] \\
+ 
+%  [q_0,X,q_1]  & \imp & a[q_0,X,q_1][q_1 ,X,q_1 ] 
+%  \end{array}
+% \]
+% Veamos la derivaci\'on de la cadena~$aabb$:
+%  \[
+%   \begin{array}{rll}
+%   S & \imp & [q_0,Z_0,q_1] \\ 
+%     & \imp & a[q_0,X,q_1][q_1,Z_0,q_1] \\ 
+%     & \imp & aa[q_0,X,q_1][q_1,X,q_1][q_1,Z_0,q_1] \\
+%     & \imp & aab[q_1,X,q_1][q_1,Z_0,q_1] \\ 
+%     & \imp & aabb[q_1,Z_0,q_1] \\
+%     & \imp & aabb 
+%   \end{array}
+%   \]
+
+\end{document}

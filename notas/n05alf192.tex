@@ -1,0 +1,334 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+%\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+\usepackage[section]{placeins}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
+  PAPIME PE102117} \\ 
+Nota de Clase 5: El Teorema de Kleene} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{16 de marzo de 2019}
+
+\begin{document}
+\maketitle
+
+Como hemos visto, la relaci\'on entre aut\'omatas finitos y lenguajes 
+regulares parece de equivalencia, las nociones detr\'as de ambos conceptos la 
+suguieren. En esta nota demostraremos que ese es el caso utilizando el m\'etodo 
+propuesto por Kleene~\footnote{Stephen Cole Kleene fue un matem\'atico 
+estadounidense, alumno de Alonzo Church. Tambi\'en es conocido por iniciar la 
+teor\'ia de la recursi\'on que fue usada para los fundamentos de la Teor\'ia de 
+la Computaci\'on, como la noci\'on de computabilidad.} 
+
+
+\section{Teorema de Kleene}
+
+\teo{ Un lenguaje es regular si y s\'olo si es aceptado por un aut\'omata 
+finito.
+}
+\vspace*{-20pt}
+\begin{proof}
+ La prueba es en dos partes:
+ \bi
+  \item[I] S\'intesis: Dado un lenguaje regular~$L$, existe un aut\'omata 
+    finito~$M$ tal que $L=L(M)$.
+  \item[II] An\'alisis: Dado un aut\'omata finito~$M$, existe una      
+    expresi\'on regular~$\alpha$ tal que $L(M)=L(\alpha)$. 
+    Es decir, $L(M)$ es regular.
+ \ei
+\end{proof}
+
+A continuaci\'on se abordar\'an dos teoremas que demuestran al anterior. 
+Para ello recordemos que las expresiones regulares est\'an en correspondencia 
+con los lenguajes regulares y de esta forma podremos empatar tambi\'en a las 
+expresiones regulares con los aut\'omatas finitos. 
+
+
+\subsection{Teorema de S\'intesis de Kleene}
+
+En esta secci\'on se demostrar\'a una parte de la doble implicaci\'on del 
+teorema de Kleene: se pasar\'a de expresiones regulares a aut\'omatas finitos.
+
+Este teorema se denomina de s\'intesis ya que se proporcionar\'a una m\'aquina 
+para reconocer un lenguaje regular dado. 
+Es decir, se sintetizar\'a un aut\'omata finito analizando la forma de una 
+expresi\'on regular que genera al lenguaje dado.
+
+\newpage
+
+\teo{
+Dada una expresi\'on regular~$\alpha$ existe un aut\'omata 
+finito~$M$ tal que $L(\alpha) = L(M)$.
+}
+%\vspace*{-20pt}
+\begin{proof}
+La demostraci\'on es \textit{constructiva} y se har\'a mediante 
+inducci\'on sobre las expresiones regulares, es decir proporcionando un 
+aut\'omata que \textit{reconzca} cada caso de una expresi\'on regular. 
+\begin{description}
+\item{\textbf{Base de la Inducción}} \hfill\\
+El caso en que $\alpha = \vacio$, el siguiente autómata reconoce a $L(\alpha)$: 
+\[
+\begin{tikzpicture}[node distance=2cm,every node/.style={scale=0.8},semithick]
+  \node[state,initial,initial text=] (q) {$q_0$};
+\end{tikzpicture}
+\]
+Caso en que $\alpha=\vacia$. Entonces el siguiente aut\'omata reconoce a 
+$L(\alpha)$: 
+%\hspace*{10pt}
+\[
+\begin{tikzpicture}[node distance=2cm,every node/.style={scale=0.8},semithick]
+  \node[state,initial,initial text=,accepting by double] (q) {$q_0$};
+\end{tikzpicture}
+\]
+Para $\alpha = a$, con $a\in \Sigma$ se tiene el siguiente aut\'omata que 
+reconoce a $L(\alpha)$:
+%\hspace*{7pt}
+\[
+\begin{tikzpicture}[node distance=2cm,every node/.style={scale=0.8},semithick]
+   \node[state,initial,initial text=,] (q) {$q_0$};
+   \node[state,accepting by double] (p) [right of=q] {$q_1$};
+   \path[->] (q) edge [bend left] node [above] {a} (p);
+\end{tikzpicture}    
+\]
+\item{\textbf{Hip\'otesis de inducci\'on}}\\\hfill
+  Sean $M_1,\,M_2$ dos aut\'omatas que reconocen a los lenguajes $L(\alpha_1)$ y 
+  $L(\alpha_2)$ respectivamente.
+
+\item{\textbf{Paso Inductivo}} \\\hfill
+ Caso en que $\alpha=\alpha_1+\alpha_2$.
+ El siguiente aut\'omata reconoce a $L(\alpha)$:
+% \hspace{10pt}
+\[ 
+\begin{tikzpicture}[node distance=2cm,every node/.style={scale=0.8},semithick]
+   \node[state,initial,initial text=] (q) {$q$};
+   \node[state] (p1) [rectangle,above right of=q] {$M_1$};
+   \node[state] (p2) [rectangle,below right of=q] {$M_2$};
+   \path[->] (q) edge [bend left] node [above] {$\vacia$} (p1);
+   \path[->] (q) edge [bend right] node [below] {$\vacia$} (p2);
+ \end{tikzpicture}
+\] 
+donde $M_1,\,M_2$ son aut\'omatas dados por la hip\'otesis de inducci\'on y las 
+transiciones $\vacia$ van hacia los estados iniciales de cada 
+uno de ellos. 
+
+
+
+Para el caso en que $\alpha=\alpha_1\alpha_2$ entonces el siguiente aut\'omata 
+reconoce a $L(\alpha)$: 
+\begin{center}
+\begin{tikzpicture}[node distance=3cm,every node/.style={scale=0.8},semithick]
+   \node[state,initial,initial text=] (p1) [rectangle] {$M_1$};
+   \node[state] (p2) [rectangle,right of=p1] {$M_2$};
+   \path[->] (p1) edge [bend left] node [above] {$\vacia$} (p2);
+   \path[->] (p1) edge [left] node [above] {$\vdots$} (p2);
+   \path[->] (p1) edge [bend right] node [above] {$\vacia$} (p2);
+\end{tikzpicture}    
+\end{center}
+\noindent donde $M_1,\,M_2$ son aut\'omatas que reconocen a 
+$L(\alpha_1),L(\alpha_2)$ dados por la hip\'otesis de inducci\'on, el estado 
+inicial es el de $M_1$ y las transiciones $\vacia$ van de los estados finales de 
+$M_1$ hacia el inicial en $M_2$.
+
+Finalmente el caso $\alpha=\alpha_1^\star$ tiene al siguiente aut\'omata que 
+reconoce a $L(\alpha)$:
+\begin{center}
+\begin{tikzpicture}[node distance=3cm,every node/.style={scale=0.8},semithick]
+   \node[state,initial,initial text=,accepting by double] (q) {$q$};
+   \node[state] (p1) [rectangle,right of=q] {$M$};
+   \path[<-] (q) edge [bend left] node [above] {$\vacia$} (p1);
+   \path[->] (p1) edge [bend left] node [above] {$\vacia$} (q);
+\end{tikzpicture}   
+\end{center}
+\noindent 
+donde $M_1$ es $M$ más $q_0$ (el estado inicial de $M_1$) y $M_1$ es un
+autómata que reconoce a $L(\alpha_1)$ dado por la hip\'otesis de inducci\'on y
+las transiciones $\vacia$ conectan los estados finales de $M_1$ con el estado
+inicial $q_0$, el cúal se vuelve final, si no lo era en $M_1$.
+\end{description}
+Se deja como ejercicio en todos los casos verificar que el autómata recien
+construido efectivamente acepta al lenguaje deseado.
+\end{proof}
+
+\subsection{Teorema de An\'alisis de Kleene}
+
+Ahora demostraremos la segunda parte en donde un aut\'omata finito implica  
+una expresi\'on regular, la noci\'on detr\'as de esta parte es que analizaremos 
+los lenguajes acumulados de cada estado para generar una expresi\'on regular.
+
+\teo{
+Dado un aut\'omata finito~$M$ existe una expresi\'on regular~$\alpha$ tal que 
+$L(M)=L(\al)$. Es decir, $L(M)$ es regular.
+}
+%\vspace*{-20pt}
+\begin{proof}
+Existen diversas demostraciones, nosotros usaremos el m\'etodo de ecuaciones 
+caracter\'isticas usando el Lema de Arden.
+\end{proof}
+
+\subsubsection{Lema de Arden}
+Este lema extrae un conjunto de ecuaciones para determinar el lenguaje de 
+aceptaci\'on de una m\'aquina.
+Primero veamos la definic\'on de dichas ecuaciones y despu\'es el m\'etodo para 
+obtener las ecuaciones dado un aut\'omata. 
+
+\defin{
+Sean $A,B\inc \sest$ y $X$ una variable:
+\bi
+ \item Una ecuaci\'on lineal derecha para $X$ es una expresi\'on de la forma:
+  $$X = AX+B$$
+ \item An\'alogamente, una ecuaci\'on lineal izquierda es una expresi\'on de 
+  la forma:
+  $$X = XA+B $$
+  Donde el s\'imbolo $+$ denota a la uni\'on de lenguajes.
+\ei
+}
+
+\lema{\textbf{\!\!: Lema de Arden}
+Sean $A,B\inc\sest$ dos lenguajes y $X=AX+B$ una ecuaci\'on lineal derecha. 
+Entonces
+\be
+ \item $A^\star B$ es una soluci\'on de la ecuaci\'on, es decir, 
+  $A^\star B=A(A^\star B)+B$.
+ \item Si $L$ es una soluci\'on entonces $A^\star B\inc L$, es decir, 
+  $A^\star B$ es la soluci\'on m\'inima.
+ \item Si $\cv\notin A$ entonces $A^\star B$ es la \'unica soluci\'on.
+ \item Si $\cv\in A$ entonces existe un infinidad de soluciones.
+\ee 
+}
+\begin{proof}$\;$\medskip
+  \begin{enumerate}
+  \item Por propiedades de lenguajes regulares se tiene que:
+\[
+A(A^\star B) + B = (AA^\star)B + \vacia B = (AA^\star+ \vacia) B = A^\star B
+\]
+\item Sea $L$ una solución, es decir, $L=AL + B$. Sea $w\in A^\star B$ y demostremos
+  que $w\in L$. Como $w\in A^\star B$, existen $u\in A^\star$ y $v\in B$ tales
+  que $w=uv$. Veamos que $uv\in L$ mediante inducción sobre $u\in A^\star$
+  \begin{itemize}
+  \item Base, $u=\vacia$. En este caso $w=v\in B\inc AL+B = L\;\; \therefore
+    w\in L$.
+  \item H. I. Si $u_2\in A^\star$ entonces $u_2v\in L$.
+  \item Paso Inductivo: sea $u=u_1u_2$ donde $u_1\in A$ y $u_2\in
+    A^\star$. Queremos demostrar que $w=uv=u_1u_2v\in L$. Por la H.I. tenemos
+    que $u_2v\in L$, así $u_1(u_2v)\in AL\inc AL + B = L\;\; \therefore
+    w=uv=(u_1u_2)v\in L$.
+  \end{itemize}
+\item Supongamos que $\vacia\notin A$. Sea $L=AL+B$ una solución, veamos que
+  $L=A^\star B$. Por la parte 2 se tiene que $A^\star B\inc L$. Si la contención no es propia hemos
+  terminado. Por lo tanto supongamos que $A^\star B\subset L$. En tal caso
+  existe un $C$ tal que $L=A^\star B+C$ y $A^\star B\cap C=\varnothing$.
+  Afirmamos que $C=\varnothing$. Como $L=AL+B$ entonces $A^\star B+C = A^\star
+  B+AC$ de donde al intersectar con $C$ en ambos lados y simplificando se
+  sigue que $(A^\star B\cap C)+C=(A^\star B\cap C)+(AC\cap C)$. Luego
+  entonces $C=AC\cap C$, puesto que $A^\star B\cap C=\varnothing$. De aquí se
+  sigue que $C\inc AC$, pero como $\vacia\notin A$, esto sólo puede
+  pasar\footnote{Tómese una cadena $w\in C$ de longitud mínima, entonces
+   $w\in AC$ de donde  $w=uv$ con $u\in A$ y $v\in C$, pero como $u\neq\vacia$
+ entonces $v\in C$ tendría menor longitud que $w$ contradiciendo la
+ minimalidad de $w$.} si $C=\varnothing$.
+ Así que $L=A^\star B+C = A^\star B+\varnothing = A^\star B$. Luego entonces
+ $A^\star B$ es la única solución.
+\item Se deja como ejercicio.
+  \end{enumerate}
+\end{proof}
+
+Esta parte mostrar\'a que un aut\'omata finito implica una expresi\'on regular, 
+esto se har\'a por medio de un sistema de ecuaciones a partir de un 
+AFN, para ello se abstraer\'a la noci\'on del lenguaje aceptado desde un estado 
+particular del aut\'omata y no necesariamente del inicial.
+
+\defin{
+Dado un AFN~$M=\pt{Q,\Sigma,\delta,q_0,F}$ tal que $Q=\{q_0,\ldots, q_n\}$.
+Definimos los siguientes conjuntos:
+\bi
+ \item El conjunto de cadenas que se aceptan desde el estado $q_i$,
+   para cualquier $1\leq i\leq n$:
+   $$ L_i=\{w\in\sest \mid \dest(q_i,w)\cap F\neq\vacio\}$$
+ \item $L_0$ es el lenguaje aceptado por $M$, es decir, $L_0=L(M)$.
+\ei
+}
+
+En general no es sencillo calcular directamente los conjuntos $L_i$. Para 
+obtener una expresi\'on regular completa respecto al aut\'omata, se 
+obtendr\'a un sistema de ecuaciones a partir de un AFN. Al resolverlo, $L_0$ 
+ser\'a el lenguaje que reconoce el aut\'omata como se mencion\'o arriba. 
+
+\noindent El sistema de ecuaciones se define usando:
+\be
+ \item El conjunto de s\'imbolos de $\Sigma$ tal que existe una transici\'on 
+  del estado $q_i$ al estado $q_j$, para cualesquiera $1\leq i,j\leq n$, con 
+  $n$ el total de estados:
+      $$ X_{i,j}=\{a\in\Sigma \mid q_j\in\delta(q_i,a)\}$$
+ \item El conjunto auxiliar $Y_i$ que indica si $\vacia$ es aceptada desde $q_i$
+  \[
+   Y_i = \left\{\ba{cl}
+          \{\vacia\} & \mbox{si}\;q_i\in F \\
+          \vacio & \mbox{en otro caso}
+         \ea
+         \right.
+   \]
+\ee
+  
+A partir de estos conjuntos podemos hallar una caracterización de 
+cada lenguaje $L_i$ mediante ecuaciones % de los lenguajes de cada estado est\'an dadas 
+% por la siguiente propiedad que es fácil de demostrar para cualquier
+%$1\leq i\leq n$:
+$$ L_i=\sum_{j=0}^n X_{i,j}L_j + Y_i$$
+\noindent Ésta es la llamada ecuación característica para $L_i$, dichas
+ecuaciones general el llamado sistema de ecuaciones 
+caracter\'isticas para un AFN.
+
+\vspace*{20pt}
+
+Finalmente, el Lema de Arden nos indica c\'omo calcular los conjuntos $L_i$. 
+Esta ser\'a la idea a seguir para demostrar el Teorema de Análisis de Kleene:
+\be
+ \item Dado el aut\'omata~$M$ construir los conjuntos $ X_{i,j},\;Y_i $ y
+   plantear las ecuaciones características.
+ \item Resolver el sistema de ecuaciones caracter\'isticas, empleando el Lema 
+  de Arden donde se requiera.
+ \item La soluci\'on para $L_0$ genera una expresi\'on regular para $L(M)$.
+\ee
+
+Es importante remarcar que la solución del sistema de ecuaciones raramente es
+única, puesto que éste puede resolverse de distintas maneras. Por supuesto que
+todas las soluciones resultan equivalentes.
+
+
+
+
+
+
+
+\end{document}

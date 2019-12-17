@@ -1,0 +1,554 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+\usepackage{amssymb,amsmath,stmaryrd,amsthm}
+\usepackage{mathrsfs}
+%\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+%Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
+  PAPIME PE102117} \\ 
+Nota de Clase 2: Lenguajes y expresiones regulares} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{17 de febrero de 2019}
+
+\begin{document}
+\maketitle
+
+\section{Lenguajes Regulares}
+
+El estudio de los lenguajes como conjuntos de cadenas debe ser susceptible a 
+realizarse de manera formal mediante una abstracci\'on conveniente. 
+
+Una forma para caracterizar lenguajes sencillos, de f\'acil descripci\'on, es 
+utilizar operaciones sobre cadenas, \'estas permiten la \textit{generaci\'on} 
+de nuevos lenguajes. 
+Los lenguajes regulares son los conjuntos de cadenas m\'as simples.
+
+\defin{
+Un lenguaje~$L\inc\sest$ es regular si es generado a partir de los lenguajes 
+b\'asicos $\vacio,\{\cv\},\{a\}$ (donde $a\in\Sigma$) y 
+mediante las operaciones de uni\'on, concatenaci\'on y estrella de Kleene. 
+Recursivamente:
+\bi
+ \item $\vacio$ y $\{\cv\}$ son lenguajes regulares.
+ \item Si $a\in\Sigma$ entonces $\{a\}$ es regular.
+ \item Si $L,M$ son regulares entonces $L\cup M, LM$ y $L^\star$ son regulares.
+ \item Son todos.
+\ei 
+El conjunto de los lenguajes regulares será denotado por $REG$.
+}
+\paragraph{Ejemplos:}
+\bi
+ \item Cualquier lenguaje \textit{finito} es regular.
+ \item En efecto si
+  $L=\{w_1,\ldots,w_n\}\inc\sest$ entonces $L=L_1\cup L_2\cup\ldots\cup
+  L_n$ con $L_i=\{w_i\}$. Cada lenguaje $L_i$ es regular puesto que si
+  $w_i=a_1\ldots a_{k_i}$ con $a_j\in\Sigma$  entonces
+  $L_i=\{a_1\}\{a_2\}\ldots\{a_{k_i}\}$ y cada $\{a_j\}$ es regular por
+  definici\'on.
+  \item En particular cualquier alfabeto $\Sigma$ es un lenguaje regular.
+  \item Sobre el alfabeto $\Sigma=\{a,b\}$ tenemos los siguientes lenguajes
+   regulares \textit{infinitos}:
+   \bi
+    \item $L_1=\{w\in\sest \mid w \text{ empieza con }\;b\}=\{b\}\sest$
+    \item $L_2=\{w\in\sest \mid w \text{ contiene exactamente una }\;a\}$
+      $ = \{b\}^\star\{a\}\{b\}^\star$
+    \item $L_3=\{w\in\sest \mid w \text{ contiene la subcadena } \;ba\} $ 
+      $ = \sest\{ba\}\sest$
+    \item $L_4=\{w\in\sest \mid w \text{ contiene exactamente dos } b \}$ 
+      $ =\{a\}^\star\{b\}\{a\}^\star\{b\}\{a\}^\star$
+    \item $L_5=\{w\in\sest \mid w \text{ contiene un n\'umero par de } a \} = $
+    $\{b\}^\star\cup\big(\{b\}^\star\{a\}\{b\}^\star\{a\}\{b\}^\star\big)^\star$
+  \ei
+ \item No todo lenguaje infinito es regular% , mas adelante veremos que
+  % el lenguaje $L=\{a^nb^n\;|\;n\in\N\}$ no es regular.
+\ei   
+
+\paragraph{Problemas de inter\'es acerca de lenguajes regulares}
+Dado un lenguaje regular~$L\inc\Sigma^\star$ existen diversos problemas de 
+decisi\'on (es decir, problemas cuya respuesta es s\'i o no) acerca de~$L$, 
+enunciamos algunos de ellos que tienen soluci\'on algor\'itmica.
+\be
+ \item Problema de vacuidad: ?`Es $L$ el lenguaje vac\'io?
+ \item Problema de finitud: ?`Es $L$ finito ?
+ \item Problema de la pertenencia: Dada $w\in\Sigma^\star$, ?`$w\in L$ ?   
+ \item Problema de la equivalencia: Dado $M\inc\Sigma^\star$, ?`$M=L$ ?
+\ee
+
+
+\subsection{Expresiones Regulares}
+Los lenguajes regulares se pueden describir por medio de una expresi\'on que 
+generaliza la forma de las cadenas en el lenguaje, es decir una 
+representaci\'on de las cadenas.
+Un mecanismo de suma importancia para denotar lenguajes regulares es por
+medio de las llamadas expresiones regulares, que son \textit{f\'ormulas} 
+expl\'icitas de la cadena caracter\'istica del lenguaje.
+
+\defin{ Las expresiones regulares est\'an definidas recursivamente como
+sigue:
+\bi
+ \item $\vacio$ es una expresi\'on regular.
+ \item $\cv$ es una expresi\'on regular.
+ \item Si $a\in\Sigma$ entonces $a$ es una expresi\'on regular.
+ \item Si $\al,\beta$ son expresiones regulares entonces 
+  $\al\beta,\;\al+\beta,\;\al^\star$ son expresiones regulares.
+\item Son todas.
+\ei
+}
+
+
+Toda expresión regular denota a un lenguaje definido como sigue:
+
+\defin{El lenguaje definido por una expresión regular $r$ denotado por $\L \llbracket r \rrbracket \subseteq \Sigma^{\ast}$ se define como:
+\begin{align*}
+\L \llbracket \varnothing \rrbracket &= \varnothing\\
+\L \llbracket \varepsilon \rrbracket &= \{ \varepsilon \}\\
+\L \llbracket a \rrbracket &= \{ a\}\\
+\L \llbracket r + s \rrbracket &= \L \llbracket r \rrbracket \cup \L \llbracket s \rrbracket\\
+\L \llbracket rs \rrbracket &= \L \llbracket r \rrbracket \L \llbracket s \rrbracket\\
+\L \llbracket r^{\ast} \rrbracket &= \L \llbracket r \rrbracket^{\ast}\\
+\end{align*}\label{Lenguajes}
+A la operación $\L\llbracket \cdot \rrbracket$ se le conoce como denotación.
+}
+
+Más aún todo lenguaje regular puede denotarse con una expresión regular como lo asegura la siguiente
+
+\prop{Un lenguaje $L\subseteq \Sigma^{\ast}$ es regular si y sólo si existe $r\in ER$ tal que $L = L\llbracket r \rrbracket$
+}
+
+\dem{Para $\Rightarrow)$ hacemos inducción estrucrural sobre REG. Para
+  $\Leftarrow)$  inducción estructural sobre $r$.
+}
+
+De acuerdo a la proposición anterior en adelante identificaremos a una expresión regular $r$ con $L \llbracket r \rrbracket$, por ejemplo si $L = \{ \varepsilon, 0, 00, 000, \dots, 0^n, \dots 1 \}$ escribiremos $L = 0^{\ast} + 1$ en vez de $L = \L\llbracket 0^{\ast} + 1 \rrbracket$.
+
+\medskip
+
+Un lenguaje regular puede ser denotado por más de una expresión regular por lo que necesitamos una noción de equivalencia, diremos que $r$ y $s$ son equivalentes si denotan exactamente al mismo lenguaje, es decir,
+
+\defin{Decimos que dos expresiones regulares $\al,\beta\in ER$ son
+  equivalentes, y usamos la notación $\al = \beta$, si y sólo si $L \llbracket
+  \al \rrbracket = L \llbracket \beta \rrbracket$.
+}
+
+% \noindent Dada una expresi\'on regular $\al$, su significado~$L(\al)$ es un 
+% lenguaje regular definido como sigue:
+% \bi
+% \item $L(\vacio)=\vacio$
+% \item $L(\cv)=\cv$
+% \item $L(a)=\{a\}\;\;\;\mbox{ si }\al\in\Sigma$
+% \item $L(\al\beta)=L(\al)L(\beta)$
+% \item $L(\al+\beta)=L(\al)\cup L(\beta)$
+% \item $L(\al^\star)=L(\al)^\star$
+% \ei
+% De los significados de las expresiones, se puede ver a una expresi\'on regular 
+% como una representaci\'on alternativa de un lenguaje. 
+% As\'i podemos pensar en la equivalencia entre lenguajes regulares y 
+% expresiones regulares:
+% \begin{proposition}
+% Un lenguaje~$M\inc\sest$ es regular si y s\'olo si existe una expresi\'on 
+% regular~$\al$ tal que $M = L(\al)$.
+% \end{proposition}
+% \vspace*{-15pt}
+% \begin{proof}
+% La direcci\'on $\Leftarrow$ es directa. 
+% Para la otra direcci\'on hacemos inducci\'on estructural.
+% \end{proof}
+
+% \vspace*{10pt}
+% \noindent Se puede estudiar la equivalencia de expresiones regulares:
+% \defin{
+% Dadas dos expresiones regulares~$\al,\beta$ decimos que son equivalentes, al 
+% escribir~$\al=\beta$, si y s\'olo si $\al$ y $\beta$ tienen el mismo 
+% significado, es decir, si y s\'olo si $L(\al)=L(\beta)$.
+% }
+
+
+
+
+\section{Axiomas de Salomaa}
+
+Las siguientes equivalencias, conocidas como Axiomas de Salomaa, constituyen
+un sistema completo para el razonamiento ecuacional con expresiones
+regulares. Es decir, cualquier ecuacion $\al=\beta$ de expresiones regulares
+puede deducirse útilizando únicamente estos once axiomas. 
+
+
+\begin{itemize}
+\item Asociatividad: $\al+(\beta+\ga)=(\al+\beta)+\ga\;\;\;\;\;\;\;\al(\beta\ga)=(\al\beta)\ga$ 
+\item Conmutatividad: $\al+\beta=\beta+\al$
+\item Distributividad: $\al(\beta+\ga)=\al\beta+\al\ga\;\;\;\;\;\;\;(\beta+\ga)\al=\beta\al+\ga\al$ 
+\item Idempotencia: $\;\;\;\al+\al=\al$
+\item Propiedades de $\vacio$: $\;\;\;\al+\vacio=\al\;\;\;\;\;\vacio\al=\al$
+\item Propiedades de $\cv$: $\;\;\;\cv\al=\al$
+\item Propiedades de la estrella de Kleene: $\;\;\;\al^\star=\cv +
+  \al^\star\al\;\;\;\;\;\;\; \al^\star = (\cv + \al)^\star$
+\end{itemize}
+
+
+
+
+\subsection{Otras equivalencias de  Expresiones Regulares}
+
+Las siguientes son algunas equivalencias útiles de expresiones regulares 
+% que
+% nos permiten verificar otras equivalencias mediante razonamiento algebráico ecuacional.
+
+\begin{center}
+ \begin{tabular}{ccc}
+%  $\al+(\beta+\ga)=(\al+\beta)+\ga$ & \hspace{10pt} & $\al+\beta=\beta+\al$ \\
+%  $\al+\vacio=\al$ & & $\al+\al=\al  $\\
+%  $\al\cv=\al$ & & $\al\vacio=\vacio$\\
+%  $\al(\beta\ga)=(\al\beta)\ga$ & & \\
+%  $\al(\beta+\ga)=\al\beta+\al\ga$ & & $(\beta+\ga)\al=\beta\al+\ga\al$\\
+  $\cv^\star=\cv$ & & $\vacio^\star=\cv$ \\
+  $\al\al^\star=\al^\star\al$ & & 
+    $\al^\star=\al^\star\al^\star=(\al^\star)^\star$\\
+  $\al^\star=\cv+\al\al^\star$ & & 
+    $(\al+\beta)^\star=(\al^\star+\beta^\star)^\star$\\
+  $(\al+\beta)^\star = (\al^\star\beta^\star)^\star =
+  (\al^\star\beta)^\star\al^\star= \al^\star(\beta\al^\star)^\star$ & &
+  $(\al\beta)^\star = \cv + \al(\beta\al)^\star\beta$ \\
+  $\al(\beta\al)^\star =(\al\beta)^\star\al$ & &
+%   Si $L(\al)\inc L(\beta)$ entonces $\al+\beta=\beta$&  &
+ \end{tabular}
+\end{center}
+
+
+
+
+\section{Propiedades de cerradura}
+Las propiedades de cerradura nos permiten construir nuevos lenguajes
+regulares a partir de lenguajes ya conocidos por medio de algunas operaciones
+entre lenguajes. \\
+Si~$L,M$ son lenguajes regulares entonces:
+\bi
+\item $L\cup M$ es regular.
+\item $LM$ es regular.
+\item $L^\star$ es regular.
+\item $L^+$ es regular.
+\item $\overline{L}$ es regular
+\item $L\cap M$ es regular.
+\item $L-M$ es regular.
+\ei
+
+
+
+
+
+
+\section{Aplicaciones de las expresiones regulares}
+\bi
+\item B\'usqueda y sustituci\'on en editores de texto (vi, emacs, etc.)
+\item Caza de patrones (pattern matching) y procesamiento de textos y
+  conjuntos de datos, por ejemplo en miner\'ia de datos (grep, sed, awk, perl, 
+etc.)
+\item Implementaci\'on de lenguajes de programaci\'on (fase de an\'alisis 
+l\'exico):
+conversi\'on del programa fuente en una sucesi\'on de elementos l\'exicos 
+(lexemas o tokens), en esta sucesi\'on se identifican las distintas componentes 
+de un programa, como son palabras reservadas, identificadores, tipos de datos, 
+etc.(lex, flex, etc.)
+\ei
+
+
+
+\section{La derivada de un lenguaje}\label{De}
+
+\noindent El concepto de derivada de un lenguaje con respecto a una cadena fue introducido en 1964 por Brzozowski, aunque se origina en trabajos de Rabin, Raney y Elgot, véase \cite{Rab, Ran, Elg}. Curiosamente, hasta donde sabemos, este concepto no figura en ningún libro de texto actual, siendo este uno de los motivos principales para discutirlo en este artículo.
+
+\defin{La derivada de un lenguaje $L \subseteq \Sigma^{\ast}$ con respecto a una cadena $u \in \Sigma^{\ast}$, denotada $\partial_u L$, es el lenguaje definido como:
+\[
+\partial_u L = \{ v \;|\; uv \in L\}
+\]
+}\label{Derivada}
+
+Es decir la derivada de $L$ con respecto a $u$ es el conjunto de todas las cadenas tales que al anteponerles $u$ están en $L$.
+
+\begin{example}
+Consideremos el lenguaje definido por la expresión regular $r = b(a + c)^{\ast}$, la derivada de $r$ con respecto a la cadena $b$ es $(a+c)^{\ast}$, mientras que la derivada de $r$ con respecto a la cadena $a$ es $\varnothing$, puesto que ninguna cadena de $r$ empieza con $a$.
+\end{example}
+
+Esta operación tiene diferentes propiedades de interés que discutiremos más adelante, pero antes veamos como calcular la derivada.
+
+\subsection{Cálculo de la Derivada}
+
+De manera similar a la derivada en el Cálculo Di\-fe\-ren\-cial, es posible dar reglas inductivas para calcular la derivada de una expresión (lenguaje) regular. Para esto se requiere primero determinar cuando una expresión regular es anulable, esto es, cuando $\varepsilon$ pertenece al lenguaje de $r$.  Esta tarea la realiza la función de {\em nulidad} $\nu$, descrita a continuación:
+
+\defin{Sea $\nu : ER \to ER$ la función de nulidad cumple con la siguiente propiedad 
+\[
+\nu(r) = \left\{
+\begin{array}{ll}
+\varepsilon & \text{Si } r \text{ es anulable}\\
+\varnothing & \text{otro caso}
+\end{array}
+\right.
+\]
+y se define recursivamente como sigue
+\begin{align*}
+\nu(\varepsilon) &= \varepsilon\\
+\nu(\varnothing) &= \varnothing\\
+\nu(a) &= \varnothing\\
+\nu(r + s) &= \nu(r) + \nu(s)\\
+\nu(rs) &= \nu(r)\nu(s)\\
+\nu(r^{\ast}) &= \varepsilon
+\end{align*}
+}
+
+Empleando a la función de nulidad como auxiliar Brzozowski define, en \cite{Brz}, la derivada de una expresión regular con respecto a un símbolo de la siguiente manera.
+
+\prop{Sean $r$ una expresión regular y $a \in \Sigma$, la derivada de $r$ con respecto al símbolo $a$ denotada por $\partial_a r$, se calcula recursivamente mediante las siguientes reglas
+\begin{align*}
+\partial_a \varnothing &= \varnothing\\
+\partial_a \varepsilon &= \varnothing\\
+\partial_a a &= \varepsilon\\
+\partial_a b &= \varnothing \; \text{si } b \ne a\\
+\partial_a (r + s) &= \partial_a r + \partial_a s\\
+\partial_a (rs) &= (\partial_a r)s + \nu(r) \partial_a s\\
+\partial_a (r^{\ast}) &= (\partial_a r) r^{\ast}
+\end{align*}\label{DeER}
+}
+
+\dem{Véase \cite{Brz}.
+}
+
+Se observa que estas reglas son reminiscentes de las reglas de derivación del Cálculo Diferencial, por lo que es probable que esta halla sido  la razón para elegir el nombre de derivada para esta operación en lenguajes regulares. 
+
+Para calcular la derivada con respecto a una cadena arbitraria nos servimos de la siguiente caracterización.
+
+\prop{Sea $r$ una expresión regular y $u \in \Sigma^{\ast}$ la derivada de $r$ con respecto a la cadena $u$ denotada por $\partial_u r$ se calcula mediante las siguientes reglas:
+\begin{gather*}
+\partial_{\varepsilon} r = r\\
+\partial_{ua} r = \partial_a ( \partial_u r)
+\end{gather*}\label{DerCad}
+}
+
+\dem{Es directo de las definiciones.
+}
+
+Obsérvese que de la proposición anterior se puede concluir que si $u=a_1\ldots a_n$ entonces 
+\[
+\partial_u r = \partial_{a_n}\partial_{a_{n-1}}\ldots\partial_{a_1}r
+\]
+
+
+Por lo que basta calcular derivadas de símbolos de manera iterada, utilizando las reglas de derivación, para obtener la derivada con respecto a cualquier cadena.
+
+\subsection{Propiedades de la derivada}
+
+Veamos ahora algunas propiedades importantes de la derivada, en el caso de los lenguajes regulares.
+
+\prop{Si $L \subseteq \Sigma^{\ast}$ es regular, entonces $\partial_u L$ es regular para todas las cadenas $u \in \Sigma^{\ast}$.
+}
+\dem{Pendiente.% Primero demostraremos que para cualquier $a \in \Sigma$, $\partial_a L$ es regular.
+
+% Sea $M = \langle Q, \Sigma, q_0, F, \delta \rangle$ un AFD que acepta el lenguaje regular $L$. Construimos un autómata finito que reconozca $\partial_a L$ como sigue: $M' = \langle Q, \Sigma, \delta(q_0,a), F, \delta \rangle$, es claro que este autómata reconocerá a todas las cadenas del lenguaje $\partial_a L$ con lo cual se prueba que es regular. Obsérvese que el estado inicial de $M'$, que es $\delta(q_0,a)$, está bien definido puesto que $M$ es un AFD y por lo tanto $\delta$ es una función total. El resultado para cadenas se sigue por inducción estructural.
+}
+
+Esta proposición muestra que la clase de lenguajes regulares es cerrada bajo derivación. A continuación mostramos otra propiedad de gran importancia para nuestros propósitos.
+
+\lema{Para toda $r$ expresión regular y $a \in \Sigma$, se cumple que 
+\[
+L \llbracket \partial_a r \rrbracket = \partial_a ( L \llbracket r \rrbracket ),
+\]
+es decir, las operaciones de denotación y derivada con respecto a un símbolo de una expresión regular conmutan.\label{LdedL}
+}
+
+\dem{Inducción sobre $r$.
+
+Si $r = \varnothing$ tenemos que $L \llbracket \partial_a \varnothing \rrbracket = L \llbracket \varnothing \rrbracket = \varnothing$. Por otro lado, $\partial_a ( L \llbracket \varnothing \rrbracket ) = \partial_a ( \varnothing ) = \varnothing$, luego entonces la propiedad se cumple para este caso.
+
+Si $r = \varepsilon$, sabemos que $L \llbracket \partial_a \varepsilon \rrbracket = L \llbracket \varnothing \rrbracket = \varnothing$, así mismo $\partial_a ( L \llbracket \varepsilon \rrbracket ) = \partial_a ( \varepsilon ) = \varnothing$ y nuevamente se cumple la propiedad.
+
+Para el caso en que $r = b \in \Sigma$, hay dos opciones, si $b \ne a$ se tiene que $L \llbracket \partial_a (b) \rrbracket = L \llbracket \varnothing \rrbracket = \varnothing = \partial_a ( b ) = \partial_a ( L \llbracket b \rrbracket )$. Cuando $b = a$, tenemos que $L \llbracket \partial_a a \rrbracket = L \llbracket \varepsilon \rrbracket = \varepsilon = \partial_a ( a ) = \partial_a ( L \llbracket a \rrbracket )$, con lo cual concluimos que la propiedad se cumple para todos los casos base.
+
+Para $r = s + t$ tenemos lo siguiente 
+\begin{align*}
+L \llbracket \partial_a (s + t) \rrbracket &= L \llbracket \partial_a s + \partial_a t \rrbracket \quad \text{por la proposición \ref{DeER}}\\
+ &= L \llbracket \partial_a s \rrbracket + L \llbracket \partial_a t \rrbracket \quad \text{por la definición \ref{Lenguajes}}\\
+ &= \partial_a ( L\llbracket s \rrbracket ) + \partial_a ( L \llbracket t \rrbracket ) \quad \text{por hipótesis inductiva}\\
+ &= \partial_a ( L\llbracket s \rrbracket + L\llbracket t \rrbracket) \quad \text{por la definición \ref{Lenguajes}}\\
+ &= \partial_a ( L\llbracket s + t \rrbracket) \quad \text{por la proposición \ref{DeER}}
+\end{align*}
+
+Para el caso $r = st$ tenemos 
+\begin{align*}
+L\llbracket \partial_a (st) \rrbracket &= L\llbracket \partial_a s + \nu(s) \partial_a t \rrbracket \quad \text{por la proposición \ref{DeER}}\\
+ &= L\llbracket (\partial_a s) t \rrbracket + L\llbracket \nu(s) \partial_a t \rrbracket \quad \text{por la definición \ref{Lenguajes}}\\
+ &= L\llbracket \partial_a s \rrbracket L\llbracket t \rrbracket + L\llbracket \nu(s) \rrbracket L\llbracket \partial_a t \rrbracket \quad \text{por la definición \ref{Lenguajes}}\\
+ &= \partial_a (L\llbracket s \rrbracket) L\llbracket t \rrbracket + L\llbracket \nu(s) \rrbracket \partial_a (L\llbracket t \rrbracket) \quad \text{por hipótesis inductiva}\\
+ &= \partial_a (L\llbracket s \rrbracket) L\llbracket t \rrbracket + \nu(L\llbracket s \rrbracket) \partial_a (L\llbracket t \rrbracket) \quad \text{probando que $\nu(L\llbracket s \rrbracket) = L\llbracket \nu(s) \rrbracket$}\\
+ &= \partial_a (L\llbracket s \rrbracket L\llbracket t \rrbracket) \quad \text{por la proposición \ref{DeER}}\\
+ &= \partial_a (L\llbracket st \rrbracket) \quad \text{por la definición \ref{Lenguajes}}
+\end{align*}
+
+Por último tenemos $r = s^{\ast}$,
+\begin{align*}
+L\llbracket \partial_a s^{\ast} \rrbracket &= L\llbracket (\partial_a s) s^{\ast} \rrbracket \quad \text{por la proposición \ref{DeER}}\\
+ &= L\llbracket \partial_a s \rrbracket L\llbracket s^{\ast} \rrbracket \quad \text{por la definición \ref{Lenguajes}}\\
+ &= (\partial_a L\llbracket s \rrbracket ) L\llbracket s^{\ast} \rrbracket \quad \text{por hipótesis inductiva}\\
+ &= (\partial_a L\llbracket s \rrbracket ) L\llbracket s \rrbracket^{\ast} \quad \text{por la definición \ref{Lenguajes}}\\
+ &= \partial_a (L\llbracket s \rrbracket^{\ast}) \quad \text{por la proposición \ref{DeER}}\\
+ &= \partial_a (L\llbracket s^{\ast} \rrbracket) \quad \text{por la definición \ref{Lenguajes}}
+\end{align*}
+}
+
+El resultado anterior se extiende para cadenas de acuerdo al siguiente
+
+\lema{Para toda expresión regular $r$ y para toda cadena $u \in \Sigma^{\ast}$, se cumple que 
+\[
+\partial_u (L \llbracket r \rrbracket) = L \llbracket \partial_u (r) \rrbracket.
+\]
+}
+
+\dem{Por inducción sobre $u$
+
+Si $u = \varepsilon$, tenemos que $L \llbracket r \rrbracket = L \llbracket \partial_{\varepsilon} r \rrbracket$, por lo tanto la propiedad se cumple para el caso base. 
+
+Ahora bien, si $u = wa$ tenemos 
+\begin{align*}
+\partial_u (L\llbracket r \rrbracket ) &= \partial_a (\partial_w (L \llbracket r \rrbracket)) \quad \text{por la proposición \ref{DerCad}}\\
+ &= \partial_a (L\llbracket \partial_w r \rrbracket) \quad \text{por hipótesis de inducción}\\
+ &= L \llbracket \partial_a ( \partial_w r ) \rrbracket \quad \text{por el lema \ref{LdedL}}\\
+ &= L \llbracket \partial_u r \rrbracket \quad \text{por la proposición \ref{DerCad}}
+\end{align*}
+}
+
+%Las siguientes propiedades serán de gran importancia en la construcción del autómata finito a partir de la expresión regular dada.
+
+\prop{El operador derivada preserva equivalencia, es decir, si $r=s$ entonces
+$\partial_a r= \partial_a s$\label{Preserva}
+}
+
+\dem{Es directo de las definiciones.
+}
+
+
+
+\subsection{El problema de la pertenencia}
+
+%\begin{problem}
+Dada una expresión regular $r$ y una cadena $u \in \Sigma^{\ast}$, determinar si $u \in L \llbracket r \rrbracket$.
+%\end{problem}
+
+Resolver el problema es equivalente a resolver:
+\[
+u \in L \llbracket r \rrbracket \Leftrightarrow \varepsilon \in L \llbracket \partial_u r \rrbracket
+\]
+Es decir, se ha reducido la pertenencia de $u$ al lenguaje $L$ a verificar la
+pertenencia de $\cv$ al lenguaje $\partial_u r$ y esto último sucede si y sólo si
+\[
+\nu(\partial_u r) = \varepsilon
+\]
+
+
+Usando lo anterior y la definición de $\partial_u$, generamos un algoritmo que verifique si $u \in L \llbracket r \rrbracket$. 
+Expresandolo en términos de la relación $r \sim u$ ($u$ casa\footnote{match} con $r$).
+\begin{definition}
+La relación de {\em casa} se define como sigue:
+\begin{gather*}
+r \sim \varepsilon \Leftrightarrow_{def} \nu(r) = \varepsilon\\
+r \sim aw \Leftrightarrow_{def} \partial_a r \sim w
+\end{gather*}
+\end{definition}
+
+\begin{proposition}
+Para cualesquiera $u\in\sest$ y $r\in ER$, se cumple que:
+\[
+r \sim u \Leftrightarrow u \in L \llbracket r \rrbracket
+\]
+\end{proposition}
+\begin{proof}
+  Inducción sobre $u$
+\end{proof}
+
+
+% \[
+% \begin{array}{|l|cl|}
+% \hline
+% \multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+% \hline
+% a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
+% \phantom{\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb} & &\phantom{\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba}\\
+% \phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \nu(a) \cdot \partial_a (b^{\ast}) \sim ba}\\
+% \phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} + \varnothing \cdot \varnothing \sim ba}\\
+% \phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow (\partial_a a) \cdot b^{\ast} \sim ba}\\
+% \phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim bb} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim ba}\\
+% \phantom{\Leftrightarrow b^{\ast} \sim bb} & &\phantom{\Leftrightarrow b^{\ast} \sim ba}\\
+% \phantom{\Leftrightarrow \partial_b b^{\ast} \sim b} & &\phantom{\Leftrightarrow \partial_b b^{\ast} \sim a}\\
+% \phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim a}\\
+% \phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim b} & &\phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim a}\\
+% \phantom{\Leftrightarrow b^{\ast} \sim b} & &\phantom{\Leftrightarrow b^{\ast} \sim a}\\
+% \phantom{\Leftrightarrow \partial_b b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \partial_a b^{\ast} \sim \varepsilon}\\
+% \phantom{\Leftrightarrow (\partial_b b) \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow (\partial_a b) \cdot b^{\ast} \sim \varepsilon}\\
+% \phantom{\Leftrightarrow \varepsilon \cdot b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \cdot b^{\ast} \sim \varepsilon}\\
+% \phantom{\Leftrightarrow b^{\ast} \sim \varepsilon} & &\phantom{\Leftrightarrow \varnothing \sim \varepsilon}\\
+% \phantom{\Leftrightarrow \nu(b^{\ast}) = \varepsilon \quad \textcolor{green}{\text{\Checkmark}}}& &\phantom{\Leftrightarrow \nu(\varnothing) = \varepsilon \quad \textcolor{red}{\text{\XSolid}}}\\
+% \hline
+% \end{array}
+% \]
+
+
+\section{Lenguajes no regulares}
+
+% ?`Cuando no es $L$ regular
+\noindent No todos los lenguajes son regulares, por ejemplo:
+$$ L=\{a^nb^n\;|\;n\geq 1\} $$
+no es definible mediante una expresi\'on regular.
+\bi
+ \item ?`C\'omo decidir cuando un lenguaje no es regular?
+ \item Mediante propiedades de cerradura.
+ \item Mediante el lema del bombeo (pendiente).
+\ei
+\noindent En el siguiente tema discutiremos m\'as formas de decidir cu\'ando un 
+lenguaje es regular o no. 
+
+
+
+\begin{thebibliography}{123}
+
+\bibitem{Brz} J. Brzozowski. Derivatives of Regular Expressions. Journal of the Association for Computing Machinery, Vol. 11, No. 4. 1964.
+
+ \bibitem{Elg} C. C. Elgot, J. D. Rutledge. Operations on Finite Automata. Procc. AIEE Second Ann. Symp. on Switching Circuit Theory and Logical Design, Detroit. 1961.
+
+% \bibitem{Linz} P. Linz. An Introduction to Formal Languages and Automata. 2nd edition. Jones and Bartlett Publishers. 1997. 
+
+% \bibitem{Hop} J. E. Hopcroft, R. Motwani, J. D. Ullman. Introduction to Automata Theory, Languages, and Computation. 2nd edition. 
+%   Addison--Wesley Publishing Company. 2001.
+
+% \bibitem{Mar} J. Martin. Lenguajes Formales y la Teoría de la Computación. Tercera Ed. McGraw Hill. México. 2005.
+
+% \bibitem{Owe} S. Owens, J. Reppy, A. Turon. Regular--expression Derivatives Reexamined. Journal of Functional Programming Vol. 19, No. 2. 2009.
+
+ \bibitem{Rab} M. O. Rabin, D. Scott. Finite Automata and their Decision Problems. IMB Journal Res. Develop, No. 3. 1959.
+
+ \bibitem{Ran} G. N. Raney. Sequential Functions. Journal ACM, Vol. 5 No. 177. 1958.
+
+\end{thebibliography}
+
+
+\end{document}

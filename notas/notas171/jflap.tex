@@ -1,0 +1,180 @@
+
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+\usepackage[section]{placeins}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2017-1 \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+JFLAP: una herramienta para experimentar con lenguajes formales} 
+\author{Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+El paquete \textit{Java Formal Language and Automata Package} mejor conocido 
+como JFLAP es un software desarrollado en la universidad de Duke bajo la 
+coordinaci\'on de Susan Rodger.
+Este software permite experimentar con lenguajes formales dados por diferentes 
+tipos de gram\'aticas, aut\'omatas finitos, aut\'omatas de pila o m\'aquinas de 
+Turing.
+Ofrece una forma visual e interactiva de crear, modificar m\'aquinas y 
+de procesar cadenas. 
+
+Usaremos esta herramienta para practicar el dise\~no de m\'aquinas as\'i como 
+sus transformaciones y procesamiento de cadenas en ellas.
+
+\section{Instalaci\'on}
+Para descargar el software se debe acceder a la p\'agina oficial 
+\url{http://www.jflap.org/} y en la parte \textbf{Get JFLAP} se deber\'a llenar 
+un formulario para poder usar el software. 
+
+Se debe instalar la versi\'on 7.0 de 2009 que incluye el manejo de SVG.
+Tambi\'en se debe asegurar la instalaci\'on de una versi\'on del
+\textsc{Java Runtime Environment} o JRE compatible~\footnote{Para un sistema 
+operativo basado en Debian (Ubuntu, LMint, etc.) se pueden seguir las 
+instrucciones que aparecen en
+\url{https://community.linuxmint.com/tutorial/view/1091}.}\\
+
+Una vez que el archivo \texttt{JFLAP.jar} est\'a disponible s\'olo basta con 
+hacer doble click para iniciar una sesi\'on o lanzar su ejecuci\'on desde la 
+l\'inea de comandos con la siguiente:
+\begin{center}
+ \texttt{java -jar JFLAP.jar}
+\end{center}
+
+\section{Uso}
+El sitio oficial provee un tutorial detallado para el uso de JFLAP, en esta 
+nota introductoria s\'olo se dar\'a una muy breve explicaci\'on de su uso.
+\begin{center}
+\textbf{Se deja al alumno la experimentaci\'on y pr\'actica \\para dominar 
+moderadamente este paquete.}
+\end{center}
+
+A pesar de que JFLAP es muy intuitivo e interactivo, se debe tener en cuenta 
+la definici\'on formal de las m\'aquinas vistas en clase y de los m\'etodos de 
+transformaci\'on para entender las herramientas del sistema adem\'as de los 
+procesos en ella. 
+
+
+El paquete incluye una interfaz gr\'afica o GUI (\textit{Graphical User 
+Interface}) para la interacci\'on con el usuario, la ventana principal de 
+\'este despliega un men\'u para seleccionar la m\'aquina deseada:
+\begin{figure}[!ht]
+\centering
+\includegraphics{machineSelection.png}
+\end{figure}
+\FloatBarrier
+
+Usando la ventana principal se pueden ajustar las preferencias como lo es usar 
+la cadena $\vacia$ para denotar la cadena vac\'ia\footnote{El caracter para 
+representar a la cadena vac\'ia por default en el sistema y usada por varios 
+autores suele ser $\lambda$.}, selecccionando del men\'u \textbf{Preferences} 
+la opci\'on \textbf{Set the Empty String Character}.
+
+Una vez seleccionada la m\'aquina se procede a construirla dentro del canvas o 
+\'area para ello, utilizando las facilidades de la barra de herramientas o 
+toolbar. 
+
+\begin{figure}[!ht]
+\centering
+\includegraphics{NewWindow.png}
+\end{figure}
+\FloatBarrier
+
+\newpage
+
+La barra de herramientas tiene los siguientes botones, para usarlos es 
+necesario seleccionar el bot\'on:
+\bi
+ \item \includegraphics[scale=0.75]{state.jpeg} Creador de estados, basta con 
+  pulsar para crear un estado.
+ \item \includegraphics[scale=0.75]{transition.jpeg} Creador de transiciones, 
+  se debe arrastrar el puntero desde el estado origen al destino para crear una 
+  transici\'on, adem\'as de escribir el s\'imbolo.
+ \item \includegraphics[scale=0.75]{delete.jpeg} Eliminador de elementos, basta 
+  con pulsar sobre el elemento a borrar.
+ \item \includegraphics[scale=0.75]{arrow.jpeg} Editor de transiciones, basta 
+  con seleccionar la transici\'on a modificar con doble pulsaci\'on y se 
+  convertir\'a en un elemento sensible a movimiento y/o cambio de s\'imbolo.
+\ei
+
+La disposici\'on de los estados de la m\'aquina puede ser reorganizado por 
+algunos algoritmos que provee JFLAP, para seleccionar alguno se puede usar la 
+opci\'on \textbf{Apply A Specific Layout Algorithm} del men\'u \textbf{View}.
+Tambi\'en es posible moverlos de formas m\'as simples selecccionando una 
+opci\'on de las ofrecidas por \textbf{Move Vertices} del mismo men\'u.
+
+\vspace*{10pt}
+
+Cuando se requiera guardar un desarrollo se debe seleccionar del men\'u 
+\textbf{File} la opci\'on \textbf{Save} o \textbf{Save as}. El archivo 
+resultante tendr\'a la extensi\'on \texttt{.jff} cuyo contenido es la 
+descripci\'on de la m\'aquina en XML:
+\bi
+ \item cada estado tiene un identificador y una etiqueta, adem\'as contiene 
+  las coordenadas del estado en el canvas y una etiqueta para indicar si es 
+  inicial y/o final:
+  \begin{alltt}
+   <state id=``0'' name=``q0''>
+       <x>122.0</x>
+       <y>214.0</y>
+       <initial/>
+       <final/>
+  \end{alltt}
+
+ \item y las transiciones tienen tres atributos: inicio, destino y s\'imbolo(s) 
+  leido(s):
+  \begin{alltt}
+   <transition>
+       <from>1</from>
+       <to>0</to>
+       <read>a,b</read>
+  \end{alltt}
+
+\ei
+Se puede reescribir o crear un archivo \texttt{.jff} que describa un aut\'omata 
+sin usar JFLAP y abrirlo usando la opci\'on \textbf{Open} del men\'u 
+\textbf{File}.
+
+\vspace*{10pt}
+
+Para procesar una cadena en una m\'aquina se debe selccionar la opci\'on 
+deseada del men\'u \textbf{Input}. Se puede seguir un procesamiento detallado 
+\textbf{Step with Closure}, paso a paso \textbf{Step by State} o r\'apido para 
+saber si la cadena es aceptada o rechazada \textbf{Fast Run}.
+Tambi\'en es posible procesar varias cadenas en paralelo \textbf{Multiple Run}. 
+
+
+\end{document}

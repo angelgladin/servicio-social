@@ -1,0 +1,426 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+\usepackage[section]{placeins}
+
+\usepackage{url}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 11, Ambigüedad, gramáticas en lenguajes de programación} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Ambig\"{u}edad}
+Puede ser que dos derivaciones distintas tengan un mismo \'arbol de 
+derivaci\'on y tambi\'en puede suceder que haya m\'as de un \'arbol de 
+derivaci\'on para una cadena. Lo ideal es que cada cadena tenga s\'olo un 
+\'arbol asociado. Si sucede lo anterior, implica que el lenguaje 
+\textbf{no es ambiguo}. Desafortunadamente existen lenguajes ambiguos.
+Veamos una definici\'on formal de este fen\'omeno:
+
+\defin{
+Una gram\'atica se dice \textbf{ambigua} si existe una palabra~$w$ con dos o 
+m\'as \'arboles de derivaci\'on distintos.
+En general una palabra puede tener m\'as de una derivaci\'on, pero  
+\textnormal{un s\'olo \'arbol} y en tal caso no hay ambig\"{u}edad.
+}
+
+Algunas veces se puede suprimir la ambig\"{u}edad directamente. Sin embargo 
+\textbf{no} hay un algoritmo para remover ambig\"{u}edad. Es decir el problema
+de eliminar la ambig\"{u}edad es indecidible.
+
+\vspace*{-7pt}
+
+\paragraph{Ejemplo:}
+Considere la siguiente gram\'atica: 
+$$ \qquad \qquad S\imp AA \quad A\imp aSa \mid a $$
+
+\noindent La palabra $a^5$ tiene las siguientes derivaciones diferentes y por 
+la izquierda:
+\bi
+ \item[] $S\imp AA\imp aA \imp aaSa\imp aaAAa\imp aaaAa\imp aaaaa$
+ \item[] $S\imp AA\imp aSaA \imp aAAaA\imp aaAaA\imp aaaaA\imp aaaaa $
+\ei
+\noindent Las dos derivaciones generan \'arboles distintos:
+
+
+\begin{small}
+\begin{minipage}{.4\textwidth}
+  \centering
+  \begin{tikzpicture}[level distance=12mm]
+  \tikzstyle{level 1}=[sibling distance=20mm]
+  \tikzstyle{level 2}=[sibling distance=10mm]
+ 
+  \node {$S$}
+    child {node {$A$}
+      child {node {$a$}}
+     }
+      child {node {$A$}
+        child {node {$aSa$}}
+        child {node {$AA$}
+	  child {node {$a$}}
+	  child {node {$a$}}
+	}
+    };
+ \end{tikzpicture}
+ \end{minipage}
+\begin{minipage}{.4\textwidth}
+ \centering
+ \begin{tikzpicture}[level distance=12mm]
+  \tikzstyle{level 1}=[sibling distance=20mm]
+  \tikzstyle{level 2}=[sibling distance=10mm]
+ 
+  \node {$S$}
+    child {node {$A$}
+      child {node {$aSa$}
+	child {node {$AA$}
+	  child {node {$a$}}
+	  child {node {$a$}}
+	}
+     }
+    }
+      child {node {$A$}
+        child {node {$a$}}
+    };
+ \end{tikzpicture}
+ \end{minipage}
+\end{small}
+
+
+%\subsection{Lenguajes Ambiguos}
+
+\defin{
+Un lenguaje~$L$ es ambiguo si existe una gram\'atica ambigua $G$ que 
+genera a $L$.\\
+Un lenguaje es \textbf{inherentemente} ambiguo si \textit{todas} las 
+gram\'aticas que lo generan son ambiguas.
+}
+
+\paragraph{Ejemplo:}
+El lenguaje~$L = \{a^{2+3i} \mid i\geq 0\}$ es ambiguo por ser generado por la 
+siguiente gram\'atica ambigua:
+$$ S\imp AA \qquad \qquad A\imp aSa \mid a $$
+Sin embargo este lenguaje tambi\'en es generado por una gram\'atica no ambigua:
+$$ S\imp aa \mid aaU \qquad \qquad U\imp aaaU \mid aaa $$
+En este caso la derivaci\'on de $a^5$ es:
+$$S\imp aaU\imp aaaaa$$
+y por lo tanto $L$ no es un lenguaje inherentemente ambiguo.
+
+\paragraph{Ejemplo:}
+El lenguaje 
+$$L = \{a^nb^nc^md^m \mid n,m\geq 1\}\cup\{a^nb^mc^md^n \mid n,m\geq 1\}$$
+es generado por la gram\'atica:
+\[
+ \ba{lll}
+  S\imp AB \mid C & \qquad A\imp aAb \mid ab &\qquad B\imp cBd \mid cd \\
+  C\imp aCd \mid aDd &\qquad  D\imp bDc \mid bc & 
+ \ea
+\]
+La cadena~$aabbccdd$ tiene dos derivaciones por la izquierda:
+\bi
+\item[] $S\imp AB\imp aAbB\imp aabbB\imp aabbcBd\imp aabbccdd$
+\item[] $S\imp C\imp aCd\imp aaDdd\imp aabDcdd\imp aabbccdd$
+\ei
+
+Como se coment\'o antes, la ambig\"{u}edad no puede ser eliminada con un 
+m\'etodo y en general, probar la ambig\"{u}edad inherente es complicado.  
+
+Veamos ahora algunos ejemplos de gramáticas ambigüas en relación a lenguajes
+de programación
+
+\begin{example} Lenguaje de paréntesis balanceados:
+\beqs
+S \to \cv\;|\;(S)\;|\;SS
+\eeqs
+\bi
+\item Ambigüedad: $()()()$ tiene dos árboles de derivación %es ambigua pero equivalente a la siguientes gramática no ambigua:
+\item Gramática no ambigua equivalente:
+\beqs
+S \to \cv\;|\;(S)S
+\eeqs
+\ei
+\end{example}
+
+
+\begin{example} Expresiones aritméticas: % este lenguaje es generado por la siguiente
+  % gramática ambigua
+\beqs
+S \to S + S\;|\;S*S\;|\;a
+\eeqs
+donde $a$ es un terminal que representa a los identificadores y constantes.
+\bi
+\item Ambigüedad: a + a * a
+
+\item Gramática no ambigua equivalente:  se obtiene modelando la precedencia de
+operadores como sigue:
+\beqs
+\ba{rll}
+S & \to & S+T\;|\;T \\
+T & \to & T*F\;|\;F\\
+F & \to & (S)\;|\;a
+\ea
+\eeqs
+\ei
+\end{example}
+
+
+\section{Gramáticas libres de contexto en lenguajes de programación}
+\bi
+\item  El estudio formal de los lenguajes de programación se divide en sintaxis, pragmática y semántica.
+\item La semántica se encarga de definir el significado de las expresiones, enunciados
+y unidades de programa.
+\item La pragmática define la implementación del lenguaje basada en la metodología y estrategias de programación deseadas
+\item La sintaxis se encarga de definir la forma de
+las expresiones y enunciados de un lenguaje y se sirve fundamentalmente de los
+conceptos y herramientas de nuestro curso. 
+\item Antes del proceso de evaluación, un compilador e intérprete necesita realizar
+los procesos de análisis léxico y sintáctico, describitos a
+continuación a grandes rasgos.
+\ei
+
+\subsection{Análisis léxico y sintáctico}
+\bi
+\item Análisis léxico: se encarga de transformar el programa fuente en una
+  lista de unidades sintácticas de bajo nivel llamadas lexemas, los cuales se
+  clasifican en distintas categorías llamadas {\em tokens}, como pueden ser
+  identificadores, constantes, separadores, etc. 
+\item El análisis léxico se sirve
+  fundamentalmente de expresiones regulares para su definición y reconocimiento.
+\item Análisis sintáctico: se encarga de transformar la lista de lexemas en un
+  programa objeto, el cual es una 
+  expresión válida de la llamada sintaxis abstracta del lenguaje. Este
+  programa es esencialmente un árbol de derivación dictado por
+  una gramática libre de contexto que define al lenguaje de programación. 
+\item Por
+  lo tanto el análisis sintáctico es esencialmente una forma del problema de
+  la pertenencia en gramáticas libres de contexto.
+\ei
+
+\subsection{Forma de Backus-Naur}  
+\bi
+\item Las gramáticas libres de contexto para lenguajes de programación suelen
+escribirse en la forma de Backus-Naur o BNF.
+\item Este método de definición de gramáticas fue introducido por John Backus para el lenguaje {\sc Algol} 58 en 1959 y fue mejorado por Peter Naur para la definición de {\sc Algol} 60.
+\item Este sistema notacional para definir lenguajes libres de contexto 
+ sigue las siguientes convenciones:
+
+\bi
+\item El símbolo de reescritura $\to$ se reemplaza con $::=$.\medskip
+\item El símbolo $\mid$ significa {\em o} y abreviar la definición de producciones de una misma variable.\medskip
+\item Las variables se escriben entre paréntesis triangulares y por lo general
+  utilizan nombres largos que ayuden a la descripción de \\ las categorías del lenguaje.
+\ei
+\ei
+
+
+
+\begin{example}
+%\titulos{Gramáticas en forma de Backus-Naur}{Ejemplos}
+Algunos ejemplos de gramáticas en FBN son:
+\bi
+\item Lenguaje de paréntesis balanceados
+\beqs
+\ba{rll}
+<parent\_balanc> & ::= & \cv \;|\; \\
+                 & & \big (<parent\_balanc>\big )\;|\; \\
+                 & & <parent\_balanc><parent\_balanc> 
+\ea
+\eeqs
+\item Expresiones aritméticas:
+\beqs
+\ba{rll}
+<expr> & ::= & <expr>\,<op>\,<expr>\;|\; \\
+       & & (<expr>)\;|\;<id>\\
+<op> & := & +\;|\;-\;|\;*\;|\;/\\
+<id> & := & a\;|\;b\;|\;c
+\ea
+\eeqs
+
+\item Bloques de asignación de expresiones aritméticas:
+% {{\tt begin}\;a {\tt :=} b/c\; ; \; b {\tt :=} a*(b+c)\;{\tt end}}
+% %{Gramáticas en forma de Backus-Naur}
+\beqs
+\ba{rll}
+<programa> & ::= & {\tt begin}\;<sec\_enunc>\;{\tt end}\\ \\
+<sec\_enunc> & ::= & <enunc>\;|\;<enunc>\,;\,<sec\_enunc>\\ \\
+<enunc> & ::= & <id>\;{\tt :=}\;<expr>\\ \\
+<expr> & ::= & <expr>\,<op>\,<expr>\;|\; \\ \\
+       & & (<expr>)\;|\;<id>\\ \\
+<op> & := & +\;|\;-\;|\;*\;|\;/\\ \\
+<id> & := & a\;|\;b\;|\;c
+\ea
+\eeqs
+
+\ei
+\end{example}
+
+
+
+
+% \begin{frame}
+% \titulos{Bloques de asignación de expresiones aritméticas:}
+% {{\tt begin}\;a {\tt :=} b/c\; ; \; b {\tt :=} a*(b+c)\;{\tt end}}
+% %{Gramáticas en forma de Backus-Naur}
+% \beqs
+% \ba{rll}
+% <programa> & ::= & {\tt begin}\;<sec\_enunc>\;{\tt end}\\ \\
+% <sec\_enunc> & ::= & <enunc>\;|\;<enunc>\,;\,<sec\_enunc>\\ \\
+% <enunc> & ::= & <id>\;{\tt :=}\;<expr>\\ \\
+% <expr> & ::= & <expr>\,<op>\,<expr>\;|\; \\ \\
+%        & & (<expr>)\;|\;<id>\\ \\
+% <op> & := & +\;|\;-\;|\;*\;|\;/\\ \\
+% <id> & := & a\;|\;b\;|\;c
+% \ea
+% \eeqs
+
+
+% \end{frame}
+
+% Veamos ahora tres ejemplos importantes de gramáticas ambiguas en lenguajes de programación
+
+Terminamos con un ejemplo importante en la historia de los lenguajes de programación:
+
+% \begin{frame}[fragile]
+% \titulos{Gramáticas en forma de Backus-Naur}{Ejemplos}
+\bi
+\item Expresiones condicionales:
+\beqs
+\ba{rll}
+<enunc> & ::= & <condicional>\;|\;<otro>\\
+<condicional> & := & {\tt if}\;<expr>\;{\tt then}\;<enunc> \;|\; \\
+              &    & {\tt if}\;<expr>\;{\tt then}\;<enunc> \\
+              &    & \;{\tt            else}\;<enunc>
+\ea
+\eeqs
+\item Problema del {\tt else} colgante ({\em dangling else}):
+\begin{verbatim}
+if false then if false then 0 else 1
+\end{verbatim}
+\item Dos significados:
+\begin{verbatim}
+if false then (if false then 0) else 1
+if false then (if false then 0 else 1)
+\end{verbatim}
+%\ec
+\item Una gramática equivalente no ambigua es:
+\beqs
+\ba{rll}
+<enunc> & ::= \; <condicional>\;|\;<otro>\\ \\
+<condicional> & := \;<cond\_doble>\;|\;<cond\_final>& \\ \\
+<cond\_doble> & :=  \; {\tt if}\;<expr>\;{\tt then}\;<cond\_doble>\;{\tt
+  else}\;<cond\_doble> \\ \\
+<cond\_final> & :=  {\tt if}\;<expr>\;{\tt then}\;<enunc>\;|\;\\
+             &     \;\;\;\;\;{\tt if}\;<expr>\;{\tt then}\;<cond\_simple>\;{\tt
+               else}\;<cond\_final> \\
+% \; {\tt if}\;<expr>\;{\tt then}\;<cond-doble>\;{\tt
+%   else}\;<cond_doble> \\
+%& {\tt if}\;<expr>\;{\tt then}\;<enunc> \;|\; \\
+% S & \to  C\;|\;O\\
+% C & \to  C1\;|\;C2\\
+% C1 & \to  {\tt if}\;E\;{\tt then}\;C1\;{\tt else}\;C1  \\
+% C2 & \to    {\tt if}\;E\;{\tt then}\;S\;|\; %\\
+% %   & & 
+% {\tt if}\;E\;{\tt then}\;C1\;{\tt else}\;C2
+\ea
+\eeqs
+\item Idea: $C1$ genera condicionales dobles (if-then-else) balanceados; $C2$ representa condicionales
+simples (if-then) y condicionales dobles pero de forma que un if-then sólo figura colgando \\ al final (en el else). %único lugar donde puede quedar un condicional sencillo es en la condición else.
+
+\ei
+% \end{frame}
+
+% \begin{frame}
+% \titulos{Paréntesis balanceados}{Eliminación de la ambigüedad}
+%   \bi 
+
+
+% \begin{frame}
+% \titulos{Expresiones aritméticas}{Eliminación de la ambigüedad}
+% \bi
+% \item Expresiones aritméticas: % este lenguaje es generado por la siguiente
+%   % gramática ambigua
+% \beqs
+% S \to S + S\;|\;S*S\;|\;a
+% \eeqs
+% donde $a$ es un terminal que representa a los identificadores y constantes.
+% \item Ambigüedad: a + a * a
+
+% \item Gramática no ambigua equivalente:  se obtiene modelando la precedencia de
+% operadores como sigue:
+% \beqs
+% \ba{rll}
+% S & \to & S+T\;|\;T \\
+% T & \to & T*F\;|\;F\\
+% F & \to & (S)\;|\;a
+% \ea
+% \eeqs
+% \ei
+% \end{frame}
+% \begin{frame}
+% \titulos{Expresiones condicionales}{Eliminación de la ambigüedad}
+% \bi
+% \item Expresiones condicionales:
+% \beqs
+% \ba{rll}
+% S & \to & C\;|\;O\\
+% C & \to & {\tt if}\;E\;{\tt then}\;S \;|\; %\\
+%               %&    & 
+% {\tt if}\;E\;{\tt then}\;S\;{\tt else}\;S
+% \ea
+% \eeqs
+% \item Una gramática equivalente no ambigua es:
+% \beqs
+% \ba{rll}
+% S & \to & C\;|\;O\\
+% C & \to & C1\;|\;C2\\
+% C1 & \to & {\tt if}\;E\;{\tt then}\;C1\;{\tt else}\;C1  \\
+% C2 & \to   & {\tt if}\;E\;{\tt then}\;S\;|\; %\\
+% %   & & 
+% {\tt if}\;E\;{\tt then}\;C1\;{\tt else}\;C2
+% \ea
+% \eeqs
+% \item Idea: $C1$ genera condicionales dobles (if-then-else) balanceados; $C2$ representa condicionales
+% simples (if-then) y condicionales dobles pero de forma que un if-then sólo figura colgando \\ al final (en el else). %único lugar donde puede quedar un condicional sencillo es en la condición else.
+% \ei
+% \end{frame}
+
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

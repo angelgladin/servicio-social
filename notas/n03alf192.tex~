@@ -1,0 +1,550 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+%Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 3: Autómatas finitos deterministas} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+Como hemos comentado en clase, un aut\'omata es una representaci\'on abstracta de una 
+m\'aquina. Sobre todo, un aut\'omata finito es una m\'aquina abstracta que 
+procesa cadenas acept\'andolas o rechaz\'andolas.
+% imagen de automata....
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.7]{cap2g1.png}
+\end{figure}
+
+
+% Para su procesamiento, las cadenas de entrada se escriben sobre una cinta 
+% potencialmente infinita hacia la izquierda dividida en casillas. Cada casilla 
+% contiene un s\'imbolo. La m\'aquina posee una unidad de control o 
+% \textit{cabeza lectora} que lee desde la primera casilla y puede cambiar el
+% \textit{estado} interno de la m\'aquina dependiendo del s\'imbolo leido.
+%otro dibujito!
+
+Ahora estudiaremos los aut\'omatas m\'as sencillos que est\'an en 
+correspondencia con los lenguajes regulares ya expuestos.
+
+\section{Aut\'omatas Finitos Deterministas}
+
+\defin{ Un aut\'omata finito determinista (AFD) es una quintupla
+$ M=\pt{Q,\Sigma,\delta,q_0,F} $ donde
+\bi
+ \item $Q$ es un conjunto finito de estados.
+ \item $\Sigma$ es el alfabeto de entrada.
+ \item $\delta:Q\times\Sigma\imp Q$ es la funci\'on de transici\'on.
+ \item $q_0\in Q$ es el estado inicial.
+ \item $F\inc Q$ es el conjunto de estados finales.
+\ei
+}
+
+Los aut\'omatas finitos definidos se denominan \textbf{aut\'omatas finitos 
+deterministas} ya que para cada estado~$q$ y para cada s\'imbolo~$a\in\Sigma$, 
+la funci\'on de transici\'on~$\delta(q,a)$ \textit{siempre} est\'a definida. 
+Es decir, la funci\'on de transici\'on~$\delta$ \emph{determina 
+un\'ivocamente} la acci\'on que el aut\'omata realiza cuando 
+% el control finito 
+se encuentra en un estado~$q$ procesando %leyendo 
+un s\'imbolo~$a$. %sobre la cinta.
+
+\defin{ Dado un aut\'{o}mata~$M$, el \textit{lenguaje aceptado o reconocido} 
+por $M$ se denota~$L(M)$ y se define por 
+$$ L(M) := \{w\in\Sigma^* \mid M \text{ se detiene al procesar } w
+  \text{ en un estado } q\in F\} $$
+}
+
+\paragraph{Ejemplo:}
+Sean $\Sigma=\{a, b\}$, $Q=\{q_{0}, q_{1}, q_{2}\}$ donde $q_{0}$ es el estado 
+inicial y el conjunto~$F=\{q_{0}, q_{2}\}$ son los estados de aceptaci\'on.
+La funci\'{o}n de transici\'{o}n $\delta$ est\'a definida por alguna de las 
+siguientes:
+\[
+\renewcommand{\arraystretch}{1.3}
+\begin{array}[c]{|c|c|c|}\hline 
+  \delta &  a & b\\\hline 
+  q_{0} & q_{0} & q_{1}\\\hline 
+  q_{1} & q_{1} & q_{2}\\\hline 
+  q_{2} & q_{1} & q_{1}\\\hline
+\end{array}
+\qquad\qquad
+\begin{array}
+[c]{cc}%
+\qquad\delta(q_{0}, a)=q_{0} & \qquad\delta(q_{0}, b)=q_{1}\\
+\qquad\delta(q_{1}, a)=q_{1} & \qquad\delta(q_{1}, b)=q_{2}\\
+\qquad\delta(q_{2}, a)=q_{1} & \qquad\delta(q_{2}, b)=q_{1}%
+\end{array}
+\]
+
+Del ejemplo anterior se pueden ver dos formas de presentar la funci\'on de 
+transici\'on: tabla de estados con s\'imbolos o la definici\'on est\'andar 
+usada para funciones.
+Tambi\'en es posible dar una presentaci\'on visual del aut\'omata mediante 
+diagramas para representar estados y las transiciones entre ellos.
+
+\subsection{Diagrama de estados}
+
+Un aut\'omata finito se puede representar por medio de un grafo dirigido y 
+etiquetado. 
+Recu\'erdese que un \textbf{grafo} es un conjunto de v\'ertices o nodos unidos 
+por aristas o conectores; si las aristas tienen tanto direcci\'on como
+etiquetas, el grafo se denomina \textbf{grafo dirigido y etiquetado} o 
+\textbf{digrafo etiquetado}.\\
+Para el caso de los aut\'omatas finitos, esta representaci\'on est\'a 
+modificada de la siguiente forma:
+\bi
+ \item Los v\'ertices o nodos son los estados del aut\'omata.
+ \item Un estado~$q$ se representa por: \hspace*{30pt}
+\begin{center}  
+\begin{tikzpicture}[node distance=2cm,every node/.style={scale=0.8},semithick]
+   \node[state] (q) {$q$};
+  \end{tikzpicture}
+\end{center}
+ \item El estado inicial~$q_0$ se representa por: \hspace*{30pt}
+\begin{center}
+  \begin{tikzpicture}[node distance=2cm,every node/.style={scale=0.8},semithick]
+   \node[state,initial,initial text=] (q0) {$q_0$};
+  \end{tikzpicture}
+\end{center}
+ \item Un estado final~$q_f$ se representa por: \hspace*{30pt}
+\begin{center}  
+\begin{tikzpicture}[node distance=2cm,every node/.style={scale=0.8},semithick]
+   \node[state,accepting by double] (q) {$q_f$};
+  \end{tikzpicture}
+\end{center}
+ \item La transici\'on~$\delta(q,a)= p$ se representa en la forma: 
+  \hspace*{30pt}
+\begin{center}
+  \begin{tikzpicture}[node distance=2cm,every node/.style={scale=0.8},semithick]
+   \node[state] (q) {$q$};
+   \node[state] (p) [right of=q] {$p$};
+   \path[->] (q) edge [bend left] node [above] {a} (p);
+  \end{tikzpicture}
+\end{center}
+\ei
+
+
+\paragraph{Ejemplo:}
+Veamos la representaci\'on gr\'afica del aut\'omata del ejemplo anterior:
+\begin{center}
+\begin{tikzpicture}[node distance=3cm,every node/.style={scale=0.8},semithick]
+   \node[state,initial,initial text=,accepting by double] (q0) {$q_0$};
+   \node[state] (q1) [right of=q0] {$q_1$};
+   \node[state,accepting by double] (q2) [right of=q1] {$q_2$};
+   \path[->] (q0) edge node [above] {b} (q1)
+		  edge [loop above] node {a} (q0)
+	     (q1) edge [loop above] node {a} (q1)
+	          edge [bend left] node [above] {b} (q2)
+	     (q2) edge [bend left] node [below] {a,b} (q1);
+  \end{tikzpicture}
+\end{center}
+
+Para aut\'omatas deterministas se adopta una y s\'olo una de las siguientes 
+convenciones con respecto a los diagramas de estados:
+\bi
+ \item Como se dijo antes, la funci\'on de transici\'on es 
+  \textbf{total}: cada estado tiene una transici\'on por cada s\'imbolo.
+  As\'i se puede considerar la existencia de un \textbf{estado de error} para 
+  las cadenas que ser\'an rechazadas
+ 
+ \item Alternativamente se puede asumir que las aristas no dibujadas 
+  ex\-pl\'{\i}\-ci\-ta\-men\-te conducen al estado de no-aceptaci\'on 
+  llamado \textbf{estado de error}. \\
+  Es decir, en el diagrama de estados se indican \'unicamente las aristas 
+  que conduzcan a trayectorias de aceptaci\'on. Esto permite simplificar 
+  considerablemente los diagramas.
+\ei
+
+\subsection{Aut\'omatas y lenguajes}
+Los aut\'omatas son m\'aquinas que nos permiten reconocer lenguajes y la forma 
+de hacerlo es atrav\'es de un procesamiento de cadenas que permite 
+\enquote{recordar} algunas caracter\'isticas de dichas cadenas. 
+El dise\~no de estas m\'aquinas es un problema importante a abordar:
+\bc
+  \textbf{Problema:} Dado un lenguaje~$L\inc\sest$ dise\~nar un AFD~$M$\\
+  que acepte exactamente a~$L$, es decir, tal que $L(M)=L$.
+\ec
+Una estrategia de ensayo y error es inconveniente ya que las posibilidades son 
+demasiadas al considerar los s\'imbolos del alfabeto dado y las 
+caracter\'isticas del lenguaje a detallar.
+Adem\'as se deben respetar las siguientes caracter\'isticas para resolver el 
+problema anterior:
+\bi
+\item El aut\'omata debe ser \textbf{completo}: debe aceptar todas 
+  las palabras de~$L$, es decir que es necesario que~$L\inc L(M)$.
+\item El aut\'omata debe ser \textbf{correcto}: debe aceptar s\'olo
+  palabras de~$L$, es decir que es necesario que~$L(M)\inc L$.
+\ei
+Esta doble contenci\'on asegurar\'a que ambos lenguajes sean iguales y que el 
+aut\'omata acepte exactamente las cadenas del lenguaje.
+ 
+\vspace*{10pt}
+
+Hay muchos problemas de inter\'es sobre aut\'omatas finitos, nos interesa 
+resolver en este momento los siguientes:
+\bi
+ \item Dado un aut\'omata~$M$ determinar formalmente el lenguaje aceptado por 
+  $M$.
+ \item Dado un lenguaje regular $L$ dise\~nar un aut\'omata finito   
+  determinista~$M$ que acepte o reconozca a $L$, es decir, tal que 
+  $L(M)=L$.
+\ei 
+M\'as adelante se demostrar\'a que estos problemas \textit{siempre} tienen 
+soluci\'on. Por ejemplo, el autómata discutido anteriormente, reconoce al
+lenguaje $a^*+a^*ba^*ba^*$ es decir, el lenguaje regular
+$L=\{w\in\{a,b\}^\star\mid
+w\mbox{ tiene u número par de bes }\}$ 
+
+El primer paso para resolver los problemas anteriores es la formalizaci\'on de la noci\'on de 
+procesamiento, \textit{grosso modo} se debe abstraer la idea de que las cadenas 
+ser\'an \enquote{leidas} por el aut\'omata y har\'an que \'este se detenga en 
+un estado. Si en el estado es final, las cadenas ser\'an aceptadas y ser\'an 
+rechazadas en otro caso.
+Con esto se puede determinar cu\'al es el lenguaje que acepta el aut\'omata.
+
+
+
+\section{Lenguaje de Aceptaci\'on}
+
+La idea de dise\~nar una m\'aquina abstracta para el procesamiento de cadenas,
+est\'a captado por el funcionamiento de un aut\'omata. De manera informal 
+un aut\'omata~$M$ \textbf{reconoce} o acepta una cadena~$w$ si:
+\be
+ \item Se consumen todos los s\'imbolos de $w$ al comenzar en el estado 
+  inicial, generalmente el llamado~$q_0$, siguiendo las transiciones de 
+  acuerdo a la funci\'on $\delta$.
+ \item Al terminar, el estado actual de la m\'aquina es final.
+\ee
+
+El lenguaje aceptado es entonces el mismo que se describi\'o al principio de 
+esta nota mediante una notaci\'on por comprensi\'on.
+Esta definici\'on un tanto informal se puede hacer estricta mediante una 
+extensi\'on de la funci\'on de transici\'on para denotar el procesamiento de una 
+cadena en su totalidad.
+
+\defin{
+Sea $M=\pt{Q,\Sigma,\delta,q_0,F}$ un AFD. La funci\'on de 
+transici\'on~$\delta$ se extiende a cadenas mediante una funci\'on 
+$$\dest:Q\times\sest\imp Q$$
+llamada la funci\'on de transici\'on extendida de~$M$ y es definida 
+recursivamente como sigue:
+\bi
+ \item $\dest(q,\vacia) = q$
+ \item $\dest(q,wa) = \delta\big(\dest(q,w),a\big)$, o alternativamente
+     $\dest(q,aw) = \dest\big(\delta(q,a),w\big)$.
+\ei
+}
+
+De la definici\'on se sigue que $\dest(q,w)$ devuelve el estado en el que la
+m\'aquina \textbf{termina} al procesar~$w$. 
+Dado que $\dest$ es una extensi\'on de $\delta$ es usual \textit{sobrecargar}
+la operaci\'on y escribir $\delta$ en lugar de $\dest$.
+
+La definici\'on informal de lenguaje de aceptaci\'on de un aut\'omata puede
+ahora formalizarse haciendo referencia a la funci\'on de transici\'on 
+extendida:
+%  A veces es mas conveniente utilizar la función $\dest$ en lugar de
+%  los pasos de computación para formalizar el funcionamiento de una
+%  máquina.\\
+%\pause
+\defin{
+El lenguaje de aceptaci\'on se define como:
+$$   L(M)=\{w\in\sest\;|\;\dest(q_0,w)\in F\} $$
+}
+
+De esta manera es posible verificar formalmente la completud y correctud 
+del dise\~no de un aut\'omata~$M$ para un lenguaje~$L$:
+\bi
+ \item Correctud ($L(M)\inc L$): Si $\dest(q_0,w)\in F$ entonces $w\in L$.
+ \item Completud ($L\inc L(M)$): Si $w\in L$ entonces $\dest(q_0,w)\in F$.
+\ei
+
+Debemos recordar que estas dos propiedades son indispensables para el dise\~no 
+de una m\'aquina que reconozca un lenguaje.
+
+
+\section{Dise\~no de aut\'omatas finitos deterministas}
+
+La noci\'on de un aut\'omata como m\'aquina abstracta con memoria nos 
+proporciona una serie de estrategias a seguir para el dise\~no de aut\'omatas:
+\bi
+ \item Se debe determinar expl\'icitamente qu\'e condici\'on \enquote{recuerda}
+  cada estado.
+ \item La \'unica memoria que tiene un AFD son los estados.
+ \item Primero se propone un conjunto de estados que \enquote{recuerden}
+  condiciones importantes.
+ \item Despu\'es se proponen las transiciones para cambiar de un estado a otro.
+ \item Finalmente se determina cu\'ales estados son finales, observando qu\'e
+  condiciones de estado corresponden con la definici\'on del lenguaje aceptado.
+\ei
+
+\noindent A continuaci\'on se detallan algunas estrategias bien establecidas 
+para obtener aut\'omatas.
+
+\subsection{Dise\~no por conjuntos de estados}
+Muchas veces es preferible generalizar condiciones para definir grupos de 
+estados en lugar de dar condiciones estado por estado. 
+De esta forma se disminuye la posibilidad de error y se facilita la 
+soluci\'on de un problema complejo.\\
+Las condiciones para grupos de estados deben ser:
+\bi
+ \item Excluyentes: un grupo de estados debe cumplir \'unicamente una 
+  condici\'on.
+ \item Comprensivas: los grupos cumplen todos los casos posibles.
+\ei
+
+\paragraph{Ejemplo:}
+Dise\~nar un AFD para
+$$L=\{w\in\{0,1\}^\star\;|\;w\;\mbox{no contiene}\;11\;\mbox{pero s\'i}\;00\}$$
+Un an\'alisis informal nos permite distinguir los grupos de estados seg\'un 
+las siguientes condiciones y subcasos:
+\be
+ \item La palabra a ser consumida no contiene ni $00$ ni $11$:
+  \bi
+   \item no se han le\'ido s\'imbolos
+   \item se ley\'o un $0$ %o se ley\'o un $1$ \hspace*{30pt}
+   \item se leyó un $1$
+  %  \begin{tikzpicture}[node distance=2.5cm,every 
+  %   node/.style={scale=0.8},semithick]
+  %   \node[state] (qi) {$q_i$};
+  %   \node[state] (qj) [right of=qi] {$q_j$};
+  %   \path[->] (qi) edge [bend left] node [above] {0} (qj);
+  % \end{tikzpicture}
+  \ei
+ \item La palabra contiene $00$ pero no $11$:
+  \bi
+   \item se ley\'o otro $0$  
+   \item se ley\'o un $1$ \hspace*{30pt}
+  %  \begin{tikzpicture}[node distance=2.5cm,every 
+  %   node/.style={scale=0.8},semithick]
+  %   \node[state] (qi) {$q_i$};
+  %   \node[state] (qj) [right of=qi] {$q_j$};
+  %   \node[state,accepting by double] (qk) [right of=qj] {$q_k$};
+  %   \path[->] (qi) edge [bend left] node [above] {0} (qj);
+  %   \path[->] (qj) edge [bend left] node [above] {0} (qk);
+  % \end{tikzpicture}
+  \ei
+ \item La palabra contiene la subcadena $11$. \hspace*{30pt}
+   \begin{itemize}
+   \item Se leyó otro $1$.
+   \end{itemize}
+Este análisis da un conjunto de seis estados, tres en el primer grupo, dos en
+el segundo y uno en el tercero.
+ % \begin{tikzpicture}[node distance=2.5cm,every 
+ %    node/.style={scale=0.8},semithick]
+ %    \node[state] (ql) {$q_l$};
+ %    \node[state] (qm) [right of=ql] {$q_m$};
+ %    \node[state] (qn) [right of=qm] {$q_n$};
+ %    \path[->] (ql) edge [bend left] node [above] {1} (qm);
+ %    \path[->] (qm) edge [bend left] node [above] {1} (qn);
+ %  \end{tikzpicture}
+ % \item Finalmente combinamos las partes anteriores y completamos las 
+ %  transiciones: 
+ %  \begin{center}
+ %   \begin{tikzpicture}[node distance=2.5cm,every 
+ %    node/.style={scale=0.8},semithick]
+ %    \node[state,initial,initial text=] (q0) {$q_0$};
+ %    \node[state] (q1) [above right of=q0] {$q_1$};
+ %    \node[state] (q2) [below right of=q0] {$q_2$};
+ %    \node[state,accepting by double] (q3) [right of=q1] {$q_3$};
+ %    \node[state] (q4) [right of=q2] {$q_4$};
+ %    \node[state,accepting by double] (q5) [right of=q3] {$q_5$};
+ %    \path[->] (q0) edge [bend right] node [above] {0} (q1);
+ %    \path[->] (q0) edge node [below] {1} (q2);
+ %    \path[->] (q2) edge node [above] {1} (q4);
+ %    \path[->] (q4) edge [loop right] node [above] {0,1} (q4);
+ %    \path[->] (q2) edge node [right] {0} (q1);
+ %    \path[->] (q1) edge node [above] {0} (q3);
+ %    \path[->] (q3) edge node [above] {1} (q5);
+ %    \path[->] (q1) edge [bend right] node [above] {1} (q0);
+ %    \path[->] (q3) edge [loop below] node [below] {0} (q3);
+ %    \path[->] (q5) edge [bend right] node [above] {0} (q1);
+ %    \path[->] (q5) edge node [above] {1} (q4);
+ %   \end{tikzpicture}
+ % \end{center}
+\ee
+
+\subsection{Dise\~no por complemento}
+\noindent Dado un lenguaje $L$ a veces es m\'as facil dise\~nar un aut\'omata 
+para
+el complemento $\overline{L}=\sest-L$:
+\bi
+ \item[] Si $M=\pt{Q,\Sigma,\delta,q_0,F}$ reconoce a $L$, es decir $L(M)=L$ 
+  entonces $M^c=\pt{Q,\Sigma,\delta,q_0,Q-F}$ reconoce a $\sest -L$, es decir
+  $L(M^c)=\overline{L}$.
+\ei
+Este m\'etodo s\'olo funciona para aut\'omatas deterministas.
+
+\paragraph{Ejemplo:}
+Dise\~nar un AFD para 
+$$L=\{w\in\{a,b\}^\star\mid w\,\mbox{no contiene }abaab\}$$
+\be
+ \item Primero se dise\~na la parte de $M^c$ que acepta la cadena $abaab$:
+ \begin{center}
+  \begin{tikzpicture}[node distance=2.5cm,every 
+    node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [right of=q1] {$q_2$};
+    \node[state] (q3) [right of=q2] {$q_3$};
+    \node[state] (q4) [right of=q3] {$q_4$};
+    \node[state,accepting by double] (q5) [right of=q4] {$q_5$};
+    \path[->] (q0) edge node [above] {a} (q1);
+    \path[->] (q1) edge node [above] {b} (q2);
+    \path[->] (q2) edge node [above] {a} (q3);
+    \path[->] (q3) edge node [above] {a} (q4);
+    \path[->] (q4) edge node [above] {b} (q5);
+  \end{tikzpicture}
+ \end{center}
+ \item Se completa el aut\'omata anterior y se obtienen los complementos de 
+  los estados para obtener $M$:
+  \begin{center}
+  \begin{tikzpicture}[node distance=2.5cm,every 
+    node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=,accepting by double] (q0) {$q_0$};
+    \node[state,accepting by double] (q1) [right of=q0] {$q_1$};
+    \node[state,accepting by double] (q2) [right of=q1] {$q_2$};
+    \node[state,accepting by double] (q3) [right of=q2] {$q_3$};
+    \node[state,accepting by double] (q4) [right of=q3] {$q_4$};
+    \node[state] (q5) [right of=q4] {$q_5$};
+    \path[->] (q0) edge node [above] {a} (q1);
+    \path[->] (q1) edge [bend left] node [above] {b} (q2);
+    \path[->] (q2) edge [bend left] node [above] {a} (q3);
+    \path[->] (q3) edge node [above] {a} (q4);
+    \path[->] (q4) edge node [above] {b} (q5);
+    \path[->] (q0) edge [loop above] node [above] {b} (q0);
+    \path[->] (q1) edge [loop above] node [above] {a} (q1);
+    \path[->] (q5) edge [loop above] node [above] {a,b} (q5);
+    \path[->] (q2) edge [bend left] node [above] {a} (q1);
+    \path[->] (q3) edge [bend left] node [below] {b} (q2);
+    \path[->] (q4) edge [bend left] node [below] {a} (q1);
+  \end{tikzpicture}
+ \end{center}
+\ee
+
+\subsection{Modularizaci\'on}
+Algunas veces la especificaci\'on de un lenguaje~$L$ tiene una forma l\'ogica 
+que permite descomponerlo en lenguajes m\'as sencillos. 
+De esta manera el dise\~no de un AFD se puede modularizar.
+\bi
+\item Por ejemplo si $L=L_1\cup L_2$ basta construir aut\'omatas para $L_1$ y 
+$L_2$ y ejecutarlos en paralelo.
+\item Lo mismo sucede si $L=L_1\cap L_2$ o si $L=L_1-L_2$.
+\ei
+
+Veamos la definici\'on formal para obtener los anteriores:
+\defin{
+Suponer que 
+$M_1=\pt{Q_1,\Sigma,\delta_1,q_0,F_1}$ y
+$M_2=\pt{Q_2,\Sigma,\delta_2,p_0,F_2}$ son dos aut\'omatas que aceptan los 
+lenguajes $L_1$ y $L_2$ respectivamente. 
+Sea $ M=\pt{Q,\Sigma,\delta,r_0,F} $ un aut\'omata donde $Q = Q_1 \times Q_2$,
+el estado inicial es $r_0 = (q_0,p_0)$, la funci\'on de transici\'on se 
+define como
+$$ \delta ((q,p),a) = (\delta_1(q,a),\delta_2(p,a))$$
+y los estados finales como:
+\be
+ \item Si $F=\{(q,p) \mid q\in F_1 \text{ o } p\in F_2\}$
+  entonces $M$ acepta el lenguaje $L_1\cup L_2$.
+ \item Si $F=\{(q,p) \mid q\in F_1 \text{ y } p\in F_2\}$
+  entonces $M$ acepta el lenguaje $L_1\cap L_2$.
+ \item Si $F=\{(q,p) \mid q\in F_1 \text{ y } p\notin F_2\}$
+  entonces $M$ acepta el lenguaje $L_1 - L_2$.
+\ee
+}
+
+Una estrategia a seguir es calcular la tabla de transiciones para el nuevo 
+aut\'omata y renombrar los estados nuevos. As\'i mismo, si existen estados que 
+no est\'an conectados se pueden eliminar.
+
+\paragraph{Ejemplo:}
+Sea $L=\{w\in\{0,1\}^\star\mid w \mbox{ acaba en }0 \mbox{ y } 11 
+\mbox{ no es subcadena de } w\}$.
+Para obtener un aut\'omata que reconozca el lenguaje se descompone como 
+$L=L_1 - L_2$ donde 
+$$L_1=\{w\in\{0,1\}^\star\mid w \mbox{ acaba en }0\} \qquad \qquad
+L_2= \{w\in\{0,1\}^\star\mid 11 \mbox{ es subcadena de } w\}$$
+A continuaci\'on se construyen los aut\'omatas para reconocer los respectivos 
+lenguajes y despu\'es se obtiene $M$ usando la definici\'on anterior, se 
+proporciona la tabla de transiciones.
+\begin{center}
+\begin{tabular}{ll}
+ $M_1\; :$ & $M_2\; :$ \\
+ \hspace*{30pt}
+ \begin{tikzpicture}[node distance=2.5cm,every 
+    node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=] (q0) {$q_0$};
+    \node[state,accepting by double] (q1) [above right of=q0] {$q_1$};
+    \node[state] (q2) [below right of=q1] {$q_2$};
+    \path[->] (q0) edge node [above] {0} (q1);
+    \path[->] (q0) edge node [above] {1} (q2);
+    \path[->] (q1) edge [bend right] node [above] {1} (q2);
+    \path[->] (q2) edge [bend right] node [above] {0} (q1);
+    \path[->] (q2) edge [loop right] node [above] {1} (q2);
+    \path[->] (q1) edge [loop above] node [above] {0} (q1);
+ \end{tikzpicture} & \hspace*{30pt}
+ \begin{tikzpicture}[node distance=2.5cm,every 
+    node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=] (q0) {$p_0$};
+    \node[state] (q1) [right of=q0] {$p_1$};
+    \node[state,accepting by double] (q2) [right of=q1] {$p_2$};
+    \path[->] (q0) edge [bend left] node [above] {1} (q1);
+    \path[->] (q1) edge [bend left] node [above] {1} (q2);
+    \path[->] (q1) edge [bend left] node [above] {0} (q0);
+    \path[->] (q2) edge [loop right] node [above] {0,1} (q2);
+    \path[->] (q0) edge [loop above] node [above] {0} (q0);
+  \end{tikzpicture} 
+ \end{tabular}
+\end{center}
+\[
+M\; :
+\begin{array}[c]{|c|c|c|c|c|}\hline 
+  \delta_1 \times \delta_2  &  0  & 1 & \text{ renombre } &\\\hline 
+  (q_0,p_0) & (q_1,p_0) & (q_2,p_1) & r_0 & \text{ edo. inicial } \\\hline 
+  (q_0,p_1) & (q_1,p_0) & (q_2,p_2) & r_1 & \text{ edo. no conectado }\\\hline 
+  (q_0,p_2) & (q_1,p_2) & (q_2,p_2) & r_2 & \text{ edo. no conectado }\\\hline 
+  (q_1,p_0) & (q_1,p_0) & (q_2,p_1) & r_3 & \text{ edo. final } \\\hline 
+  (q_1,p_1) & (q_1,p_0) & (q_2,p_2) & r_4 & \text{ edo. final pero no 
+    conectado } \\\hline
+  (q_1,p_2) & (q_1,p_2) & (q_2,p_2) & r_5 & \\\hline 
+  (q_2,p_0) & (q_1,p_0) & (q_2,p_1) & r_6 & \text{ edo. no conectado }\\\hline 
+  (q_2,p_1) & (q_1,p_0) & (q_2,p_2) & r_7 &\\\hline 
+  (q_2,p_2) & (q_1,p_2) & (q_2,p_2) & r_8 &\\\hline 
+\end{array}
+\]
+
+\end{document}

@@ -1,0 +1,728 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+\usepackage[section]{placeins}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-2\\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
+  PAPIME PE102117} \\ 
+Nota de Clase 7: El lema del bombeo - Teorema de Myhill Nerode} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{29 de marzo de 2019}
+
+\begin{document}
+\maketitle
+
+\section{Lenguajes regulares o ?`no?}
+
+Los lenguajes que hemos tratado han sido caracterizados por ser sencillos, es 
+decir son conjuntos de cadenas cuyas propiedades son f\'aciles de abstraer 
+mediante lenguajes b\'asicos y operaciones como la concatenaci\'on, uni\'on y 
+cerradura de Kleene.
+A partir de ellos, las propiedades de cerradura nos permiten construir 
+nuevos lenguajes regulares:
+% a partir de lenguajes ya conocidos por medio de algunas operaciones entre 
+% lenguajes.\\
+Si $L,M$ son lenguajes regulares entonces:
+\begin{center}
+\begin{tabular}{ccc}
+$L\cup M$ es regular  & \hspace*{50pt} & $LM$ es regular\\
+$L^\star$ es regular & & $L^+$ es regular\\
+$\overline{L}$ es regular && $L\cap M$ es regular\\
+$L-M$ es regular & &
+\end{tabular}
+\end{center}
+
+As\'i mismo, hemos considerado la equivalencia entre lenguajes regulares y los 
+aut\'omatas finitos a trav\'es del teorema de Kleene. 
+Pero ?`c\'omo es posible decidir si un lenguaje dado, sin una representaci\'on 
+de expresi\'on regular o aut\'omata que lo reconoce, es regular?
+
+Un caso conocido de un lenguaje \enquote{sencillo} no regular es 
+$$ L = \{a^i b^i \mid i\in \N \} $$
+Veamos dos ejemplos de lenguajes no regulares al tratar de dar una expresi\'on 
+que los genere:
+
+\paragraph{Ejemplo:}
+Considere el lenguaje~$L=\{a^ib^j \mid i\neq j, \; i,j\in \N\}$. 
+Decida si es regular.\\
+Para la demostraci\'on, supongamos primero que~$L$ es regular.
+Ahora procedemos a construir una expresi\'on que lo represente:
+partimos del lenguaje~$a^\star b^\star$ que claramente es regular.\\
+Por propiedades de cerradura, el lenguaje $a^\star b^\star - L$ tambi\'en debe 
+ser regular.\\
+!`Pero $a^\star b^\star-L=\{a^ib^i \mid i\in\N\}$ no es regular!\\
+Por lo tanto $L$ no puede ser regular.
+
+\paragraph{Ejemplo:}
+Ahora considere el lenguaje~$L=\{wb^n \mid |w|=n, n\geq 1\}$. 
+Decida si es regular.\\
+Nuevamente, supongamos que $L$ es regular.
+Y partimos otra vez de $a^\star b^\star$ que claramente es regular.\\
+Usando las propiedades de cerradura $L\cap a^\star b^\star$ tambi\'en debe ser 
+regular.
+Pero $L\cap a^\star b^\star = \{a^ib^{\,i} \mid \in\N\}$ no es regular.\\
+Por lo tanto $L$ no puede ser regular.
+
+
+\subsection{?`Cu\'antos lenguajes regulares hay?}
+
+Los lenguajes son variados y requerimos de una forma eficiente para 
+decidir si un lenguaje es regular y entonces atrevernos a proporcionar una 
+m\'aquina que lo reconozca.
+
+Consideremos el conjunto de todos los lenguajes regulares, dado un alfabeto:
+$$REG=\{L\inc\sest\mid L\mbox{ es regular }\}$$
+?`Cu\'al es la cardinalidad de $REG$? Analicemos el conjunto:
+\bi
+ \item Dado que cualquier lenguaje~$L$ es un subconjunto de $\sest$, existen 
+  tantos lenguajes como elementos en $\Pe(\sest)$.
+ \item Puesto que $\sest$ es infinito numerable, es decir es del tama\~no del 
+  conjunto $\mathbb{N}$ de los n\'umeros naturales, entonces $\Pe(\sest)$ es 
+  del tama\~no del conjunto de los n\'umeros reales $\mathbb{R}$.
+ \item Existen s\'olo tantos lenguajes regulares como n\'umeros naturales, 
+  $|REG|=|\mathbb{N}|$:
+  \bi
+   \item La idea de la prueba es enumerar lexicogr\'aficamente \textit{todos} 
+    los AFD posibles con alfabeto de entrada $\Sigma$, es decir, primero los 
+    aut\'omatas con un s\'olo estado, luego los de dos estados, 
+    etc.
+   \item Esto implica que el n\'umero de lenguajes regulares es a lo m\'as 
+    numerable.
+   \item Adem\'as, claramente es numerable pues hay una infinidad numerable de 
+    lenguajes regulares, por ejemplo 
+    $$\{a\},\{aa\},\{aaa\},\ldots $$
+  \ei
+ \item De manera que el conjunto $\Pe(\sest)-REG$ no puede ser numerable, pues 
+  la uni\'on de numerables sigue siendo numerable.
+ \item Es decir, hay tantos lenguajes \textbf{no} regulares como n\'umeros 
+  reales.
+\ei
+
+\vspace*{10pt}
+
+En esta nota nos dedicaremos a discutir dos m\'etodos para probar que un 
+lenguaje \textbf{no} es regular.
+
+\section{Lema de Bombeo para lenguajes regulares}
+\lema{[Lema del Bombeo]
+Si $L$ es un lenguaje regular infinito entonces existe un n\'umero $n\in\N$,
+llamado constante de bombeo para $L$, tal que para cualquier cadena $w\in L$ con $|w|\geq n$ existen cadenas $u,v,x$ tales que:
+\be
+ \item $w=uvx$
+ \item $|uv|\leq n$
+ \item $v\neq\cv$
+ \item $\fa m\in\mathbb{N}(\;uv^mx\in L)$.
+\ee
+}
+
+
+Informalmente, la idea del lema se basa en que la caracter\'istica de un 
+lenguaje regular consiste en \textit{repetir} o \textit{ciclar} una subcadena 
+y de ah\'i que exista un ciclo en un aut\'omata que reconoce a $L$.
+Recordemos que un aut\'omata es una m\'aquina con una memoria corta, es decir 
+s\'olo recuerda lo que est\'a abstraido en un estado y no tiene memoria 
+auxiliar. 
+El siguiente diagrama resume el lema:
+\begin{center}
+\begin{tikzpicture}[node distance=3.5cm,every node/.style={scale=0.8},thick]
+    \node[state,initial,initial text=,accepting by double] (q0) {$q_0$};
+    \node[state] (qi) [right of=q0] {$q_i$};
+    \node[state] (qf) [right of=qi] {$q_f$};
+    \path[->,style=loosely dashed] (q0) edge [bend left] node [above] {$u$} 
+(qi);
+    \path[->,style=loosely dashed] (qi) edge [out=130,in=45,loop] node [above] 
+{$v$} (qi);
+    \path[->,style=loosely dashed] (qi) edge [bend left] node 
+[above] {$x$} (qf);
+ \end{tikzpicture}
+\end{center}
+\bigskip
+
+Veamos a continuación la prueba formal.
+
+\medskip
+\begin{proof}
+Como $L$ es regular, existe un AFD $M=\pt{Q,\Sigma,q_0,\delta,F}$ que reconoce a $L$. Sea $n=|Q|$, es
+decir $n$ es el número de estados en $Q$. Sea $w\in L$ una cadena con
+$|w|\geq n$, digamos $w=a_1\ldots a_n z$ con $a_i\in\Sigma$ y $z\in\sest$.
+Ya que $w\in L$, entonces se tiene que $\dest(q_0,w)=q_f\in F$. Supongamos
+s.p.g. que para toda $0\leq i< n,\;\delta(q_i,a_{i+1})=q_{i+1}$. Entonces el
+proceso de cómputo para $\dest(q_0,w)=q_f$ es como sigue:
+
+\begin{align*}
+\dest(q_0,w) & = \dest({\bf q_0},a_1\ldots a_n z) \\
+& = \dest(\dest(q_0,a_1),a_2\ldots a_nz) \\
+& = \dest({\bf q_1},a_2\ldots a_nz) \\
+& = \dest(\dest(q_1,a_2), a_3\ldots a_nz) \\
+& = \dest({\bf q_2}, a_3\ldots a_nz) \\
+&  \;\;\;\;\;\;\vdots \\
+& = \dest(\dest(q_{n-2},a_{n-1}),a_nz) \\
+& = \dest({\bf q_{n-1}},a_nz)\\
+& = \dest(\dest(q_{n-1},a_n),z)\\
+& = \dest({\bf q_n},z)\\
+& = q_f\in F
+%& = \dest(\dest(q_0,a_1\ldots a_n),z)=q_f
+\end{align*}
+
+Obsérvese que en este proceso de ejecución de $w$ figuran los estados
+$q_0,\ldots, q_n$ que son $n+1$ estados y como $Q$ cuenta sólo con $n$
+estados, por el principio del palomar, existen $j,k\in\{0,1,\ldots,n\}$
+tales que $j<k$ y $q_j=q_k$. De aquí que el proceso anterior equivale a
+\begin{align*}
+\dest(q_0,w) & = \dest(q_0,a_1\ldots a_j\ldots a_k\ldots a_n z) \\
+& = \dest(\dest(q_0,a_1a_2\ldots a_j), a_{j+1}\ldots a_k\ldots a_nz) \\
+& = \dest({\bf q_j}, a_{j+1}\ldots a_k\ldots a_nz) \\
+& = \dest({\bf q_k},a_{k+1}\ldots a_nz) \\
+& = \dest({\bf q_j},a_{k+1}\ldots a_nz) \\
+& = \;\;\;\;\;\;\vdots \\
+% & = \dest(\dest(q_{n-2},a_{n-1}),a_nz) \\
+% & = \dest(q_{n-1},a_nz)\\
+& = \dest(\dest(q_{n-1},a_n),z)\\
+& = \dest(q_n,z)\\
+& = q_f\in F
+%& = \dest(\dest(q_0,a_1\ldots a_n),z)=q_f
+\end{align*}
+
+Sean $u=a_1\ldots a_j,\;v=a_{j+1}\ldots a_k$ y $x=a_{k+1}\ldots a_nz$. Es
+claro que $w=uvx$ y que $|uv|=|a_1\ldots a_ja_{j+1}\ldots a_k|\leq n$, de
+donde las condiciones $1$ y $2$ se cumplen. 
+Por otra parte, se cumple que $v\neq\varepsilon$ (condición $3$), pues $j<k$ y
+$|v|=|a_{j+1}\ldots a_k|= k-j>0$. 
+
+Finalmente, observemos que
+
+\begin{align*}
+\dest(q_j,v) & = \dest(q_j,a_{j+1}\ldots a_k) \\
+%& = \dest(\dest(q_0,a_1a_2\ldots a_j), a_{j+1}\ldots a_k\ldots a_nz) \\
+& = \dest(q_{j+1}, a_{j+2}\ldots a_k) \\
+% & = \dest(q_k,a_{k+1}\ldots a_nz) \\
+% & = \dest(q_j,a_{k+1}\ldots a_nz) \\
+& = \;\;\;\;\;\;\vdots \\
+% & = \dest(\dest(q_{n-2},a_{n-1}),a_nz) \\
+% & = \dest(q_{n-1},a_nz)\\
+& = \dest(q_{k-1},a_k)\\
+& = \dest({\bf q_k},\varepsilon)\\
+& = \dest({\bf q_j},\varepsilon) = q_j\\
+%& = \dest(\dest(q_0,a_1\ldots a_n),z)=q_f
+\end{align*}    
+de donde, por inducción sobre $m$, se sigue que $\fa
+m\in\mathbb{N}(\dest(q_j,v^m)=q_j)$. La propiedad 4 resulta ahora inmediata
+puesto que:
+
+\[
+\dest(q_0,uv^mx)=\dest(\dest(q_0,u),v^mx)=\dest(q_j,v^mx)=\dest(\dest(q_j,v^m),x)
+=
+\dest(q_j,x)=\dest(q_n,z)=q_f\in F
+\] 
+\end{proof}
+
+\bigskip
+
+Obsérvese que de la prueba del lema del bombeo se sigue que la constante de
+bombeo no es única, pues hay una por cada AFD que reconozca al lenguaje en
+cuestión. Más aún, la constante del bombeo es meramente existencial pues no se
+conoce cómo es el autómata particular que la define, de modo que no es posible saber cúal es el número de estados de dicho autómata.
+
+\medskip
+
+Otra observación importante es que el lema del bombeo sólo proporciona una condición necesaria para que un lenguaje sea regular, pero no una condición suficiente, es decir, existen lenguajes que satisfacen el lema del bombeo pero no son regulares. El siguiente es un ejemplo cuya verificación se deja al lector.
+
+\begin{example}\label{exam:bombeoNoSuf}
+  El lenguaje $L\inc \{a,b,c\}^\star$ definido como:
+\[
+L=\{a^ib^jc^j\mid i\geq 1,\;j\geq 0\}\cup \{b^jc^k\mid j,k\geq 0\}
+\]
+tiene una constante de bombeo, a saber $n=1$. Sin embargo $L$ no es un lenguaje regular.
+\end{example}
+
+De manera que el lema del bombeo no sirve para mostrar que un lenguajes es regular. Su principal aplicación es Para probar que un lenguaje $L$ \textbf{no} es regular, para lo cual se procede por 
+\textit{contradicci\'on} como sigue:
+\be
+ \item Si $L$ fuera regular entonces existir\'ia una constante de bombeo $n$.
+ \item Y cualquier palabra $w\in L$ con longitud mayor o igual a $n$ se 
+  descompone como  $w=uvx$ donde $v\neq\vacia,\;\;|uv|\leq n$.
+ \item Se llega a una contradicci\'on como sigue:
+ \item[] por el lema del bombeo la cadena~$uv^ix$ debe pertenecer a $L$,
+   para toda $i\geq 0$. Pero por la definici\'on particular de $L$, se 
+   puede mostrar alguna $i$ tal que $uv^ix\notin L$.
+\ee
+Debemos observar que encontrar la $i$ adecuada depende del problema particular 
+y no hay un m\'etodo general, pero usualmente basta con valores peque\~nos de  
+$i$, incluyendo $i=0$.
+
+%\paragraph{Ejemplo:}
+\begin{example}
+Veamos que $L=\{a^ib^i\;|\;i\in\N\}$ \textbf{no} es regular usando el Lema del 
+bombeo.\\
+Sup\'ongase que $L$ es regular y sea $n$ una constante de bombeo.
+Ahora considere una palabra cualquiera del lenguaje, es decir tiene la 
+forma $w=a^nb^n$.
+Una descomposici\'on de $w$ en $uvx$ es la siguiente:
+$u,v$ contienen s\'olo $a$'s, digamos 
+$$u=a^k,\;v=a^\ell,\;k\geq 0,\ell\geq 1$$
+Con esto aseguramos que se cumple que $v\neq\cv$, $|uv|\leq n$ y adem\'as
+$x=a^{n-k-\ell}b^n$. \\
+Si tomamos $i=2$, por el lema del bombeo la cadena~$uv^2x$ debe pertenecer a 
+$L$. Pero, realmente sucede que
+$$  uv^2x=a^ka^\ell a^\ell a^{n-k-\ell}b^n=a^{n+\ell}b^n\notin L$$
+Por lo tanto, $L$ no es regular.
+\end{example}
+
+
+%\paragraph{Ejemplo:}
+\begin{example}
+Demuestre que $L_1=\{w\in\{a,b\}^\star \mid w=w^R\}$ \textbf{no} es regular.\\
+Suponer que $L$ es regular y sea $n$ una constante de bombeo.
+Ahora considere que la palabra $w=a^nb^na^n$ en $L_1$ tiene una 
+descomposici\'on en $w=uvx$ con $v\neq\cv,\;|uv|\leq n$ y en donde $u,v$ tienen 
+s\'olo $a$'s digamos $u=a^k,\;v=a^\ell,\;\ell\geq 1$.\\
+Por tanto $x=a^{n-k-\ell}b^na^n$.
+Al hacer $i=2$ debemos tener a $uv^2x\in L$, por el lema del bombeo.
+Pero por otra parte se tiene que:
+$$uv^2x=a^ka^\ell a^\ell a^{n-k-\ell}b^na^n=a^{n+\ell}b^na^n\notin L$$
+Y por lo tanto $L$ no es regular.
+\end{example}
+\vspace*{15pt}
+
+As\'i el lema anterior \textit{no} permite demostrar que un lenguaje es 
+regular, generalmente se usa como m\'etodo de demostraci\'on para probar que un 
+lenguaje \textbf{no} es regular.
+Veamos a continuaci\'on otro m\'etodo, el cual permite decidir si un lenguaje es 
+regular.
+
+
+\section{El Teorema  de Myhill-Nerode}
+
+
+
+% La estrecha relaci\'on entre lenguajes regulares y aut\'omatas finitos invita a 
+% reflexionar de otra forma un m\'etodo para identificar lenguajes regulares.
+% Una manera de hacer lo anterior fue estudiada a trav\'es de la minimizaci\'on 
+% de aut\'omatas finitos al abstraer partes de una m\'aquina que reconocen cierto 
+% tipo de subcadenas, las clases de equivalencia de estados. 
+
+% El m\'etodo expuesto en esta secci\'on utiliza tambi\'en relaciones de 
+% equivalencias pero sin considerar \textit{a priori} una m\'aquina que acepte 
+% cierto lenguaje, sino que se analizar\'an las cadenas de un lenguaje para 
+% decidir si \'este es regular o no. 
+
+% \subsection{Relaciones de equivalencia sobre cadenas}
+
+Consid\'erense las siguientes relaciones de equivalencia sobre $\Sigma^\star$
+relacionadas a un lenguaje dado $L$ y a un aut\'omata finito determinista dado 
+$M$, sean $u,v$ dos cadenas:
+\bi
+ \item $u\equiv_L v$ si y s\'olo si  \[\fa w\in\sest(uw\in L\Iff vw\in L)\]
+  Se dice que $u,v$ son cadenas {\em indistinguibles} para $L$.
+
+ \item $u\equiv_M v$ si y s\'olo si \[\dest(q_0,u)=\dest(q_0,v)\]
+  Es decir, $u,v$ son cadenas {\em indistinguibles} seg\'un $M$.
+\ei    
+
+\begin{example}
+Dado el lenguaje $L=\{a^i b^i \mid i\in\N\}$ sobre $\Sigma = \{a,b\}$ se tiene 
+que %$$ x\equiv_L y \text{ si y s\'olo si } \fa z\in\sest(xz\in L \Iff yz\in L)$$
+\bi
+ \item $ a^4b^3 \equiv_L a^3b^2$ pues 
+  \[\fa z\in\sest ( a^4b^3 z \in L \Iff a^3b^2z\in L)\] 
+  En particular con $z=b$, ambas concatenaciones est\'an en $L$. En otro caso no 
+  lo est\'an pero esto también hace que se cumpla la equivalencia.
+ \item $a^2b^2\not\equiv_La^3b^2$ pues para $z=\vacia$ se tiene 
+  \[a^2b^2z\in L \text{ y } a^3b^2z\notin L\]
+ \item $a^4b \not\equiv_L a^3b^2$ pues para $z=b$, se tiene 
+  \[a^4b^2z\notin L \text{ y }a^3b^2z\in L\]
+ \item $abb \equiv_L baba$ pues ambas cadenas no pertenecen a $L$ y, debido a
+   la definición de $L$, $abbv$ y $babav$ tampoco están en $L$ para cualquier $z$.
+ \item La relaci\'on $\equiv_L$ tiene una infinidad de clases de equivalencia, 
+  por ejemplo:  $$[\vacia],[a],[a^2],\ldots,[a^n],\ldots $$
+  Todas estas clases son diferentes pues si $i\neq j$ entonces 
+  $a^i\not\equiv_L a^j$ ya que si consideramos a $z=b^i$ entonces 
+  $a^iz\in L$ pero $a^jz\notin L$.
+\ei
+\end{example}
+
+Por lo general no hay relaci\'on alguna entre un 
+lenguaje~$L$ y un aut\'omata~$M$. M\'as a\'un, la relaci\'on $\equiv_L$ puede 
+definirse para cualquier lenguaje $L$ a\'un cuando este no sea regular.
+Sin embargo, en el caso particular en que $L=L(M)$ se cumple que $\equiv_M$ es 
+un \textit{refinamiento} de $\equiv_L$.
+
+\begin{proposition}\label{prop:refinML}
+Para cualesquiera $x,y\in\sest$, Si $x\equiv_My$ entonces $x\equiv_{L(M)} y$.
+%$\fa x,y\in\sest(x\equiv_My\to x\equiv_L y)$  
+\end{proposition}
+\begin{proof}
+  Ejercicio\qed
+\end{proof}
+
+\medskip
+
+Esta proposici\'on nos deja ver la m\'as importante limitaci\'on de los 
+aut\'omatas finitos, el hecho de que carecen de memoria m\'as all\'a de 
+lo que recuerde el estado actual:
+si $x\equiv_M y$ entonces $x\equiv_{L(M)}y$, por lo que ninguna cadena $w$ 
+procesada despu\'es de $x$ o $y$ permitir\'a que $M$ determine cu\'al de $x$ o 
+$y$ se proces\'o anteriormente.
+
+
+\vspace*{10pt}
+
+
+\defin{
+Una relaci\'on de equivalencia $\equiv$ sobre $\sest$ es invariante por la
+derecha si y s\'olo si \[\fa x,y,w\in\sest(x\equiv y\to xw\equiv yw).\]
+}
+As\'i la relaci\'on $\equiv_L$ es invariante por la derecha.
+
+
+
+
+\lema{[Lema de continuaci\'on]\label{lem:cont}
+Sean $x,y\in\sest$. Si $\dest(q_0,x)=\dest(q_0,y)$ entonces para cualquier 
+$z\in\sest$, se cumple que \[\dest(q_0,xz)=\dest(q_0,yz)\]
+}
+\proof
+Ejercicio.
+\qed
+
+\medskip
+
+Del lema anterior se sigue que la relaci\'on $\equiv_M$ es invariante por 
+la derecha.
+
+%\paragraph{Propiedades de $\equiv_M$.}
+\begin{proposition}\label{prop:pEquivM}
+Dado un AFD $M=\pt{Q,\Sigma,q_0,\delta,F}$ se cumple lo siguiente:
+\bi
+\item La relaci\'on $\equiv_M$ es invariante por la derecha.
+\item La relaci\'on $\equiv_M$ es de \'indice\footnote{Recordemos que el \'indice de una relaci\'on de equivalencia $\equiv$ es el 
+n\'umero de clases de equivalencia generadas por $\equiv$.} finito.
+\item $L(M)$ es la uni\'on de algunas de las clases de equivalencia de la
+  relaci\'on $\equiv_M$.
+\ei
+\end{proposition}
+\proof
+\begin{itemize}
+$\;$
+\medskip
+\item Que $\equiv_M$ es invariante por la derecha es consecuencia del lema de
+  continuación \ref{lem:cont}.
+\item Que $\equiv_M$ es de índice finito es claro pues cada clase de
+  equivalencia se define como: 
+\[
+[x]_{\equiv_M}=\{y\in\sest\mid \dest(q_0,x)=\dest(q_0,y)\}
+\]
+de modo que la definición de cada clase de equivalencia depende de una
+igualdad entre dos estados. Así, como $Q$ es finito entonces sólo hay un
+número finito de igualdades entre estados, de donde sólo puede haber un número
+finito de clases de equivalencia.
+\item Veamos que $L(M)=\bigcup \{[x]_{\equiv_M}\mid \dest(q_0,x)\in F\}$. La
+  contención $(\subseteq)$ es clara. Para $(\supseteq)$, tomemos   $y\in [x]_{\equiv_M}$ con
+  $\dest(q_0,x)\in F$. Entonces como $y\equiv_M x$, tenemos que
+  $\dest(q_0,y)=\dest(q_0,x)\in F$, es decir $y\in L(M)$. 
+
+
+\end{itemize}
+\qed
+
+\newpage
+
+Las propiedades de la proposición \ref{prop:pEquivM} resultan características
+de un lenguaje regular y esto es precisamente lo que nos dice el siguiente
+
+
+\teo{[Myhill-Nerode]
+Sea $L\inc\sest$. Las siguientes condiciones son equivalentes:
+\be
+ \item $L$ es regular.
+ \item Existe una relaci\'on de equivalencia $\equiv$ sobre $\sest$, invariante
+  por la derecha y de \'indice finito, tal que $L$ es la uni\'on de algunas de 
+  las clases de equivalencia de $\equiv$.
+ \item La relaci\'on de equivalencia $\equiv_L$ tiene \'indice finito.
+\ee
+}
+
+\begin{proof}
+\begin{itemize}$\;$\medskip
+\item $(1)\Rightarrow (2)$. Esto es consecuencia directa de la proposición
+  \ref{prop:pEquivM}. 
+\item $(2)\Rightarrow (3)$. Sean $\equiv$ una relación de equivalencia de
+  índice finito e
+  invariante por la derecha y $w_0,\ldots, w_n\in\sest$ tales
+  que \[L=\bigcup_{i=0}^n[w_i]_\equiv.\]
+Para mostrar que $\equiv_L$ es de índice finito, basta ver que $\equiv$ es un
+refinamiento de $\equiv_L$, puesto que así el índice de $\equiv_L$ es menor\footnote{Cada clase de $\equiv_L$ es unión
+de clases de $\equiv$, a saber $[x]_{\equiv_L} = \bigcup\{ [y]_\equiv\mid x\equiv_L y\}$ y como por hipótesis $\equiv$ es de índice
+finito entonces $\equiv_L$ también.}
+ que el índice de $\equiv$, que sabemos finito.
+ Supongamos pues que $x\equiv y$ y mostremos que $x\equiv_L y$. Para
+esto sea $z\in\sest$
+\begin{align*}
+  xz\in L &\;\; syss\;\;  xz\in [w_i]_\equiv\;\;\;\mbox{(para alguna $i$)} \\
+          &\;\; syss\;\;  xz\equiv w_i\;\;\; \\ %\mbox{para alguna $i$} \\
+          &\;\; syss\;\;  yz\equiv w_i\;\;\; \mbox{($\equiv$ es invariante por la
+          derecha y $x\equiv y$) } \\
+          &\;\; syss\;\;  yz\in [w_i]_\equiv\;\;\;\;\mbox{(para alguna $i$)}\\
+          &\;\; syss\;\;  yz\in L\;\;
+\end{align*}
+así hemos probado que $\fa x\in\sest(xz\in L \Leftrightarrow yz\in L)$, es
+decir $x\equiv_L y$.
+\item $(3)\Rightarrow (1)$. Supongamos que $\equiv_L$ es de índice finito y digamos que $[w_0],\ldots,[w_n]$ son todas las clases de equivalencia inducidas por $\equiv_L$, donde s.p.g. $w_0\equiv_L\varepsilon$. Para mostrar que $L$ es regular definimos el siguiente AFD $M$:
+  \begin{itemize}
+  \item $Q=\sest/\!\equiv_L =\{[w_0],\ldots,[w_n]\}$
+  \item $q_0=[\cv]$
+  \item $F=\{[w_i]\mid w_i\in L\}$ %, es decir, los estados finales son las clases cuyo representante $w_i$ está en $L.
+  \item Para cualesquiera $x\in\sest$ y $a\in\Sigma$, la función de transición $\delta$ se define como:
+\[
+\delta([w_i],a) = [w_ia]
+\]
+Es fácil ver que $\delta$ está bien definida. 
+
+\medskip
+
+Más aún, de la siguiente propiedad, cuya demostración dejamos como ejercicio,
+\[
+\mbox{Para cualesquiera } w_i,x\in\sest,\;\;\dest([w_i],x) = [w_ix]
+\]
+  \end{itemize}
+se sigue que $M$ acepta exactamente a $L$:
+\[
+  \dest([\cv],x)\in F \mbox{ syss } [x]\in F \mbox{ syss } x\in L
+\]
+Por lo tanto $L$ es un lenguaje regular.
+\end{itemize}
+\end{proof}
+
+\vspace*{20pt}
+
+El teorema anterior permite demostrar que un lenguaje $L$ \textbf{no} es 
+regular al mostrar que $L$ no es de \'indice finito.
+Es decir, basta ver que $\equiv_L$ tiene una infinidad de clases de 
+equivalencia. Esto se hace expl\'icito mediante el siguiente lema que es una 
+consecuencia directa del teorema de Myhill-Nerode.
+
+\lema{[Lema del \'indice finito]
+Sea $L\inc\sest$ un lenguaje regular infinito. Cualquier conjunto $S\inc\sest$
+suficientemente grande contiene al menos dos cadenas distintas, $x,y\in S$
+tales que $x\equiv_L y$. 
+}
+\proof
+Como $L$ es regular entonces, por el teorema de Myhill-Nerode, la relación
+$\equiv_L$ es de índice finito, digamos $n$. Si $S\inc L$ y $|S|>n$ entonces, el principio
+del palomar implica que existen dos cadenas distintas $x,y\in S$ tales que tanto $x$
+como $y$ pertenecen a la misma clase de equivalencia. Es decir, $x\equiv_L y$. 
+
+% Como $L$ es regular existe un AFD $M$ tal que $L=L(M)$. Sea $S\inc\sest$ tal
+% que $|S|>|Q|$ es decir en $S$ hay más cadenas que estados en $M$. En tal caso
+% el principio del palomar implica que existen $x,y\in S$ tales que 
+% $\dest(q_0,x)=\dest(q_0,y)$. Es decir $x\equiv_M y$ y por la proposición
+% \ref{prop:refinML} se tiene que $x\equiv_L y$.
+\qed
+
+
+Las pruebas de no regularidad se sirven de la contrapositiva del lema del 
+\'indice finito. Es decir, hallando un conjunto $S\inc\sest$ suficientemente
+grande\footnote{Por lo general $S$ es infinito} que no cumpla la 
+propiedad del lema, habremos probado que $L$ no es regular. 
+La siguiente definici\'on de conjuntos estafadores\footnote{En ingl\'es 
+\textit{fooling set}.} servir\'a para encontrar los conjuntos que no cumplen 
+la propiedad, as\'i para mostrar que un lenguaje $L$ \textbf{no} es regular 
+basta construir un conjunto estafador para $L$.
+
+\defin{
+Un conjunto infinito $S\inc\sest$ es un conjunto estafador para $L$ si y s\'olo 
+si para cualesquiera $x,y\in S$ existe una cadena $z\in\sest$ tal que una y 
+s\'olo una de $xz$ y de $yz$ pertenece a $L$. 
+Es decir, $S$ es un conjunto estafador para $L$ si y s\'olo si  
+\[\fa x,y\in S\, (x\not\equiv_L y).\]
+}
+
+Veamos algunos ejemplos de pruebas de no regularidad usando este concepto.
+
+\begin{example}
+%\paragraph{Ejemplo:}
+El lenguaje $L=\{a^ib^i\;|\;i\in\N\}$ \textbf{no} es regular.\\
+Basta hallar un conjunto estafador para $L$.
+Sea $S=\{a^k\;|\;k\in\N\}$, veamos que $S$ es un conjunto estafador:
+Sean $a^i,a^j\in S$ con $i\neq j$, entonces claramente $a^ib^i\in 
+L$ y $a^ib^j\notin L$. Por lo tanto $a^i\not\equiv_L a^j$ y así $S$ es un conjunto estafador para $L$.
+\end{example}
+
+%\paragraph{Ejemplo:}
+\begin{example}
+Decidir si el lenguaje~$L=\{a^{i^2}\;|\;i\in\N\}$ es regular\footnote{
+Analizando informalmente, se puede ver que este lenguaje requiere 
+memoria m\'as all\'a de la que ofrece un aut\'omata finito pues se necesita 
+contabilizar $i^2$}.
+Tratemos de encontrar un  conjunto estafador para el lenguaje.
+Sea $S$ exactamente $L$ y consideremos $a^{i^2},a^{j^2}\in S$ con $i<j$. 
+\bi
+\item Por un lado tenemos que $a^{i^2}a^{2i+1}=a^{i^2+2i+1}=a^{(i+1)^2}\in
+  L$
+\item Por otra parte, $a^{j^2}a^{2i+1}=a^{j^2+2i+1}\notin L$ puesto que
+  $j^2<j^2+2i+1<j^2+2j+1=(j+1)^2$.
+\ei
+Por lo tanto $a^{i^2}\not\equiv_La^{j^2}$ y $S$ es un conjunto estafador para 
+$L$.
+\end{example}
+
+El siguiente ejemplo se deja al lector y constata que el lenguaje del ejemplo \ref{exam:bombeoNoSuf} no es regular.
+
+\begin{example}
+  El lenguaje $L$ del ejemplo \ref{exam:bombeoNoSuf} no es regular, puesto que el conjunto
+\[
+S=\{ab^n\mid n\in\mathbb{N}\}
+\]
+es un estafador para $L$.
+\end{example}
+
+
+% \medskip
+
+% Usar el teorema anterior para demostrar que un lenguaje es regular tambi\'en 
+% es posible al proporcionar una relaci\'on de equivalencia $\equiv$ invariante 
+% por la derecha y de \'indice finito, es decir, se debe dar $\equiv_L$ tal 
+% que es la uni\'on de algunas clases de equivalencia sobre $\Sigma^\star$.
+% Para ello se siguen los siguientes pasos:
+% \be
+%  \item Proponer unas clases de equivalencia que describan las cadenas en el 
+%   lenguaje, una de las clases debe ser la clase que contiene a la 
+%   cadena vac\'ia: $[\vacia]$.
+  
+%  \item Mostrar que todas las clases antes propuestas se distinguen y son 
+%   invariantes por la derecha siguiendo la definici\'on.\\
+%   Para mostrar que dos clases se distinguen, se toman dos cadenas~$u,v$ una 
+%   en cada clase y se suponen equivalentes~$u\equiv_L v$. 
+%   Basta encontrar una cadena $w$ tal que $uw\in L$ y $vw\notin L$ para romper 
+%   la definici\'on y decir que las dos clases se distinguen.
+
+%  \item Crear un aut\'omata finito usando las clases anteriores de la siguiente 
+%   forma:
+%   \bi
+%    \item Los estados son las clases de equivalencia.
+%    \item El estado inicial es la clase $[\vacia]$.
+%    \item Los estados finales son aquellas clases que contienen a las cadenas 
+%     en el lenguaje.
+%    \item La funci\'on de transic\'on est\'a dada por:
+%     $$ \forall a \in \Sigma, \delta(q_{[w]}, a) = [w'] $$
+%     donde $w$ es el representante de la clase $[w]$ y $wa$ pertenece a la 
+%     clase~$[w']$.
+%   \ei
+% \ee
+
+% \paragraph{Ejemplo:}
+% Decidir si el lenguaje~$L=\{w\in\{a,b\}^\star \mid bb 
+% \text{ no es subcadena de } w \text{ y } |w|=2k, k\in\N\}$ es regular.\\
+% Despu\'es de un an\'alisis informal, podemos pensar que $L$ es regular dado 
+% que se deben identificar cadenas de longitud par y deshechar las cadenas que 
+% contengan $bb$.\\
+% Veamos c\'omo usar el Teorema de Myhill-Nerode para obtener un aut\'omata que 
+% reconozca este lenguaje.\\ 
+% Se debe mostrar que $\equiv_L$ es la uni\'on de algunas clases de equivalencia 
+% sobre $\{a,b\}^\star$. Se proponen las siguientes clases:
+% \bi
+%  \item La clase~$[\vacia]$ representa a las cadenas de longitud par sin la 
+%   subcadena~$bb$.
+%  \item La clase~$[ab]$ que representa a las cadenas de longitud par con 
+%   potencial para tener la subcadena~$bb$.
+%  \item La clase~$[bb]$ representa a las cadenas que contienen a la 
+%   subcadena~$bb$.
+%  \item La clase~$[a]$ engloba a las cadenas de longitud impar sin la 
+%   subcadena~$bb$.
+%  \item La clase~$[b]$ contiene a las cadenas de longitud impar con potencial 
+%   para tener a la subcadena~$bb$.
+% \ei
+% Estas cuatro clases separan a las cadenas en $\{a,b\}^\star$, de ellas s\'olo 
+% la clase $[\vacia]$ es la que contiene las cadenas en $L$.
+
+% \vspace*{10pt}
+
+% Para mostrar que las cuatro clases se distiguen se comparan dos a dos:
+% \bi
+%  \item Sean $\vacia \in [\vacia]$ y $bb\in [bb]$, suponer que 
+%   $\vacia \equiv_L bb$. Tomar $w= \vacia$, entonces $\vacia\vacia = \vacia$ 
+%   est\'a en el lenguaje pero $bb\vacia = bb$ no lo est\'a.
+%  \item Sean $ab \in [ab]$ y $bb\in [bb]$, suponer que 
+%   $ab \equiv_L bb$. Tomar $w= \vacia$, entonces $ab\vacia = ab$ 
+%   est\'a en el lenguaje pero $bb\vacia = bb$ no lo est\'a.
+%  \item Sean $ab \in [ab]$ y $b\in [b]$, suponer que 
+%   $ab \equiv_L b$. Tomar $w=\vacia$, entonces $ab\vacia = ab$ 
+%   est\'a en el lenguaje pero $b\vacia = b$ no lo est\'a.
+%  \item Sean $a\in [a]$ y $b \in [b]$, suponer que $a \equiv_L b$. 
+%   Sea $w=b$ entonces $ab$ est\'a en el lenguaje pero $bb$ no est\'a.
+%  \item Sean $\vacia \in [\vacia]$ y $a \in [a]$, suponer que 
+%   $\vacia \equiv_L a$. Tomar $w=b$ entonces $\vacia b = b$ no est\'a en $L$ 
+%   y $ab$ s\'i est\'a en $L$.
+%  \item Sean $b\in [b]$ y $bb\in [bb]$ y suponer que $b\equiv_L bb$. 
+%   Sea $w=a$ entonces $ba$ que pertenece a $L$ y $bba$ que no pertenece a $L$.
+% \ei 
+% Ahora crearemos el aut\'omata a trav\'es de la tabla de transiciones $\delta$, 
+% abajo est\'a su representaci\'on en diagrama:
+% \[
+%  \begin{array}{rrcc|c|c}
+%   wa \in w'& \hspace{10pt} wb \in w''& &\delta & a & b \\\hline
+%   \vacia a \in [a] & \vacia b \in [b] & \hspace{10pt} inicial,\;final & 
+%     q_{[\vacia]} & q_{[a]} & q_{[b]} \\
+%   aa \in [\vacia] & ab \in [ab] &  & 
+%     q_{[a]} & q_{[\vacia]} & q_{[ab]}\\
+%     aba \in [a] & abb \in [bb] & final & q_{[ab]} & q_{[a]} & q_{[bb]} \\
+%   ba \in [\vacia] & bb \in [bb] & & q_{[b]} & q_{[\vacia]} & q_{[bb]} \\
+%   bba \in [bb] & bbb \in [bb] & & q_{[bb]} & q_{[bb]} & q_{[bb]}
+%  \end{array}
+% \]
+
+% \begin{center}
+% \begin{tikzpicture}[node distance=3.5cm,every 
+% node/.style={scale=0.8},semithick]
+%     \node[state,initial,initial text=,accepting by double] (qe) 
+%       {$q_{[\vacia]}$};
+%     \node[state] (qa) [right of=qe] {$q_{[a]}$};
+%     \node[state] (qb) [below of=qe] {$q_{[b]}$};
+%     \node[state,accepting by double] (qab) [right of=qa] {$q_{[ab]}$};
+%     \node[state] (qbb) [right of=qb] {$q_{[bb]}$};
+%     \path[->] (qe) edge [bend right] node [above] {a} (qa);
+%     \path[->] (qe) [bend right] edge node [left] {b} (qb);
+%     \path[->] (qa) edge [bend right] node [above] {a} (qe);
+%     \path[->] (qa) edge [bend right] node [above] {b} (qab);
+%     \path[->] (qab) edge [bend right] node [above] {a} (qa);
+%     \path[->] (qab) edge  node [above] {b} (qbb);
+%     \path[->] (qb) edge [bend right] node [left] {a} (qe);
+%     \path[->] (qb) edge node [above] {b} (qbb);
+%     \path[->] (qbb) edge [loop right] node [right] {a,b} (qbb);
+%  \end{tikzpicture}
+% \end{center}
+
+
+\end{document}

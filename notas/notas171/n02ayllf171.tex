@@ -1,0 +1,212 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2017-1 \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 2} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Lenguajes Regulares}
+
+El estudio de los lenguajes como conjuntos de cadenas debe ser susceptible a 
+realizarse de manera formal mediante una abstracci\'on conveniente. 
+
+Una forma para caracterizar lenguajes sencillos, de f\'acil descripci\'on, es 
+utilizar operaciones sobre cadenas, \'estas permiten la \textit{generaci\'on} 
+de nuevos lenguajes. 
+Los lenguajes regulares son los conjuntos de cadenas m\'as simples.
+
+\defin{
+Un lenguaje~$L\inc\sest$ es regular si es generado a partir de los lenguajes 
+b\'asicos $\vacio,\{\cv\},\{a\}$ (donde $a\in\Sigma$) y 
+mediante las operaciones de uni\'on, concatenaci\'on y estrella de Kleene. 
+Recursivamente:
+\bi
+ \item $\vacio$ y $\{\cv\}$ son lenguajes regulares.
+ \item Si $a\in\Sigma$ entonces $\{a\}$ es regular.
+ \item Si $L,M$ son regulares entonces $L\cup M, LM$ y $L^\star$ son regulares.
+ \item Son todos.
+\ei 
+}
+\paragraph{Ejemplos:}
+\bi
+ \item Cualquier lenguaje \textit{finito} es regular.
+ \item En efecto si
+  $L=\{w_1,\ldots,w_n\}\inc\sest$ entonces $L=L_1\cup L_2\cup\ldots\cup
+  L_n$ con $L_i=\{w_i\}$. Cada lenguaje $L_i$ es regular puesto que si
+  $w_i=a_1\ldots a_{k_i}$ con $a_j\in\Sigma$  entonces
+  $L_i=\{a_1\}\{a_2\}\ldots\{a_{k_i}\}$ y cada $\{a_j\}$ es regular por
+  definici\'on.
+  \item En particular cualquier alfabeto $\Sigma$ es un lenguaje regular.
+  \item Sobre el alfabeto $\Sigma=\{a,b\}$ tenemos los siguientes lenguajes
+   regulares \textit{infinitos}:
+   \bi
+    \item $L_1=\{w\in\sest \mid w \text{ empieza con }\;b\}=\{b\}\sest$
+    \item $L_2=\{w\in\sest \mid w \text{ contiene exactamente una }\;a\}$
+      $ = \{b\}^\star\{a\}\{b\}^\star$
+    \item $L_3=\{w\in\sest \mid w \text{ contiene la subcadena } \;ba\} $ 
+      $ = \sest\{ba\}\sest$
+    \item $L_4=\{w\in\sest \mid w \text{ contiene exactamente dos } b \}$ 
+      $ =\{a\}^\star\{b\}\{a\}^\star\{b\}\{a\}^\star$
+    \item $L_5=\{w\in\sest \mid w \text{ contiene un n\'umero par de } a \} = $
+    $\{b\}^\star\cup\big(\{b\}^\star\{a\}\{b\}^\star\{a\}\{b\}^\star\big)^\star$
+  \ei
+ \item No todo lenguaje infinito es regular% , mas adelante veremos que
+  % el lenguaje $L=\{a^nb^n\;|\;n\in\N\}$ no es regular.
+\ei   
+
+\paragraph{Problemas de inter\'es acerca de lenguajes regulares}
+Dado un lenguaje regular~$L\inc\Sigma^\star$ existen diversos problemas de 
+decisi\'on (es decir, problemas cuya respuesta es s\'i o no) acerca de~$L$, 
+enunciamos algunos de ellos que tienen soluci\'on algor\'itmica.
+\be
+ \item Problema de vacuidad: ?`Es $L$ el lenguaje vac\'io?
+ \item Problema de finitud: ?`Es $L$ finito ?
+ \item Problema de la pertenencia: Dada $w\in\Sigma^\star$, ?`$w\in L$ ?   
+ \item Problema de la equivalencia: Dado $M\inc\Sigma^\star$, ?`$M=L$ ?
+\ee
+
+
+\subsection{Expresiones Regulares}
+Los lenguajes regulares se pueden describir por medio de una expresi\'on que 
+generaliza la forma de las cadenas en el lenguaje, es decir una 
+representaci\'on de las cadenas.
+Un mecanismo de suma importancia para denotar lenguajes regulares es por
+medio de las llamadas expresiones regulares, que son \textit{f\'ormulas} 
+expl\'icitas de la cadena caracter\'istica del lenguaje.
+
+\defin{ Las expresiones regulares est\'an definidas recursivamente como
+sigue:
+\bi
+ \item $\vacio$ es una expresi\'on regular.
+ \item $\cv$ es una expresi\'on regular.
+ \item Si $a\in\Sigma$ entonces $a$ es una expresi\'on regular.
+ \item Si $\al,\beta$ son expresiones regulares entonces 
+  $\al\beta,\;\al+\beta,\;\al^\star$ son expresiones regulares.
+\item Son todas.
+\ei
+}
+
+\noindent Dada una expresi\'on regular $\al$, su significado~$L(\al)$ es un 
+lenguaje regular definido como sigue:
+\bi
+\item $L(\vacio)=\vacio$
+\item $L(\cv)=\cv$
+\item $L(a)=\{a\}\;\;\;\mbox{ si }\al\in\Sigma$
+\item $L(\al\beta)=L(\al)L(\beta)$
+\item $L(\al+\beta)=L(\al)\cup L(\beta)$
+\item $L(\al^\star)=L(\al)^\star$
+\ei
+De los significados de las expresiones, se puede ver a una expresi\'on regular 
+como una representaci\'on alternativa de un lenguaje. 
+As\'i podemos pensar en la equivalencia entre lenguajes regulares y 
+expresiones regulares:
+\begin{proposition}
+Un lenguaje~$M\inc\sest$ es regular si y s\'olo si existe una expresi\'on 
+regular~$\al$ tal que $M = L(\al)$.
+\end{proposition}
+\vspace*{-15pt}
+\begin{proof}
+La direcci\'on $\Leftarrow$ es directa. 
+Para la otra direcci\'on hacemos inducci\'on estructural.
+\end{proof}
+
+\vspace*{10pt}
+\noindent Se puede estudiar la equivalencia de expresiones regulares:
+\defin{
+Dadas dos expresiones regulares~$\al,\beta$ decimos que son equivalentes, al 
+escribir~$\al=\beta$, si y s\'olo si $\al$ y $\beta$ tienen el mismo 
+significado, es decir, si y s\'olo si $L(\al)=L(\beta)$.
+}
+
+\paragraph{Propiedades de las Expresiones Regulares}
+\begin{center}
+ \begin{tabular}{ccc}
+  $\al+(\beta+\ga)=(\al+\beta)+\ga$ & \hspace{10pt} & $\al+\beta=\beta+\al$ \\
+  $\al+\vacio=\al$ & & $\al+\al=\al  $\\
+  $\al\cv=\al$ & & $\al\vacio=\vacio$\\
+  $\al(\beta\ga)=(\al\beta)\ga$ & & \\
+  $\al(\beta+\ga)=\al\beta+\al\ga$ & & $(\beta+\ga)\al=\beta\al+\ga\al$\\
+  $\cv^\star=\cv$ & & $\vacio^\star=\cv$ \\
+  $\al\al^\star=\al^\star\al$ & & 
+    $\al^\star=\al^\star\al^\star=(\al^\star)^\star$\\
+  $\al^\star=\cv+\al\al^\star$ & & 
+    $(\al+\beta)^\star=(\al^\star+\beta^\star)^\star$\\
+   Si $L(\al)\inc L(\beta)$ entonces $\al+\beta=\beta$&  &
+ \end{tabular}
+\end{center}
+
+\paragraph{Propiedades de cerradura}
+Las propiedades de cerradura nos permiten construir nuevos lenguajes
+regulares a partir de lenguajes ya conocidos por medio de algunas operaciones
+entre lenguajes. \\
+Si~$L,M$ son lenguajes regulares entonces:
+\bi
+\item $L\cup M$ es regular.
+\item $LM$ es regular.
+\item $L^\star$ es regular.
+\item $L^+$ es regular.
+\item $\overline{L}$ es regular
+\item $L\cap M$ es regular.
+\item $L-M$ es regular.
+\ei
+
+
+\paragraph{Aplicaciones de las expresiones regulares}
+\bi
+\item B\'usqueda y sustituci\'on en editores de texto (vi, emacs, etc.)
+\item Caza de patrones (pattern matching) y procesamiento de textos y
+  conjuntos de datos, por ejemplo en miner\'ia de datos (grep, sed, awk, perl, 
+etc.)
+\item Implementaci\'on de lenguajes de programaci\'on (fase de an\'alisis 
+l\'exico):
+conversi\'on del programa fuente en una sucesi\'on de elementos l\'exicos 
+(lexemas o tokens), en esta sucesi\'on se identifican las distintas componentes 
+de un programa, como son palabras reservadas, identificadores, tipos de datos, 
+etc.(lex, flex, etc.)
+\ei
+
+% ?`Cuando no es $L$ regular
+\noindent No todos los lenguajes son regulares, por ejemplo:
+$$ L=\{a^nb^n\;|\;n\geq 1\} $$
+no es definible mediante una expresi\'on regular.
+\bi
+ \item ?`C\'omo decidir cuando un lenguaje no es regular?
+ \item Mediante propiedades de cerradura.
+ \item Mediante el lema del bombeo (pendiente).
+\ei
+\noindent En el siguiente tema discutiremos m\'as formas de decidir cu\'ando un 
+lenguaje es regular o no. 
+
+
+\end{document}

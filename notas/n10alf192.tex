@@ -1,0 +1,1151 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+\usepackage[section]{placeins}
+
+\usepackage{url}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 10, Gramáticas libres de contexto} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Gram\'aticas}
+Un mecanismo relevante para generar un lenguaje es mediante el concepto de 
+gram\'atica formal.
+Las gram\'aticas formales fueron introducidas por Noam Chomsky en 1956.
+La intenci\'on era tener un modelo para la descripci\'on de lenguajes 
+naturales.
+Posteriormente, una clase especial de estos formalismos, llamados gramáticas
+libres de contexto,  se utilizaron como herramienta para presentar la sintaxis 
+de lenguajes de programaci\'on y para el dise\~no de analizadores l\'exicos 
+de compiladores.
+         
+\defin{
+Una gram\'atica libre de contexto es una cuaterna $G=\pt{V,T,S,P}$ tal que:
+\bi
+ \item $V$ es un alfabeto de \textnormal{variables} o \textnormal{s\'imbolos    
+ no-terminales}, los cuales se denotan con may\'usculas $A,B,C,\ldots$
+ \item $T$ es un alfabeto de \textnormal{s\'imbolos terminales}, los cuales 
+  se denotan con min\'usculas $a,b,c,\ldots$. Adem\'as se requiere que
+  $T\cap V=\vacio$.
+ \item $S\in V$ es una variable distinguida llamada el \textnormal{s\'imbolo    
+  inicial} o el axioma.
+ \item $P$ es un conjunto finito de reglas de reescritura, llamadas 
+  \textnormal{reglas de producci\'on} o producciones. Cada regla es de 
+  la forma
+$$ A\imp\alpha$$
+donde $A\in V,\;\alpha \in(V\cup T)^\star$.
+\ei
+}
+% \noindent El conjunto de reglas de producci\'on~$P$ es un conjunto finito de 
+% pares $\pt{\al,\beta}$ tales que
+% \bi
+%  \item $\al\in (V\cup T)^\star - T^\star$. Es decir, $\al$ es una
+%   cadena de s\'imbolos terminales o no terminales, con al menos un
+%   s\'imbolo no-terminal.
+%  \item $\beta\in (V\cup T)^\star$. Es decir, $\beta$ es una cadena de
+%  s\'imbolos de $V\cup T$ , los cuales podr\'an ser todos terminales.
+% \ei
+% En lugar de escribir $\pt{\alpha,\beta}\in P$, escribimos $$\alpha \imp \beta$$ 
+% y decimos que $\alpha$ \textbf{produce} a $\beta$, o que $\alpha$ se 
+% \textbf{reescribe} en $\beta$.
+
+% \newpage
+
+Las reglas de producci\'on sirven para generar cadenas, proceso que se
+formaliza mediante las derivaciones formales:
+ 
+\defin{[Derivaci\'on formal]
+Dadas dos palabras $w,v\in (V\cup T)^\star$ decimos que $v$ es
+\textnormal{derivable} a partir de $w$ en \textbf{un paso} ($w\imp v$) si y 
+s\'olo si:
+\bi
+ \item[] Existe una regla $A\imp\alpha$ en $P$ y cadenas 
+  $\gamma_1,\gamma_2\in(V\cup T)^\star$ tales que:
+  $$  w=\gamma_1A\gamma_2  \qquad \qquad v=\gamma_1\alpha\gamma_2$$
+ % Es decir, se ha reescrito la cadena $\alpha$ en la cadena $\beta$.
+\ei
+}
+Algunos autores utilizan $\Imp$ en vez de $\imp$ para denotar la relaci\'on 
+de derivaci\'on. Nosotros preferimos sobrecargar el operador $\imp$.
+  
+  
+\defin{
+ Decimos que una cadena $v$ es \textnormal{derivable} a partir de $w$ si existen
+ palabras $\ga_2,\ldots,\ga_n$ tales que
+ $$ w=\ga_1\imp \ga_2\ldots\ga_{n+1}\imp\ga_n=v $$
+ En tal caso escribimos $w\imp^\star v$.
+}
+
+Obsérvese que las relaciones $\to$ y $\to^\star$ entre cadenas se pueden
+también definir de manera recursiva con las siguientes reglas:
+
+
+\begin{itemize}
+\item Levantamiento de las producciones a cualquier contexto
+\[
+\frac{A\to\al\;\in\mathcal{P}}{\ga A\ga'\to \ga\al\ga'}
+\]
+Esto es importante pues las derivaciones reescriben cadenas arbitrarias y las
+producciones libres de contexto sólo indican como reescribir una variable. Con
+esta regla la relación $\to$ se convierte en una relación entre cadenas.
+
+\item La relación $\to^\star$ incluye cero pasos de reescritura
+\[
+\frac{}{\al\to^\star \al}\;(D1)
+\]
+\item $\to^\star$ consiste en dar muchos pasos (tal vez cero) y un paso de reescritura
+\[
+\frac{\al\to^\star\beta\;\;\;\beta\to\ga}{\al\to^\star\ga}\;(D2)
+\] 
+\item Alternativamente, $\to^\star$ consisten en dar primero un paso de
+  reescritura, seguido de muchos pasos (tal vez cero).
+\[
+\frac{\al\to\beta\;\;\;\beta\to^\star\ga}{\al\to^\star\ga}\;(D3)
+\] 
+\end{itemize}
+
+La relación $\to^\star$ queda definida inductivamente por las reglas
+$(D1),(D2)$ o bien $(D1),(D3)$, de manera que según convenga, podra usarse
+$(D2)$ o $(D3)$ en una prueba particular.
+
+Adicionalmente es necesario en muchos casos el hecho de que una derivación se
+preserva bajo cualquier contexto, lo cual queda formalizado con la siguiente
+regla que resulta admisible a partir de las anteriores:
+\[
+\frac{\al\to^\star\beta}{\ga\al\ga'\to^\star\ga\beta\ga'}\;(D4)
+\]
+
+Ahora ya podemos dar la definición formal del lenguaje generado por una gramática.
+
+
+\defin{[Lenguaje de una gram\'atica]
+Dada una gram\'atica $G=\pt{V,T,S,P}$ definimos al lenguaje generado por $G$, 
+denotado $L(G)$, como el conjunto de palabras de s\'imbolos \textbf{terminales} 
+derivables a partir del s\'imbolo inicial $S$. 
+Es decir, $$L(G)=\{w\in T^\star\;|\;S\imp^\star w\}$$
+}
+
+% En adelante y hasta no indicar lo contrario nos interesan sólamente una clases
+% particular de gramáticas, llamadas gramáticas libres de contexto. 
+
+
+% \section{Gram\'aticas Libres de Contexto}
+
+% \defin{
+% Una \textbf{gram\'atica es libre o independiente del contexto} si todas sus 
+% producciones 
+% son de la forma
+% $$ A\imp\alpha$$
+% con $A\in V,\;\alpha \in(V\cup T)^\star$.
+% %Se incluye a la regla $S\imp\vacia$.
+% }
+
+Veamos algunos ejemplos:
+ 
+\paragraph{Ejemplo:} 
+Las siguientes son gram\'aticas libres de contexto para algunos lenguajes regulares:
+\bi
+ \item $L = a^\star$  $$ S\imp aS \mid \vacia$$
+ \item $L = a^\star b^\star$ 
+  \[
+    \ba{rll}
+      S & \imp & aS \mid bA \mid \vacia\\
+      A & \imp & bA \mid b \mid \vacia
+    \ea
+  \]
+ \item $L = 0^+1^+$
+  \[
+   \ba{rll}
+   S & \imp & CU\\
+   C & \imp & 0C \mid 0 \\
+   U & \imp & 1U \mid 1
+   \ea
+  \]
+\ei
+
+\paragraph{Ejemplo:}
+% Los siguientes ejemplos son lenguajes con una gram\'atica libre de contexto que 
+% los genera:
+\bi
+ \item $L=\{a^nba^m \mid n,m\geq 1\} = a^+ba^+$
+  \[
+   \ba{rll}
+   S & \imp & aS \mid aB\\
+   B & \imp & bC \\
+   C & \imp & aC \mid a
+   \ea
+   \]
+ \item $L = \{a^n b^n \mid n\in\N\}$  (no es regular)
+   $$ S\imp aSb \mid \vacia $$
+ \item $L = \{w\in\{a,b\}^\star \mid w=w^R\}$ (no es regular)
+   $$S\imp aSa \mid bSb \mid a \mid b \mid \vacia$$
+\ei
+
+% De los ejemplos anteriores podemos atestiguar que los lenguajes libres 
+% de contexto permiten expresar lenguajes m\'as refinados como $a^nb^n$. 
+% Tambi\'en podemos observar que en particular toda gram\'atica regular es libre 
+% de contexto.
+
+
+\paragraph{Ejemplo:}
+Considere el siguiente lenguaje~$L = (a+b)^\star$, es el lenguaje en que 
+cualquier cadena con $a$ y $b$ debe generarse. Veamos la gram\'atica 
+correspondiente:
+\bi
+ \item La cadena vac\'ia debe generarse: $\quad S\imp\vacia$
+ \item Si $w\in L$ entonces $wa\in L$: $\quad \qquad S\imp Sa $
+ \item Si $w\in L$ entonces $wb\in L$: $\quad \qquad S\imp Sb$
+\ei
+La cadena~$w=ababb$ se deriva como sigue:
+$$ S\imp Sb\imp Sbb\imp Sabb\imp Sbabb\imp Sababb\imp ababb $$
+
+\paragraph{Ejemplo:}
+Proporcionar una gram\'atica que genere las 
+cadenas en $L=\{a^ib^j\;|\;i,j\in\N,i\leq j\}$.
+\bi
+ \item La cadena vac\'ia debe generarse ($i=j=0$): $\qquad S\imp\vacia$
+ \item Debe haber al menos tantas $b$ como $a$, primero las $a$ y luego las 
+  $b$: $$S\imp aSb$$
+ \item Puede haber m\'as $b$ al final: $$S\imp Sb$$
+\ei
+Ejemplo de derivaci\'on para la cadena~$w=aabbb$
+$$ S\imp aSb\imp aaSbb\imp aaSbbb\imp aabbb $$
+
+\paragraph{Ejemplo:}
+El lenguaje~$L=\{a^ib^ja^jb^i\;|\;i,j\in\N\}$ es generado por la siguiente 
+gram\'atica:
+\bi
+ \item Primero generamos el centro de la palabra, $b^ja^j$:
+  $$  S\imp B \qquad B\imp bBa \qquad B\imp \vacia$$
+ \item Despu\'es los extremos $a^i,\;b^i$: $\qquad\qquad S\imp aSb$
+\ei
+Un ejemplo de derivaci\'on es la generaci\'on de la cadena~$w=aababb$
+$$ S\imp aSb\imp aaSbb\imp aaBbb\imp aabBabb \imp aababb $$
+
+\paragraph{Ejemplo:}
+Dado~$L=\{a^{i} b^{i} a^{j} b^{j}\;|\;i,j\in\N\}$, la siguiente gram\'atica 
+genera el lenguaje:
+\bi
+ \item Primero generaremos el lenguaje~$\{a^i b^i\;|\; i\in\N\}$ mediante:
+  $$    P\imp \vacia \qquad \qquad P\imp aPb $$
+ \item Para generar a $L$ simplemente agregamos:
+  $$S\imp PP$$
+\ei
+Ejemplo de derivaci\'on, la cadena~$w=aabbab$ se genera como sigue:
+$$ S\imp PP \imp aPbP\imp aPbaPb\imp aaPbbaPb \imp aaPbbab\imp aabbab $$
+
+\paragraph{Ejemplo:}
+El lenguaje~$L=\{a^{i} b^{i}\;|\;i\in\N\}\cup\{b^{i} a^{i}\;|\;i\in\N\}$ se 
+genera mediante:
+\bi
+ \item Primero el lenguaje $\{a^i b^i\;|\; i\in\N\}$ se genera con la 
+  siguiente gram\'atica:
+  $$ P\imp \vacia \qquad \qquad P\imp aPb $$
+ \item Despu\'es generamos el lenguaje $\{b^i a^i\;|\; i\in\N\}$ mediante:
+  $$ Q\imp \vacia \qquad\qquad Q\imp bQa$$
+ \item Finalmente, para generar a $L$ simplemente agregamos:
+  $$S\imp P \qquad S\imp Q$$
+\ei
+Ejemplo de derivaci\'on para $w=bbbaaa$
+$$ S\imp P \imp aPb\imp aaPbb\imp aaaPbbb \imp aaabbb $$
+
+% \subsection{Verificación de la definición de gramáticas}
+% %Dise\~no de gram\'aticas}
+% Si bien muchas veces el dise\~no de una gram\'atica $G$ para un lenguaje dado 
+% $L$  es intuitivamente claro y correcto, esto debe mostrarse formalmente, 
+% mostrando que $L=L(G)$. Esto se hace, por supuesto, probando formalmente lo 
+% siguiente:
+% \be
+%  \item \textbf{Correctud}: la gram\'atica $G$ genera \'unicamente las cadenas 
+%   de $L$, es decir, $L(G)\inc L$.
+
+%  \item \textbf{Completud}: toda cadena de $L$ es generada por $G$, es decir, 
+%   $L\inc L(G)$.
+% \ee  
+% Probar la completud es más complicado que la prueba de correctud,
+% pues los argumentos dependen de la definición particular de $L$. La correctud se demuestra por lo general usando inducción sobre el número de pasos en la
+% derivación o bien por inducción sobre la relación $\to^\star$. Para esto es
+% más simple definir trabajar con una definición inductiva de la relación $\to^\star$, dada por las siguientes reglas:
+
+
+
+
+
+\subsection{Derivaciones y \'arboles}
+
+Una derivaci\'on formal usando gram\'aticas libres de contexto no suele ser
+única, pues cada paso depende de la variable elegida para su reescritura. Esto
+genera un no determinismo, que puede eliminarse utilizando una convención, la
+cual suele ser de 
+dos tipos, eligiendo siembre la variable más a la izquierda o bien más a la
+derecha para el proceso de reescritura.
+
+\defin{
+Una derivaci\'on $S\imp^\star w$ es una derivaci\'on por la izquierda o más a
+la izquierda 
+si en cada paso se reescribe la variable m\'as a la izquierda en la palabra.
+}
+
+\defin{
+Una derivaci\'on $S\imp^\star w$ es una derivaci\'on por la derecha o más a la derecha
+si en cada paso se reescribe la variable m\'as a la derecha en la palabra.
+}
+\paragraph{Ejemplo:} En la gram\'atica 
+$$  S\imp aAs \mid a\qquad \qquad A\imp SbA \mid SS \mid ba $$
+\be
+ \item La siguiente es una derivaci\'on por la izquierda de la cadena~$aabbaa$
+\[
+ \mathbf{S}\imp a\mathbf{A}S\imp a\mathbf{S}bAS\imp aab\mathbf{A}S\imp 
+  aabba\mathbf{S}\imp aabbaa 
+\]
+  \item La siguiente es una derivaci\'on por la derecha de $aabbaa$
+\[
+\mathbf{S}\imp aA\mathbf{S}\imp a\mathbf{A}a\imp aSb\mathbf{A}a\imp 
+a\mathbf{S}bbaa\imp aabbaa   
+\]
+\ee
+
+intuitivamente es claro que siempre se puede construir una derivación más a la
+izquierda o derecha, como lo asegura la siguiente
+
+\begin{proposition}
+Si $w\in L(G)$ entonces $w$ tiene una derivación más a la izquierda y una
+derivación más a la derecha.  
+\end{proposition}
+\begin{proof}
+Sea $w\in L(G)$.El resultado se sigue haciendo
+inducción sobre $S\to^\star w$.
+\end{proof}
+
+
+
+
+\subsection{Construcci\'on de \'arboles de derivaci\'on}
+
+% Por otro lado tambi\'en se puede verificar que una cadena es generada por una 
+% gramática empleando \'arboles de derivaci\'on o \'arboles sint\'acticos.
+% Este mecanismo es muy \'util para representar las derivaciones en gram\'aticas 
+% libres de contexto.
+
+El uso y razonamiento con cadenas es adecuado para el humano pero no resulta
+una forma adecuada de implementar lenguajes. En su lugar deben utilizarse
+representaciones mejor estructuradas estas estructuras adecuadas para la
+implementación en 
+compiladores, en espec\'ifico para el an\'alisis sint\'actico\footnote{Parsing} de 
+programas fuente.%  sirven de base para la generaci\'on de 
+% c\'odigo. 
+
+\begin{definition}
+Dada una gram\'atica libre de contexto~$G=\pt{V,T,S,P}$, un \'arbol de  
+derivaci\'on en~$G$ se construye como sigue:
+\be
+ \item La ra\'iz contiene al s\'imbolo inicial~$S$.
+ \item Cada nodo interior contiene una variable.
+ \item Cada hoja contiene un s\'imbolo de $V\cup T\cup\{\vacia\}$.
+ \item Si un nodo interior contiene una variable~$A$ entonces sus hijos 
+  contienen s\'imbolos (de izquierda a derecha)~$a_1,\ldots,a_n$ si y s\'olo 
+  si~$A\imp a_1a_2\ldots a_n$ est\'a en~$P$.
+ \item La palabra generada se puede reconstruir al leer las hojas de izquierda 
+  a derecha.
+\ee
+\end{definition}
+% \section{Ambig\"{u}edad}
+% Puede ser que dos derivaciones distintas tengan un mismo \'arbol de 
+% derivaci\'on y tambi\'en puede suceder que haya m\'as de un \'arbol de 
+% derivaci\'on para una cadena. Lo ideal es que cada cadena tenga s\'olo un 
+% \'arbol asociado. Si sucede lo anterior, implica que el lenguaje 
+% \textbf{no es ambiguo}. Desafortunadamente existen lenguajes ambiguos.
+% Veamos una definici\'on formal de este fen\'omeno:
+
+% \defin{
+% Una gram\'atica se dice \textbf{ambigua} si existe una palabra~$w$ con dos o 
+% m\'as \'arboles de derivaci\'on distintos.
+% En general una palabra puede tener m\'as de una derivaci\'on, pero  
+% \textnormal{un s\'olo \'arbol} y en tal caso no hay ambig\"{u}edad.
+% }
+
+% Algunas veces se puede suprimir la ambig\"{u}edad directamente. Sin embargo 
+% \textbf{no} hay un algoritmo para remover ambig\"{u}edad.
+% As\'i tambi\'en hay algunos lenguajes cuya ambig\"{u}edad es inevitable.
+
+% \vspace*{-7pt}
+
+% \paragraph{Ejemplo:}
+% Considere la siguiente gram\'atica: 
+% $$ \qquad \qquad S\imp AA \quad A\imp aSa \mid a $$
+
+% \noindent La palabra $a^5$ tiene las siguientes derivaciones diferentes y por 
+% la izquierda:
+% \bi
+%  \item[] $S\imp AA\imp aA \imp aaSa\imp aaAAa\imp aaaAa\imp aaaaa$
+%  \item[] $S\imp AA\imp aSaA \imp aAAaA\imp aaAaA\imp aaaaA\imp aaaaa $
+% \ei
+% \noindent Las dos derivaciones generan \'arboles distintos:
+
+
+% \begin{small}
+% \begin{minipage}{.4\textwidth}
+%   \centering
+%   \begin{tikzpicture}[level distance=12mm]
+%   \tikzstyle{level 1}=[sibling distance=20mm]
+%   \tikzstyle{level 2}=[sibling distance=10mm]
+ 
+%   \node {$S$}
+%     child {node {$A$}
+%       child {node {$a$}}
+%      }
+%       child {node {$A$}
+%         child {node {$aSa$}}
+%         child {node {$AA$}
+% 	  child {node {$a$}}
+% 	  child {node {$a$}}
+% 	}
+%     };
+%  \end{tikzpicture}
+%  \end{minipage}
+% \begin{minipage}{.4\textwidth}
+%  \centering
+%  \begin{tikzpicture}[level distance=12mm]
+%   \tikzstyle{level 1}=[sibling distance=20mm]
+%   \tikzstyle{level 2}=[sibling distance=10mm]
+ 
+%   \node {$S$}
+%     child {node {$A$}
+%       child {node {$aSa$}
+% 	child {node {$AA$}
+% 	  child {node {$a$}}
+% 	  child {node {$a$}}
+% 	}
+%      }
+%     }
+%       child {node {$A$}
+%         child {node {$a$}}
+%     };
+%  \end{tikzpicture}
+%  \end{minipage}
+% \end{small}
+
+
+% \subsection{Lenguajes Ambiguos}
+
+% \defin{
+% Un lenguaje~$L$ es ambiguo si existe una gram\'atica ambigua $G$ que 
+% genera a $L$.\\
+% Un lenguaje es \textbf{inherentemente} ambiguo si \textit{todas} las 
+% gram\'aticas que lo generan son ambiguas.
+% }
+
+% \paragraph{Ejemplo:}
+% El lenguaje~$L = \{a^{2+3i} \mid i\geq 0\}$ es ambiguo por ser generado por la 
+% siguiente gram\'atica ambigua:
+% $$ S\imp AA \qquad \qquad A\imp aSa \mid a $$
+% Sin embargo este lenguaje tambi\'en es generado por una gram\'atica no ambigua:
+% $$ S\imp aa \mid aaU \qquad \qquad U\imp aaaU \mid aaa $$
+% En este caso la derivaci\'on de $a^5$ es:
+% $$S\imp aaU\imp aaaaa$$
+% y por lo tanto $L$ no es un lenguaje inherentemente ambiguo.
+
+% \paragraph{Ejemplo:}
+% El lenguaje 
+% $$L = \{a^nb^nc^md^m \mid n,m\geq 1\}\cup\{a^nb^mc^md^n \mid n,m\geq 1\}$$
+% es generado por la gram\'atica:
+% \[
+%  \ba{lll}
+%   S\imp AB \mid C & \qquad A\imp aAb \mid ab &\qquad B\imp cBd \mid cd \\
+%   C\imp aCd \mid aDd &\qquad  D\imp bDc \mid bc & 
+%  \ea
+% \]
+% La cadena~$aabbccdd$ tiene dos derivaciones por la izquierda:
+% \bi
+% \item[] $S\imp AB\imp aAbB\imp aabbB\imp aabbcBd\imp aabbccdd$
+% \item[] $S\imp C\imp aCd\imp aaDdd\imp aabDcdd\imp aabbccdd$
+% \ei
+
+% Como se coment\'o antes, la ambig\"{u}edad no puede ser eliminada con un 
+% m\'etodo y en general, probar la ambig\"{u}edad inherente es complicado.  
+
+
+\section{Propiedades de Cerradura}
+
+La clase de lenguajes libres de contexto es cerrada bajo las siguientes operaciones:
+\bi
+ \item Uni\'on: si $L_1,L_2$ son lenguajes libres del contexto entonces 
+  $L_1\cup L_2$ es un lenguaje libre del contexto.
+ \item Concatenaci\'on: si $L_1,L_2$ son lenguajes libres del contexto entonces 
+  $L_1L_2$ es un lenguaje libre del contexto.
+ \item Estrella de Kleene: si $L_1$ es un lenguaje libres del contexto entonces 
+  $L_1^\star$ es un lenguaje libre del contexto.
+\ei
+
+Veamos m\'as a detalle estas operaciones:
+\bi
+ \item Cerradura bajo la uni\'on\\
+  Si  $G_1=\pt{V_1,T,S_1,P_1},\; G_2=\pt{V_2,T,S_2,P_2}$ son dos 
+  gram\'aticas libres de contexto donde $L_1=L(G_1)$ y $L_2=L(G_2)$ 
+  entonces $L_1\cup L_2 = L(G)$ y $G$ es la gram\'atica
+  $$ G=\pt{V_1\cup V_2\cup\{S\},T,S,P} $$
+  y las reglas de producci\'on est\'an dadas por $P_1\cup P_2$ m\'as las 
+  producciones:
+  $$ S\imp S_1 \qquad S\imp S_2 $$
+
+ \item Cerradura bajo la concatenaci\'on\\
+  Si  $G_1=\pt{V_1,T,S_1,P_1},\; G_2=\pt{V_2,T,S_2,P_2}$ son dos gram\'aticas 
+  libres de contexto donde $L_1=L(G_1)$ y $L_2=L(G_2)$ entonces $L_1L_2=L(G)$ 
+  donde $G$ es la gram\'atica 
+  $$ G=\pt{V_1\cup V_2\cup\{S\},T,S,P} $$
+  y $P$ est\'a dado por $P_1\cup P_2$ m\'as la producci\'on: 
+  $$ S\imp S_1S_2$$
+
+ \item Cerradura bajo la estrella de Kleene\\
+  Si $G_1=\pt{V_1,T,S_1,P_1}$ es una gram\'atica libre de contexto con  
+  $L_1=L(G_1)$ entonces $L_1^\star=L(G)$ donde $G$ es la gram\'atica
+  $$G=\pt{V_1\cup\{S\},T,S,P}$$
+  y $P$ est\'a dado por $P_1$ m\'as la producciones:
+  $$S\imp S_1S_1 \qquad S\imp\vacia $$
+\ei
+
+% La intuici\'on puede traicionar y algunas propiedades de cerradura no son 
+% v\'alidas.
+En general las siguientes propiedades \textbf{no son v\'alidas} para 
+lenguajes libres del contexto.
+\bi
+ \item Cerradura bajo la intersecci\'on.
+ \item Cerradura bajo el complemento.
+ \item Cerradura bajo la diferencia.
+\ei
+Veamos los contraejemplos pertinentes, suponiendo que el lenguaje 
+\[
+L=\{a^ib^ic^i \mid i\geq 1\}
+\] no es libre de 
+contexto. Esto se verifica mediante el lema del bombeo para esta clase de
+lenguajes, el cual es una generalización del lema del bombeo para lenguajes regulares
+\bi
+ \item Intersecci\'on\\
+  La intersecci\'on de dos lenguajes libres de contexto puede ser un lenguaje 
+  que \textbf{no} es libre del contexto.\\
+  Por ejemplo consid\'erense $L_1=\{a^ib^ic^j \mid i,j\geq 1\}$ libre del 
+  contexto:
+$$  S\imp AB,\;A\imp aAb \mid ab,\;B\imp cC \mid c $$
+y $L_2=\{a^ib^jc^j \mid i,j\geq 1\}$ tambi\'en libre del contexto:
+$$  S\imp AB,\;A\imp aA \mid a,\;B\imp bBc \mid bc$$ 
+Pero $L_1\cap L_2=L$ que no es libre de contexto.
+
+\item Complemento\\
+Si el complemento de un lenguaje libre de contexto~$L$, $\bar{L}$ 
+fuera tambi\'en libre del contexto entonces la intersecci\'on tambi\'en lo 
+ser\'a pues:
+$$  L_1\cap L_2 = \overline{\overline{L_1}\cup\overline{L_2}}$$
+ 
+\item Diferencia\\
+Si la diferencia fuera un lenguaje libre de contexto, entonces tambi\'en lo 
+ser\'a el complemento pues:
+$$  \overline{L}=\sest - L $$
+
+\ei 
+
+
+
+\section{Normalizaci\'on de Gram\'aticas}
+
+La normalizaci\'on de gram\'aticas  consiste en transformar todas las 
+producciones de una gram\'atica de manera que tengan cierta forma sint\'actica 
+en particular.
+As\'i la normalizaci\'on de gram\'aticas libres de contexto es \'util para    
+homogeneizar la forma de las producciones adem\'as para optimizar los
+procesos de derivaci\'on de cadenas.
+Con las \textit{formas normales} se facilita una soluci\'on al problema de 
+la pertenencia, es decir decidir si una cadena pertenece o no a un lenguaje:
+\bi
+ \item[] \begin{center} Dada una gram\'atica~$G$ y una palabra $w$, 
+  ?`se cumple que $w\in L(G)$ ? \\Es decir, pertenece $w$ al lenguaje generado 
+  por~$G$.\end{center}
+ \item Si la palabra $w$ es generada por $G$, el proceso para la 
+construcci\'on 
+  de un \'arbol de derivaci\'on terminar\'a eventualmente.
+ \item En caso contrario \textbf{no} podemos saber cu\'ando parar en la 
+  construcci\'on  de un \'arbol de derivaci\'on.
+ \item Pero si la gramática está en cierta forma normal, sí es posible saber
+       cuando parar en la búsqueda de árboles de derivación para contestar el
+       problema de la pertenencia.
+\ei
+
+
+
+Para obtener gram\'aticas normales, son necesarias varias transformaciones 
+que simplificar\'an y reorganizar\'an las producciones.
+
+\subsection{Eliminaci\'on de variables in\'utiles}
+
+\defin{
+Decimos que una variable~$A$ es \textbf{accesible} o \textbf{alcanzable} si  
+existen $u,v\in(V\cup T)^\star$ tales que $S\imp^\star uAv$. 
+Obs\'ervese que seg\'un esta definici\'on~$S$ siempre es alcanzable.
+}
+
+\defin{
+Una variable~$A$ es \textbf{productiva} o \textbf{terminable} si existe 
+$w\in T^\star$ tal que $A\imp^\star w$. En particular si $A\imp\vacia$ es una 
+producci\'on entonces $A$ es productiva.
+}
+
+\defin{
+Una variable~$A$ es \textbf{in\'util} si no es alcanzable o no es productiva.
+}  
+
+%\newpage
+
+\noindent A continuaci\'on damos un algoritmo para hallar variables 
+productivas, mediante la transformaci\'on de una gram\'atica:
+\bi
+ \item[] \textbf{Iniciar}
+  \begin{small}
+    el conjunto $Prod$ con todas las producciones que contienen cadenas de 
+    terminales a la derecha de $\imp$:   
+  \end{small}
+  $$ Prod :=\{A\in V\mid A\imp w\;\in P,\;w\in T^\star\}$$
+ \item[] {\bf Repetir}
+  \begin{small}
+    la incorporaci\'on de variables cuyas producciones contienen variables 
+    productivas y s\'imbolos terminales a la derecha de   $\imp$:
+  \end{small}
+  $$ Prod:=Prod\cup\{A\in V \mid A\imp w,\;w\in(T\cup Prod)^\star\} $$
+ \item[] {\bf Hasta} 
+   \begin{small} que no se a\~naden nuevas variables a $Prod$\end{small}
+ \ei 
+
+ 
+\paragraph{Ejemplo:}
+Calculemos las variables productivas de la gram\'atica:
+\[
+\ba{rl}
+  S \imp & ACD \mid bBd \mid ab \\
+  A\imp & aB \mid aA \mid  C \\
+  B\imp & aDS \mid aB \\
+  C\imp & aCS \mid CB \mid CC \\
+  D\imp & bD \mid ba \\
+  E\imp & AB \mid aDb
+\ea 
+\]
+Iniciamos con $Prod=\{S,D\}$.
+Las iteraciones nos llevan a que $C$ es la \'unica variable improductiva, se 
+elimina esta variable junto con todas las reglas donde figure:
+\[
+  \ba{rl}
+  S \imp & bBd \mid ab \\
+  A\imp & aB \mid aA \\
+  B\imp & aDS \mid aB \\
+%  C\imp & aCS \mid CB \mid CC \\
+  D\imp & bD \mid ba \\
+  E\imp & AB \mid aDb
+  \ea
+\]
+
+\vspace*{10pt}
+
+\noindent El siguiente algoritmo permite hallar variables accesibles:
+\bi
+ \item[] \textbf{Iniciar} $$Acc:=\{S\}$$
+ \item[] \textbf{Repetir} 
+  \begin{small}
+   la incorporaci\'on de variables que aparecen a la derecha de $\imp$ en  
+   producciones de variables accesibles:
+  \end{small}
+  \[
+    Acc :=  Acc\cup\{A\in V \mid \exists\;B \imp uAv\in P,\;B\in Acc,
+        \;u,v\in(V\cup T)^\star\}
+    \]
+ \item[] \textbf{Hasta}
+ \begin{small} que no se a\~naden nuevas variables a $Acc$ \end{small}
+\ei 
+
+\paragraph{Ejemplo:}
+Calculemos las variables accesibles de la gram\'atica:
+\[
+ \ba{rlcrl}
+  S \imp & aS \mid AaB \mid ACS & \qquad \qquad & D\imp & aD \mid DD \mid ab \\
+  A\imp & aS \mid AaB \mid  AC &  & E\imp & FF \mid aa \\
+  B\imp & bB \mid DB \mid BB & & F\imp & aE \mid EF \\
+  C\imp & aDa \mid ABD \mid ab 
+  \ea
+\]
+Iniciamos con $Acc = \{S\}$. 
+El resultado es: $  Acc=\{S,A,B,C,D\} $  ya que  $E$ y $F$ son variables 
+inaccesibles, se eliminan junto con todas las reglas donde figuren:
+\[
+  \ba{rl}
+  S \imp & aS \mid AaB \mid ACS \\
+  A\imp & aS \mid AaB \mid  AC \\
+  B\imp & bB \mid DB \mid BB \\
+  C\imp & aDa \mid ABD \mid ab \\
+  D\imp & aD \mid DD \mid ab \\
+%  E\imp & FF \mid aa \\
+%  F\imp & aE \mid EF
+  \ea
+\]
+
+
+\noindent Para eliminar variables in\'utiles se aplican los dos 
+algoritmos  anteriores \textbf{en el siguiente orden}:
+\be
+ \item Eliminar variables no productivas.
+ \item Eliminar variables no accesibles.
+\ee
+
+La importancia del orden de los algoritmos radica en que si se aplican los 
+algoritmos en orden inverso el resultado puede ser una gram\'atica que a\'un 
+contenga variable in\'utiles. Veamos un ejemplo:
+\paragraph{Ejemplo:}
+Considere la siguiente gram\'atica
+\[
+  S\imp a \mid AB \qquad \qquad A\imp aA \mid \vacia
+\]
+Al eliminar primero las variables no accesibles se obtiene la misma 
+gram\'atica, 
+al ser todas las variables accesibles.\\
+Posteriormente al eliminar variables improductivas resulta
+$$S\imp a \qquad \qquad A\imp aA \mid \vacia$$
+y claramente $A$ es in\'util por ser inaccesible.
+
+\subsection{Eliminaci\'on de \texorpdfstring{$\vacia$}--producciones}
+Las gram\'aticas libres de contexto permiten el uso de producciones de la 
+forma 
+$A\imp \vacia$. La eliminaci\'on de estas producciones llamadas 
+$\cv$-producciones genera una transformaci\'on.
+
+\defin{
+Una variable $A$ se llama \textbf{anulable} o {\bf nilpotente} si $A\imp^\star\vacia$, es decir si 
+una derivaci\'on que empieza en $A$ genera la cadena vac\'ia.
+}
+
+\noindent Veamos un algoritmo para hallar variables anulables:
+\bi
+ \item[] \textbf{Iniciar} 
+  \begin{small}
+   el conjunto $Anul$ con las variables que generan a $\vacia$ con una
+   producci\'on directa
+  \end{small}
+  $$Anul:=\{A\in V \mid A\imp \vacia \;\in P\}$$
+ \item[] \textbf{Repetir} 
+  \begin{small}
+   la incorporaci\'on de variables que tienen producciones cadenas de variables 
+   anulables
+  \end{small}
+  \[
+    Anul:=Anul\cup\{A\in V \mid \exists\;A\imp w\,\in P,\;\;w \in 
+    Anul^\star\}
+  \]
+ \item[] \textbf{Hasta}
+  \begin{small} que no se a\~naden nuevas variables a $Anul$\end{small}
+\ei 
+
+Una vez que se han identificado las variables anulables, la siguiente 
+transformaci\'on de una gram\'atica libre de contexto elimina exactamente las 
+$\cv$-producciones:
+\bi
+ \item[] Para cada producci\'on en la gram\'atica que tenga la 
+  forma~$A\imp w_1\ldots w_n$ se deben agregar las producciones  
+  $A\imp v_1\ldots v_n$ que son resultantes de los cambios de s\'imbolos donde:
+  \bi
+   \item $v_i = w_i$ si $w_i \notin Anul$, se respetan las variables no 
+    anulables
+   \item $v_i = w_i$ \'o $v_i = \vacia$ si $w_i\in Anul$, las variables 
+    anulables pueden dejarse o eliminarse
+  \ei
+ \item[] Verificando que no se anulen todos los $v_i$ al mismo tiempo.
+\ei
+Es decir, se van a respetar las producciones existentes y si alguna 
+contiene las variables anulables se agregar\'an las producciones que resulten 
+de eliminar las variables anulables en esa producci\'on. Las 
+$\vacia$-producciones desaparecer\'an.
+
+\paragraph{Ejemplo:}
+Eliminaci\'on de $\vacia$-producciones de la gram\'atica
+\[
+  \ba{rl}
+  S \imp & AB \mid ACA \mid ab \\
+  A\imp & aAa \mid B \mid  CD \\
+  B\imp & bB \mid bA \\
+  C\imp & cC \mid \cv \\
+  D\imp & aDc \mid CC \mid ABb \\
+%  E\imp & FF \mid aa \\
+%  F\imp & aE \mid EF
+  \ea
+\]
+Primero obtenemos las variables anulables, iniciando con $ Anul = \{C\}$:
+$$  Anul=\{C,D,A,S\}$$
+El proceso de anulaci\'on de variables hace que se elimine la 
+producci\'on~$C\imp\vacia$, se dejan las producciones existentes y se agregan 
+las producciones que eliminan los elementos de $Anul$. Se obtiene la siguiente 
+gram\'atica:
+\[
+ \ba{rl}
+  S \imp & AB \mid ACA \mid ab \mid \mathbf{B} \mid \mathbf{CA} \mid 
+  \mathbf{AA} \mid \mathbf{AC} \mid \mathbf{A} \mid \mathbf{C} \\
+  A\imp & aAa \mid B \mid  CD \mid \mathbf{aa} \mid \mathbf{C} \mid \mathbf{D}\\
+  B\imp & bB \mid bA \mid \mathbf{b} \\
+  C\imp & cC \mid \mathbf{c} \\
+  D\imp & aDc \mid CC \mid ABb \mid \mathbf{ac} \mid \mathbf{C} \mid\mathbf{Bb}
+%  E\imp & FF \mid aa \\
+%  F\imp & aE \mid EF
+  \ea
+\]
+
+\paragraph{Acerca de la palabra vac\'ia}
+Si originalmente se ten\'ia $\vacia\in L(G)$ la eliminaci\'on de
+$\vacia$-producciones genera una gram\'atica que \textbf{no} genera a $\vacia$.
+Es posible saber si se pierde la palabra vac\'ia al eliminar 
+$\vacia$-producciones verificando si $S\in Anul$. \\
+Si se quiere recuperar a $\vacia$ debe agregarse un nuevo s\'imbolo inicial 
+$S'$ 
+as\'i como las producciones $S'\imp S$ y  $S'\imp\cv$.
+De esta forma, $S'\imp\cv$ es la \'unica $\vacia$-producci\'on permitida.
+
+    
+\subsection{Eliminaci\'on de producciones unitarias} 
+\defin{
+Una producci\'on de la forma $A\imp B$ donde $A$ y $B$ son ambas variables se 
+llama \textbf{producci\'on unitaria}. 
+El \textbf{conjunto unitario} de $A$ se define como sigue:
+\[
+  Unit(A) = \{B\in V\mid A\imp^\star B \text{ usando s\'olo 
+  producciones unitarias }\} 
+\]
+}
+Obs\'ervese que por definici\'on se tiene $A\in Unit(A)$ si existe $A\imp B$.
+
+\noindent Ahora veamos un algoritmo para hallar el conjunto $Unit(A)$ para 
+cualquier variable o s\'imbolo no-terminal:
+\bi
+ \item[] \textbf{Iniciar} $$Unit(A):=\{A\}$$
+ \item[] \textbf{Repetir} 
+ \begin{small}
+  la incorporaci\'on de variables que tengan producciones unitarias 
+ \end{small}
+
+  \[
+    Unit(A):=Unit(A)\cup\{B\in V \mid \exists\;C\imp B,\;\;C \in
+    Unit(A)\;\}
+  \]
+ \item[] \textbf{Hasta} que no se a\~naden nuevas variables a $Unit(A)$.
+\ei 
+
+\noindent Para la eliminaci\'on de producciones unitarias en una gram\'atica 
+se debe realizar la siguiente transformaci\'on, para cada variable se debe 
+calcular su conjunto unitario y realizar las siguientes acciones:
+\bi
+ \item Para cada $B\in Unit(A)$ y cada producci\'on $A\imp w$ se agrega
+  la producci\'on $$ B\imp w $$
+ \item Se eliminan todas las producciones unitarias
+\ei 
+
+\paragraph{Ejemplo:}
+Eliminaci\'on de producciones unitarias de la gram\'atica:
+\[
+ \ba{rl}
+  S \imp & AS \mid AA \mid BA \mid \cv \\
+  A\imp & aA \mid a \\
+  B\imp & bB \mid bC \mid C \\
+  C\imp & aA \mid bA \mid B \mid ab \\
+ \ea
+\]
+Los conjuntos unitarios para cada variable son:
+\[
+  \ba{cc}
+   Unit(S)=\{S\} & \qquad \qquad Unit(A)=\{A\}\\
+   Unit(B)=\{B,C\} & \qquad \qquad  Unit(C)=\{C,B\}
+  \ea
+\]
+As\'i la gram\'atica obtenida al eliminar producciones unitarias es:
+\[
+ \ba{rl}
+  S \imp & AS \mid AA \mid BA \mid \cv \\
+  A\imp & aA \mid a \\
+  B\imp & bB \mid bC \mid aA \mid bA \mid ab \\
+  C\imp & aA \mid bA \mid ab \mid bB \mid bC \\
+ \ea
+\]
+
+La importancia de la normalización de gramáticas radica en el hecho de que dada una gramática $G$ sin $\cv$-producciones ni
+          producciones unitarias y  una cadena $u$ de longitud $n$, entonces la construcción de un
+          árbol de derivación terminará eventualmente, mostrando que $u\in L(G)$. En caso contrario basta con construir el árbol hasta
+            el nivel $2n-1$ para concluir que $u\notin L(G)$. Esto sucede pues 
+            en cada paso se obtiene un nuevo terminal (a lo mas
+              $n$ pasos) o se aumenta la longitud de la palabra en $1$
+              ( a lo mas $n-1$ pasos)
+
+
+
+\section{Formas normales}
+
+Despu\'es de haber introducido varias transformaciones de gram\'aticas libres 
+de contexto, veamos ahora dos formas normales de gran utilidad.
+
+\subsection{Forma Normal de Chomsky}
+\defin{
+Una gram\'atica libre de contexto~$G$ est\'a en \textbf{forma normal de 
+Chomsky (FNC)}~si:
+\bi
+ \item $G$ no contiene variables in\'utiles.
+ \item $G$ no contiene producciones unitarias ni $\cv$-producciones (salvo 
+  $S\imp\vacia$)
+ \item Todas las producciones son binarias con variables o terminales, es decir 
+  de la forma:
+  \[ 
+   A\imp BC\quad\text{ \'o }\quad A\imp a\qquad\text{ donde }B,C\in V,\,a\in T
+  \]
+\ei
+}
+ 
+\noindent Cualquier gram\'atica libre de contexto es equivalente a una 
+gram\'atica en \textbf{FNC}, lo cual se logra parcialmente como sigue:
+\be
+ \item Eliminar las variables in\'utiles.
+ \item Eliminar las $\cv$-producciones, salvo cuando la cadena 
+  $\vacia$ pertenece al lenguaje original $L(G)$ y en ese caso se 
+  agrega un nuevo s\'imbolo inicial $S'$ y la producción $S' \imp\vacia \mid S$ .
+ \item Eliminar producciones unitarias.
+ \item Las producciones restantes son todas de la forma $A\imp a$ con 
+  $a\in T$ \'o $A\imp w$ con $|w|\geq 2$      
+\ee
+
+El proceso restante es la eliminaci\'on de producciones $A\imp w$ donde 
+$|w|\geq 2$. A este proceso le llamaremos \textbf{simulaci\'on de 
+producciones}, para ello basta hacer lo siguiente para cada producci\'on $P$ 
+de la forma $A\imp \alpha_1\alpha_2\ldots\alpha_n$ con $\alpha_i\in V\cup T$ y
+$n\geq 2$ (obs\'ervese que si $n=2$, al menos uno de $\alpha_1,\alpha_2$ debe 
+ser terminal, pues si no la producci\'on ya es v\'alida para FNC)
+\bi
+ \item Si $\alpha_i\in T$, digamos $\alpha_i=a$, entonces
+  \be
+   \item Agregar la producci\'on $T_a\imp a$, donde $T_a$ es una nueva 
+  variable.
+   \item Cambiar $\alpha_i$ por $T_a$ en la producci\'on $P$ 
+    %$A\imp\alpha_1\alpha_2\ldots\alpha_n$
+  \ee    
+ \item Para cada producci\'on $P$ de la forma $A\imp B_1B_2\ldots B_m$
+   con $B_i\in V,\;m\geq 3$
+   \be
+    \item Agregar $(m-2)$ nuevas variables $D_1,\ldots, D_{m-2}$ y reemplazar 
+      a  $P$ %$A\imp B_1\ldots B_m$ 
+      con las siguientes producciones:
+    \[
+      A\imp B_1D_1 \quad D_1\imp B_2D_2\quad \ldots\quad D_{m-2}\imp B_{m-1}B_m
+    \]
+   \ee
+\ei
+
+\paragraph{Ejemplo:}
+Simulaci\'on de producciones $A\imp w_1w_2\ldots w_n,\;n\geq 2$.\\
+La producci\'on $A\imp abBaC$ se simula con producciones simples y binarias 
+como sigue:
+\bi
+ \item Agregamos las nuevas variables $T_a,T_b$ y las producciones
+  \[
+  A\imp T_aT_bBT_aC \qquad T_a\imp a \qquad T_b\imp b
+  \]
+ \item Para simular la producci\'on $A\imp T_aT_bBT_aC$ agregamos
+   nuevas variables $D_1,D_2,D_3$ y las producciones binarias
+   necesarias obteniendo finalmente la gram\'atica:
+   \[
+    A\imp T_aD_1 \qquad D_1\imp T_bD_2 \qquad D_2\imp BD_3\qquad D_3\imp T_aC
+   \]
+   \[
+    T_a\imp a \qquad T_b\imp b
+  \]
+\ei
+
+
+\paragraph{Ejemplo:}
+Transformar la siguiente gram\'atica a \textbf{FNC}:
+\[
+  \ba{rlcrl}
+  S \imp & AB \mid aBC \mid SBS &\qquad \qquad &
+  A\imp & aA \mid C \\ 
+  B\imp & bbB \mid b &\qquad \qquad &
+  C\imp & cC \mid \vacia 
+  \ea
+\]
+La gram\'atica equivalente es:
+\[  
+  \ba{rl}
+  S \imp & AB \mid T_aD_1 \mid SD_2 \mid T_aB \mid T_bD_3 \mid b \\
+  A\imp & T_aA \mid T_cC \mid a \mid c \\
+  B\imp & T_bD_3 \mid b \\
+  C\imp & T_cC \mid c 
+  \ea
+  \hspace*{20pt}
+  \ba{rlcrl}
+  D_1\imp & BC &\qquad \qquad &  T_a\imp & a \\
+  D_2\imp & BS &\qquad \qquad &  T_b\imp & b \\
+  D_3\imp & T_bB &\qquad \qquad &  T_c\imp & c 
+ \ea
+\]
+
+
+\subsection{Forma Normal de Greibach}
+Otra forma normal es la llamada de Greibach, esta forma normal es \'util en 
+algoritmos de parsing ya que se da prioridad a los prefijos terminales de las 
+cadenas generadas por las reglas de producci\'on de la gram\'atica.
+Esto asegura que no existe recursi\'on por la izquierda de ninguna forma. 
+
+\defin{
+Una gram\'atica libre de contexto~$G$ est\'a en \textbf{forma normal de 
+Greibach (FNG)}~si:
+\bi
+ \item La variable inicial $S$ no es recursiva, es decir, no figura en
+  el lado derecho de las producciones.
+ \item $G$ no tiene variables in\'utiles ni $\vacia$-producciones salvo 
+  $S\imp\vacia$.
+ \item Todas las producciones son de la forma $A\imp a\alpha$ con $a\in T$ y
+  $\alpha \in V^\star$.
+\ei
+}
+
+El algoritmo para transformar una gramática en FN de Greibach se omite, el proceso es
+directo aunque tedioso y requiere como precondición que la gramática esté en
+forma normal de Chomsky. La importancia de la FNG radica en el hecho de que el
+problema de la pertenencia se resuelve no sólo linealmente sino que en
+exactamente $n$ pasos, siendo $n$ la longitud de la cadena en cuestión, esto
+es claro pues cada producción en la FNG genera un nuevo terminal.
+
+
+% \section{Jerarqu\'ia de Chomsky}
+
+% Las gram\'aticas fueron clasificadas de acuerdo a sus propiedades por Chomsky.
+
+% \bi
+%  \item[Tipo 0] \textbf{Lenguajes recursivamente enumerables} \\
+%   Son aquellos lenguajes generados por una gram\'atica sin restricciones
+%   adicionales.\\
+%   Tales gram\'aticas pueden incluir reglas de la forma
+%   $\qquad \boxed{\alpha\imp\vacia}$
+  
+%   \vspace*{10pt}
+  
+%   De manera que la gram\'atica es capaz de borrar cadenas.
+%   Tales gram\'aticas se conocen como \textit{contra\'ibles}.  
+%   Por ejemplo: $$ aS\imp bSb,\; aSb\imp \cv,\; SbS\imp bcS $$
+
+%   As\'i tambi\'en la siguiente es una gram\'atica de tipo 0 donde 
+%   $L(G)=\{ww\mid w\in\{0,1\}^\star\}$
+%   \[
+%   \begin{array}{cccc}
+%    S\to AT & A\to 0AO & A\to 1AI & O0\to 0O \\
+%    O1\to 1O & I0\to 0I & I1\to1I & OT\to 0T\\
+%    IT\to 1T & A\to\vacia & T\to\vacia &
+%   \end{array}
+%   \]
+
+%   La idea del dise\~no de esta gram\'atica y la raz\'on del nombre 
+%   \textit{recursivamente enumerable} se discutir\'an m\'as adelante.
+
+%   Comentamos ahora que las m\'aquinas que aceptan este tipo de lenguajes son 
+%   las M\'aquinas de Turing que tambi\'en ser\'an estudiadas m\'as adelante.
+
+
+% \item[Tipo 1] \textbf{Lenguajes dependientes del contexto}\\
+%   Tambi\'en llamados sensibles al contexto, son aquellos lenguajes generados 
+%   por gram\'aticas con todas sus producciones son de la forma
+%   $$\boxed{\alpha_1 A\alpha_2 \imp\alpha_1\beta\alpha_2}$$
+%   con $\alpha_1,\alpha_2\in(V\cup T)^\star,\;A\in V,\;\beta\neq\vacia$, 
+%   adem\'as de que $|\alpha_1\beta\alpha_2| \geq |\alpha_1 A\alpha_2|$.\\  
+%   Con la posible excepci\'on de la regla $S\imp\vacia$, en cuyo caso se
+%   prohibe la presencia de $S$ a la derecha de las producciones.
+  
+%   Los aut\'omatas que reconocen este tipo de lenguajes son los llamados 
+%   aut\'omatas acotados linealmente.
+  
+%   Veamos un ejemplo, la siguiente gram\'atica dependiente del contexto 
+%   genera al lenguaje $$L=\{a^ib^ic^i\;|\;i\geq 0\}$$
+%   \[
+%   \begin{array}{rclcrcl}
+%     S & \imp & A & \hspace*{20pt} & A& \imp & aABC \mid abC \\
+%     CB&\imp& BC & \hspace*{20pt} & bB&\imp & bb \\
+%     bC&\imp& bc & \hspace*{20pt} &cC&\imp& cc
+%   \end{array}
+%   \]
+
+% \newpage
+  
+% \item[Tipo 2] \textbf{Lenguajes libres del contexto} \\
+% Son aquellos generados por gram\'aticas con todas sus producciones de la forma
+% $$\boxed{A\imp\al}$$
+% con $A\in V,\;\al\in(V\cup T)^\star$.
+ 
+% Esta definici\'on incluye a la regla $S\imp\vacia$.
+% La mayor\'ia de las gram\'aticas para lenguajes de programaci\'on caen en 
+% esta categor\'ia.
+% As\'i mismo las m\'aquinas que aceptan este tipo de lenguajes son los llamados 
+% aut\'omatas de pila que ser\'an estudiados en el siguiente tema.
+         
+
+% \item[Tipo 3] \textbf{Lenguajes regulares}
+%   Son aquellos generados por una gram\'atica de una de las siguientes formas:
+%   \bi
+%   \item Lineal por la derecha: todas las producciones de la forma
+%     $$A\imp aB\;\;\;A\imp a\;\;\;A\imp\vacia$$
+%     con $A,B\in V,\;a\in T$
+%   \item Lineal por la izquierda: todas las producciones de la forma
+%    $$A\imp Ba\;\;\;A\imp a\;\;\;A\imp\vacia$$
+%     con $A,B\in V,\;a\in T$
+%   \item \textbf{No} se permite mezclar ambos tipos de producciones.
+%   \ei
+% Estos lenguajes son los que hemos estudiado a detalle hasta ahora y como hemos 
+% visto las m\'aquinas que los aceptan son los aut\'omatas finitos.
+  
+% \ei
+% \subsection{Observaciones}
+% Decimos que un lenguaje es de tipo $i$ si y s\'olo si $i$ es el \'indice
+% \textit{m\'as grande} tal que existe una gram\'atica de tipo $i$ que genera a 
+% $L$.
+% Es decir que si un lenguaje~$L$ es generado por una gram\'atica de tipo $i$, 
+% no se puede asegurar de inmediato que $L$ sea un lenguaje de tipo $i$. Debe 
+% asegurarse que $i$ es \textit{m\'aximo}.
+% Para ello se puede ver la jerarqu\'ia generada por la clasificaci\'on de 
+% Chomsky:
+% \[
+% \mathcal{L}_3\subsetneq \mathcal{L}_2\subsetneq \mathcal{L}_1\subsetneq 
+% \mathcal{L}_0
+% \]
+
+% La jerarqu\'ia de Chomsky permite refinar la teor\'ia de la computaci\'on 
+% clasificando lenguajes en funci\'on de los recursos computacionales 
+% necesarios para reconocerlos. Como vimos cada categor\'ia tiene asociado un 
+% tipo de m\'aquina que reconoce a los lenguajes.
+
+
+\end{document}

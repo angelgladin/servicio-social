@@ -1,0 +1,921 @@
+\documentclass[xcolor=svgnames]{beamer}
+% \documentclass[xcolor=svgnames,handout]{beamer}
+
+\usepackage{../packages}
+\usepackage{../beameropt}
+\usepackage{../options}
+
+%%%%% Macros para las notas del curso de Automatas y Lenguajes Formales. 
+
+%%%%% Shortcuts
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+
+%%%%%
+\newcommand{\imp}{\rightarrow}
+\newcommand{\Imp}{\Rightarrow}
+\renewcommand{\iff}{\leftrightarrow}
+\newcommand{\Iff}{\Leftrightarrow}
+\newcommand{\D}{\Delta}
+
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\fa}{\forall}
+\newcommand{\ex}{\exists}
+\newcommand{\inc}{\subseteq}
+\newcommand{\lb}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\ga}{\gamma}
+
+\newcommand{\sest}{\Sigma^\star}
+\newcommand{\dest}{\ensuremath{\delta^\star}}
+
+\newcommand{\vacio}{\varnothing}
+
+\newcommand{\vacia}{\boldsymbol{\varepsilon}}
+
+\newcommand{\cv}{\varepsilon}
+
+\newcommand{\pt}[1]{\langle #1 \rangle}
+\newcommand{\Pe}{\mathcal{P}}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+\newcommand{\blanks}{\textbf{\textvisiblespace}}
+
+\definecolor{mycolor}{RGB}{230,230,255}
+
+\title[\color{mpurple4!80!black}Nota 15]{Aut\'omatas y Lenguajes Formales\\
+Facultad de Ciencias UNAM}
+\subtitle{Nota 15 sobre lenguajes, m\'aquinas de Turing, \textit{Halting 
+Problem} \dots }
+
+\author[Lourdes Gonz\'alez Huesca]{
+\texorpdfstring{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and \\
+Lourdes del Carmen Gonz\'alez Huesca \newline
+\scriptsize{
+\href{mailto:luglzhuesca@ciencias.unam.mx}{luglzhuesca@ciencias.unam.mx}}}
+{Lourdes del Carmen Gonz\'alez Huesca}}
+
+\date[23/11/2016\hspace{10pt}]{23 y 24 noviembre 2016}
+
+% \titlegraphic{\includegraphics[height=1.5cm]{fc2.png}}
+  
+\begin{document}
+
+{
+\setbeamertemplate{headline}[default]
+\setbeamertemplate{footline}[default]
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+
+\section{Lenguajes}
+\begin{frame}[fragile]
+ \titulos{Lenguajes recursivos}{}
+  \begin{center}
+    Un lenguaje $L$ es \textbf{recursivo} si es reconocido por \\ una 
+    m\'aquina de Turing \textbf{total}, es decir,\\ si existe 
+    una m\'aquina $M$ que se detiene\\ con todas las cadenas de 
+    entrada y $L=L(M)$.
+   \end{center}
+   \pause
+   \begin{itemize}
+   \item Los lenguajes recursivos tambi\'en se conocen como Turing-decidibles.
+%    \item El adjetivo \enquote{recursivo} se debe a la siguiente propiedad 
+%     de estos lenguajes: 
+%    \item[] {\small Un lenguaje $L$ es recursivo si y s\'olo si su funci\'on 
+%     caracter\'istica $\chi_L$ es recursiva.}
+    \item Existe un algoritmo para decidir si cualquier cadena pertenece a $L$.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Lenguajes recursivamente enumerables}{}
+  \begin{center}
+    Un lenguaje $L$ es \textbf{recursivamente enumerable} \\si es reconocido
+    por una m\'aquina de Turing, es decir, \\si existe una m\'aquina de Turing
+    $M$ tal que $L=L(M)$. 
+  \end{center}
+  \pause
+  \begin{itemize}
+   \item Los lenguajes recursivamente enumerables tambi\'en se conocen como 
+    Turing-reconocibles o semidecidibles.
+%    \item El adjetivo \enquote{recursivamente} se debe a la siguiente propiedad 
+%     de estos lenguajes: 
+%     \begin{itemize}
+%     \item[] Un lenguaje $L$ es recursivamente enumerable si y s\'olo si $L$ es 
+%       la imagen de una funci\'on recursiva \textbf{total}.
+%     \end{itemize}
+   \item Existe un procedimiento para decidir si una cadena pertenece a $L$, si 
+    no pertenece puede suceder que la m\'aquina se cicle.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Lenguajes recursivos}{Enumeraci\'on}
+  \begin{itemize}
+   \item Si un lenguaje $L$ es recursivo entonces existe un proceso de 
+    enumeraci\'on para $L$. 
+   \item Es decir, existe un proceso que genera \textbf{todas} las cadenas de 
+    $L$.
+   \item Una m\'aquina que enumera a $L$ se construye componiendo dos 
+    m\'aquinas:
+    \begin{enumerate}
+     \item una m\'aquina $M$ que genera a todas las cadenas del alfabeto de 
+    entrada
+     \item una m\'aquina $N$ que reconozca a $L$
+    \end{enumerate}
+    \item El proceso de enumeraci\'on consiste en repetir los siguientes pasos:
+     \begin{enumerate}
+      \item $M$ genera una cadena $w$
+      \item $N$ verifica si $w\in L$, en caso positivo se imprime $w$, en otro 
+	caso se ignora a $w$.
+      \end{enumerate}
+    \item Este procedimiento funciona pues $N$ siempre se detiene.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Lenguajes recursivamente enumerables}{Enumeraci\'on}
+   Del proceso anterior podemos decir que:
+    \begin{center}
+    Un lenguaje $L$ es recursivamente enumerable si y s\'olo si \\existe un 
+    proceso de enumeraci\'on para $L$. 
+    \end{center}
+    \pause
+   \begin{itemize}
+    \item El proceso de enumeraci\'on para un lenguaje recursivo enumerable no 
+    funciona de la misma forma.
+    Se debe combinar la ejecuci\'on de $M$ y $N$ de otra manera, dado que $N$ 
+    puede ciclarse. 
+    \item El proceso de enumeraci\'on consiste en repetir los siguientes pasos:
+     \begin{enumerate}
+      \item $M$ genera a la $i$-\'esima cadena~$w_i$
+      \item $N$ ejecuta un paso (transici\'on) en $w_i$, dos pasos en 
+	$w_{i-1}$, tres pasos en $w_{i-2}$, y as\'i sucesivamente.
+      \item Si en alg\'un momento $N$ acepta a $w_i$, se imprime dicha cadena.
+     \end{enumerate}
+    \item Este procedimiento funciona pues $N$ va procesando en tiempo finito 
+      fragmentos de cada cadena $w_i$
+ \end{itemize}
+\end{frame}
+
+\section{Algoritmos}
+\begin{frame}
+  \titulos{?`Qu\'e es un algoritmo?}{Introducci\'on}
+  \bi
+   \item ?`Qu\'e es un algoritmo? 
+   \item Una receta, una serie de pasos a seguir, etc., podemos reconocer 
+    cuando vemos un algoritmo. 
+   \item Pero, ?`podemos dar una definici\'on precisa del concepto de  
+    algoritmo? 
+   \item ?`Por qu\'e es importante tener una definici\'on precisa
+    (matem\'atica) de algoritmo?
+  \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{?`Qu\'e es un algoritmo?}{Introducci\'on}
+  \bi
+   \item Un algoritmo es una colecci\'on de instrucciones simples para
+    realizar una tarea o problema particular (procedimientos o recetas).
+   \item Si se tiene un algoritmo para un problema dado~$P$ significa que 
+    se tiene una manera para resolver $P$ o calcular efectivamente su resultado.
+   \item Un algoritmo es un proceso \textbf{potencialmente} realizable ya que:
+    \be
+     \item las operaciones del proceso se pueden realizar inequ\'ivocamente y
+     \item el n\'umero de operaciones o pasos del proceso es finito.
+    \ee
+  \ei
+\end{frame}
+
+%\subsection{Existencia y Formalizaci\'on}
+\begin{frame}
+ \titulos{Existencia de algoritmos}{Introducci\'on}
+  \bi
+  \item D\'ecimo problema de Hilbert: 
+    \begin{center}
+     \begin{small}
+      Hallar un proceso de acuerdo al cual pueda determinarse en un n\'umero 
+      finito de pasos (un algoritmo) si un polinomio dado tiene una raiz 
+      entera. 
+     \end{small}
+    \end{center}
+  \item Se cre\'ia que todo problema $P$ tenia una soluci\'on algor\'itmica. 
+  \item M\'as a\'un se pensaba en la existencia de un algoritmo universal~$U$ 
+   que pudiera resolver todos los problemas matem\'aticos.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Existencia de algoritmos}{Introducci\'on}
+  \bi
+   \item Los intentos por hallar el algoritmo universal $U$ fallaron. 
+   \item Tal vez $U$ no exist\'ia. 
+   \item ?`C\'omo probar la no existencia de $U$? 
+   \item Era necesario definir el concepto de algoritmo de una manera precisa y 
+    hallar un formalismo para poder probar propiedades de los mismos. 
+   \item Un formalismo de algoritmos deber\'ia ser preciso y libre de 
+    ambig\"uedades, simple y general.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Formalizaci\'on del concepto de algoritmo}{Diferentes modelos}
+  \bi
+   \item M\'aquinas de Turing (Alan Turing, Cambridge 1936) \medskip
+   \item C\'alculo Lambda (Alonzo Church, Princeton 1936) \medskip
+   \item Sistemas de Post (Emile Post) \medskip
+   \item Funciones $\mu$-recursivas (G\"{o}del, Herbrand, Kleene) \medskip
+   \item L\'ogica Combinatoria (Curry, Sch\"{o}nfinkel) \medskip
+   \item M\'aquinas de registro (Sheperdson, Sturgis)
+ \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Equivalencia de los formalismos}{}
+  \bi
+   \item Sorprendentemente todos los formalismos han resultado equivalentes. 
+    \medskip 
+   \item Un problema tiene soluci\'on en un formalismo si y s\'olo si
+    tiene soluci\'on en cualquiera de los otros. \medskip
+   \item Tal afirmaci\'on es un teorema, o una serie de teoremas   
+    rigurosamente demostrados. \medskip
+   \item Esta coincidencia nos lleva a conjeturar que existe una \'unica 
+    noci\'on de computabilidad. 
+  \ei
+\end{frame}
+
+\section{La Tesis de Church-Turing}
+\begin{frame}
+ \titulos{La Tesis de Church-Turing}{}
+  \bc
+   Un problema es soluble algor\'itmicamente si y s\'olo si \\es
+   soluble mediante una m\'aquina de Turing.
+  \ec  
+  \pause
+  \bi
+  \item La tesis de Church-Turing afirma que la noci\'on intuitiva de
+   algoritmo es capturada de manera exacta por la noci\'on matem\'atica
+   de m\'aquina de Turing. 
+  \item Es decir, las m\'aquinas de Turing implementan a cualquier algoritmo. 
+  \item Equivalentemente, una funci\'on es computable si y s\'olo si es 
+    soluble mediante una m\'aquina de Turing.
+  \item Tambi\'en se usa el t\'ermino \textbf{Turing-completo} para referirse a 
+    un sistema que puede usarse para simular a una m\'aquina de Turing.
+  \ei
+\end{frame}
+
+\begin{frame}
+ \titulos{La Tesis de Church-Turing}{}
+  \bc
+    Un problema es soluble algor\'itmicamente si y s\'olo si\\ es
+    soluble mediante una m\'aquina de Turing.
+   \ec
+   \pause
+   \bi
+    \item La afirmaci\'on es una tesis indemostrable pues la noci\'on de 
+    algoritmo es intuitiva. 
+    \item Por otro lado la tesis es refutable y se destruir\'a mostrando un 
+    algoritmo que no pudiera ser implementado en una m\'aquina de Turing.
+  \ei
+\end{frame}
+
+\begin{frame}
+ \titulos{Tesis de Church-Turing}{Evidencias a favor}
+  \bi
+   \item Existen fuertes evidencias a favor de la tesis. 
+   \item Intuitivamente cualquier algoritmo detallado para el c\'alculo
+    manual puede programarse en una M\'aquina de Turing. 
+   \item La equivalencia con otros formalismos m\'as modernos. 
+   \item Existen demasiados ejemplos a favor y por supuesto ning\'un
+    contraejemplo. 
+   \item La comunidad tanto en matem\'aticas como en ciencias de la
+    computaci\'on acepta ampiamente la tesis.
+  \ei
+\end{frame}
+
+\begin{frame}
+ \titulos{M\'aquinas de Turing vs. Computadoras}{} %{Introducci\'on}
+  \bi
+   \item Una computadora es capaz de interpretar algoritmos arbitrarios
+    y obtener la misma respuesta que cada algoritmo particular.\medskip
+   \item Entonces una computadora es una m\'aquina \'util para
+    prop\'ositos generales.\medskip
+   \item Las M\'aquina de Turing en cambio son dise\~nadas para prop\'ositos
+    particulares.\medskip
+   \item Conclusi\'on: el poder computacional de las M\'aquina de Turing  
+    no puede ser equiparable al de las computadoras actuales.\medskip
+   \item Las computadoras son programables, las M\'aquina de Turing no.
+  \ei
+\end{frame}
+
+\begin{frame}
+ \titulos{La M\'aquina Universal de Turing}{}
+  \bi
+   \item ?`Ser\'ia factible pensar en la existencia de una M\'aquina de Turing 
+    que se comporte de la misma forma que una computadora real? 
+   \item Es decir, una m\'aquina que sea \'util para prop\'ositos m\'ultiples. 
+   \item Dicha m\'aquina ser\'ia capaz de programar y ejecutar m\'aquinas
+    de Turing.
+   \item Tal m\'aquina existe y se conoce como m\'aquina universal de 
+    Turing~$\mathcal{M}$.%(MUT)
+   \item Esta m\'aquina recibe como entrada una descripci\'on de una M\'aquina 
+    de Turing~$M$ y una cadena~$w$ y simula el comportamiento de~$M$ sobre $w$. 
+   \item Los datos de entrada $M$ y $w$ deben ser codificados de manera 
+    adecuada.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Codificaci\'on de M\'aquina de Turing}{Observaciones}
+  \bi
+   \item La codificaci\'on de una M\'aquina de Turing no es \'unica, puesto que 
+    el orden de las transiciones no importa y un orden distinto genera una 
+    codificaci\'on  distinta. 
+   \item De hecho si $M$ tiene $n$ transiciones, existen $n!$    
+    codificaciones distintas para $M$. 
+   \item El proceso de codificaci\'on puede revertirse, no es d\'ificil       
+    definir un algoritmo que decida si una secuencia binaria
+    representa un c\'odigo v\'alido para M\'aquina de Turing y en tal caso 
+    lo decodifique.
+   \item[] \vspace*{20pt}
+   \begin{scriptsize}
+      N.B. La codificaci\'on y el uso de esta m\'aquina se estudiaron en la     
+      nota anterior.
+   \end{scriptsize}
+  \ei
+\end{frame}
+
+%\subsection{Enumerabilidad de las M\'aquina de Turing}
+\begin{frame}
+  \titulos{Enumerabilidad de las M\'aquina de Turing}{}
+  \bi
+  \item En conclusi\'on toda M\'aquina de Turing puede representarse como una 
+    cadena binaria.\medskip
+  \item No todas las cadenas binarias representan M\'aquina de Turing 
+   v\'alidas, por ejemplo, las cadenas que empiezan o terminan con $1$ o las 
+  que tienen m\'as de dos ceros consecutivos.\medskip
+  \item Cada cadena binaria, representa por otra parte un n\'umero
+   natural y viceversa. Es decir, hay tantas cadenas binaria como n\'umeros  
+   naturales.\medskip
+  \item De lo anterior se concluye que hay s\'olo un n\'umero numerable de 
+   M\'aquina de Turing.
+ \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Enumerabilidad de las M\'aquina de Turing}{}
+  \bi
+   \item Las cadenas binarias pueden enumerarse en orden lexicogr\'afico
+    considerando $0<1$:
+    $$ 0,1,00,01,10,11,000,001,010,011,100,101,110,111,\ldots$$
+   \item Cada M\'aquina de Turing figura varias veces en esta lista.\medskip
+   \item Por motivos pr\'acticos si una cadena no codifica
+    directamente a una M\'aquina de Turing entonces acordamos que codifica 
+    a la m\'aquina sin transiciones que acepta el lenguaje vac\'io.\medskip
+   \item De esta manera cada cadena binaria codifica a una M\'aquina de 
+    Turing.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Existencia de funciones no computables}{Enumerabilidad de
+    M\'aquinas de Turing}
+  \bi
+  \item Dado que las cadenas binarias son tantas como los n\'umeros
+    naturales y cada cadena codifica a una M\'aquina de Turing concluimos que 
+    s\'olo hay un n\'umero infinito numerable de M\'aquinas de Turing.
+  \item Por otro lado si consideramos las funciones $f:\N\imp \N$ es
+    bien sabido que son un n\'umero {\bf no} numerable (tantas como
+    n\'umeros reales).
+  \item De donde se concluye que existen funciones, que {\bf no}
+    pueden calcularse mediante una M\'aquina de Turing.
+  \item Lo cual bajo la tesis de Church-Turing equivale a que
+   existen funciones que no pueden ser calculadas mediante una computadora.
+  \ei
+\end{frame}
+
+
+%\subsection{Lenguaje universal y diagonal}
+\begin{frame}
+  \titulos{El lenguaje diagonal $\mathcal{L}_D$}{}
+  \bi
+  \item Consideremos la enumeraci\'on de las m\'aquinas de Turing
+    $M_1,M_2,\ldots$ as\'i como la enumeraci\'on de todas las cadenas de
+    $\sest$, digamos $w_1,w_2,\ldots,w_n,\ldots$\medskip
+  \item Podemos entonces dar como entrada la $i$-\'esima palabra $w_i$ a
+    la $i$-\'esima m\'aquina $M_i$.\medskip
+  \item Definimos el lenguaje diagonal se define como:
+   $$  \mathcal{L}_D=\{w_i \mid w_i\text{ no es aceptada por }M_i\}$$
+  \item Es decir $\mathcal{L}_D$ contiene a la $i$-\'esima cadena
+        si y s\'olo si \'esta \textbf{no} es aceptada por la $i$-\'esima 
+m\'aquina. 
+  \ei
+\end{frame}
+
+
+
+\begin{frame}
+ \titulos{$\mathcal{L}_D$ \textbf{no} es recursivamente enumerable}{}
+  \bi
+   \item Si $\mathcal{L}_D$ fuera recursivamente enumerable ser\'ia aceptado 
+    por una M\'aquina de Turing, digamos la $k$-\'esima m\'aquina 
+    $M_k$.\medskip
+   \item En tal caso $\mathcal{L}_D=L(M_k)$.\medskip
+   \item Podemos preguntarnos entonces si $w_k\in \mathcal{L}_D$.
+   \bi
+    \item $w_k\in\mathcal{L}_D\Imp w_k$ no es aceptada por
+      $M_k\Imp w_k\notin L(M_k)=\mathcal{L}_D$.
+    \item $w_k\notin\mathcal{L}_D\Imp$ $w_k$ es aceptada por 
+      $M_k\Imp w_k\in L(M_k)=\mathcal{L}_D$.
+    \ei
+  \item Por lo que se tendr\'ia
+  $$w_k\in\mathcal{L}_D\text{ si y s\'olo si }\;w_k\notin\mathcal{L}_D$$
+  \item Lo cual es absurdo.
+          
+  \ei
+\end{frame}
+
+
+
+\begin{frame}
+\titulos{El lenguaje universal $\mathcal{L}_{\mathcal{M}}$}{Definici\'on}
+\begin{itemize}
+\item El lenguaje aceptado por la m\'aquina universal $\mathcal{M}$ se conoce
+  como lenguaje universal, denotado $\mathcal{L}_{\mathcal{M}}$.
+\item[] 
+  $$\mathcal{L}_{\mathcal{M}}=\{\pt{M}\#\pt{w}\mid M\text{ acepta a }w\}$$
+  \begin{small}
+    $\pt{M}\#\pt{w}$ es la cadena de entrada con la m\'aquina y la 
+    cadena   codificadas.   
+  \end{small}
+\item Y es recursivamente enumerable, analicemos a continuaci\'on porqu\'e no 
+es recursivo.
+\end{itemize}
+\end{frame}
+
+
+% \begin{frame}
+%   \titulos{Lenguajes Recursivos y recursivamente enumerable}{}
+%   \bi
+%   \item Todo lenguaje recursivo es recursivamente enumerable. 
+%     \item  Existen lenguajes recursivamente enumerables que no son
+%       recursivos. En particular el lenguaje universal 
+% $\mathcal{L}_{\mathcal{M}}$
+%       no es recursivo. 
+%       \item Existen lenguajes no recursivamente enumerables como
+%         $\mathcal{L}_D$.
+%       \ei
+% \end{frame}
+
+\begin{frame}
+\titulos{El lenguaje universal $\mathcal{L}_{\mathcal{M}}$ no es recursivo}{}
+  Supongamos lo contrario y sea~$M$ una m\'aquina de Turing que siempre se 
+  detiene y tal que $\mathcal{L}_{\mathcal{M}}=L(M)$.\\
+  
+  Veamos que a partir de $M$ podemos construir una m\'aquina de Turing $M'$ 
+  que acepte al lenguaje diagonal $\mathcal{L}_D$, lo cual es absurdo.\\
+  $M'$ funciona como sigue para la entrada $w\in\sest$:
+  \bi
+   \item Enumerar las cadenas de $\sest$ hasta encontrar $k\in\N$ tal que
+    $w=w_k$.
+  \item Llamar a $M$ con entrada $\pt{M_k}\#\pt{w_k}$.
+  \item Como $M$ siempre se detiene entonces decide si $M_k$ acepta a $w_k$.
+  \item En tal caso forzamos a que $M'$ acepte tambi\'en a $w_k$. 
+  \item Esto implica que $L(M')=\mathcal{L}_D$ que es un absurdo.
+  \ei
+\end{frame}
+
+
+\section{Computabilidad}
+
+\begin{frame}
+  \titulos{Preguntas y Problemas}{}
+  \bi
+  \item Preguntas:
+    \bi
+     \item ?`Qu\'e $x$ n\'umero real cumple que $2x^2-3x+5=0$?\medskip
+     \item Dadas las ciudades $a,b,c,d$ ?`Cual es la forma \'optima de
+        visitarlas sin pasar dos veces por la misma ciudad?
+    \ei\medskip
+    \item Una problema es una clase de preguntas:
+      \bi
+      \item ?`Cuales son las soluciones de ?`$ax^2+bx+c=0$?\medskip
+      \item ?` Dados $n$ v\'ertices en un grafo existir\'a un camino 
+      hamiltoniano?
+      \ei\medskip
+    \item Cada caso particular de un problema es un ejemplo, ejemplar o
+      instancia de \'este. 
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Tipos de Problemas}{Introducci\'on}
+   La mayor\'ia de los problemas de inter\'es en ciencias de la
+   computaci\'on son de dos tipos.
+  \be
+   \item Problemas de c\'omputo: obtener el valor de una funci\'on en un
+    argumento dado.
+    \bi
+    \item[] Por ejemplo obtener la ra\'iz cuadrada de un n\'umero dado $x$
+      con exactitud de mil\'esimas.
+    \ei
+    \item Problemas de decisi\'on: problemas cuya respuesta es si o no.
+      \bi
+    \item[] Por ejemplo, decidir la existencia de un camino \'optimo en costos 
+      para recorrer varias ciudades.
+    \ei
+  \ee
+  \pause
+  Si bien los problemas de decisi\'on tambi\'en podr\'ian considerarse 
+  problemas de c\'omputo, es \'util hacer la distinci\'on.
+\end{frame}
+
+\subsection{Algoritmos y problemas}
+\begin{frame}
+  \titulos{Algoritmos y problemas}{}
+  \bi
+  \item Un algoritmo para un problema consiste de una serie de
+    instrucciones capaces de responder cualquier instancia del
+    problema dado.\medskip
+  \item Un problema~$P$ se dice soluble si existe un algoritmo para~$P$. 
+   En otro caso se dice insoluble.\medskip
+  \item Si un problema de decisi\'on~$P$ es soluble entonces decimos que
+   $P$ es \textbf{decidible}. En caso contrario el problema se dice
+   \textbf{indecidible}.\medskip
+  \item Un proceso o algoritmo para un problema de decisi\'on se conoce como un 
+    proceso o algoritmo de decisi\'on.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Algoritmos y funciones}{}
+  \bi
+  \item Cualquier algoritmo puede verse como una funci\'on:
+    $$\text{ entrada}\;x \imp \;\text{ algoritmo}\; \imp \; \text{ salida}\; y$$
+  \item La salida est\'a en funci\'on de la entrada $f(x)=y $
+  \item Una funci\'on es computable si existe un algoritmo que la calcule.
+  \item La teor\'ia de la computabilidad se encarga esencialmente
+   a contestar la pregunta \textbf{?`Qu\'e funciones son computables?}
+  \item Lo cual equivale entonces a responder que problemas son solubles.
+  \ei
+\end{frame}
+
+%\subsection{Problemas no computables}
+\begin{frame}
+  \titulos{Problemas no computables}{Introducci\'on}
+  \bi
+  \item ?`Por qu\'e nos interesa averiguar qu\'e problemas no son
+    computables mediante un algoritmo o proceso?\medskip
+  \item Tales problemas son aquellos que {\bf no} podemos resolver.\medskip
+  \item Son resultados fundamentales y debemos conocerlos para
+    tener una visi\'on general de las ciencias de la computaci\'on.\medskip
+  \item Debemos conocerlos para evitar intentar resolverlos.\medskip
+  \item Debemos entender que tales problemas son insolubles
+   independientemente del desarrollo futuro del hardware.
+  \ei
+\end{frame}
+
+
+
+\begin{frame}
+  \titulos{Recursividad y decidibilidad}{Problemas insolubles}
+  \bi
+  \item Consid\'erese una propiedad $\Pe$ acerca de m\'aquinas de 
+    Turing.\medskip
+    \item$\Pe$ genera el problema de decisi\'on siguiente:\\
+      \bc
+      ?`Satisface la m\'aquina $M$ la propiedad $\Pe$ ?
+      \ec
+      \item Asumiendo la tesis de Church-Turing, tal problema de
+        decisi\'on ser\'a decidible (soluble) si y s\'olo si el lenguaje
+    \[
+      L=\{\pt{M}\mid \pt{M} \text{\small{ es el c\'odigo de
+       una M\'aquina de Turing que satisface} }\Pe\}
+    \]
+    es recursivo.
+  \ei
+\end{frame}
+
+
+%\subsection{El problema de la detenci\'on}
+\begin{frame}
+ \titulos{El problema de la detenci\'on}{\emph{Halting problem}}
+ \bc
+ Dada una m\'aquina $M$ y una cadena $w$ \\
+ ?`Se detendr\'a $M$ al procesar $w$?
+ \ec 
+ \pause
+ \bi
+  \item El problema ser\'a soluble si pudieramos hallar una m\'aquina $H$
+   tal que al recibir como entrada a cualquier cadena $\pt{M}\#\pt{w}$ se
+   detuviera si y s\'olo si $M$ se detiene al procesar $w$. \medskip
+  \item Podr\'ia pensarse que una m\'aquina universal puede hacer el trabajo.
+ \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{El problema de la detenci\'on}{\emph{Halting problem}}
+  \bi
+  \item El problema de la detenci\'on resulta indecidible, es decir, no existe 
+   tal m\'aquina~$H$. 
+  \item Adem\'as es quiz\'as el problema indecidible m\'as relevante en la 
+   teor\'ia de la computabilidad. 
+  \item Una consecuencia inmediata de su indecidibilidad es que no puede
+   existir un programa que verifique si cualquier programa dado se cicla.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{El problema universal}{Problemas no computables}
+  \bc
+  Dada una m\'aquina de Turing cualquiera $M$ y una cadena $w$\\ ?`Acepta
+  $M$ a $w$?
+  \ec 
+  \pause
+  \bi
+  \item El problema universal equivale a que el lenguaje universal
+   $$\mathcal{L}_{\mathcal{M}}=\{\pt{M}\#\pt{w}\mid M\;\text{ acepta a}\;w\}$$
+   sea recursivo.
+  \item Ya demostramos que $\mathcal{L}_{{\mathcal{M}}}$ no es recursivo.
+  \item Por lo tanto el problema universal es indecidible.
+  \ei
+\end{frame}
+
+
+\subsection{Reducibilidad de problemas}
+
+\begin{frame}
+ \titulos{Reducibilidad de problemas}{}
+  \bi
+  \item La reducibilidad de problemas es una t\'ecnica de gran utilidad
+    para probar la indecidibilidad de un problema dado a partir de la
+    indecidibilidad de un problema conocido. 
+  \item Dados dos problemas $\Pe_1,\Pe_2$ decimos que $\Pe_1$ se
+   reduce a $\Pe_2$ si un algoritmo para decidir $\Pe_2$ puede
+   emplearse para decidir $\Pe_1$.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Reducibilidad de problemas}{}
+   Formalmente decimos que $\Pe_1$ se reduce a $\Pe_2$,
+    denotado $\Pe_1\prec\Pe_2$ si existe una M\'aquina de Turing $M$ tal 
+    que: 
+    \pause
+  \bi
+  \item $M$ recibe como entrada una instancia $I_1$ de $\Pe_1$\medskip
+  \item $M$ devuelve como salida una instancia $I_2$ de $\Pe_2$.\medskip
+  \item $M$ decide a $I_1$ de la misma manera que $I_2$.\medskip
+  \item Es decir, $M$ responde con \emph{s\'i} a $I_1$ si y s\'olo si
+   responde con \emph{s\'i} a $I_2$.\medskip
+  \ei
+  \pause 
+  De esta manera se tiene que $\Pe_1$ es decidible
+   si y s\'olo si $\Pe_2$ es decidible.
+\end{frame}
+
+\begin{frame}\titulos{PD $\prec$ PU}{Reducibilidad}
+  \begin{small}
+  \textbf{PD:} Dada una m\'aquina $M$ y una cadena $w$ ?`Se detendr\'a $M$ al 
+  procesar $w$?\\
+  \textbf{PU:} Dada una m\'aquina de Turing cualquiera $M$ y una cadena $w$
+    ?`$M$ acepta~$w$?
+    
+  \vspace*{10pt}
+  \pause
+  El problema universal puede reducirse al problema de la detenci\'on:
+  \vspace*{-6pt}
+  \bi
+   \item Supongamos que existe una m\'aquina $H$ que decide el
+    problema de la detenci\'on.
+   \item En tal caso $H$ decide tambi\'en al problema universal.
+   \item Al recibir una entrada $\pt{M}0\pt{w}$, $H$ decide si $M$ se
+    detiene o no con entrada $w$.
+   \item Si $M$ no se detiene con $w$ entonces $M$ no acepta a $w$.
+   \item Si $M$ se detiene con $w$ entonces $M$ procesa a $w$
+    y decide si la acepta o no.
+   \item De manera que el problema universal se decide, lo cual es absurdo.
+  \ei
+  \end{small}
+\end{frame}
+
+\begin{frame}
+ \titulos{Otros problemas indecidibles}{Reducibilidad}
+  \bi
+   \item Detenci\'on con cinta en blanco: ?` se detiene la m\'aquina $M$ al
+    iniciar con la cinta en blanco?\medskip
+   \item Impresi\'on de un s\'imbolo: Dada $M$ y $s\in\Sigma$ 
+    ?`Escribir\'a $M$ en alg\'un momento a $s$ sobre la cinta?\medskip
+   \item Dada una gram\'atica libre de contexto $G$  ?` $G$ es ambigua?\medskip
+   \item Determinar si dos GLC son equivalentes.\medskip
+   \item Cualquier propiedad no trivial acerca de M\'aquina de Turing 
+  (Teorema de Rice).
+  \ei
+\end{frame}
+
+
+\section{Complejidad}
+\begin{frame}
+ \titulos{Complejidad}{Introducci\'on}
+  \bi
+  \item Las M\'aquinas de Turing son el formalismo m\'as \'util en el 
+    an\'alisis de algoritmos, debido a que modelan de manera precisa los 
+    conceptos centrales de c\'omputo, almacenamiento, espacio y tiempo.
+   \item La noci\'on formal de c\'omputo permite precisar sin 
+    ambig\"uedades el tiempo de computaci\'on de un problema.
+   \item Las celdas de la cinta formalizan de manera clara la noci\'on de 
+    espacio de almacenamiento (memoria)
+   \item As\'i las nociones de tiempo y espacio se modelan de forma muy 
+    realista mediante una M\'aquina de Turing, lo cual permite analizar 
+    la complejidad computacional de un problema. 
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Complejidad}{Introducci\'on}
+  \bi
+   \item La teor\'ia de complejidad se interesa por el estudio de la
+      complejidad necesaria para resolver un problema.
+   \item En particular por el consumo de recursos (espacio y tiempo).
+   \item \textbf{No le conciernen los problemas insolubles.}
+   \item Pero tampoco todos los problemas solubles, en la pr\'actica 
+    aquellos problemas solubles que no pueden resolverse en un tiempo razonable 
+    son tan despreciables como un problema insoluble.
+   \item Los problemas se clasifican en clases de complejidad de acuerdo a 
+    qu\'e tan dif\'icil es resolverlos.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{La funci\'on de tiempo de ejecuci\'on de una M\'aquina 
+  de Turing}{Complejidad}
+  \bi
+  \item[] La funci\'on tiempo de ejecuci\'on de una M\'aquina de Turing $M$ se 
+  define como
+   $$ t_M:\N\imp\N\cup\{\infty\}$$
+  \item[] $t_M(n):=\;$ m\'aximo n\'umero de pasos de ejecuci\'on de $M$ para 
+  una entrada de longitud $n$.
+  \ei
+\end{frame}
+
+\begin{frame}
+ \titulos{M\'aquinas que corren en tiempo polinomial}{Complejidad}
+  Una m\'aquina de Turing $M$ corre en tiempo polinomial si:
+  \bi
+   \item[] Existe un polinomio con coeficientes enteros no negativos
+     $$ p(x)=a_nx^n+a_{n-1}x^{n-1}+\ldots + a_1x+a_0 $$
+   \item[] tal que $t_M(n)\leq p(n)$ para toda $n\in\N$.
+   \item Es decir, si la funci\'on de tiempo de ejecuci\'on de $M$
+     est\'a \textbf{acotada superiormente} por un polinomio.
+   \item Una m\'aquina que corre en tiempo polinomial siempre se detiene.
+  \ei
+\end{frame}
+
+
+\subsection{Clases de complejidad}
+\begin{frame}
+  \titulos{Clases de complejidad}{{\bf P}}
+  \bi
+   \item Clase de problemas que pueden ser resueltos eficientemente.
+   \item Eficientemente significa que existe un algoritmo que corre
+    en \textbf{tiempo polinomial}.
+   \item {\bf P} se conoce tambi\'en como la clase de 
+    problemas \textbf{tratables}.
+   \item En contraste, un problema es \textbf{intratable} si es
+     soluble pero cualquier soluci\'on algor\'itmica corre en tiempo
+    exponencial en el peor de los casos.
+   \item Un problema intratable es pr\'acticamente insoluble,
+    excepto para entradas muy peque\~nas, a no ser que el caso
+   promedio sea mucho mejor que el peor caso.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Clases de complejidad}{{\bf NP}}
+  \bi
+  \item Clase de problemas que pueden ser resueltos en tiempo
+    polinomial pero s\'olo por un algoritmo \textbf{no determinista}.
+  \item Es decir son los problemas solubles por una M\'aquina de Turing
+   no-determinista en tiempo polinomial.
+  \item Sabemos que las M\'aquina de Turing no-deterministas equivalen a 
+   las M\'aquina de Turing  deterministas.
+  \item Sin embargo no se sabe en general si un problema soluble 
+  mediante un algoritmo no-determinista tendr\'a una soluci\'on determinista.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{{\bf P} vs {\bf NP}}{}
+  \bi
+  \item Dado un problema $\Pe\in\;${\bf NP} en general no sabemos si
+    existir\'a una soluci\'on determinista.
+  \item Si {\bf P} = {\bf NP} entonces la respuesta es afirmativa.
+  \item Aun no se ha probado ni refutado si {\bf P}={\bf NP}.
+  \item En caso positivo siempre habr\'i un algoritmo determinista para un 
+    problema cuya soluci\'on no-determinista se conoce.
+  \item Se sospecha que {\bf P}$\neq${\bf NP} y esta es la pregunta 
+    m\'as importante en la teoria de la complejidad (la respuesta vale 1 
+    mill\'on de d\'olares).
+  \ei
+\end{frame}
+
+\subsection{Problemas {\bf NP}-completos}
+\begin{frame}
+ \titulos{Problemas {\bf NP}-completos}{}
+  \begin{itemize}
+  \item Los problemas {\bf NP}-completos son los m\'as dif\'iciles de la
+    clase {\bf NP}. 
+  \item Cualquier problema de la clase {\bf NP} puede reducirse a
+   cualquier problema {\bf NP}-completo. 
+  \item Existen muchos problemas {\bf NP}-completos, el m\'as
+   relevante es probablemente el problema {\bf SAT} (Teorema de Cook).
+\end{itemize}  
+\end{frame}
+
+
+\begin{frame}
+ \titulos{Problemas {\bf NP}-completos}{}
+  \bi
+   \item Un problema $\Pe$ es {\bf NP}-completo ($\Pe\in\;${\bf NPC}) si:
+    \bi
+    \item $\Pe\in\;${\bf NP}.
+    \item $\mathcal{Q}\prec\Pe$ en tiempo polinomial para cualquier problema
+      $\mathcal{Q}\in{\bf NP}$.
+    \ei  
+  \item Todos los problemas en la clase {\bf NPC} son equivalentes, es
+   decir, si $A,B\in\;${\bf NPC} entonces $A\prec B$ y $B\prec A$. 
+  \item La segunda condici\'on de la definici\'on se puede intercambiar
+    por: $C\prec \Pe$ para alg\'un problema {\bf NP}-completo $C$.
+  \ei
+\end{frame}
+
+\begin{frame}
+ \titulos{El problema de satisfacci\'on {\bf SAT}}{Algunos problemas {\bf 
+NP}-completos}
+  \bi
+  \item Dada una f\'ormula de la l\'ogica proposicional en forma normal 
+    conjuntiva:
+  $$P:= C_1\lor C_2\lor C_3\ldots C_n$$
+  \item ?`Existe una asignaci\'on de verdad que satisfaga a $P$? 
+  \item Teorema de Cook (1971): {\bf SAT} es {\bf NP}-completo. 
+  \item Este es el primer problema {\bf NP}-completo.
+  \ei
+\end{frame}
+
+\begin{frame}
+ \titulos{Circuito Hamiltoniano {\bf PCH}}{Algunos problemas {\bf NP}-completos}
+  \bi
+  \item Un circuito hamiltoniano es un camino que inicia y termina en un
+  mismo v\'ertice de un grafo conexo y que visita a todos los v\'ertices 
+  exactamente una vez (el v\'ertice de inicio y fin cuenta solo una vez). 
+  \medskip
+  
+  \item {\bf PCH}: ?`Dado un grafo conexo $G$, tiene $G$ un circuito 
+  hamiltoniano?
+\ei
+\end{frame}
+
+\begin{frame}
+ \titulos{Problema del agente viajero {\bf PAV}}{Algunos problemas {\bf 
+NP}-completos}
+  \bi
+  \item Se tienen dadas $m$ ciudades, las distancias entre cualesquiera dos de
+  ellas y un entero $N$. 
+  \medskip
+  \item {\bf PAV}: ?`Existe un recorrido que visite cada ciudad
+    exactamente una vez y cuya longitud sea menor o igual que $N$ ?
+\ei
+\end{frame}
+
+
+
+\end{document}

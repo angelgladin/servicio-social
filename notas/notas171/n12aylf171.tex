@@ -1,0 +1,573 @@
+
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+
+\usepackage[section]{placeins}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2017-1 \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 12} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+Como hemos discutido, los lenguajes libres de contexto engloban lenguajes m\'as 
+complejos o expresivos que los lenguajes regulares, sin embargo esta 
+caracter\'istica hace que algunos problemas de decisi\'on sean m\'as 
+dif\'iciles de resolver o incluso que no sean decidibles. \\
+En esta nota abordaremos algunos problemas de decisi\'on sobre lenguajes libres 
+de contexto.
+
+\section{Ambig\"{u}edad}
+Est\'a probado que no puede existir un algoritmo que determine con certeza si 
+una gram\'atica es ambigua o no, y que en tal caso elimine dicha ambig\"{u}edad 
+produciendo una gram\'atica no ambigua equivalente a la original. 
+
+Es decir, el problema de ambig\"{u}edad es indecidible. Lo m\'as que se puede 
+saber es que hay ciertas condiciones que determinan ambig\"{u}edad pero en
+caso de no cumplirse estas nada puede decirse a cerca de la gram\'atica en
+cuesti\'on.
+En algunos casos, dada una gram\'atica ambigua, se puede encontrar otra
+gram\'atica equivalente no ambigua, por ejemplo agregando precedencia de 
+s\'imbolos u operadores y asociatividad. Sin embargo existen lenguajes cuya 
+ambig\"{u}edad es inevitable.
+
+\paragraph{Ejemplo:}
+Un lenguaje compacto para expresiones aritm\'eticas es generado por la 
+siguiente gram\'atica ambigua
+$$ S \imp S + S \mid S*S \mid a $$
+donde $a$ es un terminal que representa a los identificadores y constantes.\\
+
+\noindent Podemos demostrar la ambig\"{u}edad de la gram\'atica con la cadena 
+$a + a * a$ que tiene dos \'arboles de derivaci\'on: si se empieza con la 
+producci\'on 
+$S\imp S + S$ o con la producci\'on $S \imp S * S$.\\
+
+\noindent Una gram\'atica no ambigua equivalente se obtiene modelando la 
+precedencia de operadores como sigue:
+\[
+ \ba{rllc}
+  S & \imp & S+T \mid T & \\
+  T & \imp & T*F \mid F & \text{ la multiplicaci\'on tiene mayor precedencia }\\
+  F & \imp & (S) \mid a & \text{ agregar par\'entesis limita la precedencia }
+ \ea
+\]
+
+
+\subsection{Gram\'aticas libres de contexto en lenguajes de programaci\'on}
+
+\noindent El estudio formal de los lenguajes de programaci\'on se divide en 
+sintaxis, pragm\'atica y sem\'antica:
+\bi
+\item La sem\'antica se encarga de definir el significado de las expresiones, 
+enunciados y unidades de programa.
+\item La pragm\'atica define la implementaci\'on del lenguaje basada en la 
+metodolog\'ia y estrategias de programaci\'on deseadas.
+\item La sintaxis se encarga de definir la forma de las expresiones y 
+enunciados de un lenguaje y se sirve fundamentalmente de los conceptos y 
+herramientas de nuestro curso. 
+\ei
+
+Antes del proceso de evaluaci\'on, un compilador e int\'erprete necesita 
+realizar los procesos de an\'alisis l\'exico y sint\'actico, los describimos a
+continuaci\'on a grandes rasgos:
+\bi
+ \item El an\'alisis l\'exico se encarga de transformar el programa fuente en 
+  una lista de unidades sint\'acticas de bajo nivel llamadas \textit{lexemas}, 
+  los cuales se clasifican en distintas categor\'ias llamadas \textbf{tokens}, 
+  como pueden ser identificadores, constantes, separadores, etc. \\
+  El an\'alisis l\'exico se sirve fundamentalmente de expresiones regulares 
+  para su definici\'on y reconocimiento.
+ 
+ \item El an\'alisis sint\'actico o \textit{parsing} se encarga de transformar 
+  la lista de lexemas en un programa objeto, el cual es una expresi\'on 
+  v\'alida de la llamada sintaxis abstracta del lenguaje.\\
+  El programa objeto es esencialmente un \'arbol de derivaci\'on dictado por 
+  una gram\'atica libre de contexto que define al lenguaje de programaci\'on. 
+\ei
+Por lo tanto el an\'alisis sint\'actico es esencialmente una forma del problema 
+de la pertenencia en gram\'aticas libres de contexto.
+
+
+\paragraph{Forma de Backus-Naur} 
+Las gram\'aticas libres de contexto para lenguajes de programaci\'on suelen
+escribirse en la forma de Backus-Naur o \textbf{BNF}.
+Este m\'etodo de definici\'on de gram\'aticas fue introducido por John 
+Backus para el lenguaje \textsc{Algol} 58 en 1959 y fue mejorado por Peter 
+Naur para la definici\'on de \textsc{Algol} 60.
+Este sistema notacional para definir lenguajes libres de contexto sigue las 
+siguientes convenciones:
+\bi
+ \item El s\'imbolo de reescritura $\imp$ se reemplaza con $::=$.
+ \item El s\'imbolo $\mid$ significa \textit{\'o} y se usa para abreviar las 
+  producciones de una misma variable.
+ \item Las variables se escriben entre par\'entesis triangulares y por lo 
+  general utilizan nombres largos que ayuden a la descripci\'on de las 
+  categor\'ias del lenguaje.
+\ei
+
+\paragraph{Ejemplo:}
+Lenguaje de par\'entesis balanceados 
+\[
+ \ba{rll}
+  <parent\_balanc> & ::= & \vacia \mid  \\
+                 & & (<parent\_balanc>) \mid  \\
+                 & & <parent\_balanc><parent\_balanc> 
+ \ea
+\]
+Por ejemplo la cadena~$()()()$ tiene dos \'arboles de derivaci\'on. \\
+Una gram\'atica no ambigua equivalente es:
+$\;\;S \imp \vacia \mid (S)S\;\; $ y en forma \textbf{BNF}:
+\[
+  <parent\_balanc>\; ::= \;\vacia \mid (<parent\_balanc>) <parent\_balanc> 
+\]
+
+
+
+\paragraph{Ejemplo:}
+El lenguaje de las expresiones aritm\'eticas 
+\[
+ \ba{rll}
+  <expr> & ::= & <expr>\,<op>\,<expr>\mid (<expr>)\mid <id>\\
+  <op> & := & + \mid - \mid * \mid / \\
+  <id> & := & a \mid b \mid c
+ \ea
+\]
+Extendido para generar bloques de asignaci\'on de la forma:
+\begin{center}
+{{\tt begin}\;a {\tt :=} b/c\; ; \; b {\tt :=} a*(b+c)\;{\tt end}} 
+\end{center}
+\[
+\ba{rll}
+<programa> & ::= & {\tt begin}\;<sec\_enunc>\;{\tt end}\\ \\
+<sec\_enunc> & ::= & <enunc>\mid<enunc>\,;\,<sec\_enunc>\\ \\
+<enunc> & ::= & <id>\;{\tt :=}\;<expr>\\ \\
+<expr> & ::= & <expr>\,<op>\,<expr>\mid (<expr>)\mid<id>\\ \\
+<op> & := & +\mid - \mid * \mid/\\ \\
+<id> & := & a\mid b\mid c
+\ea
+\]
+
+
+\paragraph{Ejemplo:}
+El lenguaje de las expresiones condicionales:
+\[
+ \ba{rll}
+  <enunc> & ::= & <condicional> \mid \dots \\
+  <condicional> & := & {\tt if}\;<expr>\;{\tt then}\;<enunc> \mid \\
+		&  & {\tt if}\;<expr>\;{\tt then}\;<enunc> {\tt else}\;<enunc>
+ \ea
+\]
+La ambig\"{u}edad de este lenguaje se presenta con problema llamado del 
+\texttt{if} colgante:
+\begin{verbatim}
+if false then if false then 0 else 1
+\end{verbatim}
+Este c\'odigo tiene dos significados:
+\begin{verbatim}
+if false then (if false then 0) else 1
+if false then (if false then 0 else 1)
+\end{verbatim}
+
+\noindent Una gram\'atica equivalente no ambigua es:
+\[
+ \ba{rll}
+  S & \imp & C \mid O  \\
+  C & \imp & C1\mid C2 \\
+  C1 & \imp & {\tt if}\;E\;{\tt then}\;C1\;{\tt else}\;C1  \\
+  C2 & \imp   & {\tt if}\;E\;{\tt then}\;S \mid 
+    {\tt if}\;E\;{\tt then}\;C1\;{\tt else}\;C2
+ \ea
+\]
+La idea detr\'as de esta gram\'atica es separar los posibles condicionales 
+anidados:
+\bi
+ \item $C1$ genera condicionales dobles (if-then-else) balanceados 
+ \item $C2$ representa condicionales simples (if-then) y condicionales dobles 
+  pero de forma que un $\mathtt{if-then}$ s\'olo figura colgando al final es 
+  decir en el $\mathtt{else}$.
+\ei
+
+
+\section{Problema de pertenencia}
+
+\begin{center}
+Dado un lenguaje libre de contexto $L$ y una cadena~$w \in \Sigma^\star$, 
+?`c\'omo decidir si $w\in L$?
+\end{center}
+
+Para resolver esta pregunta, por un lado se puede generar un aut\'omata 
+no-determinista que reconozca el lenguaje, en este caso las derivaciones que 
+pueden generarse son exponenciales. 
+ 
+Por otro lado si se utilizara una gram\'atica libre de contexto, se 
+puede optar por normalizarla y obtener una equivalente en forma normal de 
+Chomsky o de Greibach. As\'i se pueden generar todas la derivaciones de 
+longitud $2|w| -1 $ y obtener una derivaci\'on que produzca exactamente a la 
+cadena~$w$.
+
+Pero en general, si se quiere resolver el problema de decisi\'on anterior de 
+manera eficiente las opciones anteriores no son las mejores.
+
+\vspace*{10pt}
+
+En la d\'ecada de 1960 se desarrollaron varias aportaciones a los lenguajes de 
+programaci\'on y a los compiladores de los mismos, entre ellas se encuentra un 
+algoritmo dise\~nado por J. Cocke, T. Kasami y D.H. Younger para realizar el 
+an\'alisis sint\'actico de una cadena dado un lenguaje. 
+
+Este algoritmo llamado \textbf{CYK} pertenece a la programaci\'on din\'amica 
+cuyo lema es \enquote{divide y vencer\'as}: utiliza una gram\'atica libre de 
+contexto normalizada y realiza un an\'alisis de abajo hacia arriba 
+(\textit{bottom-up}) para revisar la cadena y las subcadenas de ella.
+
+Este algoritmo es sobresaliente dada la eficiencia bajo ciertas
+caracter\'isticas: en el peor de los casos tiene un tiempo  
+de~$\Theta(n^3\cdot |V|)$ donde $n$ es la longitud de la cadena a procesar y 
+$|V|$ es el n\'umero de variables en la gram\'atica. 
+
+\vspace*{10pt}
+
+Formalemente, el algoritmo recibe como entrada una gram\'atica en forma 
+normal de Chomsky y una cadena $w =a_1a_2\cdots a_n$. El procedimiento analiza 
+la cadena por partes, es decir, las subcadenas y reglas que pueden generar 
+esas subcadenas.\\
+Para este an\'alisis se forman conjuntos $X_{i,j}$, que continen s\'imbolos no 
+terminales correspondientes a la parte izquierda de una producci\'on que genera 
+la subcadena:
+\bc
+  $A \in X_{i,j}$ si $A \imp^+ a_ia_{i+1}\cdots a_{i+j-1}$ 
+\ec
+Si el conjunto $X_{1,n}$ correspondiente a la longitud de la cadena contiene al 
+s\'imbolo inicial de la gram\'atica entonces se puede decir que la cadena $w$ 
+pertenece al lenguaje generado por la gram\'atica.
+
+\vspace*{10pt}
+
+\noindent El pseudo-algoritmo para generar los conjuntos $X_{i,j}$ es el 
+siguiente:
+\be
+ \item Formar una cuadr\'icula o una matriz de $n\times n$:
+ \bi
+  \item cada espacio de la matriz ser\'a el conjunto $X_{i,j}$ correspondiente 
+  a sus coordenadas, los renglones ($j$) est\'an enumerados de abajo hacia 
+  arriba y las columnas ($i$)de izquierda a derecha ambos desde $1$ hasta 
+  $n$.
+  \item en la parte inferior de la cuadr\'icula colocar por cada columna un 
+    s\'imbolo de la cadena 
+  \item el rengl\'on $1$ (el que est\'a m\'as abajo) es llenado con los 
+    s\'imbolos no terminales que puedan generar el s\'imbolo que se encuentra 
+    debajo de cada celda.
+  \ei
+\item Para cada una de las celdas de los siguientes renglones ($X_{i,j}$ con 
+  $i,j >1$) agregar los s\'imbolos $A$ de las producciones $A \imp BC$ donde
+  $B \in X_{i,k}$ y $C \in X_{i+k,j-k}$ y $k < j-1$.
+\ee
+
+
+\paragraph{Ejemplo:}
+Dada la cadena $w = bbab$ y la gram\'atica $G$ en \textbf{FNC}, decir si 
+$w\in L(G)$.
+\[
+ \ba{rll}
+  S & \imp & BA \mid AC \\
+  A & \imp & CC \mid b \\
+  B & \imp & AB \mid a \\
+  C & \imp & BA \mid a \\
+ \ea
+\]
+\be
+\item Inicializamos la tabla con la longitud de la cadena y el rengl\'on 
+$j=1$ con las variables que generan los s\'imbolos
+\bc
+\begin{tabular}{c||c|c|c|c}
+$j=4$ & & & & \\
+\hline
+$j=3$ & & & & \\
+\hline
+$j=2$ &  & & & \\  
+\hline
+$j=1$ & A &A &B, C &A \\
+\hline
+\hline
+& $i=1$ & $i=2$ &$i=3$ &$i=4$ \\
+\hline
+ & b & b & a & b 
+\end{tabular}
+\ec
+
+\item Para $j=2$ tenemos las producciones para subcadenas de longitud dos 
+\bc
+\begin{tabular}{c||c|c|c|c}
+$j=4$ & & & & \\
+\hline
+$j=3$ & & & & \\
+\hline
+$j=2$ & - &B, S &S, C & \\  
+\hline
+$j=1$ & A &A &B, C &A \\
+\hline
+\hline
+& $i=1$ & $i=2$ &$i=3$ &$i=4$ \\
+\hline
+ & b & b & a & b 
+\end{tabular}
+\ec
+
+\item Para $j=3$ tenemos las producciones para subacadenas de longitud tres, en 
+el caso particular del conjunto $X_{2,3}$ se utilizan los conjuntos por debajo 
+de \'el que generan las subcadenas:
+\bc
+\begin{tabular}{c||c|c|c|c}
+$j=4$ & & & & \\
+\hline
+$j=3$ & B& \textbf{S, C} & & \\
+\hline
+$j=2$ & - &\textbf{B, S} & \textbf{S, C} & \\  
+\hline
+$j=1$ & A &\textbf{A} &B, C &\textbf{A} \\
+\hline
+\hline
+& $i=1$ & $i=2$ &$i=3$ &$i=4$ \\
+\hline
+ & b & b & a & b 
+\end{tabular} 
+\ec
+
+
+\item Y finalmente la tabla completa
+\bc
+\begin{tabular}{c||c|c|c|c}
+$j=4$ & \textbf{S, C} & & & \\
+\hline
+$j=3$ & \textbf{B }&\textbf{S, C} & & \\
+\hline
+$j=2$ & \textbf{-} &B, S &\textbf{S, C} & \\  
+\hline
+$j=1$ & \textbf{A} &A &B,  C &\textbf{A} \\
+\hline
+\hline
+& $i=1$ & $i=2$ &$i=3$ &$i=4$ \\
+\hline
+ & b & b & a & b 
+\end{tabular}
+\ec
+
+\ee
+En el conjunto $X_{1,4}$, que representa la cadena completa, est\'a contenido 
+el s\'imbolo inicial de la gram\'atica y por lo tanto $w$ pertenece a 
+$L(G)$.
+Para poder obtener una derivaci\'on de $w$ s\'olo es necesario tomar los 
+s\'imbolos correspondientes que generan las subcadenas:
+$$ S \imp  AC  \imp aC \imp  bBA \imp bABA\imp  bbBA \imp  bbaA  \imp  bbab $$
+
+\vspace*{10pt}
+
+\noindent Ahora analicemos la cadena $w= bbaa$, tenemos las siguientes tablas:
+\be
+\item Inicializamos la tabla con $j=1$
+\bc
+\begin{tabular}{c||c|c|c|c}
+$j=4$ & & & & \\
+\hline
+$j=3$ & & & & \\
+\hline
+$j=2$ &  & & & \\  
+\hline
+$j=1$ & A &A &B, C &B, C \\
+\hline
+\hline
+& $i=1$ & $i=2$ &$i=3$ &$i=4$ \\
+\hline
+ & b & b & a & a 
+\end{tabular}
+\ec
+
+\item Para $j=2$ tenemos las producciones para subcadenas de longitud dos 
+\bc
+\begin{tabular}{c||c|c|c|c}
+$j=4$ & & & & \\
+\hline
+$j=3$ & & & & \\
+\hline
+$j=2$ & - &B, S &A & \\  
+\hline
+$j=1$ & A &A &B, C &B, C \\
+\hline
+\hline
+& $i=1$ & $i=2$ &$i=3$ &$i=4$ \\
+\hline
+ & b & b & a & a 
+\end{tabular}
+\ec
+
+
+\item Para $j=3$ tenemos las producciones para subacadenas de longitud tres 
+\bc
+\begin{tabular}{c||c|c|c|c}
+$j=4$ & & & & \\
+\hline
+$j=3$ & B& - & & \\
+\hline
+$j=2$ & - &B, S &A& \\  
+\hline
+$j=1$ & A &A &B, C &B, C \\
+\hline
+\hline
+& $i=1$ & $i=2$ &$i=3$ &$i=4$ \\
+\hline
+ & b & b & a & a
+\end{tabular} 
+\ec
+
+\item Y finalmente la tabla completa
+\bc
+\begin{tabular}{c||c|c|c|c}
+$j=4$ & - & & & \\
+\hline
+$j=3$ & B&- & & \\
+\hline
+$j=2$ & - &B, S &A & \\  
+\hline
+$j=1$ & A &A &B,  C &B,C \\
+\hline
+\hline
+& $i=1$ & $i=2$ &$i=3$ &$i=4$ \\
+\hline
+ & b & b & a & a
+\end{tabular}
+\ec
+\ee
+Como podemos ver el conjunto $X_{1,4}$ es vac\'io, por lo tanto la cadena no es 
+aceptada por la gram\'atica.
+
+
+
+
+\section{Lenguajes que no son libres de contexto}
+
+An\'alogamente al caso de lenguajes regulares, las dos formas principales para 
+demostrar que un lenguaje no es libre de contexto son el uso de las propiedades 
+de cerradura y el lema del bombeo, el cual enunciamos m\'as adelante.\\
+Recordemos las propiedades de cerradura de lenguajes libres de contexto:
+\bi
+ \item Uni\'on: si $L_1,L_2$ son lenguajes libres del contexto entonces 
+  $L_1\cup L_2$ es libre del contexto.
+ \item Concatenaci\'on: si $L_1,L_2$ son lenguajes libres del contexto entonces 
+  $L_1L_2$ es libre del contexto.
+ \item Estrella de Kleene: si $L_1$ es un lenguaje libres del contexto entonces 
+  $L_1^\star$ es libre del contexto.
+\ei
+
+
+Estas propiedades permiten construir lenguajes libres de contexto y tambi\'en 
+proveen un mecanismo para demostrar si alguno lo es. El siguiente lema es 
+\'util al \textbf{refutar} que un lenguaje sea libre de contexto.
+
+\lema{[Lema del Bombeo para Lenguajes libres de contexto]
+Si $L$ es un lenguaje libre de contexto entonces existe un n\'umero $n \in \N$ 
+llamado constante de bombeo para $L$, tal que para cualquier cadena
+$z\in L$ con $|z| \geq n$ existen cadenas $u,\; v,\; w, \;x, \;y$ tales que
+$z = uvwxy$ y adem\'as
+\bi
+ \item $|vwx| \leq n$
+ \item $|vx| \geq 1$, es decir $v \neq \vacia$ \'o $x \neq \vacia$ pero no ambas
+ \item para todo $i \geq 0$, $uv^iwx^iy$ debe pertenecer al lenguaje
+\ei
+}
+\vspace*{-10pt}
+\begin{proof}
+ La demostraci\'on se basa en un an\'alisis de \'arboles de derivaci\'on de 
+  gram\'aticas en forma normal de Chomsky.
+\end{proof}
+
+Veamos algunos ejemplos del uso del lema del bombeo:
+
+\paragraph{Ejemplo:}
+Sea $L = \{a^i b^i c^i \mid i \in \N\}$. Demostrar que $L$ \textbf{no} es libre 
+de contexto. \\
+Sup\'ongase que $L$ es libre del contexto y sea $n$ una constante de bombeo.
+Entonces sea $z = a^n b^n c^n$ una palabra en $L$ y damos su descomposici\'on 
+como sigue: $z = uvwxy$ con $vx \neq \vacia$ y $ |vwx| \leq n$.
+Analicemos la cadena $z$:
+\bi
+ \item Como $|vwx| \leq n$ entonces en $vwx$ \textbf{no} pueden figurar los 
+  tres terminales $a,\,b,\,c $ simult\'aneamente.
+ \item Por otro lado como $v \neq \vacia$ \'o $x\neq \vacia$ se distinguen dos 
+  casos:
+  \bi
+   \item En alguna de $v$ \'o $x$ figuran dos tipos de terminales.\\
+   En tal caso en $uv^2wx^2 y $ figuran algunas $b$'s seguidas de $a$'s \'o
+   algunas $c$'s seguidas de $b$'s rompiendo con la forma de las cadenas 
+   en~$L$. 
+  \item Cada una de las cadenas $v$ y $x$ contiene s\'olo un tipo de terminal. 
+   Dado que en $vwx$ no figuran los tres terminales, en la cadena $uv^2 wx^2y$ 
+   se altera el n\'umero de dos de los terminales pero nunca de los tres, por 
+   lo que $uv^2 wx^2y$ no est\'a en $L$.
+  \ei
+\ei
+De cualquier forma al \enquote{bombear} la cadena, el resultado no es parte del 
+lenguaje. Por lo tanto $L$ no es libre de contexto.
+
+\begin{comment}
+ L = {ai2
+ | i ∈ N } no es libre de contexto
+Supongamos lo contrario y sea n una constante de bombeo.
+Considérese la cadena z = an2
+ . Por el lema del bombeo tenemos z = uvwxy tal que |vx| = q ≥ 1 (pues
+v 6= ε ó x 6= ε).
+Por el lema del bombeo se tiene uv n+1 wxn+1y ∈ L, es decir uvn+1wxn+1 y = ap2
+ con p ∈ N. Pero
+obsérvese que
+p2 = |uv n+1wxn+1y| = |uvwxy| + |vn xn| = n2 + nq = n(n + q)
+lo cual es absurdo pues q ≥ 1. Por lo tanto L no es libre de contexto.
+2.0.3.
+ L = {ww | w ∈ {0, 1}? } no es libre de contexto
+Supongase que L es libre del contexto y sea n una constante de bombeo.
+Considérese la palabra z = 0n+1 1n+1 0n+1 1n+1
+Por el lema del bombeo tenemos z = uvwxy con |vwx| ≤ n, v 6= ε ó x 6= ε
+Además z0 = uv0 wx0 y = uwy ∈ L
+Basta mostrar que z0 no puede ser escrita en la forma ss.
+• Al borrar v y x se está borrando al menos un sı́mbolo pues v 6= ε ó x 6= ε.
+• Como |vwx| ≤ n la distancia entre v y x es a lo más n.
+• Analizando los tres casos posibles es imposible escribir a z0 en la forma ss. 
+(El lector puede
+convencerse mediante casos particulares, por ejemplo con n = 3, la 
+generalizacion es clara a
+partir de este caso.)
+
+\end{comment}
+
+\end{document}

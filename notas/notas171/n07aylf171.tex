@@ -1,0 +1,299 @@
+
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+\usepackage[section]{placeins}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2017-1 \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 7} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Gram\'aticas}
+Un mecanismo relevante para generar un lenguaje es mediante el concepto de 
+gram\'atica formal.
+Las gram\'aticas formales fueron introducidas por Noam Chomsky en 1956.
+La intenci\'on era tener un modelo para la descripci\'on de lenguajes 
+naturales.
+Posteriormente se utilizaron como herramienta para presentar la sintaxis 
+de lenguajes de programaci\'on y para el dise\~no de analizadores l\'exicos 
+de compiladores
+         
+\defin{
+Una gram\'atica es una cuaterna $G=\pt{V,T,S,P}$ tal que:
+\bi
+ \item $V$ es un alfabeto de \textnormal{variables} o \textnormal{s\'imbolos    
+ no-terminales}, los cuales se denotan con may\'usculas $A,B,C,\ldots$
+ \item $T$ es un alfabeto de \textnormal{s\'imbolos terminales}, los cuales 
+  se denotan con min\'usculas $a,b,c,\ldots$. Adem\'as se requiere que
+  $T\cap V=\vacio$.
+ \item $S\in V$ es una variable distinguida llamada el \textnormal{s\'imbolo    
+  inicial}.
+ \item $P$ es un conjunto finito de reglas de reescritura, llamadas 
+  \textnormal{reglas de producci\'on} o producciones.
+  \ei
+}
+
+\noindent El conjunto de reglas de producci\'on~$P$ es un conjunto finito de 
+pares $\pt{\al,\beta}$ tales que
+\bi
+ \item $\al\in (V\cup T)^\star - T^\star$. Es decir, $\al$ es una
+  cadena de s\'imbolos terminales o no terminales, con al menos un
+  s\'imbolo no-terminal.
+ \item $\beta\in (V\cup T)^\star$. Es decir, $\beta$ es una cadena de
+ s\'imbolos de $V\cup T$ , los cuales podr\'an ser todos terminales.
+\ei
+En lugar de escribir $\pt{\alpha,\beta}\in P$, escribimos $$\alpha \imp \beta$$ 
+y decimos que $\alpha$ \textbf{produce} a $\beta$, o que $\alpha$ se 
+\textbf{reescribe} en $\beta$.
+
+\newpage
+
+Las reglas de producci\'on sirven para generar cadenas, proceso que se
+formaliza mediante las derivaciones formales:
+ 
+\defin{[Derivaci\'on formal]
+Dadas dos palabras $w,v\in (V\cup T)^\star$ decimos que $v$ es
+\textnormal{derivable} a partir de $w$ en \textbf{un paso} ($w\imp v$) si y 
+s\'olo si:
+\bi
+ \item[] Existe una regla $\al\imp\beta$ en $P$ y cadenas 
+  $\gamma_1,\gamma_2\in(V\cup T)^\star$ tales que:
+  $$  w=\gamma_1\al\gamma_2  \qquad \qquad v=\gamma_1\beta\gamma_2$$
+  Es decir, se ha reescrito la cadena $\alpha$ en la cadena $\beta$.
+\ei
+}
+Algunos autores utilizan $\Imp$ en vez de $\imp$ para denotar la relaci\'on 
+de derivaci\'on. Nosotros preferimos sobrecargar el operador $\imp$.
+  
+  
+\defin{
+ Decimos que una cadena $v$ es \textnormal{derivable} a partir de $w$ si existen
+ palabras $\ga_2,\ldots,\ga_n$ tales que
+ $$ w=\ga_1\imp \ga_2\ldots\ga_{n+1}\imp\ga_n=v $$
+ En tal caso escribimos $w\imp^\star v$.
+}
+
+\defin{[Lenguaje de una gram\'atica]
+Dada una gram\'atica $G=\pt{V,T,S,P}$ definimos al lenguaje generado por $G$, 
+denotado $L(G)$, como el conjunto de palabras de s\'imbolos \textbf{terminales} 
+derivables a partir del s\'imbolo inicial $S$. 
+Es decir, $$L(G)=\{w\in T^\star\;|\;S\imp^\star w\}$$
+}
+
+\paragraph{Ejemplo:}
+Considere el siguiente lenguaje~$L = (a+b)^\star$, es el lenguaje en que 
+cualquier cadena con $a$ y $b$ debe generarse. Veamos la gram\'atica 
+correspondiente:
+\bi
+ \item La cadena vac\'ia debe generarse: $\quad S\imp\vacia$
+ \item Si $w\in L$ entonces $wa\in L$: $\quad \qquad S\imp Sa $
+ \item Si $w\in L$ entonces $wb\in L$: $\quad \qquad S\imp Sb$
+\ei
+La cadena~$w=ababb$ se deriva como sigue:
+$$ S\imp Sb\imp Sbb\imp Sabb\imp Sbabb\imp Sababb\imp ababb $$
+
+\paragraph{Ejemplo:}
+Proporcionar una gram\'atica que genere las 
+cadenas en $L=\{a^ib^j\;|\;i,j\in\N,i\leq j\}$.
+\bi
+ \item La cadena vac\'ia debe generarse ($i=j=0$): $\qquad S\imp\vacia$
+ \item Debe haber al menos tantas $b$ como $a$, primero las $a$ y luego las 
+  $b$: $$S\imp aSb$$
+ \item Puede haber m\'as $b$ al final: $$S\imp Sb$$
+\ei
+Ejemplo de derivaci\'on para la cadena~$w=aabbb$
+$$ S\imp aSb\imp aaSbb\imp aaSbbb\imp aabbb $$
+
+\paragraph{Ejemplo:}
+El lenguaje~$L=\{a^ib^ja^jb^i\;|\;i,j\in\N\}$ es generado por la siguiente 
+gram\'atica:
+\bi
+ \item Primero generamos el centro de la palabra, $b^ja^j$:
+  $$  S\imp B \qquad B\imp bBa \qquad B\imp \vacia$$
+ \item Despu\'es los extremos $a^i,\;b^i$: $\qquad\qquad S\imp aSb$
+\ei
+Un ejemplo de derivaci\'on es la generaci\'on de la cadena~$w=aababb$
+$$ S\imp aSb\imp aaSbb\imp aaBbb\imp aabBabb \imp aababb $$
+
+\paragraph{Ejemplo:}
+Dado~$L=\{a^{i} b^{i} a^{j} b^{j}\;|\;i,j\in\N\}$, la siguiente gram\'atica 
+genera el lenguaje:
+\bi
+ \item Primero generaremos el lenguaje~$\{a^i b^i\;|\; i\in\N\}$ mediante:
+  $$    P\imp \vacia \qquad \qquad P\imp aPb $$
+ \item Para generar a $L$ simplemente agregamos:
+  $$S\imp PP$$
+\ei
+Ejemplo de derivaci\'on, la cadena~$w=aabbab$ se genera como sigue:
+$$ S\imp PP \imp aPbP\imp aPbaPb\imp aaPbbaPb \imp aaPbbab\imp aabbab $$
+
+\paragraph{Ejemplo:}
+El lenguaje~$L=\{a^{i} b^{i}\;|\;i\in\N\}\cup\{b^{i} a^{i}\;|\;i\in\N\}$ se 
+genera mediante:
+\bi
+ \item Primero el lenguaje $\{a^i b^i\;|\; i\in\N\}$ se genera con la 
+  siguiente gram\'atica:
+  $$ P\imp \vacia \qquad \qquad P\imp aPb $$
+ \item Despu\'es generamos el lenguaje $\{b^i a^i\;|\; i\in\N\}$ mediante:
+  $$ Q\imp \vacia \qquad\qquad Q\imp bQa$$
+ \item Finalmente, para generar a $L$ simplemente agregamos:
+  $$S\imp P \qquad S\imp Q$$
+\ei
+Ejemplo de derivaci\'on para $w=bbbaaa$
+$$ S\imp P \imp aPb\imp aaPbb\imp aaaPbbb \imp aaabbb $$
+
+\subsection{Dise\~no de gram\'aticas}
+Si bien muchas veces el dise\~no de una gram\'atica $G$ para un lenguaje dado 
+$L$  es intuitivamente claro y correcto, esto debe mostrarse formalmente, 
+mostrando que $L=L(G)$. Esto se hace, por supuesto, probando formalmente lo 
+siguiente:
+\be
+ \item \textbf{Correctud}: la gram\'atica $G$ genera \'unicamente las cadenas 
+  de $L$, es decir, $L(G)\inc L$.
+
+ \item \textbf{Completud}: toda cadena de $L$ es generada por $G$, es decir, 
+  $L\inc L(G)$.
+\ee  
+
+\section{Jerarqu\'ia de Chomsky}
+
+Las gram\'aticas fueron clasificadas de acuerdo a sus propiedades por Chomsky.
+
+\bi
+ \item[Tipo 0] \textbf{Lenguajes recursivamente enumerables} \\
+  Son aquellos lenguajes generados por una gram\'atica sin restricciones
+  adicionales.\\
+  Tales gram\'aticas pueden incluir reglas de la forma
+  $\qquad \boxed{\alpha\imp\vacia}$
+  
+  \vspace*{10pt}
+  
+  De manera que la gram\'atica es capaz de borrar cadenas.
+  Tales gram\'aticas se conocen como \textit{contra\'ibles}.  
+  Por ejemplo: $$ aS\imp bSb,\; aSb\imp \cv,\; SbS\imp bcS $$
+
+  As\'i tambi\'en la siguiente es una gram\'atica de tipo 0 donde 
+  $L(G)=\{ww\mid w\in\{0,1\}^\star\}$
+  \[
+  \begin{array}{cccc}
+   S\to AT & A\to 0AO & A\to 1AI & O0\to 0O \\
+   O1\to 1O & I0\to 0I & I1\to1I & OT\to 0T\\
+   IT\to 1T & A\to\vacia & T\to\vacia &
+  \end{array}
+  \]
+
+  La idea del dise\~no de esta gram\'atica y la raz\'on del nombre 
+  \textit{recursivamente enumerable} se discutir\'an m\'as adelante.
+
+  Comentamos ahora que las m\'aquinas que aceptan este tipo de lenguajes son 
+  las M\'aquinas de Turing que tambi\'en ser\'an estudiadas m\'as adelante.
+
+
+\item[Tipo 1] \textbf{Lenguajes dependientes del contexto}\\
+  Tambi\'en llamados sensibles al contexto, son aquellos lenguajes generados 
+  por gram\'aticas con todas sus producciones son de la forma
+  $$\boxed{\alpha_1 A\alpha_2 \imp\alpha_1\beta\alpha_2}$$
+  con $\alpha_1,\alpha_2\in(V\cup T)^\star,\;A\in V,\;\beta\neq\vacia$, 
+  adem\'as de que $|\alpha_1\beta\alpha_2| \geq |\alpha_1 A\alpha_2|$.\\  
+  Con la posible excepci\'on de la regla $S\imp\vacia$, en cuyo caso se
+  prohibe la presencia de $S$ a la derecha de las producciones.
+  
+  Los aut\'omatas que reconocen este tipo de lenguajes son los llamados 
+  aut\'omatas acotados linealmente.
+  
+  Veamos un ejemplo, la siguiente gram\'atica dependiente del contexto 
+  genera al lenguaje $$L=\{a^ib^ic^i\;|\;i\geq 0\}$$
+  \[
+  \begin{array}{rclcrcl}
+    S & \imp & A & \hspace*{20pt} & A& \imp & aABC \mid abC \\
+    CB&\imp& BC & \hspace*{20pt} & bB&\imp & bb \\
+    bC&\imp& bc & \hspace*{20pt} &cC&\imp& cc
+  \end{array}
+  \]
+
+\newpage
+  
+\item[Tipo 2] \textbf{Lenguajes libres del contexto} \\
+Son aquellos generados por gram\'aticas con todas sus producciones de la forma
+$$\boxed{A\imp\al}$$
+con $A\in V,\;\al\in(V\cup T)^\star$.
+ 
+Esta definici\'on incluye a la regla $S\imp\vacia$.
+La mayor\'ia de las gram\'aticas para lenguajes de programaci\'on caen en 
+esta categor\'ia.
+As\'i mismo las m\'aquinas que aceptan este tipo de lenguajes son los llamados 
+aut\'omatas de pila que ser\'an estudiados en el siguiente tema.
+         
+
+\item[Tipo 3] \textbf{Lenguajes regulares}
+  Son aquellos generados por una gram\'atica de una de las siguientes formas:
+  \bi
+  \item Lineal por la derecha: todas las producciones de la forma
+    $$A\imp aB\;\;\;A\imp a\;\;\;A\imp\vacia$$
+    con $A,B\in V,\;a\in T$
+  \item Lineal por la izquierda: todas las producciones de la forma
+   $$A\imp Ba\;\;\;A\imp a\;\;\;A\imp\vacia$$
+    con $A,B\in V,\;a\in T$
+  \item \textbf{No} se permite mezclar ambos tipos de producciones.
+  \ei
+Estos lenguajes son los que hemos estudiado a detalle hasta ahora y como hemos 
+visto las m\'aquinas que los aceptan son los aut\'omatas finitos.
+  
+\ei
+\subsection{Observaciones}
+Decimos que un lenguaje es de tipo $i$ si y s\'olo si $i$ es el \'indice
+\textit{m\'as grande} tal que existe una gram\'atica de tipo $i$ que genera a 
+$L$.
+Es decir que si un lenguaje~$L$ es generado por una gram\'atica de tipo $i$, 
+no se puede asegurar de inmediato que $L$ sea un lenguaje de tipo $i$. Debe 
+asegurarse que $i$ es \textit{m\'aximo}.
+Para ello se puede ver la jerarqu\'ia generada por la clasificaci\'on de 
+Chomsky:
+\[
+\mathcal{L}_3\subsetneq \mathcal{L}_2\subsetneq \mathcal{L}_1\subsetneq 
+\mathcal{L}_0
+\]
+
+La jerarqu\'ia de Chomsky permite refinar la teor\'ia de la computaci\'on 
+clasificando lenguajes en funci\'on de los recursos computacionales 
+necesarios para reconocerlos. Como vimos cada categor\'ia tiene asociado un 
+tipo de m\'aquina que reconoce a los lenguajes.
+
+
+\end{document}

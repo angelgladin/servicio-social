@@ -1,0 +1,322 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+%\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+% Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
+  PAPIME PE102117} \\ 
+Nota de Clase 4} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{12 de marzo de 2019}
+
+\begin{document}
+\maketitle
+\section{Aut\'omatas No-Deterministas}
+
+El determinismo de un aut\'omata, deseable desde el punto de vista te\'orico, 
+puede provocar complicaciones en la práctica.
+Veamos las diferencias entre estos conceptos:
+\bi
+ \item \textbf{Determinismo:} dado un estado~$q$ y un s\'imbolo~$a$ existe una 
+  \'unica transici\'on~$\delta(q,a)=p$, es decir $\delta$ es una 
+  funci\'on total.
+ \item \textbf{No-determinismo:} no hay una transici\'on \'unica al leer un
+  s\'imbolo~$a$ en un estado dado~$q$.
+\ei
+
+El no-determinismo se traduce en que hay m\'as de una transici\'on al leer un 
+s\'imbolo, es decir, $\delta(q,a)$ deja de ser función. 
+O bien no hay transici\'on, es decir, $\delta(q,a)$ no est\'a definida 
+($\delta$ se vuelve funci\'on parcial).
+Sin embargo la m\'aquina funciona \'unicamente al leer un s\'imbolo. % y podemos 
+% decir que existe el no-determinismo sin lectura de s\'imbolos.
+
+Veamos c\'omo se puede agregar el no-determinismo a la definici\'on de 
+aut\'omata que vimos anteriormente:
+\defin{
+Un aut\'omata finito \textbf{no} determinista (AFN) es una quintupla
+$M=\pt{Q,\Sigma,\delta,q_0,F}$ donde
+\bi
+ \item $Q$ es un conjunto finito de estados.
+ \item $\Sigma$ es el alfabeto de entrada.
+ \item $\delta:Q\times\Sigma\imp \Pe(Q)$ es la funci\'on de 
+  transici\'on.
+ \item $q_0\in Q$ es el estado inicial.
+ \item $F\inc Q$ es el conjunto de estados finales.
+\ei
+}
+Obs\'ervese que la imagen de~$\delta$ es ahora un elemento de~$\Pe(Q)$, es 
+decir es un subconjunto de estados de $Q$.
+Adem\'as~$\delta(q,a)=\{q_1,q_2,\ldots,q_n\}$ indica que al leer el 
+s\'imbolo~$a$ en el estado~$q$ la m\'aquina puede pasar a cualquiera de los
+estados $q_1,\ldots,q_n$.
+Si $\delta(q,a)=\varnothing$ entonces no hay transici\'on posible desde 
+el estado~$q$ al leer~$a$, es decir, la m\'aquina est\'a bloqueada.
+
+\noindent Veamos como las nociones vistas para los AFD se modifican:
+
+\defin{
+Sea $M=\pt{Q,\Sigma,\delta,q_0,F}$ un AFN. La funci\'on de 
+transici\'on~$\delta$ se extiende a cadenas mediante una funci\'on 
+$\dest:Q\times\sest \imp \Pe(Q)$ definida recursivamente como sigue:
+\bi
+ \item $\dest(q,\vacia) = q $
+ \item $\dest(q, wa) = \bigcup_{p\in\dest(q,w)}\delta(p,a)$ 
+\item  Alternativamente: $\dest(q,aw) = \bigcup_{p\in \delta(q,a)}\dest(p,w)$
+\ei
+}
+
+\noindent El lenguaje de aceptaci\'on se define mediante~$\dest$ como sigue:
+$$ L(M)=\{w\in\sest\;|\;\dest(q_0,w)\cap F\neq\vacio\} $$
+Es decir, $w\in L(M)$ si y s\'olo si existe al menos un c\'omputo o un 
+procesamiento de~$w$ que conduce a un estado final al iniciar la m\'aquina en 
+$q_0$.
+
+\subsection{Eliminaci\'on del no-determinismo}
+\label{ssec:elimNdet}
+
+% Una pregunta natural es comparar dos aut\'omatas, uno determinista y el otro 
+% no. As\'i tambi\'en buscar una forma de eliminar el no-determinismo y conservar 
+% una m\'aquina que acepte un lenguaje dado. 
+
+Es claro que todo AFD es un AFN, con la particularidad de que~$\delta(p,a)$ consta 
+de un \'unico estado. El recíproco también es cierto, dando como resultado la equivalencia entre ambos modelos de reconocimiento de cadenas.
+
+La idea para transformar un AFN en un AFD es considerar a cada conjunto de 
+estados~$\delta(p,a)$ del AFN como un \'unico estado del nuevo AFD.
+A este m\'etodo se conoce como la \textit{construcci\'on de subconjuntos}, cuyos detalles técnicos damos a continuación.
+
+\defin{
+Dado un AFN~$M=\pt{Q,\Sigma,\delta,q_0,F}$ definimos un AFD
+$M^D=\pt{Q^D,\Sigma,\delta_D,q^D_0,F^D}$ como sigue:
+\bi
+ \item $Q^D =_{def} \Pe(Q)$
+ \item $\delta_D(S,a) =_{def}\bigcup_{q\in S}\delta(q,a)$
+ \item $q^d_0 =_{def} \{q_0\}$
+ \item $F^d =_{def} \{S\inc Q\;|\;S\cap F\neq\vacio\}$
+\ei  
+}
+
+
+A continuación mostramos que ambos autómatas son equivalentes.
+
+
+
+\begin{lemma}
+  Sea $M$ un autómata finito no determinista. Se cumple lo siguiente
+\[
+\fa w\in\sest(\delta^\star(q_0,w)=\delta_D^\star(\{q_0\},w))
+\]
+\end{lemma}
+\begin{proof}
+  Inducción sobre $w$.
+\end{proof}
+
+\begin{proposition}
+ Sea $M$ un autómata finito no determinista. Se cumple que  $L(M)=L(M^D)$.
+\end{proposition}
+\begin{proof}
+  La demostración se sigue del lema anterior.
+\end{proof}
+
+
+\section{AFN con \texorpdfstring{$\vacia$}--transiciones}
+
+Otra de las m\'aquinas que son \'utiles para procesar cadenas son las que 
+permiten procesar cadenas vac\'ias, no s\'olo al tener como estado final a 
+$q_0$ sino que permiten procesar (sub)cadenas vac\'ias en una parte intermedia.
+De esta forma se definen los aut\'omatas con transiciones etiquetadas con la 
+cadena $\vacia$:
+\defin{ 
+Un aut\'omata finito \textbf{no} determinista con $\vacia$-transiciones 
+(AFN$\cv$) es una quintupla $ M = \pt{Q,\Sigma,\delta,q_0,F}$ donde
+\bi
+ \item $Q$ es un conjunto finito de estados.
+ \item $\Sigma$ es el alfabeto de entrada.
+ \item $\delta:Q\times(\Sigma\cup\{\cv\})\imp \Pe(Q)$ es la funci\'on de 
+  transici\'on.
+ \item $q_0\in Q$ es el estado inicial.
+ \item $F\inc Q$ es el conjunto de estados finales.
+\ei
+}
+
+De la definici\'on de $\delta:Q\times(\Sigma\cup\{\cv\})\imp \Pe(Q)$ se observa 
+que la \'unica diferencia est\'a en el dominio de $\delta$.
+Es decir que las transiciones de la forma $\delta(q,\cv)=a$ est\'an permitidas 
+e indican que la m\'aquina puede cambiar de estado \textit{sin} leer ning\'un 
+símbolo.
+% Esto causa tambi\'en un no-determinismo, que es aun m\'as complicado de        
+% modelar matem\'aticamente pero tiene grandes ventajas:
+\medskip
+Algunas observaciones importantes acerca de los AFN$\cv$ son: 
+\bi
+ \item Se permiten m\'ultiples c\'omputos para una cadena de entrada.
+ \item Pueden existir c\'omputos bloqueados.
+ \item A diferencia de los AFD y AFN simples, pueden existir c\'omputos
+  infinitos, es decir, surge la \textbf{no-terminaci\'on}.
+ \item La presencia de $\vacia$-transiciones permite mayor libertad y modularidad en el 
+  dise\~no.
+\ei
+
+Para extender la definici\'on de transiciones a procesamiento de cadenas es 
+necesario introducir un concepto previo que considera los estados a los que la 
+m\'aquina puede llegar al incluir las cadenas vac\'ias.
+
+\defin{
+Dado un estado~$q$, definimos la~$\vacia$-cerradura de $q$ como el conjunto 
+de estados alcanzables desde $q$ mediante cero o m\'as $\vacia$-transiciones.
+Es decir 
+\[
+Cl_{\vacia} (q) =
+\{s\in Q \mid \exists p_1,\ldots,p_n \text{ con }
+  p_1 = q,\; p_n = s, \; p_i\in\delta(p_{i-1},\vacia)\}
+\]
+Recursivamente:
+\bi
+ \item $q\in Cl_{\vacia}(q)$
+ \item Si $r\in Cl_{\vacia}(q)$ y $\delta(r,\vacia) = s$ 
+  entonces $s\in Cl_{\vacia}(q)$
+\ei
+}
+
+La definición anterior puede darse mediante reglas de inferencia como sigue:
+\[
+\frac{}{q\in Cl_{\vacia}(q)}(Cl1)\;\;\;\;\;\;\;\;\frac{r\in Cl_{\vacia}(q)\;\;\;\;\;\delta(r,\vacia) = s}{s\in Cl_{\vacia}(q)}(Cl2)
+\]
+
+
+La operación de $\cv$-cerradura se extiende a conjuntos de estados como sigue:
+$$ Cl_{\vacia}(S)=\bigcup_{q\in S} Cl_{\vacia}(q)$$
+
+
+
+
+
+
+
+Con la $\vacia$-cerradura de estados se puede definir la función de transición extendida 
+$\delta^\star$:
+
+\defin{
+Sea $M=\pt{Q,\Sigma,\delta,q_0,F}$ un AFN$\vacia$. La funci\'on de 
+transici\'on~$\delta$ se extiende a cadenas mediante una funci\'on
+$$\dest:Q\times(\sest\cup\{\vacia\})\imp \Pe(Q) $$
+definida recursivamente como sigue:
+\bi
+ \item $\dest(q,\vacia) = Cl_{\vacia}(q)$
+ \item $\dest(q,w\sigma) = 
+    Cl_{\vacia}\Big(\bigcup_{p\in\dest(q,w)}\delta(p,\sigma)\Big)$
+ % \item $\dest(q,aw) =  
+ %    Cl_{\vacia}\Big(\bigcup_{q'\in\dest(q,w)}\delta(q',a)\Big)$
+\ei
+}
+
+\subsection{Eliminaci\'on de \texorpdfstring{$\cv$}--transiciones}
+
+Estudiaremos el proceso de eliminaci\'on de transiciones $\vacia$. Esta 
+eliminaci\'on implica que un AFN es tambi\'en un AFN$\vacia$.
+Es decir que cualquier AFN$\vacia$ es inmediatamente un AFN con la 
+particularidad de que no existen $\vacia$-transiciones.
+
+\defin{
+Dado un AFN$\vacia$, $M=\pt{Q,\Sigma,\delta,q_{0},F}$, definimos el $AFN$
+asociado a $M$, denotado $M_N$, como \[M_N=\pt{Q,\Sigma,\delta_N,q_0,F_N},\] donde:
+\bi
+ % \item $Q:=Q_1$
+ % \item $p_0:=q_{0}$
+ \item $\delta_N(q,\sigma)=_{def}\delta^\star(q,\sigma) % = 
+         % Cl_{\vacia}\Big(\bigcup_{p\in Cl_{\vacia}(q)}\delta_1(p,a)\Big)
+      $
+ \item $F_N=_{def}F\cup\{q_{0}\}$ si $Cl_{\vacia}(q_{0})\cap F\neq\vacio$ o bien
+$F_N=_{def}F$ en caso contrario.
+\ei
+}
+
+La equivalencia entre $M$ y $M_N$ se bosqueja a continuación
+
+\begin{lemma}
+  Sean $M$ un $AFN\vacia$, $q\in Q$ y $w,v\in\sest$. Se cumple que
+\[
+\dest(q,wv)=\bigcup_{p\in\dest(q,w)}\dest(p,v)
+\] 
+\end{lemma}
+\begin{proof}
+  Inducción sobre $v$
+\end{proof}
+
+\begin{lemma}
+  Sean $M$ un $AFN\vacia$, $M_N$ el AFN asociado a $M$, $q\in Q$ y $w\in\sest$. Si $w\neq\vacia$ entonces
+\[
+%w\neq\vacia \imp 
+\dest_N(q,w)=\dest(q,w)
+\]
+\end{lemma}
+\begin{proof}
+  Inducción sobre $w$. El lema anterior será de utilidad.
+\end{proof}
+
+\begin{proposition}
+ Sea $M$ un AFN$\vacia$. Los autómatas $M$ y $M_N$ son equivalentes, es decir
+$L(M)=L(M_N)$
+\end{proposition}
+\begin{proof}
+  Es consecuencia directa del lema anterior y de la definición de $F_N$.
+\end{proof}
+\section{Equivalencias}
+Nuevamente surgen preguntas como la equivalencia entre aut\'omatas 
+deterministas, no deterministas y con transiciones $\vacia$. 
+
+En la subsecci\'on~\ref{ssec:elimNdet} se estudi\'o la forma de eliminar el 
+no-determinismo de un aut\'omata, creando un AFD. 
+Es decir AFN $\Imp$ AFD. 
+
+En la subsecci\'on pasada se revis\'o la forma de eliminar 
+$\vacia$-transiciones y de esta forma obtener un AFN. As\'i tambi\'en se 
+observ\'o que un AFN es exactamente un AFN$\vacia$ ya que incluye el 
+no-determinismo pero sin transiciones de la cadena vac\'ia.
+
+Esta equivalencia, AFN $\;\Iff\;$ AFN$\vacia$, cierra el ciclo de equivalencias 
+de aut\'omatas finitos. 
+Cualquier tipo de aut\'omata finito puede convertirse en un AFD y viceversa, 
+es decir:
+\begin{center}
+  AFD $\Iff\;$ AFN $\Iff\;$ AFN$\vacia$
+\end{center}
+
+\vspace*{15pt}
+
+Nuestra siguiente meta es probar el Teorema de Kleene, el cual es uno de los 
+resultados m\'as importantes en la Teor\'ia de la Computaci\'on pues asegura la 
+equivalencia entre dos de nuestros tres conceptos fundamentales: los 
+aut\'omatas finitos y los lenguajes regulares.
+
+\end{document}

@@ -1,0 +1,216 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+%\documentclass[xcolor=dvipsnames,handout]{beamer}
+
+\input{macros2006}
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+\newcommand{\espc}{\vspace{.5cm}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\cv}{\ensuremath{\varepsilon}}
+\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\newtheorem{teorema}{Teorema}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+\newcommand{\dest}{\ensuremath{\delta^\star}}
+
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\usepackage{BeamerColor}
+%\usecolortheme[RGB={33,66,33}]{structure}
+\usecolortheme[named=NavyBlue]{structure}
+%\usefonttheme{}
+\setbeamercovered{invisible}
+%\setbeamertemplate{headline}{\insertshortinstitute}
+%\setbeamertemplate{footline}[page number]{\insertshortinstitute}
+%\insertshortinstitute
+}
+
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+
+\title[AyLF MCIC 2016-1]{Autómatas y Lenguajes Formales 2016-1}
+\subtitle
+{Maestría en Ciencia e Ingeniería de la Computación UNAM\\
+  Tema 6: Propiedades avanzadas de cerradura de lenguajes regulares}
+
+\author[Favio E. Miranda Perea]{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+
+
+\institute[FC UNAM]{Facultad de Ciencias UNAM}
+
+\date{\today}
+
+\subject{Theoretical Computer Science}
+
+% \pgfdeclareimage[height=0.5cm]{LogoTecBueno}{LogoTecBueno.eps}
+\logo{\includegraphics[height=1cm]{fc2.png}}
+
+\begin{document}
+
+
+\beamerdefaultoverlayspecification{<+->}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Minimal de $L$, $min(L)$}{}
+\bi
+\item Sea $L$ un lenguaje, definimos el lenguaje $min(L)$ como sigue:
+\[
+min(L)=\{x\in\sest\mid \mbox{ningún prefijo propio de }x\mbox{ pertenece a }L)\}
+\]
+\item Si $L$ es regular entonces $min(L)$ es regular\medskip
+\item Idea de la prueba:
+  \begin{itemize}
+  \item Sea $M$ es un AFD que acepta a $L$\medskip
+  \item Sea $N$ el AFN obtenido a partir de $M$ de tal forma que todos los estados finales de $M$ ahora están bloqueados.\medskip
+\item Es decir, se eliminan 
+todas las aristas que salen de estados finales en $M$.\medskip
+\item $min(L)$ es aceptado por $N$
+  \end{itemize}
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Cociente de dos lenguajes $L_1/L_2$}{}
+
+\bi
+\item Sean $L_1,L_2$ lenguajes, definimos al lenguaje cociente $L_1/L_2$ como sigue:
+\[
+L_1/L_2=\{x\in\sest\mid \exists z\in L_2(xz\in L_1)\}
+\]
+\item Si $L_1$ es regular entonces $L_1/L_2$ es regular\medskip
+\item Idea de la prueba:
+  \begin{itemize}
+  \item Sea $M$ un AFD que reconoce a $L_1$.\medskip
+  \item Si $x\in L_1/L_2$ entonces existe $z\in L_2$ tal que $\dest(q_0,xz)=\dest(\dest(q_0,x),z)\in F$\medskip
+  \item Para reconocer a $x$ basta modificar $M$ a un AFD $M'$ tal que
+\[
+F'=\{q\in Q\mid \exists z\in L_2(\dest(q,z)\in F)\}
+\]
+  \end{itemize}\medskip
+\item Obsérvese que $L_2$ no tiene porqué ser regular.
+\ei
+
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Conjugado o desplazamiento cíclico de un lenguaje $cyc(L)$}{}
+\bi
+\item Sea $L$ un lenguaje, definimos el lenguaje $cyc(L)$ como sigue:
+\[
+cyc(L)=\{x_1x_2\in\sest\mid x_2x_1\in L)\}
+\]
+\item Si $L$ es regular entonces $cyc(L)$ es regular\medskip
+\item Idea de la prueba:
+  \begin{itemize}
+  \item Dividir de forma no determinista una cadena $w\in\sest$ en dos partes $x_1x_2$.\medskip
+  \item Saltar de forma no determinista a $q_i$ y simular $x_1$ en $M$ desde $q_i$\medskip
+  \item Si $\dest(q_i,x_1)=q_j$ y $q_j\notin F$ la simulación falla.\medskip
+  \item En otro caso $q_j\in F$ y simulamos $M$ en $x_2$, aceptando si $\dest(q_0,x_2)=q_i$
+  \end{itemize}
+\ei
+\end{frame}
+
+
+
+\begin{frame}
+  \titulos{Mitad de un lenguaje $L_{1/2}$}{}
+\bi
+\item Sea $L$ un lenguaje, definimos el lenguaje $L_{1/2}$ como sigue:
+\[
+L_{1/2}=\{x\in\sest\mid \exists z\in\sest(|x|=|z|\;\mbox{y}\;xz\in L)\}
+\]
+\item Si $L$ es regular entonces $L_{1/2}$ es regular\medskip
+\item Idea de la prueba:
+  \begin{itemize}
+  \item Adivinar de forma no determinista una cadena $z$ y un estado $q_j\in F$ con $|x|=|z|$\medskip
+  \item Simular $M$, en paralelo, procesando $x$ desde $q_0$ y $z$ hacia atras desde $q_j$.\medskip
+  \item Aceptamos si las dos simulaciones anteriores terminan en un mismo estado $q_k$.
+  \end{itemize}
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Particiones racionales de $L$, $L_{q}$ con $q\in\mathbb{Q}$}{}
+\bi
+\item Sean $L$ un lenguaje y $q\in\mathbb{Q}$, definimos el lenguaje $L_{q}$ como sigue:
+\[
+L_{q}=\{x\in\sest\mid \exists z\in\sest(|x|=q|xz|\;\mbox{y}\;xz\in L)\}
+\]\medskip
+\item Si $L$ es regular entonces $L_{q}$ es regular
+\medskip
+\item La idea de la prueba consiste en generalizar el caso de $q=1/2$.
+% \item Idea de la prueba:
+%   \begin{itemize}
+%   \item Adivinar de forma no determinista una cadena $z$ y un estado $q_j\in F$ con $|x|=|z|$
+%   \item Simular $M$, en paralelo, procesando $x$ desde $q_0$ y $z$ hacia atras desde $q_j$.
+%   \item Aceptamos si las dos simulaciones anteriores terminan en un mismo estado $q_k$.
+%   \end{itemize}
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Derivada de un lenguaje $L$ con respecto a una cadena $u$, $\partial_u(L)$}{}
+  \begin{itemize}
+  \item Sean $L$ es un lenguaje y $u\in\sest$. La derivada de $L$ con respecto a $u$ se define como
+\[
+\partial_u(L)=\{v\in\sest\mid uv\in L\}
+\]
+
+\item $\partial_u(L)$ es el lenguaje de aquellas cadenas $v$ tales que al agregar $u$ como prefijo a $v$, el resultado pertenece a $L$.\medskip
+\item Si $L$ es regular entonces $\partial_u(L)$ es regular.
+% \item Idea de la prueba:
+%   \begin{itemize}
+%   \item Sea $M$ un AFD que reconoce a $L$.
+%   \item Si $uv\in L$ entonces $\dest(q_0,uv)=\dest(\dest(q_0,u),v)\in L$
+%   \item Para reconocer a $\partial_u(L)$, basta definir $M'$ únicamente cambiando el estado inicial de $M$ a $q_0'=\dest(q_0,u)$
+%   \end{itemize}
+% \item El concepto de derivada permite definir un algoritmo para el problema $ER\Imp AFD$ sin pasar por un $AFN$.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Derivada de un lenguaje $L$ con respecto a una cadena $u$, $\partial_u(L)$}{}
+  \begin{itemize}
+%   \item Sean $L$ es un lenguaje y $u\in\sest$. La derivada de $L$ con respecto a $u$ se define como
+% \[
+% \partial_u(L)=\{v\in\sest\mid uv\in L\}
+% \]
+
+% \item $\partial_u(L)$ es el lenguaje de aquellas cadenas $v$ tales que al agregar $u$ como prefijo a $v$, el resultado pertenece a $L$.
+\item Si $L$ es regular entonces $\partial_u(L)$ es regular.\medskip
+\item Idea de la prueba:
+  \begin{itemize}
+  \item Sea $M$ un AFD que reconoce a $L$.\medskip
+  \item Si $uv\in L$ entonces $\dest(q_0,uv)=\dest(\dest(q_0,u),v)\in L$\medskip
+  \item Para reconocer a $\partial_u(L)$, basta definir $M'$ únicamente cambiando el estado inicial de $M$ a $q_0'=\dest(q_0,u)$
+  \end{itemize}\medskip
+\item El concepto de derivada permite definir un algoritmo para el problema $ER\Imp AFD$ sin pasar por un $AFN$.
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+  
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fcem7"
+%%% End: 

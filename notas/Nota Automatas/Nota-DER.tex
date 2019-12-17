@@ -1,0 +1,267 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage{amssymb,amsmath,stmaryrd,amsthm}
+\usepackage{mathrsfs}
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{txfonts}
+\usepackage{babel}
+\usepackage{listings}
+\usepackage{pxfonts}
+
+\usepackage[margin=2.5cm,includefoot]{geometry}
+
+%Definiciones
+\newtheorem{theorem}{Teorema}[section]
+\newcommand{\teo}[1]{\begin{theorem} #1 \end{theorem}}
+
+\newtheorem{proposition}{Proposici\'on}[section]
+\newcommand{\prop}[1]{\begin{proposition} #1 \end{proposition}}
+
+\newtheorem{definition}{Definici\'on}[section]
+\newcommand{\defin}[1]{\begin{definition} #1 \end{definition}}
+
+\newtheorem{corollary}{Corolario}[section]
+\newcommand{\cor}[1]{\begin{corollary} #1 \end{corollary}}
+
+\newtheorem{lemma}{Lema}[section]
+\newcommand{\lema}[1]{\begin{lemma} #1 \end{lemma}}
+
+\newtheorem{ejemplo}{Ejemplo}[section]
+\newcommand{\ejem}[1]{\begin{ejemplo} #1 \end{ejemplo}}
+
+%Demostraciones
+\newenvironment{demostracion}{\noindent\textbf{\textit{Demostraci\'on. }}}{\hspace{\stretch{1}} $\blacksquare$ \vspace*{4mm}}
+\newcommand{\dem}[1]{\begin{demostracion} #1 \end{demostracion}}
+
+
+\title{Autómatas y Lenguajes formales 2016-1\\ Nota de Clase } 
+
+
+\author{Favio E. Miranda Perea\\ 
+Facultad de Ciencias UNAM}
+
+\begin{document}
+
+\maketitle
+
+\section{Cálculo de la derivada}
+
+\noindent Intuitivamente, la derivada de un lenguaje $L$, con respecto a una cadena $u$, es el conjunto de todas las cadenas que al anteponerles $u$ están en $L$, pero visto únicamente de esta forma, resulta complicado determinar la derivada de un lenguaje, ya que para poder hacer esto necesitamos conocer como son todas las cadenas generadas por el lenguaje para realizar dicha operación; es por ello que comenzaremos dando una definición formal de este concepto y después procederemos a ver propiedades de la misma para hacer más simple y entendible el cálculo de la derivada.
+
+\defin{La derivada de un lenguaje $L \subseteq \Sigma^{\ast}$ con respecto a una cadena $u \in \Sigma^{\ast}$ está definida como:
+\[
+\partial_u L = \{ v | u \cdot v \in L\}
+\]
+}\label{Deriv}
+
+\ejem{Consideremos el lenguaje definido por la expresión regular $r = b(a + c)^{\ast}$, la derivada de $r$ con respecto a $b$ es $(a+c)^{\ast}$, mientras que la derivada de $r$ con respecto de $a$ es $\varnothing$.
+}
+
+\ejem{Sea $\Sigma = \{ 0 \}$ y sea $L = \{ a^{n^2} | n > 2 \}$, la derivada de $L$ con respecto a la cadena $w = 0000$ es
+\[
+\partial_w L = \{ a^k | k = n^2 - 4 \quad \text{y} \quad n \ge 2 \}
+\]
+}
+
+En el caso específico de los lenguajes regulares es posible dar reglas inductivas para calcular la derivada de estos lenguajes mediante las expresiones regulares que los generan. 
+
+Para esto se requiere primero determinar cuando una expresión regular es anulable, esto es, cuando $\varepsilon$ pertenece al lenguaje de $r$. Esto lo podemos determinar ayudados de una función de {\em nulidad} $\nu$.
+
+\defin{Sea $\nu : ER \to ER$ la función de nulidad cumple con la siguiente propiedad 
+\[
+\nu(r) = \left\{
+\begin{array}{ll}
+\varepsilon & \text{Si } r \text{ es anulable}\\
+\varnothing & \text{otro caso}
+\end{array}
+\right.
+\]
+y se define como sigue
+\begin{align*}
+\nu(\varepsilon) &= \varepsilon\\
+\nu(\varnothing) &= \varnothing\\
+\nu(a) &= \varnothing\\
+\nu(r + s) &= \nu(r) + \nu(s)\\
+\nu(rs) &= \nu(r)\nu(s)\\
+\nu(r^{\ast}) &= \varepsilon
+\end{align*}
+}\label{Null}
+
+Empleando a la función de nulidad como auxiliar, Brzozowski define el cálculo de la derivada de una expresión regular con respecto a un símbolo de la siguiente manera.
+
+\prop{Sea $r$ una expresión regular y $a \in \Sigma$, la derivada de $r$ con respecto al símbolo $a$ denotada por $\partial_a r$, se calcula recursivamente mediante las siguientes reglas:
+\begin{align}
+\partial_a \varnothing &= \varnothing \label{DeER-1}\\
+\partial_a \varepsilon &= \varnothing \label{DeER-2}\\
+\partial_a a &= \varepsilon \label{DeER-3}\\
+\partial_a b &= \varnothing \; \text{si } b \ne a \label{DeER-4}\\
+\partial_a (r + s) &= \partial_a r + \partial_a s \label{DeER-5}\\
+\partial_a (rs) &= (\partial_a r)s + \nu(r) \partial_a s \label{DeER-6}\\
+\partial_a (r^{\ast}) &= (\partial_a r) r^{\ast} \label{DeER-7}
+\end{align}\label{DeER}
+}
+
+\dem{La demostración de \ref{DeER-1} a \ref{DeER-4}, es directa de la definición \ref{Deriv}.
+
+La demostración de \ref{DeER-5} a \ref{DeER-7} es por inducción.
+}
+
+Como lo que nos interesa básicamente es calcular la derivada para una cadena arbitraria bajo las reglas de Brzozowski presentamos la siguiente proposición.
+
+\prop{Sea $r$ una expresión regular y $u \in \Sigma^{\ast}$, la derivada de $r$ con respecto a la cadena $u$ denotada por $\partial_u r$, se calcula mediante las siguientes reglas:
+\begin{gather*}
+\partial_{\varepsilon} r = r\\
+\partial_{ua} r = \partial_a ( \partial_u r)
+\end{gather*}\label{DerCad}
+}
+
+\dem{Es directo de las definiciones.
+}
+
+Obsérvese que de la proposición anterior se puede concluir que si $u=a_1\ldots a_n$ entonces 
+\[
+\partial_u r = \partial_{a_n}\partial_{a_{n-1}}\ldots\partial_{a_1}r
+\]
+
+\section{Propiedades de la derivada}
+
+\noindent Como se pudo ver en la sección anterior, ya se tiene un método iterativo para calcular derivadas de lenguajes regulares, respecto a su expresión regular. Ahora veamos algunas propiedades importantes de la derivada, en el caso de los lenguajes regulares.
+
+\prop{Si $L \subseteq \Sigma^{\ast}$ es regular, entonces $\partial_u L$ es regular para todas las cadenas $u \in \Sigma^{\ast}$.
+}
+\dem{La demostración se sigue por inducción estructural.
+}
+
+\prop{Para toda $s$ expresión regular, se verifica:
+\[
+\nu(L \llbracket s \rrbracket) = L \llbracket \nu(s) \rrbracket
+\]
+}
+
+\dem{\label{NullLen}Por definición de la función de nulidad
+}
+
+\lema{Para toda $r$ expresión regular y $a \in \Sigma$, se cumple que: 
+\[
+L \llbracket \partial_a r \rrbracket = \partial_a ( L \llbracket r \rrbracket ),
+\]
+es decir, las operaciones de denotación y derivada con respecto a un símbolo de una expresión regular conmutan.\label{LdedL}
+}
+
+\dem{Inducción sobre $r$.
+}
+
+El resultado anterior se extiende para cadenas de acuerdo al siguiente lema.
+
+\lema{Para toda expresión regular $r$ y para toda cadena $u \in \Sigma^{\ast}$, se cumple que 
+\[
+\partial_u (L \llbracket r \rrbracket) = L \llbracket \partial_u (r) \rrbracket.
+\]
+}
+
+\dem{Por inducción sobre $u$
+}
+
+\prop{El operador derivada preserva equivalencia, es decir, si $r\equiv s$ entonces
+$\partial_a r\equiv \partial_a s$\label{Preserva}
+}
+
+\dem{Directo de la definición.
+}
+
+La siguiente proposición garantiza que si bien es posible derivar una expresión respecto a cualquier cadena $u \in \Sigma^{\ast}$, el número de derivadas es finito. 
+
+\prop{Cualquier expresión regular $r$ tiene a lo más un número finito, $d_r$, de derivadas no equivalentes.\label{LDF}
+}
+
+\dem{Inducción sobre $r$.
+}
+
+\section{El teorema de síntesis de Kleene}
+
+\noindent La idea para construir un autómata que reconozca a $r$ consiste en tomar como estados a las derivadas de $r$, generando una nueva transición a partir del estado $s$ y del símbolo $a$ mediante el cálculo de la derivada $\partial_a s$. El estado inicial es $r$ misma y los estados finales son todos aquellos cuyas derivadas que sean anulables.
+
+Supongamos que tenemos una expresión regular $r$ y una cadena $u \in \Sigma^{\ast}$ y queremos determinar si $u \in L \llbracket r \rrbracket$, esto lo podemos verificar  mediante la derivada de $r$ con respecto a $u$, de acuerdo a la siguiente proposición.
+
+\prop{Sean $r$ una expresión regular y $u \in \Sigma^{\ast}$. Entonces $u \in L \llbracket r \rrbracket$ si y sólo si $\varepsilon \in L \llbracket \partial_u r \rrbracket$.\label{EpsDer}
+}
+
+\dem{Directo de la definición de derivada.
+}
+
+El caso en que $u\neq\varepsilon$, digamos $u=aw$, la siguiente proposición reduce el problema de verificar la  pertenencia de $u$ a $r$ a verificar la pertenencia de $w$ a $\partial_a r$.
+
+\prop{Sean $r$ una expresión regular, $a \in \Sigma$ y $w\in\Sigma^{\ast}$. Entonces $a w \in L \llbracket r \rrbracket$ si y sólo si $w \in L \llbracket \partial_a r \rrbracket$.
+}
+\dem{Directo de las definiciones utilizando el lema \ref{LdedL}.
+}
+
+De esta proposición podemos observar, que la derivada de una expresión regular $r$ con respecto a un símbolo $a$, resulta ser una expresión regular que reconoce a aquellas cadenas de $r$ que empiezan con $a$, de la misma manera que, dados un símbolo $a$ y un AFD $M$, el autómata $M'$ obtenido a partir de $M$ al sustituir su estado inicial $q_0$ por $\delta(q_0,a)$ reconoce exactamente a aquellas cadenas de $L(M)$ que empiezan con $a$. 
+
+Con esta analogía en mente presentamos la construcción del AFD.
+
+\defin{Sean $\Sigma$ un alfabeto y $r$ una expresión regular sobre $\Sigma$. Definimos la tupla 
+\[
+M_r= \langle Q,\Sigma,q_0,F,\delta\rangle  
+\]
+como sigue
+\begin{itemize}
+\item $Q = \{ \partial_w r \; | \; w \in \Sigma^{\ast} \}$
+\item $q_0 = r$
+\item $F = \{ q \in Q \; | \; \nu(q)=\varepsilon\}$
+\item $\delta ( s, a) = \partial_a s $
+\end{itemize}\label{Tup}
+}
+
+Veamos ahora que esta tupla realmente define un autómata determinista.
+
+\prop{Para cualquier expresión $r$, la tupla $M_r$ es un autómata finito determinista.
+}
+\dem{Basta ver que $Q$ es finito y que $\delta$ está bien definida y es total.
+}
+
+Para confirmar que $M_r$ en efecto reconoce a $r$, nos ayudamos del siguiente lema.
+
+\lema{Sean $r$ una expresión regular y $M_r$ el autómata de la definición \ref{Tup}. Entonces se cumple que para toda $u \in \Sigma^{\ast},\;
+\delta^{\ast} (r,u) = \partial_u r$.\label{uDelAst}
+}
+
+\dem{Por inducción sobre $u$.
+}
+
+A continuación caracterizamos el conjunto de estados finales
+
+\lema{Sean $r$ una expresión regular y $M_r$ el autómata de la definición \ref{Tup}. Entonces para toda $u \in \Sigma^{\ast}$ se cumple que 
+\[
+\delta^{\ast} (r,u) \in F \; \Leftrightarrow \; \nu (\partial_u r) = \varepsilon
+\]\label{NulDelAst}
+}
+
+\dem{Por la definición de $F$.
+}
+
+La siguiente proposición demuestra el objetivo principal
+
+\prop{Sean $r$ una expresión regular y $M_r$ el autómata de la definición \ref{Tup}. Entonces, $M_r$ reconoce a $r$, es decir, 
+\[
+L\llbracket r \rrbracket = L(M_r)
+\]\label{Mrr}
+}
+
+\dem{Utilizando las proposiciones anteriores.
+}
+
+Como resultado de la construcción y de la proposición anterior es inmediata la prueba del teorema de síntesis de Kleene.
+
+\teo{[Síntesis de Kleene] Dada una expresión regular $r$ existe un autómata finito $M$ que reconoce a $r$.
+}
+\dem{Corolario inmediato de la proposición \ref{Mrr}
+}
+
+\end{document}
+
+
+	

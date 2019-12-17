@@ -1,0 +1,139 @@
+%%%%% Macros para las notas del curso de Automatas y Lenguajes Formales. 
+
+%%%%% Shortcuts
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\beqs}{\begin{equation*}}
+\newcommand{\eeqs}{\end{equation*}}
+\newcommand{\ba}{\begin{array}}
+\newcommand{\ea}{\end{array}}
+
+%%%%%
+\newcommand{\imp}{\rightarrow}
+\newcommand{\Imp}{\Rightarrow}
+\renewcommand{\iff}{\leftrightarrow}
+\newcommand{\Iff}{\Leftrightarrow}
+\newcommand{\D}{\Delta}
+
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\fa}{\forall}
+\newcommand{\ex}{\exists}
+\newcommand{\inc}{\subseteq}
+\newcommand{\lb}{\lambda}
+\newcommand{\al}{\alpha}
+\newcommand{\ga}{\gamma}
+
+\newcommand{\sest}{\Sigma^\star}
+\newcommand{\dest}{\ensuremath{\delta^\star}}
+
+\newcommand{\vacio}{\varnothing}
+
+\newcommand{\vacia}{\boldsymbol{\varepsilon}}
+%%%%%
+
+%\newtheorem{theorem}{Teorema}
+\newcommand{\teo}[1]{\begin{theorem} #1 \end{theorem}}
+\newtheorem{proposition}{Proposici\'on}
+\newcommand{\prop}[1]{\begin{proposition} #1 \end{proposition}}
+%\newtheorem{definition}{Definici\'on}
+\newcommand{\defin}[1]{\begin{definition} #1 \end{definition}}
+%\newtheorem{corollary}{Corolario}
+\newcommand{\cor}[1]{\begin{corollary} #1 \end{corollary}}
+%\newtheorem{lemma}{Lema}
+\newcommand{\lema}[1]{\begin{lemma} #1 \end{lemma}}
+\newcommand{\dem}[1]{\begin{proof} #1 \end{proof}}
+
+%\renewcommand{\qed}{\qedsymbol{$\mathbf{\dashv}$}}
+
+%\newcommand{\proof}{\hfill\\\noindent\textbf{\textit{Demostraci\'on. }}}
+\newcommand{\espc}{\vspace{0.3cm}}
+\newcommand{\cv}{\varepsilon}
+%\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+
+\newcommand{\ol}[1]{\overline{#1}}
+
+%%%%%
+%\newcommand{\espc}{\vspace{0.5cm}}
+%\newcommand{\imp}{\rightarrow}
+\newcommand{\syss}{\leftrightarrow}
+\newcommand{\pmi}{\leftarrow}
+\newcommand{\si}{\sigma}
+%\newcommand{\cv}{\square}
+\newcommand{\impp}{:-}
+\newcommand{\pl}{{\sc Prolog }}
+\renewcommand{\P}{\mathsf{P}}
+\newcommand{\bv}{\begin{verbatim}}
+\newcommand{\ev}{\end{verbatim}}
+\newcommand{\nat}{\mathsf{nat}}
+\newcommand{\lista}{\mathop{{\sf list}}}
+\newcommand{\suc}{\mathop{{\sf suc}}}
+\newcommand{\asa}{\mathsf{asa}}
+\newcommand{\ala}{\mathsf{ala}}
+\newcommand{\suma}{\mathop{\mathtt{suma}}}
+\renewcommand{\prod}{\mathop{\mathtt{prod}}}
+\newcommand{\num}{\mathop{\mathtt{num}}}
+\newcommand{\bol}{\mathop{\mathtt{bool}}}
+\newcommand{\lete}[2]{\mathsf{let}\;#1\;\mathsf{in}\;#2\;\mathsf{end}}
+\newcommand{\leta}{\mathtt{let}}
+\newcommand{\letrec}[5]{\mathsf{letrec}\;#1(#2):#3\;\Imp\;#4\;\mathsf{in}\;#5}
+% \newcommand{\true}{\mathsf{true}}
+\newcommand{\false}{\mathsf{false}}
+\newcommand{\ifte}[3]{\mathsf{if\;}#1\mathsf{\; then\;}#2\mathsf{\;
+    else\;}#3}
+\newcommand{\iszero}{\mathop{\mathsf{iszero}}}
+%\newcommand{\suc}{\mathop{\mathsf{succ}}}
+\newcommand{\pred}{\mathop{\mathsf{pred}}}
+\newcommand{\Tf}{\mathsf{T}}
+%\renewcommand{\Sf}{\mathsf{S}}
+\newcommand{\bool}{\mathsf{bool}}
+\newcommand{\cero}{\mathtt{cero}}
+\newcommand{\afn}{\mathtt{lam}}
+\newcommand{\fn}[2]{\mathsf{fun}(#1)\;\Imp\; #2}
+\newcommand{\fnf}[4]{\mathsf{fun}\;#1\,(#2):#3\;\Imp\; #4}
+\newcommand{\fnv}[2]{\mathsf{fun}(\mathsf{val}\;#1)\;\Imp\; #2}
+\newcommand{\fnn}[2]{\mathsf{fun}(\mathsf{name}\;#1)\;\Imp\; #2}
+\newcommand{\app}{\mathtt{app}}
+\newcommand{\letn}[2]{\mathsf{let\; name}\;#1\;\mathsf{in}\;#2\;\mathsf{end}}
+\newcommand{\letv}[2]{\mathsf{let\; val}\;#1\;\mathsf{in}\;#2\;\mathsf{end}}
+%\newcommand{\dfun}[4]{\mathsf{fun}\;#1\,(#2):#3\;\Imp\;#4}
+\newcommand{\recp}[5]{\mathsf{rec}\;#1\;\{0\Imp #2\;|\;s(#3)\;\mathsf{with}\;#4 
+\Imp #5\}}
+\newcommand{\arecp}{\mathtt{rec}}
+\newcommand{\fix}[2]{\mathsf{fix}\,#1\Imp\,#2}
+\newcommand{\afix}{\mathtt{fix}}
+\newcommand{\mhs}{{\sf MinHs }}
+\newcommand{\fst}{\mathop{\mathsf{fst}}}
+\newcommand{\snd}{\mathop{\mathsf{snd}}}
+\newcommand{\afst}{\mathop{\mathtt{fst}}}
+\newcommand{\asnd}{\mathop{\mathtt{snd}}}
+\newcommand{\unit}{\mathsf{unit}}
+\newcommand{\inl}{\mathop{\mathsf{inl}}}
+\newcommand{\inr}{\mathop{\mathsf{inr}}}
+\newcommand{\ainl}{\mathop{\mathtt{inl}}}
+\newcommand{\ainr}{\mathop{\mathtt{inr}}}
+\newcommand{\eab}{\mathsf{EAB}}
+
+\newcommand{\pt}[1]{\langle #1 \rangle}
+
+\newcommand{\Pe}{\mathcal{P}}
+
+\newcommand{\afdm}{\ensuremath{M=\pt{Q,\S,\delta,q_0, F}}}
+
+\newcommand{\restr}[2]{#1\!\!\boldsymbol{\restriction}\!#2}
+
+
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+
+\newcommand{\blanks}{\textbf{\textvisiblespace}}
