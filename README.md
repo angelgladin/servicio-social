@@ -10,5 +10,9 @@
 
 ## TODO's
 
-- [ ] Reunirme la última semana con Favio para acordadar que se debe hacer.
+- [x] Reunirme la última semana con Favio para acordadar que se debe hacer.
 (25 al 29 de noviembre).
+- [ ] Checar que las notas (nota 192) y presentaciones compilen.
+- [ ] Hacer resumen del contenido de cada nota y presentación y ponerlo en un `.txt`.
+- [x] Hacer lo del `.gitignore`.
+- [ ] Ir con Favio la semana del 6 de enero (6 a 10 de enero).
