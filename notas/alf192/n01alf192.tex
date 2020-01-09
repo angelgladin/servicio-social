@@ -2,8 +2,7 @@
 \usepackage[includeheadfoot,margin=1.3in]{geometry}
 \usepackage{anysize}
 
-% \usepackage[utf8]{inputenc}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{lmodern}   % font shapes...
 \usepackage[T1]{fontenc} % join the compound symbols as a single symbol
@@ -26,10 +25,10 @@
 \input{macrosAyLF}
 
 \title{Aut\'omatas y Lenguajes Formales 2019-II\\ 
-%Posgrado en Ciencia e IngenierÌa de la ComputaciÛn UNAM \\ 
+%Posgrado en Ciencia e Ingenier√≠a de la Computaci√≥n UNAM \\ 
 Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
   PAPIME PE102117} \\ 
-Nota de Clase 1: IntroducciÛn, cadenas y lenguajes} 
+Nota de Clase 1: Introducci√≥n, cadenas y lenguajes} 
 \author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
 Lourdes del Carmen Gonz\'alez Huesca}
 \date{25 de enero de 2019}
@@ -40,36 +39,36 @@ Lourdes del Carmen Gonz\'alez Huesca}
 \begin{document}
 \maketitle
 
-%\section{IntroducciÛn}
-\section{Fundamentos de la computaciÛn}
+%\section{Introducci√≥n}
+\section{Fundamentos de la computaci√≥n}
 
-Las ciencias de la computaciÛn como un conglomerado de disciplinas   
-cientÌficas y de ingenierÌa relacionadas con el estudio y aplicaciÛn del 
-cÛmputo van desde las m\'as puras y b·sicas dedicadas a los fundamentos de
-la computaciÛn, hasta las ingenierÌas dedicadas a aplicaciones especificas.
+Las ciencias de la computaci√≥n como un conglomerado de disciplinas   
+cient√≠ficas y de ingenier√≠a relacionadas con el estudio y aplicaci√≥n del 
+c√≥mputo van desde las m\'as puras y b√°sicas dedicadas a los fundamentos de
+la computaci√≥n, hasta las ingenier√≠as dedicadas a aplicaciones especificas.
 
 \vspace*{10pt}
 
-\noindent Los fundamentos de la computaciÛn se dividen esencialmente en dos 
+\noindent Los fundamentos de la computaci√≥n se dividen esencialmente en dos 
 partes:
 \bi
-\item \textbf{TeorÌa de la ProgramaciÛn:}\\
- Dedicada a estudiar los lenguajes de programaciÛn, los cuales nos sirven para 
-implementar procesos de cÛmputo.
- \item \textbf{TeorÌa de la ComputaciÛn:}  Dedicada a entender la naturaleza 
-del cÛmputo, sus posibilidades y limitaciones.
+\item \textbf{Teor√≠a de la Programaci√≥n:}\\
+ Dedicada a estudiar los lenguajes de programaci√≥n, los cuales nos sirven para 
+implementar procesos de c√≥mputo.
+ \item \textbf{Teor√≠a de la Computaci√≥n:}  Dedicada a entender la naturaleza 
+del c√≥mputo, sus posibilidades y limitaciones.
 \ei
 
-\paragraph{TeorÌa de la ProgramaciÛn}
+\paragraph{Teor√≠a de la Programaci√≥n}
 Se divide en diversas disciplinas, como son:
 \bi
- \item LÛgica Computacional.
- \item TeorÌa de lenguajes de programaciÛn:  estilos (lÛgico, funcional,
-   imperativo, orientado a objetos, etc), sem·ntica operacional, tipado, etc.
- \item MÈtodos formales: especificaciÛn y verificaciÛn
+ \item L√≥gica Computacional.
+ \item Teor√≠a de lenguajes de programaci√≥n:  estilos (l√≥gico, funcional,
+   imperativo, orientado a objetos, etc), sem√°ntica operacional, tipado, etc.
+ \item M√©todos formales: especificaci√≥n y verificaci√≥n
 \ei
 
-\paragraph{TeorÌa de la ComputaciÛn}
+\paragraph{Teor√≠a de la Computaci√≥n}
 Algunas de las disciplinas que conforman esta \'area son:
 \bi
  \item Algoritmos y estructuras de datos
@@ -78,54 +77,54 @@ Algunas de las disciplinas que conforman esta \'area son:
  \item Teor\'ia de aut\'omatas
 \ei
 
-Mediante la teorÌa del cÛmputo, especificamente mediante la teorÌa de autÛmatas 
+Mediante la teor√≠a del c√≥mputo, especificamente mediante la teor√≠a de aut√≥matas 
 y lenguajes formales, podemos tratar preguntas como:
 \bi
- \item ?`QuÈ es un dispositivo de cÛmputo?
- \item ?`QuÈ se puede computar?
- \item ?`QuÈ \textbf{no} se puede computar?
- \item ?`Cu\'al es el costo de un cÛmputo?
- \item ?`QuÈ se puede computar \textbf{eficientemente}?
+ \item ?`Qu√© es un dispositivo de c√≥mputo?
+ \item ?`Qu√© se puede computar?
+ \item ?`Qu√© \textbf{no} se puede computar?
+ \item ?`Cu\'al es el costo de un c√≥mputo?
+ \item ?`Qu√© se puede computar \textbf{eficientemente}?
  \item ?`C\'omo clasificar un problema de acuerdo a su dificultad?
 \ei
 
-Al responder a estas preguntas, la teorÌa de la computaciÛn nos permitir· 
+Al responder a estas preguntas, la teor√≠a de la computaci√≥n nos permitir√° 
 entender cu\'ales son las capacidades y limitaciones fundamentales de una
-computadora. Las nociones de \emph{cÛmputo} y \emph{computabilidad efectiva} 
-ser\'an capturadas mediante abstracciÛn matem·tica y la modelaci\'on de 
+computadora. Las nociones de \emph{c√≥mputo} y \emph{computabilidad efectiva} 
+ser\'an capturadas mediante abstracci√≥n matem√°tica y la modelaci\'on de 
 aut\'omatas.
 
-%  \section{Fundamentos de la ComputaciÛn}
+%  \section{Fundamentos de la Computaci√≥n}
 % Nosotros nos dedicaremos exclusivamente
-%  a dos aspectos de la teorÌa de la computaciÛn:\espc
+%  a dos aspectos de la teor√≠a de la computaci√≥n:\espc
 %  \bi
-%    \item IntroducciÛn al an·lisis de algoritmos.   
+%    \item Introducci√≥n al an√°lisis de algoritmos.   
 %  \ei
 
-%  \section{Importancia de la TeorÌa de la ComputaciÛn}
+%  \section{Importancia de la Teor√≠a de la Computaci√≥n}
 %   \bi
 
 % %    
 
-%\section{MotivaciÛn}
-\section{AbstracciÛn del concepto de computadora}
-Una computadora es una m·quina que transforma ciertos datos de entrada dados en 
+%\section{Motivaci√≥n}
+\section{Abstracci√≥n del concepto de computadora}
+Una computadora es una m√°quina que transforma ciertos datos de entrada dados en 
 resultados o datos de salida.
-Podemos pensar que una computadora es una \emph{funciÛn} que transforma sus 
+Podemos pensar que una computadora es una \emph{funci√≥n} que transforma sus 
 argumentos de entrada en resultados.
 \bi
- \item ?` Cual serÌa el dominio/codominio de tal funciÛn? es decir, qu\'e tipos 
-  de datos se esperan como entrada: n˙meros, palabras, textos, im\'agenes, etc.
- \item ?` CÛmo podemos representar los datos de entrada de manera uniforme?
+ \item ?` Cual ser√≠a el dominio/codominio de tal funci√≥n? es decir, qu\'e tipos 
+  de datos se esperan como entrada: n√∫meros, palabras, textos, im\'agenes, etc.
+ \item ?` C√≥mo podemos representar los datos de entrada de manera uniforme?
 \ei
 Cualesquiera datos de entrada para una computadora pueden ser codificados 
-mediante una \emph{cadena} o sucesiÛn de sÌmbolos.
+mediante una \emph{cadena} o sucesi√≥n de s√≠mbolos.
 \bi
- \item ?`QuÈ cadenas son aceptables como entrada ? 
- \item ?` QuÈ cadenas se obtienen como salida ? 
- \item ?`Ser· posible caracterizar de manera finita a estos conjuntos de 
+ \item ?`Qu√© cadenas son aceptables como entrada ? 
+ \item ?` Qu√© cadenas se obtienen como salida ? 
+ \item ?`Ser√° posible caracterizar de manera finita a estos conjuntos de 
   cadenas, los cuales pueden ser infinitos?
-%  \item Si el n˙mero de cadenas aceptadas es infinito ?` Ser· posible 
+%  \item Si el n√∫mero de cadenas aceptadas es infinito ?` Ser√° posible 
 %   caracterizar a este conjunto de manera finita ?
 \ei
 
@@ -135,8 +134,8 @@ Los tres conceptos fundamentales a estudiar en aut\'omatas y lenguajes formales
 son:
 \bi
  \item Lenguajes: conjuntos de cadenas.
- \item Gram·ticas: mecanismos para generar cadenas.
- \item AutÛmatas: mecanismos para procesar cadenas.
+ \item Gram√°ticas: mecanismos para generar cadenas.
+ \item Aut√≥matas: mecanismos para procesar cadenas.
 \ei 
 Nuestro objetivo principal es estudiar las relaciones entre estos tres 
 conceptos para responder a las preguntas hechas al principio de esta nota.
@@ -148,112 +147,112 @@ as\'i como un poco de sus or\'igenes y aplicaciones. Despu\'es continuaremos
 con una teor\'ia de cadenas para seguir con los lenguajes.
 El estudio a fondo de los aut\'omatas ser\'a el resto del curso.
 
-\subsection{Gram·ticas}
+\subsection{Gram√°ticas}
 Un mecanismo relevante para generar un lenguaje es mediante el concepto de 
-gram·tica formal.
+gram√°tica formal.
 
-Las gram·ticas formales fueron introducidas por Chomsky en 1956 cuya intenciÛn 
-era tener un modelo para la descripciÛn de lenguajes naturales.
+Las gram√°ticas formales fueron introducidas por Chomsky en 1956 cuya intenci√≥n 
+era tener un modelo para la descripci√≥n de lenguajes naturales.
 Posteriormente se utilizaron como herramienta para presentar la sintaxis 
-de lenguajes de programaciÛn y para el diseÒo de analizadores lÈxicos de 
-compiladores. %Volveremos a Èllas m·s tarde.
+de lenguajes de programaci√≥n y para el dise√±o de analizadores l√©xicos de 
+compiladores. %Volveremos a √©llas m√°s tarde.
 
-\subsection{AutÛmatas}
+\subsection{Aut√≥matas}
 \bi
- \item Un autÛmata es una representaciÛn abstracta de una m·quina
- \item Los aspectos relevantes para nosotros son el diseÒo y la especificaciÛn 
-  de autÛmatas.
- \item La abstracciÛn captura ˙nicamente el comportamiento de una m·quina, es
+ \item Un aut√≥mata es una representaci√≥n abstracta de una m√°quina
+ \item Los aspectos relevantes para nosotros son el dise√±o y la especificaci√≥n 
+  de aut√≥matas.
+ \item La abstracci√≥n captura √∫nicamente el comportamiento de una m√°quina, es
   decir, las secuencias de eventos que ocurren.
  \item Estas m\'aquinas abstractas nos ser\'an \'utiles en el procesamiento y 
-  an\'alisis de lenguajes, al procesar cadenas \emph{acept·ndolas o 
-  rechaz·ndolas.}
+  an\'alisis de lenguajes, al procesar cadenas \emph{acept√°ndolas o 
+  rechaz√°ndolas.}
 \ei
 
 
 \subsubsection{Un poco de historia}
 
 \bi
-%\item Alonzo Church trabajo en la verificaciÛn y el diseÒo de circuitos.
- \item En su artÌculo \enquote{On Computable Numbers, with an Application to 
+%\item Alonzo Church trabajo en la verificaci√≥n y el dise√±o de circuitos.
+ \item En su art√≠culo \enquote{On Computable Numbers, with an Application to 
   the Entscheidungsproblem} de 1936, Turing reformula los resultados de Kurt
-  Gˆdel de 1931 acerca de las limitaciones de pruebas y cÛmputos.
-  Reemplaza el lenguaje formal universal de Gˆdel con lo que hoy llamamos 
-  m·quinas de Turing que son dispositivos formales y simples de una 
+  G√∂del de 1931 acerca de las limitaciones de pruebas y c√≥mputos.
+  Reemplaza el lenguaje formal universal de G√∂del con lo que hoy llamamos 
+  m√°quinas de Turing que son dispositivos formales y simples de una 
 computadora. 
-  Turing demostr\'o que tales m·quinas podrÌan der capaces de llevar a cabo 
-  cualquier cÛmputo matem·tico concebible, si este se representaba mediante un 
+  Turing demostr\'o que tales m√°quinas podr√≠an der capaces de llevar a cabo 
+  cualquier c√≥mputo matem√°tico concebible, si este se representaba mediante un 
   algoritmo. 
  
- \item En el artÌculo \enquote{A logical calculus of the ideas immanent in 
+ \item En el art√≠culo \enquote{A logical calculus of the ideas immanent in 
   nervous activity} que apareci\'o en el Bull. Math. Biophysics 5 (1943), pp. 
-  115-133, el neurofisÌologo Warren McCulloch y el lÛgico Walter Pitts, 
-  desarrollaron modelos de redes neuronales con ciclos de retroalimentaciÛn 
-  basados en su visiÛn de la neurologÌa. 
+  115-133, el neurofis√≠ologo Warren McCulloch y el l√≥gico Walter Pitts, 
+  desarrollaron modelos de redes neuronales con ciclos de retroalimentaci√≥n 
+  basados en su visi√≥n de la neurolog√≠a. 
   Este fue un intento para modelar la estructura de los nervios.
   
- \item El modelo de Pitts-McCulloch fue simplificado por el lÛgico Stephen
-  C. Kleene en 1956, en el que se considera el primer artÌculo acerca de
-  autÛmatas finitos y expresiones regulares, \enquote{Representation of events 
+ \item El modelo de Pitts-McCulloch fue simplificado por el l√≥gico Stephen
+  C. Kleene en 1956, en el que se considera el primer art√≠culo acerca de
+  aut√≥matas finitos y expresiones regulares, \enquote{Representation of events 
   in nerve nets and finite automata}.
   
- \item En 1959 Rabin y Scott presentan una m·quina con un n˙mero finito de
-  estados que simplifica a la m·quina de Turing. Por su artÌculo \enquote{Finite
-  Automata and Their Decision Problem}, que introduce la idea de m·quinas no
+ \item En 1959 Rabin y Scott presentan una m√°quina con un n√∫mero finito de
+  estados que simplifica a la m√°quina de Turing. Por su art√≠culo \enquote{Finite
+  Automata and Their Decision Problem}, que introduce la idea de m√°quinas no
   deterministicas, un concepto invaluable, ambos reciben el premio Turing en 
   1976.
   
- \item En 1968 Ken Thompson usa la nociÛn de expresiÛn regular definida por
+ \item En 1968 Ken Thompson usa la noci√≥n de expresi√≥n regular definida por
   Kleene en el sistema UNIX.
 \ei
 
 \subsubsection{Aplicaciones}
-Los autÛmatas tienen diversas aplicaciones en computaciÛn, por ejemplo:
+Los aut√≥matas tienen diversas aplicaciones en computaci√≥n, por ejemplo:
 \bi
  \item Software para hallar patrones en una gran cantidad de texto, por ejemplo
-  en colecciones de p·ginas web.
- \item DiseÒo de circuitos digitales.
- \item Analizadores lÈxicos para compiladores.
- \item B˙squeda de palabras clave en internet.
- \item VerificaciÛn de sistemas con un n˙mero finito de estados 
-  (por ejemplo protocolos de comunicaciÛn).
- \item VerificaciÛn de modelos, modelado y verificaciÛn de sistemas empotrables 
+  en colecciones de p√°ginas web.
+ \item Dise√±o de circuitos digitales.
+ \item Analizadores l√©xicos para compiladores.
+ \item B√∫squeda de palabras clave en internet.
+ \item Verificaci√≥n de sistemas con un n√∫mero finito de estados 
+  (por ejemplo protocolos de comunicaci√≥n).
+ \item Verificaci√≥n de modelos, modelado y verificaci√≥n de sistemas empotrables 
   o embebidos.
- \item Aplicaciones en genÈtica, patrones regulares en proteinas.
- \item Aplicaciones en ling¸istica, construcciÛn de diccionarios grandes,
-  correctores de ortografÌa.
- \item Modelado de m·quinas reales: relojes, telefonos, seguros de auto, etc. 
+ \item Aplicaciones en gen√©tica, patrones regulares en proteinas.
+ \item Aplicaciones en ling√ºistica, construcci√≥n de diccionarios grandes,
+  correctores de ortograf√≠a.
+ \item Modelado de m√°quinas reales: relojes, telefonos, seguros de auto, etc. 
  \item Modelado de sistemas discretos en general.
 \ei   
-Existen diversos tipos de autÛmatas, nosotros estudiaremos:
+Existen diversos tipos de aut√≥matas, nosotros estudiaremos:
 \bi
- \item AutÛmatas con un n˙mero finito de estados: determinÌsticos, no 
-  determinÌsticos.
- \item AutÛmatas de pila
- \item AutÛmatas Linealmente Acotados
- \item M·quinas de Turing.
+ \item Aut√≥matas con un n√∫mero finito de estados: determin√≠sticos, no 
+  determin√≠sticos.
+ \item Aut√≥matas de pila
+ \item Aut√≥matas Linealmente Acotados
+ \item M√°quinas de Turing.
 \ei
-Otras clases de autÛmatas que no estudiaremos aquÌ son los probabilÌsticos,
-celulares, paralelos, de ·rbol, etc.
+Otras clases de aut√≥matas que no estudiaremos aqu√≠ son los probabil√≠sticos,
+celulares, paralelos, de √°rbol, etc.
 
 
 
 \section{Cadenas}
-Las cadenas son los objetos fundamentales para la mayorÌa de los 
+Las cadenas son los objetos fundamentales para la mayor√≠a de los 
 sistemas formales. 
-En esta secciÛn revisamos las operaciones de importancia entre cadenas.
+En esta secci√≥n revisamos las operaciones de importancia entre cadenas.
 
 \vspace*{10pt}
 
-Los \textit{sÌmbolos} son los objetos m·s simples con los que trataremos, ellos 
+Los \textit{s√≠mbolos} son los objetos m√°s simples con los que trataremos, ellos 
 conforman a las cadenas. 
-Una definiciÛn formal de sÌmbolo nos llevarÌa al ·mbito de la filosofÌa del
-lenguaje, asÌ que para nuestros propositos basta decir que:
+Una definici√≥n formal de s√≠mbolo nos llevar√≠a al √°mbito de la filosof√≠a del
+lenguaje, as√≠ que para nuestros propositos basta decir que:
 
 \defin{
-Un sÌmbolo o caracter es una entidad considerada indivisible.
+Un s√≠mbolo o caracter es una entidad considerada indivisible.
 }
-Por comodidad utilizaremos como sÌmbolos:
+Por comodidad utilizaremos como s√≠mbolos:
 \bi
  \item a,b,c,d,e, \ldots
  \item 0,1,2,3, \ldots, 9
@@ -261,45 +260,45 @@ Por comodidad utilizaremos como sÌmbolos:
 \paragraph{Ejemplos:} $\#,\;\%,\; \$,\; \leftarrow,\;\land,\; a,\;7$ 
 
 \defin{
-Un alfabeto es un conjunto finito de sÌmbolos.
+Un alfabeto es un conjunto finito de s√≠mbolos.
 }
 Por lo general usaremos las letras griegas $\Sigma$ y $\Gamma$ 
-% letras may˙sculas del final del alfabeto $(X,Y,Z)$
+% letras may√∫sculas del final del alfabeto $(X,Y,Z)$
 para denotar alfabetos.
 \paragraph{Ejemplos:}
 \bi
- \item El alfabeto del espaÒol: $a,b,c,d,e,f,\ldots,z$. 
+ \item El alfabeto del espa√±ol: $a,b,c,d,e,f,\ldots,z$. 
  \item El alfabeto binario: $0,1$. 
  \item El alfabeto ASCII: a, \ldots ,z , A, \ldots, Z, \$, \%, \#, \ldots 
 \ei
 
 
 \defin{
-Una \emph{cadena, expresiÛn o palabra} es una sucesiÛn \textbf{finita} de 
-sÌmbolos tomados de un alfabeto dado $\Sigma$. 
+Una \emph{cadena, expresi√≥n o palabra} es una sucesi√≥n \textbf{finita} de 
+s√≠mbolos tomados de un alfabeto dado $\Sigma$. 
 }
-En otros ·mbitos se permiten cadenas con un n˙mero infinito de sÌmbolos pero
+En otros √°mbitos se permiten cadenas con un n√∫mero infinito de s√≠mbolos pero
 nunca en nuestro curso.
 \paragraph{Ejemplos:}
 \bi
- \item En el alfabeto del espaÒol: $abc,\; def,\; feo,\; bonito,\; dsp,\; 
+ \item En el alfabeto del espa√±ol: $abc,\; def,\; feo,\; bonito,\; dsp,\; 
   guajolote,\; uizcm$. 
  \item En el alfabeto binario: $0,\; 101010,\; 00,\; 1100,\; 001,\; 11010$.
  \item En el alfabeto ASCII: @zA\$ 
 \ei
   
-ObsÈrvese que los sÌmbolos son a su vez cadenas que constan de un solo
-caracter. M·s a˙n podemos referirnos a la \textit{cadena vacÌa} (i.e. la 
-sucesiÛn vacÌa de sÌmbolos) que se denotar· con el metasÌmbolo 
-$\vacia$~\footnote{Algunos autores denotan a la cadena vacÌa con $\lambda$ o 
+Obs√©rvese que los s√≠mbolos son a su vez cadenas que constan de un solo
+caracter. M√°s a√∫n podemos referirnos a la \textit{cadena vac√≠a} (i.e. la 
+sucesi√≥n vac√≠a de s√≠mbolos) que se denotar√° con el metas√≠mbolo 
+$\vacia$~\footnote{Algunos autores denotan a la cadena vac√≠a con $\lambda$ o 
 $\Lambda$.}. 
-Este metasÌmbolo no es ni una palabra ni un sÌmbolo. Es decir estar· prohibido 
-considerar a $\vacia$ como sÌmbolo de un alfabeto $\Sigma$.
+Este metas√≠mbolo no es ni una palabra ni un s√≠mbolo. Es decir estar√° prohibido 
+considerar a $\vacia$ como s√≠mbolo de un alfabeto $\Sigma$.
 
 \defin{
   Al conjunto infinito de todas las cadenas sobre un alfabeto dado~$\Sigma$
   se le denota como~$\Sigma^\star$ y es llamado la estrella o cerradura de
-  Kleene\footnote{Stephen Cole Kleene, 1909--1994, prominente lÛgico matem·tico.}
+  Kleene\footnote{Stephen Cole Kleene, 1909--1994, prominente l√≥gico matem√°tico.}
   de $\Sigma$. 
   Es decir $\Sigma^\star=\{a_1\!\ldots a_n \mid a_i\in\Sigma\}$ donde 
   $a_1\!\ldots a_n$ es una cadena.
@@ -309,22 +308,22 @@ considerar a $\vacia$ como sÌmbolo de un alfabeto $\Sigma$.
 Las cadenas son objetos que se manipulan para estudiar los lenguajes, para ello 
 se consideran algunas operaciones sobre cadenas:
 
-\defin{La longitud de una cadena~$w$ es el n˙mero de sÌmbolos en~$w$. Esta 
+\defin{La longitud de una cadena~$w$ es el n√∫mero de s√≠mbolos en~$w$. Esta 
  funci\'on se  define como~$|\cdot|:\sest\to\N$.
  Si $w = a_1\!\ldots a_n$ entonces $|w| = n$.
 }
 
-\defin{La operaciÛn b·sica entre cadenas es la 
- concatenaciÛn~$\cdot:\sest\times\sest\imp\sest$.
+\defin{La operaci√≥n b√°sica entre cadenas es la 
+ concatenaci√≥n~$\cdot:\sest\times\sest\imp\sest$.
  Consiste en unir cadenas en orden de izquierda a derecha: si $v, w$ son 
- cadenas entonces $v\cdot w$ ser· la cadena obtenida al pegar $v$ con $w$. 
+ cadenas entonces $v\cdot w$ ser√° la cadena obtenida al pegar $v$ con $w$. 
  Usualmente el operador $\cdot$ no se usa expl\'icitamente y escribimos 
  simplemente $uw$ en lugar de $u\cdot w$.
 }
 
 \paragraph{Ejemplos:}
 \bi
- \item La concatenaciÛn de \emph{cala} y \emph{baza} es la cadena 
+ \item La concatenaci√≥n de \emph{cala} y \emph{baza} es la cadena 
   \emph{calabaza}.
  \item Si $v=broco$ y $w=li$ entonces $vw=brocoli$.
  \item Si $x=champu$ y $y=rrado$ entonces $yx=rradochampu$.
@@ -336,7 +335,7 @@ Algunas propiedades de esta operaci\'on son las siguientes:
  \item Identidad: $v\vacia = \vacia v= v$.
  \item Longitud: $|vw| = |v| + |w|$.
 \ei
-Adem·s es claro que no es una operaciÛn conmutativa, por ejemplo si $w=ja$ y 
+Adem√°s es claro que no es una operaci√≥n conmutativa, por ejemplo si $w=ja$ y 
 $v=rrito$ entonces $wv = jarrito\neq rritoja = vw$.
 
 En particular podemos denotar la concatenaci\'on repetida de una misma cadena 
@@ -365,14 +364,14 @@ Las cadenas pueden subdividirse para su estudio:
  \item Similarmente, un sufijo de $u$ es una cadena $v$ tal que $u=wv$ 
   para alguna cadena $w\in\Sigma^\star$. Se dice que $v$ es un sufijo 
   propio si $v\neq u$.
- \item ObsÈrvese que tanto $\vacia$ como $u$ son siempre sufijos y 
+ \item Obs√©rvese que tanto $\vacia$ como $u$ son siempre sufijos y 
   prefijos de $u$.
 \ei
 
-\section{RecursiÛn}
+\section{Recursi√≥n}
 
-La recursi\'on como mecanismo de definiciÛn de tipos de datos, de definiciÛn de 
-funciones y como una herramienta fundamental en programaciÛn ser\'a de gran 
+La recursi\'on como mecanismo de definici√≥n de tipos de datos, de definici√≥n de 
+funciones y como una herramienta fundamental en programaci√≥n ser\'a de gran 
 utilidad.
 
 \subsection{Definiciones recursivas: recordatorio}
@@ -380,10 +379,10 @@ utilidad.
 \paragraph{N\'umeros Naturales}
 $\N$ es el conjunto m\'as peque\~no tal que:
 \bi
-\item $0\in\N$ %(condiciÛn inicial)
-\item Si $x\in\N$ entonces $sx\in\N$ %(condiciÛn iterativa)
+\item $0\in\N$ %(condici√≥n inicial)
+\item Si $x\in\N$ entonces $sx\in\N$ %(condici√≥n iterativa)
 \ei
-Esta definiciÛn de $\N$ permite definir funciones recursivamente, por ejemplo 
+Esta definici√≥n de $\N$ permite definir funciones recursivamente, por ejemplo 
 la suma de n\'umeros naturales
 \beqs
 sum(x,0)=x \qquad \qquad sum(x,sy) = s(sum(x,y))
@@ -396,24 +395,24 @@ Dado una coleccion $A$, $\mathcal{L}(A)$ es el conjunto m\'as peque\~no tal que:
  \item Si $a\in A$ y $\ell\in\mathcal{L}(A)$ entonces 
   $cons(a,\ell)\in\mathcal{L}(A)$.
 \ei
-As\'i tambiÈn podemos definir funciones recursivas como por ejemplo la 
-funciÛn que calcula la longitud de una lista $len:\mathcal{A}\imp\N$ dada por:
+As\'i tambi√©n podemos definir funciones recursivas como por ejemplo la 
+funci√≥n que calcula la longitud de una lista $len:\mathcal{A}\imp\N$ dada por:
 \beqs
 len(nil)=0 \qquad \qquad len(cons(a,\ell))=len(\ell)+1
 \eeqs
 
-\subsection{ModelaciÛn Inductiva}
+\subsection{Modelaci√≥n Inductiva}
 
 % \begin{frame}
-%   \titulos{Paradigma de ModelaciÛn Inductiva}{InducciÛn}
+%   \titulos{Paradigma de Modelaci√≥n Inductiva}{Inducci√≥n}
 De los ejemplos anteriores podemos concluir:
 \bi
- \item La inducciÛn es un proceso de definiciÛn y razonamiento que
+ \item La inducci√≥n es un proceso de definici√≥n y razonamiento que
   determina conjuntos (tipos de datos) numerables cuyos elementos son
-  estructuras finitas construibles a partir de ciertos objetos b·sicos.
+  estructuras finitas construibles a partir de ciertos objetos b√°sicos.
   
- \item La inducciÛn permite definir funciones del estilo $f:\I\imp A$ mediante
-  principios de recursiÛn, definiendo el valor de $f$ en cada constructor 
+ \item La inducci√≥n permite definir funciones del estilo $f:\I\imp A$ mediante
+  principios de recursi√≥n, definiendo el valor de $f$ en cada constructor 
   de~$I$.\\
   Por ejemplo en el caso de $\I=\N$, s\'olo es necesario dar ecuaciones
   de la forma:
@@ -423,29 +422,29 @@ De los ejemplos anteriores podemos concluir:
 \ei
 
 Cualquier estructura definida recursivamente genera un principio de
-inducciÛn ˙til como herramienta de demostraciÛn.
+inducci√≥n √∫til como herramienta de demostraci√≥n.
 \bi
-\item El principio de inducciÛn para naturales: si $0\in P$ y si para
+\item El principio de inducci√≥n para naturales: si $0\in P$ y si para
   cada $x\in P$ se verifica tambien $sx\in P$ entonces $\N\inc P$.\espc
-\item El principio de inducciÛn para listas: si $nil\in P$ y si para
+\item El principio de inducci√≥n para listas: si $nil\in P$ y si para
   cada $a\in A$ y $x\in P$ se verifica tambien $cons(a,x)\in P$ entonces $\L(A)\inc P$.
 \ei
  
 
-\subsection{InducciÛn en cadenas}
+\subsection{Inducci√≥n en cadenas}
 % \begin{frame}
-%   \titulos{SÌmbolos y Alfabetos}{Recordatorio}
+%   \titulos{S√≠mbolos y Alfabetos}{Recordatorio}
 % \bi
-% \item SÌmbolo: entidad indivisible.\espc
-% \item Alfabeto: conjunto \alert{finito} de sÌmbolos.\espc
-%   \item Cadena: sucesiÛn \alert{finita} de sÌmbolos.\espc
+% \item S√≠mbolo: entidad indivisible.\espc
+% \item Alfabeto: conjunto \alert{finito} de s√≠mbolos.\espc
+%   \item Cadena: sucesi√≥n \alert{finita} de s√≠mbolos.\espc
 %     \item Lenguaje: conjunto de cadenas.
 % \ei
 %   \end{frame}
 
-%   \titulos{DefiniciÛn recursiva de $\Sigma^\star$}{}
+%   \titulos{Definici√≥n recursiva de $\Sigma^\star$}{}
 Dado un alfabeto $\Sigma$, el conjunto $\Sigma^\star$ que consta de
-todas las cadenas de sÌmbolos de $\Sigma$ puede definirse
+todas las cadenas de s√≠mbolos de $\Sigma$ puede definirse
 recursivamente como sigue:
 \bi
  \item $\cv\in\sest$.
@@ -456,7 +455,7 @@ $a\in\Sigma$ entonces $aw\in\sest$. El la literatura es m\'as usada la
 convenci\'on que aparece en nuestra definci\'on.}
  \item Son todas.
 \ei
-Esta definiciÛn recursiva genera el siguiente principio de inducciÛn
+Esta definici√≥n recursiva genera el siguiente principio de inducci√≥n
 estructural: 
 \bi
 \item[] Sea $P\inc\sest$ un conjunto de cadenas. 
@@ -471,7 +470,7 @@ Entonces cualquier $u\in\sest$ pertenece a $P$. Es decir, $\sest=P$.
 \noindent Siguiendo la estructura anterior, se definen las funciones anteriores 
 recursivamente como sigue:
 \bi
- \item La concatenaciÛn de cadenas es una funciÛn
+ \item La concatenaci√≥n de cadenas es una funci√≥n
   $\cdot:\sest\times\sest\imp\sest$ tal que:
   $$u\cdot\cv = u \qquad \qquad u\cdot(va)=(u\cdot v)a$$
 
@@ -500,9 +499,9 @@ Si $\Sigma=\{m,u\}$ entonces algunos lenguajes sobre $\Sigma$ son:
  \item $\mathcal{L}_5=\{m,mmm,mmmmm,\ldots, m\ldots, uuum, m\ldots\}$.
 \ei
 
-ObsÈrvese que un lenguaje puede ser finito o infinito, que $\vacio$ es
-un lenguaje, llamado \textit{lenguaje vacÌo} y que $\Sigma^\star$ es un lenguaje
-llamado el \textit{lenguaje total}. Adem·s $\Sigma$ y $\{\cv\}$ tambiÈn son
+Obs√©rvese que un lenguaje puede ser finito o infinito, que $\vacio$ es
+un lenguaje, llamado \textit{lenguaje vac√≠o} y que $\Sigma^\star$ es un lenguaje
+llamado el \textit{lenguaje total}. Adem√°s $\Sigma$ y $\{\cv\}$ tambi√©n son
 lenguajes.
 
 
@@ -514,8 +513,8 @@ $$ L\cup M \qquad L\cap M \qquad L-M \qquad \bar{L}=\Sigma^\star-L$$
 tambien son lenguajes.
 Adicionalmente tenemos las siguientes operaciones relevantes:
 
-\subsubsection{ConcatenaciÛn de Lenguajes}
-\noindent Al igual que en el caso de cadenas, podemos definir la concatenaciÛn 
+\subsubsection{Concatenaci√≥n de Lenguajes}
+\noindent Al igual que en el caso de cadenas, podemos definir la concatenaci√≥n 
 entre lenguajes como sigue:
 $$  LM=\{uv\;|\;u\in L\;\mbox{y}\;v\in M\} $$
 Y cumple las siguientes propiedades:
@@ -546,7 +545,7 @@ Y cumple las siguientes propiedades:
    L^\star=\{u_1\ldots u_n\;|\;u_i\in L\;n\geq 0\} 
    = \bigcup_{i=0}^\infty L^i
  \]
-donde $L^i$ es la potencia $i$-Èsima de $L$.
+donde $L^i$ es la potencia $i$-√©sima de $L$.
 
 \subsubsection{Cerradura Positiva}
 \noindent La cerradura positiva de un lenguaje se define como
@@ -560,7 +559,7 @@ donde $L^i$ es la potencia $i$-Èsima de $L$.
 Se cumplen las siguientes propiedades
 \bi
  \item $L^\star=L^+\cup\{\vacia\}$
- \item $L^\star=L^+$ si y sÛlo si $\vacia\in L$.
+ \item $L^\star=L^+$ si y s√≥lo si $\vacia\in L$.
  \item $(L^\star)^\star=L^\star$
  \item $L^\star L^\star=L^\star$
  \item $(L^+)^\star=(L^\star)^+=L^\star$
@@ -574,14 +573,14 @@ de los datos de entrada y salida en una computadora:
 \bi
  \item ?` Cual es el lenguaje de entrada de una computadora dada? 
  \item ?` Cual es el lenguaje de salida ? 
- \item ?` Ser·n estos lenguajes describibles finitamente? 
+ \item ?` Ser√°n estos lenguajes describibles finitamente? 
 \ei
 
 
 % \section{Ejercicios}
 % 
 % \bi
-% \item Martin, 3a. ediciÛn en espaÒol: 1.38--1.47, 1.69--1.71, 2.34--2.37, 2.39--2.43, 2.59--2.66, 
+% \item Martin, 3a. edici√≥n en espa√±ol: 1.38--1.47, 1.69--1.71, 2.34--2.37, 2.39--2.43, 2.59--2.66, 
 % \ei
      
 \end{document}

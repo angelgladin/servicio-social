@@ -2,14 +2,12 @@
 \usepackage[includeheadfoot,margin=1.3in]{geometry}
 \usepackage{anysize}
 
-% \usepackage[utf8]{inputenc}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{lmodern}   % font shapes...
 \usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
 \usepackage{amssymb,amsmath,stmaryrd,amsthm}
-\usepackage{mathrsfs}
-%\usepackage{amssymb,amsmath}
 \usepackage{mathrsfs}
 \usepackage{epsfig}
 
@@ -27,12 +25,13 @@
 \input{macrosAyLF}
 
 \title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
-%Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
-Facultad de Ciencias UNAM \\ 
+%Posgrado en Ciencia e IngenierÃ­a de la ComputaciÃ³n UNAM \\ 
+Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
+  PAPIME PE102117} \\ 
 Nota de Clase 2: Lenguajes y expresiones regulares} 
 \author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
 Lourdes Gonz\'alez Huesca}
-\date{\today}
+\date{17 de febrero de 2019}
 
 \begin{document}
 \maketitle
@@ -58,7 +57,7 @@ Recursivamente:
  \item Si $L,M$ son regulares entonces $L\cup M, LM$ y $L^\star$ son regulares.
  \item Son todos.
 \ei 
-El conjunto de los lenguajes regulares será denotado por $REG$.
+El conjunto de los lenguajes regulares serÃ¡ denotado por $REG$.
 }
 \paragraph{Ejemplos:}
 \bi
@@ -120,9 +119,9 @@ sigue:
 }
 
 
-Toda expresión regular denota a un lenguaje definido como sigue:
+Toda expresiÃ³n regular denota a un lenguaje definido como sigue:
 
-\defin{El lenguaje definido por una expresión regular $r$ denotado por $\L \llbracket r \rrbracket \subseteq \Sigma^{\ast}$ se define como:
+\defin{El lenguaje definido por una expresiÃ³n regular $r$ denotado por $\L \llbracket r \rrbracket \subseteq \Sigma^{\ast}$ se define como:
 \begin{align*}
 \L \llbracket \varnothing \rrbracket &= \varnothing\\
 \L \llbracket \varepsilon \rrbracket &= \{ \varepsilon \}\\
@@ -131,26 +130,26 @@ Toda expresión regular denota a un lenguaje definido como sigue:
 \L \llbracket rs \rrbracket &= \L \llbracket r \rrbracket \L \llbracket s \rrbracket\\
 \L \llbracket r^{\ast} \rrbracket &= \L \llbracket r \rrbracket^{\ast}\\
 \end{align*}\label{Lenguajes}
-A la operación $\L\llbracket \cdot \rrbracket$ se le conoce como denotación.
+A la operaciÃ³n $\L\llbracket \cdot \rrbracket$ se le conoce como denotaciÃ³n.
 }
 
-Más aún todo lenguaje regular puede denotarse con una expresión regular como lo asegura la siguiente
+MÃ¡s aÃºn todo lenguaje regular puede denotarse con una expresiÃ³n regular como lo asegura la siguiente
 
-\prop{Un lenguaje $L\subseteq \Sigma^{\ast}$ es regular si y sólo si existe $r\in ER$ tal que $L = L\llbracket r \rrbracket$
+\prop{Un lenguaje $L\subseteq \Sigma^{\ast}$ es regular si y sÃ³lo si existe $r\in ER$ tal que $L = L\llbracket r \rrbracket$
 }
 
-\dem{Para $\Rightarrow)$ hacemos inducción estrucrural sobre REG. Para
-  $\Leftarrow)$  inducción estructural sobre $r$.
+\dem{Para $\Rightarrow)$ hacemos inducciÃ³n estrucrural sobre REG. Para
+  $\Leftarrow)$  inducciÃ³n estructural sobre $r$.
 }
 
-De acuerdo a la proposición anterior en adelante identificaremos a una expresión regular $r$ con $L \llbracket r \rrbracket$, por ejemplo si $L = \{ \varepsilon, 0, 00, 000, \dots, 0^n, \dots 1 \}$ escribiremos $L = 0^{\ast} + 1$ en vez de $L = \L\llbracket 0^{\ast} + 1 \rrbracket$.
+De acuerdo a la proposiciÃ³n anterior en adelante identificaremos a una expresiÃ³n regular $r$ con $LÂ \llbracket r \rrbracket$, por ejemplo si $L = \{ \varepsilon, 0, 00, 000, \dots, 0^n, \dots 1 \}$ escribiremos $L = 0^{\ast} + 1$ en vez de $L = \L\llbracket 0^{\ast} + 1 \rrbracket$.
 
 \medskip
 
-Un lenguaje regular puede ser denotado por más de una expresión regular por lo que necesitamos una noción de equivalencia, diremos que $r$ y $s$ son equivalentes si denotan exactamente al mismo lenguaje, es decir,
+Un lenguaje regular puede ser denotado por mÃ¡s de una expresiÃ³n regular por lo que necesitamos una nociÃ³n de equivalencia, diremos que $r$ y $s$ son equivalentes si denotan exactamente al mismo lenguaje, es decir,
 
 \defin{Decimos que dos expresiones regulares $\al,\beta\in ER$ son
-  equivalentes, y usamos la notación $\al = \beta$, si y sólo si $L \llbracket
+  equivalentes, y usamos la notaciÃ³n $\al = \beta$, si y sÃ³lo si $L \llbracket
   \al \rrbracket = L \llbracket \beta \rrbracket$.
 }
 
@@ -194,7 +193,7 @@ Un lenguaje regular puede ser denotado por más de una expresión regular por lo q
 Las siguientes equivalencias, conocidas como Axiomas de Salomaa, constituyen
 un sistema completo para el razonamiento ecuacional con expresiones
 regulares. Es decir, cualquier ecuacion $\al=\beta$ de expresiones regulares
-puede deducirse útilizando únicamente estos once axiomas. 
+puede deducirse Ãºtilizando Ãºnicamente estos once axiomas. 
 
 
 \begin{itemize}
@@ -213,9 +212,9 @@ puede deducirse útilizando únicamente estos once axiomas.
 
 \subsection{Otras equivalencias de  Expresiones Regulares}
 
-Las siguientes son algunas equivalencias útiles de expresiones regulares 
+Las siguientes son algunas equivalencias Ãºtiles de expresiones regulares 
 % que
-% nos permiten verificar otras equivalencias mediante razonamiento algebráico ecuacional.
+% nos permiten verificar otras equivalencias mediante razonamiento algebrÃ¡ico ecuacional.
 
 \begin{center}
  \begin{tabular}{ccc}
@@ -278,7 +277,7 @@ etc.(lex, flex, etc.)
 
 \section{La derivada de un lenguaje}\label{De}
 
-\noindent El concepto de derivada de un lenguaje con respecto a una cadena fue introducido en 1964 por Brzozowski, aunque se origina en trabajos de Rabin, Raney y Elgot, véase \cite{Rab, Ran, Elg}. Curiosamente, hasta donde sabemos, este concepto no figura en ningún libro de texto actual, siendo este uno de los motivos principales para discutirlo en este artículo.
+\noindent El concepto de derivada de un lenguaje con respecto a una cadena fue introducido en 1964 por Brzozowski, aunque se origina en trabajos de Rabin, Raney y Elgot, vÃ©ase \cite{Rab, Ran, Elg}. Curiosamente, hasta donde sabemos, este concepto no figura en ningÃºn libro de texto actual, siendo este uno de los motivos principales para discutirlo en este artÃ­culo.
 
 \defin{La derivada de un lenguaje $L \subseteq \Sigma^{\ast}$ con respecto a una cadena $u \in \Sigma^{\ast}$, denotada $\partial_u L$, es el lenguaje definido como:
 \[
@@ -286,19 +285,19 @@ etc.(lex, flex, etc.)
 \]
 }\label{Derivada}
 
-Es decir la derivada de $L$ con respecto a $u$ es el conjunto de todas las cadenas tales que al anteponerles $u$ están en $L$.
+Es decir la derivada de $L$ con respecto a $u$ es el conjunto de todas las cadenas tales que al anteponerles $u$ estÃ¡n en $L$.
 
 \begin{example}
-Consideremos el lenguaje definido por la expresión regular $r = b(a + c)^{\ast}$, la derivada de $r$ con respecto a la cadena $b$ es $(a+c)^{\ast}$, mientras que la derivada de $r$ con respecto a la cadena $a$ es $\varnothing$, puesto que ninguna cadena de $r$ empieza con $a$.
+Consideremos el lenguaje definido por la expresiÃ³n regular $r = b(a + c)^{\ast}$, la derivada de $r$ con respecto a la cadena $b$ es $(a+c)^{\ast}$, mientras que la derivada de $r$ con respecto a la cadena $a$ es $\varnothing$, puesto que ninguna cadena de $r$ empieza con $a$.
 \end{example}
 
-Esta operación tiene diferentes propiedades de interés que discutiremos más adelante, pero antes veamos como calcular la derivada.
+Esta operaciÃ³n tiene diferentes propiedades de interÃ©s que discutiremos mÃ¡s adelante, pero antes veamos como calcular la derivada.
 
-\subsection{Cálculo de la Derivada}
+\subsection{CÃ¡lculo de la Derivada}
 
-De manera similar a la derivada en el Cálculo Di\-fe\-ren\-cial, es posible dar reglas inductivas para calcular la derivada de una expresión (lenguaje) regular. Para esto se requiere primero determinar cuando una expresión regular es anulable, esto es, cuando $\varepsilon$ pertenece al lenguaje de $r$.  Esta tarea la realiza la función de {\em nulidad} $\nu$, descrita a continuación:
+De manera similar a la derivada en el CÃ¡lculo Di\-fe\-ren\-cial, es posible dar reglas inductivas para calcular la derivada de una expresiÃ³n (lenguaje) regular. Para esto se requiere primero determinar cuando una expresiÃ³n regular es anulable, esto es, cuando $\varepsilon$ pertenece al lenguaje de $r$.  Esta tarea la realiza la funciÃ³n de {\em nulidad} $\nu$, descrita a continuaciÃ³n:
 
-\defin{Sea $\nu : ER \to ER$ la función de nulidad cumple con la siguiente propiedad 
+\defin{Sea $\nu : ER \to ER$ la funciÃ³n de nulidad cumple con la siguiente propiedad 
 \[
 \nu(r) = \left\{
 \begin{array}{ll}
@@ -318,9 +317,9 @@ y se define recursivamente como sigue
 \end{align*}
 }
 
-Empleando a la función de nulidad como auxiliar Brzozowski define, en \cite{Brz}, la derivada de una expresión regular con respecto a un símbolo de la siguiente manera.
+Empleando a la funciÃ³n de nulidad como auxiliar Brzozowski define, en \cite{Brz}, la derivada de una expresiÃ³n regular con respecto a un sÃ­mbolo de la siguiente manera.
 
-\prop{Sean $r$ una expresión regular y $a \in \Sigma$, la derivada de $r$ con respecto al símbolo $a$ denotada por $\partial_a r$, se calcula recursivamente mediante las siguientes reglas
+\prop{Sean $r$ una expresiÃ³n regular y $a \in \Sigma$, la derivada de $r$ con respecto al sÃ­mbolo $a$ denotada por $\partial_a r$, se calcula recursivamente mediante las siguientes reglas
 \begin{align*}
 \partial_a \varnothing &= \varnothing\\
 \partial_a \varepsilon &= \varnothing\\
@@ -332,14 +331,14 @@ Empleando a la función de nulidad como auxiliar Brzozowski define, en \cite{Brz}
 \end{align*}\label{DeER}
 }
 
-\dem{Véase \cite{Brz}.
+\dem{VÃ©ase \cite{Brz}.
 }
 
-Se observa que estas reglas son reminiscentes de las reglas de derivación del Cálculo Diferencial, por lo que es probable que esta halla sido  la razón para elegir el nombre de derivada para esta operación en lenguajes regulares. 
+Se observa que estas reglas son reminiscentes de las reglas de derivaciÃ³n del CÃ¡lculo Diferencial, por lo que es probable que esta halla sido  la razÃ³n para elegir el nombre de derivada para esta operaciÃ³n en lenguajes regulares. 
 
-Para calcular la derivada con respecto a una cadena arbitraria nos servimos de la siguiente caracterización.
+Para calcular la derivada con respecto a una cadena arbitraria nos servimos de la siguiente caracterizaciÃ³n.
 
-\prop{Sea $r$ una expresión regular y $u \in \Sigma^{\ast}$ la derivada de $r$ con respecto a la cadena $u$ denotada por $\partial_u r$ se calcula mediante las siguientes reglas:
+\prop{Sea $r$ una expresiÃ³n regular y $u \in \Sigma^{\ast}$ la derivada de $r$ con respecto a la cadena $u$ denotada por $\partial_u r$ se calcula mediante las siguientes reglas:
 \begin{gather*}
 \partial_{\varepsilon} r = r\\
 \partial_{ua} r = \partial_a ( \partial_u r)
@@ -349,13 +348,13 @@ Para calcular la derivada con respecto a una cadena arbitraria nos servimos de l
 \dem{Es directo de las definiciones.
 }
 
-Obsérvese que de la proposición anterior se puede concluir que si $u=a_1\ldots a_n$ entonces 
+ObsÃ©rvese que de la proposiciÃ³n anterior se puede concluir que si $u=a_1\ldots a_n$ entonces 
 \[
 \partial_u r = \partial_{a_n}\partial_{a_{n-1}}\ldots\partial_{a_1}r
 \]
 
 
-Por lo que basta calcular derivadas de símbolos de manera iterada, utilizando las reglas de derivación, para obtener la derivada con respecto a cualquier cadena.
+Por lo que basta calcular derivadas de sÃ­mbolos de manera iterada, utilizando las reglas de derivaciÃ³n, para obtener la derivada con respecto a cualquier cadena.
 
 \subsection{Propiedades de la derivada}
 
@@ -365,79 +364,79 @@ Veamos ahora algunas propiedades importantes de la derivada, en el caso de los l
 }
 \dem{Pendiente.% Primero demostraremos que para cualquier $a \in \Sigma$, $\partial_a L$ es regular.
 
-% Sea $M = \langle Q, \Sigma, q_0, F, \delta \rangle$ un AFD que acepta el lenguaje regular $L$. Construimos un autómata finito que reconozca $\partial_a L$ como sigue: $M' = \langle Q, \Sigma, \delta(q_0,a), F, \delta \rangle$, es claro que este autómata reconocerá a todas las cadenas del lenguaje $\partial_a L$ con lo cual se prueba que es regular. Obsérvese que el estado inicial de $M'$, que es $\delta(q_0,a)$, está bien definido puesto que $M$ es un AFD y por lo tanto $\delta$ es una función total. El resultado para cadenas se sigue por inducción estructural.
+% Sea $M = \langle Q, \Sigma, q_0, F, \delta \rangle$ un AFD que acepta el lenguaje regular $L$. Construimos un autÃ³mata finito que reconozca $\partial_a L$ como sigue: $M' = \langle Q, \Sigma, \delta(q_0,a), F, \delta \rangle$, es claro que este autÃ³mata reconocerÃ¡ a todas las cadenas del lenguaje $\partial_a L$ con lo cual se prueba que es regular. ObsÃ©rvese que el estado inicial de $M'$, que es $\delta(q_0,a)$, estÃ¡ bien definido puesto que $M$ es un AFD y por lo tanto $\delta$ es una funciÃ³n total. El resultado para cadenas se sigue por inducciÃ³n estructural.
 }
 
-Esta proposición muestra que la clase de lenguajes regulares es cerrada bajo derivación. A continuación mostramos otra propiedad de gran importancia para nuestros propósitos.
+Esta proposiciÃ³n muestra que la clase de lenguajes regulares es cerrada bajo derivaciÃ³n. A continuaciÃ³n mostramos otra propiedad de gran importancia para nuestros propÃ³sitos.
 
-\lema{Para toda $r$ expresión regular y $a \in \Sigma$, se cumple que 
+\lema{Para toda $r$ expresiÃ³n regular y $a \in \Sigma$, se cumple que 
 \[
 L \llbracket \partial_a r \rrbracket = \partial_a ( L \llbracket r \rrbracket ),
 \]
-es decir, las operaciones de denotación y derivada con respecto a un símbolo de una expresión regular conmutan.\label{LdedL}
+es decir, las operaciones de denotaciÃ³n y derivada con respecto a un sÃ­mbolo de una expresiÃ³n regular conmutan.\label{LdedL}
 }
 
-\dem{Inducción sobre $r$.
+\dem{InducciÃ³n sobre $r$.
 
-Si $r = \varnothing$ tenemos que $L \llbracket \partial_a \varnothing \rrbracket = L \llbracket \varnothing \rrbracket = \varnothing$. Por otro lado, $\partial_a ( L \llbracket \varnothing \rrbracket ) = \partial_a ( \varnothing ) = \varnothing$, luego entonces la propiedad se cumple para este caso.
+Si $r = \varnothing$ tenemos que $L \llbracket \partial_a \varnothing \rrbracket = L \llbracket \varnothing \rrbracket = \varnothing$. Por otro lado, $\partial_a ( L \llbracket \varnothing \rrbracket ) = \partial_a (Â \varnothing ) = \varnothing$, luego entonces la propiedad se cumple para este caso.
 
-Si $r = \varepsilon$, sabemos que $L \llbracket \partial_a \varepsilon \rrbracket = L \llbracket \varnothing \rrbracket = \varnothing$, así mismo $\partial_a ( L \llbracket \varepsilon \rrbracket ) = \partial_a ( \varepsilon ) = \varnothing$ y nuevamente se cumple la propiedad.
+Si $r = \varepsilon$, sabemos que $L \llbracket \partial_a \varepsilon \rrbracket = L \llbracket \varnothing \rrbracket = \varnothing$, asÃ­ mismo $\partial_a ( L \llbracket \varepsilon \rrbracket ) = \partial_a ( \varepsilon ) = \varnothing$ y nuevamente se cumple la propiedad.
 
 Para el caso en que $r = b \in \Sigma$, hay dos opciones, si $b \ne a$ se tiene que $L \llbracket \partial_a (b) \rrbracket = L \llbracket \varnothing \rrbracket = \varnothing = \partial_a ( b ) = \partial_a ( L \llbracket b \rrbracket )$. Cuando $b = a$, tenemos que $L \llbracket \partial_a a \rrbracket = L \llbracket \varepsilon \rrbracket = \varepsilon = \partial_a ( a ) = \partial_a ( L \llbracket a \rrbracket )$, con lo cual concluimos que la propiedad se cumple para todos los casos base.
 
 Para $r = s + t$ tenemos lo siguiente 
 \begin{align*}
-L \llbracket \partial_a (s + t) \rrbracket &= L \llbracket \partial_a s + \partial_a t \rrbracket \quad \text{por la proposición \ref{DeER}}\\
- &= L \llbracket \partial_a s \rrbracket + L \llbracket \partial_a t \rrbracket \quad \text{por la definición \ref{Lenguajes}}\\
- &= \partial_a ( L\llbracket s \rrbracket ) + \partial_a ( L \llbracket t \rrbracket ) \quad \text{por hipótesis inductiva}\\
- &= \partial_a ( L\llbracket s \rrbracket + L\llbracket t \rrbracket) \quad \text{por la definición \ref{Lenguajes}}\\
- &= \partial_a ( L\llbracket s + t \rrbracket) \quad \text{por la proposición \ref{DeER}}
+L \llbracket \partial_a (s + t) \rrbracket &= L \llbracket \partial_a s + \partial_a t \rrbracket \quad \text{por la proposiciÃ³n \ref{DeER}}\\
+ &= L \llbracket \partial_a s \rrbracket + L \llbracket \partial_a t \rrbracket \quad \text{por la definiciÃ³n \ref{Lenguajes}}\\
+ &= \partial_a ( L\llbracket s \rrbracket ) + \partial_a ( L \llbracket t \rrbracket )Â \quad \text{por hipÃ³tesis inductiva}\\
+ &= \partial_a ( L\llbracket s \rrbracket + L\llbracket t \rrbracket) \quad \text{por la definiciÃ³n \ref{Lenguajes}}\\
+ &= \partial_a ( L\llbracket s + t \rrbracket) \quad \text{por la proposiciÃ³n \ref{DeER}}
 \end{align*}
 
 Para el caso $r = st$ tenemos 
 \begin{align*}
-L\llbracket \partial_a (st) \rrbracket &= L\llbracket \partial_a s + \nu(s) \partial_a t \rrbracket \quad \text{por la proposición \ref{DeER}}\\
- &= L\llbracket (\partial_a s) t \rrbracket + L\llbracket \nu(s) \partial_a t \rrbracket \quad \text{por la definición \ref{Lenguajes}}\\
- &= L\llbracket \partial_a s \rrbracket L\llbracket t \rrbracket + L\llbracket \nu(s) \rrbracket L\llbracket \partial_a t \rrbracket \quad \text{por la definición \ref{Lenguajes}}\\
- &= \partial_a (L\llbracket s \rrbracket) L\llbracket t \rrbracket + L\llbracket \nu(s) \rrbracket \partial_a (L\llbracket t \rrbracket) \quad \text{por hipótesis inductiva}\\
+L\llbracket \partial_a (st) \rrbracket &= L\llbracket \partial_a s + \nu(s) \partial_a t \rrbracket \quad \text{por la proposiciÃ³n \ref{DeER}}\\
+ &= L\llbracket (\partial_a s) t \rrbracket + L\llbracket \nu(s) \partial_a t \rrbracket \quad \text{por la definiciÃ³n \ref{Lenguajes}}\\
+ &= L\llbracket \partial_a s \rrbracket L\llbracket t \rrbracket + L\llbracket \nu(s) \rrbracket L\llbracket \partial_a t \rrbracket \quad \text{por la definiciÃ³n \ref{Lenguajes}}\\
+ &= \partial_a (L\llbracket s \rrbracket) L\llbracket t \rrbracket + L\llbracket \nu(s) \rrbracket \partial_a (L\llbracket t \rrbracket) \quad \text{por hipÃ³tesis inductiva}\\
  &= \partial_a (L\llbracket s \rrbracket) L\llbracket t \rrbracket + \nu(L\llbracket s \rrbracket) \partial_a (L\llbracket t \rrbracket) \quad \text{probando que $\nu(L\llbracket s \rrbracket) = L\llbracket \nu(s) \rrbracket$}\\
- &= \partial_a (L\llbracket s \rrbracket L\llbracket t \rrbracket) \quad \text{por la proposición \ref{DeER}}\\
- &= \partial_a (L\llbracket st \rrbracket) \quad \text{por la definición \ref{Lenguajes}}
+ &= \partial_a (L\llbracket s \rrbracket L\llbracket t \rrbracket) \quad \text{por la proposiciÃ³n \ref{DeER}}\\
+ &= \partial_a (L\llbracket st \rrbracket) \quad \text{por la definiciÃ³n \ref{Lenguajes}}
 \end{align*}
 
-Por último tenemos $r = s^{\ast}$,
+Por Ãºltimo tenemos $r = s^{\ast}$,
 \begin{align*}
-L\llbracket \partial_a s^{\ast} \rrbracket &= L\llbracket (\partial_a s) s^{\ast} \rrbracket \quad \text{por la proposición \ref{DeER}}\\
- &= L\llbracket \partial_a s \rrbracket L\llbracket s^{\ast} \rrbracket \quad \text{por la definición \ref{Lenguajes}}\\
- &= (\partial_a L\llbracket s \rrbracket ) L\llbracket s^{\ast} \rrbracket \quad \text{por hipótesis inductiva}\\
- &= (\partial_a L\llbracket s \rrbracket ) L\llbracket s \rrbracket^{\ast} \quad \text{por la definición \ref{Lenguajes}}\\
- &= \partial_a (L\llbracket s \rrbracket^{\ast}) \quad \text{por la proposición \ref{DeER}}\\
- &= \partial_a (L\llbracket s^{\ast} \rrbracket) \quad \text{por la definición \ref{Lenguajes}}
+L\llbracket \partial_a s^{\ast} \rrbracket &= L\llbracket (\partial_a s) s^{\ast} \rrbracket \quad \text{por la proposiciÃ³n \ref{DeER}}\\
+ &= L\llbracket \partial_a s \rrbracket L\llbracket s^{\ast} \rrbracket \quad \text{por la definiciÃ³n \ref{Lenguajes}}\\
+ &= (\partial_a L\llbracket s \rrbracket ) L\llbracket s^{\ast} \rrbracket \quad \text{por hipÃ³tesis inductiva}\\
+ &= (\partial_a L\llbracket s \rrbracket ) L\llbracket s \rrbracket^{\ast} \quad \text{por la definiciÃ³n \ref{Lenguajes}}\\
+ &= \partial_a (L\llbracket s \rrbracket^{\ast}) \quad \text{por la proposiciÃ³n \ref{DeER}}\\
+ &= \partial_a (L\llbracket s^{\ast} \rrbracket) \quad \text{por la definiciÃ³n \ref{Lenguajes}}
 \end{align*}
 }
 
 El resultado anterior se extiende para cadenas de acuerdo al siguiente
 
-\lema{Para toda expresión regular $r$ y para toda cadena $u \in \Sigma^{\ast}$, se cumple que 
+\lema{Para toda expresiÃ³n regular $r$ y para toda cadena $u \in \Sigma^{\ast}$, se cumple que 
 \[
 \partial_u (L \llbracket r \rrbracket) = L \llbracket \partial_u (r) \rrbracket.
 \]
 }
 
-\dem{Por inducción sobre $u$
+\dem{Por inducciÃ³n sobre $u$
 
 Si $u = \varepsilon$, tenemos que $L \llbracket r \rrbracket = L \llbracket \partial_{\varepsilon} r \rrbracket$, por lo tanto la propiedad se cumple para el caso base. 
 
 Ahora bien, si $u = wa$ tenemos 
 \begin{align*}
-\partial_u (L\llbracket r \rrbracket ) &= \partial_a (\partial_w (L \llbracket r \rrbracket)) \quad \text{por la proposición \ref{DerCad}}\\
- &= \partial_a (L\llbracket \partial_w r \rrbracket) \quad \text{por hipótesis de inducción}\\
+\partial_u (L\llbracket r \rrbracket ) &= \partial_a (\partial_w (L \llbracket r \rrbracket)) \quad \text{por la proposiciÃ³n \ref{DerCad}}\\
+ &= \partial_a (L\llbracket \partial_w r \rrbracket) \quad \text{por hipÃ³tesis de inducciÃ³n}\\
  &= L \llbracket \partial_a ( \partial_w r ) \rrbracket \quad \text{por el lema \ref{LdedL}}\\
- &= L \llbracket \partial_u r \rrbracket \quad \text{por la proposición \ref{DerCad}}
+ &= L \llbracket \partial_u r \rrbracket \quad \text{por la proposiciÃ³n \ref{DerCad}}
 \end{align*}
 }
 
-%Las siguientes propiedades serán de gran importancia en la construcción del autómata finito a partir de la expresión regular dada.
+%Las siguientes propiedades serÃ¡n de gran importancia en la construcciÃ³n del autÃ³mata finito a partir de la expresiÃ³n regular dada.
 
 \prop{El operador derivada preserva equivalencia, es decir, si $r=s$ entonces
 $\partial_a r= \partial_a s$\label{Preserva}
@@ -451,7 +450,7 @@ $\partial_a r= \partial_a s$\label{Preserva}
 \subsection{El problema de la pertenencia}
 
 %\begin{problem}
-Dada una expresión regular $r$ y una cadena $u \in \Sigma^{\ast}$, determinar si $u \in L \llbracket r \rrbracket$.
+Dada una expresiÃ³n regular $r$ y una cadena $u \in \Sigma^{\ast}$, determinar si $u \in L \llbracket r \rrbracket$.
 %\end{problem}
 
 Resolver el problema es equivalente a resolver:
@@ -459,16 +458,16 @@ Resolver el problema es equivalente a resolver:
 u \in L \llbracket r \rrbracket \Leftrightarrow \varepsilon \in L \llbracket \partial_u r \rrbracket
 \]
 Es decir, se ha reducido la pertenencia de $u$ al lenguaje $L$ a verificar la
-pertenencia de $\cv$ al lenguaje $\partial_u r$ y esto último sucede si y sólo si
+pertenencia de $\cv$ al lenguaje $\partial_u r$ y esto Ãºltimo sucede si y sÃ³lo si
 \[
 \nu(\partial_u r) = \varepsilon
 \]
 
 
-Usando lo anterior y la definición de $\partial_u$, generamos un algoritmo que verifique si $u \in L \llbracket r \rrbracket$. 
-Expresandolo en términos de la relación $r \sim u$ ($u$ casa\footnote{match} con $r$).
+Usando lo anterior y la definiciÃ³n de $\partial_u$, generamos un algoritmo que verifique si $u \in L \llbracket r \rrbracket$. 
+Expresandolo en tÃ©rminos de la relaciÃ³n $r \sim u$ ($u$ casa\footnote{match} con $r$).
 \begin{definition}
-La relación de {\em casa} se define como sigue:
+La relaciÃ³n de {\em casa} se define como sigue:
 \begin{gather*}
 r \sim \varepsilon \Leftrightarrow_{def} \nu(r) = \varepsilon\\
 r \sim aw \Leftrightarrow_{def} \partial_a r \sim w
@@ -482,14 +481,14 @@ r \sim u \Leftrightarrow u \in L \llbracket r \rrbracket
 \]
 \end{proposition}
 \begin{proof}
-  Inducción sobre $u$
+  InducciÃ³n sobre $u$
 \end{proof}
 
 
 % \[
 % \begin{array}{|l|cl|}
 % \hline
-% \multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} \\
+% \multicolumn{1}{|c|}{\text{\textquestiondown} abb \in \mathcal{L} \llbracket a \cdot b^{\ast} \rrbracket \text{?}} & & \multicolumn{1}{c|}{\text{\textquestiondown} aba \in \mathcal{L} \llbracket aÂ \cdot b^{\ast} \rrbracketÂ \text{?}} \\
 % \hline
 % a \cdot b^{\ast} \sim abb & & a \cdot b^{\ast} \sim aba\\
 % \phantom{\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim bb} & &\phantom{\Leftrightarrow \partial_a (a \cdot b^{\ast}) \sim ba}\\
@@ -539,7 +538,7 @@ lenguaje es regular o no.
 % \bibitem{Hop} J. E. Hopcroft, R. Motwani, J. D. Ullman. Introduction to Automata Theory, Languages, and Computation. 2nd edition. 
 %   Addison--Wesley Publishing Company. 2001.
 
-% \bibitem{Mar} J. Martin. Lenguajes Formales y la Teoría de la Computación. Tercera Ed. McGraw Hill. México. 2005.
+% \bibitem{Mar} J. Martin. Lenguajes Formales y la TeorÃ­a de la ComputaciÃ³n. Tercera Ed. McGraw Hill. MÃ©xico. 2005.
 
 % \bibitem{Owe} S. Owens, J. Reppy, A. Turon. Regular--expression Derivatives Reexamined. Journal of Functional Programming Vol. 19, No. 2. 2009.
 
