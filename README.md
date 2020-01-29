@@ -21,10 +21,13 @@
 - [ ] Ir con Favio la semana del 6 de enero (6 a 10 de enero).
 - [ ] En las presentaciones `aylfm161`, checar los diff: `aylfm161p01.tex~`, `aylfm161p06.tex\~`, 
 `aylfm161p07.tex\~`, `aylfm161p11.tex\~` y `aylfm161p12.tex\~`
+- [ ] Checar error en el `.tex` de `/presentaciones/aylfm161/aylfm161p12.tex`.
+- [ ] Hacer un `Makefile` genérico y con base a ése, usarlo para cada diferente proyecto.
 
 ## Entorno
 
 * `pdflatex`: pdfTeX 3.14159265-2.6-1.40.19 (TeX Live 2018)
+* `zsh`: zsh 5.7.1
 
 ## Scripts
 
@@ -34,6 +37,15 @@ se puede hacer con el siguiente comando:
 ```bash
 $ for file in *.tex; do iconv --from-code=ISO-8859-1 --to-code=UTF-8 "$file" > "$file.aux" && mv -f "$file.aux" "$file"; done
 ```
+
+#### TODO
+
+```bash
+$ pdflatex -output-directory=build aylfm161p12.tex
+$ mkdir -p build
+```
+
+https://tex.stackexchange.com/questions/369771/how-to-delete-files-generated-by-latex
 
 ### Compilación
 
