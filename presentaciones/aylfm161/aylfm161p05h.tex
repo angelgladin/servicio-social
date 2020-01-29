@@ -1,0 +1,383 @@
+%\documentclass[xcolor=dvipsnames]{beamer}
+\documentclass[xcolor=dvipsnames,handout]{beamer}
+
+\input{macros2006}
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+\newcommand{\espc}{\vspace{.5cm}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\cv}{\ensuremath{\varepsilon}}
+\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\newtheorem{teorema}{Teorema}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+\newcommand{\dest}{\ensuremath{\delta^\star}}
+
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\usepackage{BeamerColor}
+%\usecolortheme[RGB={33,66,33}]{structure}
+\usecolortheme[named=NavyBlue]{structure}
+%\usefonttheme{}
+\setbeamercovered{invisible}
+%\setbeamertemplate{headline}{\insertshortinstitute}
+%\setbeamertemplate{footline}[page number]{\insertshortinstitute}
+%\insertshortinstitute
+}
+
+\usepackage[spanish]{babel}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+
+\title[AyLF MCIC 2016-1]{Autómatas y Lenguajes Formales 2016-1}
+\subtitle
+{Maestría en Ciencia e Ingeniería de la Computación UNAM\\
+  Tema 5: Minimización de autómatas, propiedades de cerradura de lenguajes regulares}
+
+\author[Favio E. Miranda Perea]{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+
+
+\institute[FC UNAM]{Facultad de Ciencias UNAM}
+
+\date{\today}
+
+\subject{Theoretical Computer Science}
+
+% \pgfdeclareimage[height=0.5cm]{LogoTecBueno}{LogoTecBueno.eps}
+\logo{\includegraphics[height=1cm]{fc2.png}}
+
+\begin{document}
+
+
+\beamerdefaultoverlayspecification{<+->}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+
+% \begin{frame}
+%   \titulos{Resumen}{}
+%   \bi
+%   \item Hasta ahora hemos visto los siguientes procesos:
+%     \bi
+%     \item Eliminación de $\cv$-transiciones AFN$\cv\Imp$ AFN.
+%       \espc
+%     \item Eliminación del no-determinismo AFN$\Imp$ AFD.\espc
+%       \item Diseño de un AFN$\cv$ a partir de una ER. (Síntesis de Kleene)
+%     \ei
+%     \item Para terminar nuestro estudio de los lenguajes regulares
+%     veremos hoy:
+%     \bi
+%     \item Minimización de AFD.\espc
+%       \item Teorema de análisis de Kleene: dado un AF diseñar una ER equivalente.
+%     \ei
+%   \ei
+% \end{frame}
+
+\section{Minimización de AFD}
+
+
+
+
+
+\newcommand{\afdm}{\ensuremath{M=\pt{Q,\S,\delta,q_0, F}}}
+\begin{frame}
+\titulos{Eliminación de Estados Inaccesibles}{}
+\bi
+\item Sea $M=\pt{Q,\S,\delta,q_0, F}$ un AFD. Decimos que un estado
+  $q\in Q$ es accesible si y sólo si existe $w\in\sest$ tal que
+  $\dest(q_0,w)=q$. \medskip
+\item Es decir, $q$ es accesible si y sólo si el procesamiento de alguna cadena termina en
+  el estado $q$. \medskip
+\item  El conjunto de
+estados accesibles de un autómata $M$ se denota $Acc(M)$.\medskip
+\item Si un estado no es accesible decimos que es inaccesible.
+\ei
+\end{frame}
+
+
+\begin{frame}
+\titulos{Cálculo de estados accesibles}{}
+\bi
+\item  Es claro que el conjunto $Acc(M)$ puede construirse de manera algoritmica, por ejemplo como
+sigue:\medskip
+
+\bi
+\item $A_N:=\{q_0\},\;\; A_V:=\vacio$.
+  \item Mientras que $A_N\neq A_V$
+    \bi
+    \item $A_V:=A_N$
+      \item $A_N:= A_N\cup\{q\in
+        Q\;|\;\delta(p,a)=q\;a\in\S,\;p\in A_N\}$
+    \ei
+\item $Acc(M):=A_N$.
+\ei
+\medskip
+\item Los estados inaccesibles en un autómata son ínutiles y pueden ser
+eliminados sin afectar el lenguaje de aceptación
+\ei
+\end{frame}
+
+%  de acuerdo a la
+% siguiente
+\begin{frame}
+\titulos{Eliminación de estados inaccesibles}{Autómata equivalente}
+
+% \prop{
+\bi
+\item Dado un \afdm existe un AFD $M'=\pt{Q',\S',\delta',q'_0, F'}$
+  equivalente a $M$ que contiene únicamente a los estados accesibles
+  de $M$, es decir, $Q'=Acc(M)$ y por lo tanto no contiene estados inaccesibles.
+  
+\item Basta definir $M'$ como sigue:
+  \bi
+  \item $Q'=Acc(M)$
+    \item $\Sigma'=\Sigma$
+      \item $\delta'=\restr{\delta}{ _{Q'}}$
+        \item $q'_0=q_0$
+          \item $F'=F\cap Q'$
+  \ei
+
+\item La prueba de la equivalencia $L(M)=L(M')$ es inmediata y se deja como
+ ejercicio.
+ 
+\item Debido a este resultado de ahora en adelante podemos \\ suponer que un
+autómata no tiene estados inaccesibles.
+\ei
+\end{frame}
+
+\subsection{Equivalencia de estados}
+\begin{frame}
+  \titulos{Equivalencias de estados}{Minimización}
+\bi
+\item   Decimos que dos estados $q,q'\in Q$ de un AFD son equivalentes $q\equiv q'$
+  si y sólo si:
+  \beqs
+  \fa w\in\sest\;(\dest(q,w)\in F\Iff\dest(q',w)\in F)
+  \eeqs
+\medskip
+\item Es decir, $\dest(q,w),\dest(q',w)$ son ambos finales o ambos no
+  finales.
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{$\equiv$ es un relación de equivalencia}{Minimización de AFD}
+  La relación $\equiv$ entre estados es una relación de equivalencia,
+  es decir cumple lo siguiente:
+  \bi
+  \item Reflexividad: $q\equiv q$.\medskip
+    \item Simetria: si $q\equiv q'$ entonces $q'\equiv q$.\medskip
+      \item Transitividad: si $q\equiv q'$ y $q'\equiv q''$ entonces
+        $q\equiv q''$.
+  \ei
+\pause  Adicionalmente la función de transición $\de$ es compatible con
+  $\equiv$, en el siguiente sentido:
+  \bi
+  \item[] Si $q\equiv q'$ entonces $\fa a\in\S\;\big(\de(q,a)\equiv\de(q',a)\big)$
+  \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Partición del conjunto de estados}{Minimización de AFD}
+  La relación de equivalencia $\equiv$ genera una \alert{partición} del
+  conjunto de estados dada por las clases de equivalencia de cada
+  estado definidas como:
+  \beqs
+  [q]:=\{p\in Q\;|\;q\equiv p\}
+  \eeqs
+\pause Es decir, los conjuntos $[q]$ cumplen lo siguiente:
+ \bi
+ \item $\fa q\in Q\;([q]\neq\vacio\;)$.\medskip
+   \item $\fa p,q\in Q\;([q]=[p]$ ó $[q]\cap[p]=\vacio)$.\medskip
+     \item $\bigcup_{q\in Q}[q]=Q$.
+ \ei
+
+\end{frame}
+\subsection{Autómata cociente}
+\begin{frame}
+  \titulos{El autómata cociente}{Minimización de AFD}
+  Dado un AFD $M=\pt{Q,\S,\de,q_0,F}$ existe un autómata $M^{min}$, equivalente a $M$ y que tiene un número mínimo de estados. Este autómata se define como $M^{min}=\pt{Q_m,\S,\de_m,[q_0],F_m}$ donde:
+  \bi
+  \item $Q_m:=Q/\!\boldsymbol{\equiv}:=\{[q]\;|\;q\in Q^M\}$\medskip
+    %\item $q_0:=[q^M_0]$.\medskip
+\item $[q_0]$ es el estado inicial.\medskip
+      \item $F_m:=\{[q]\;|\;q\in F\}$\medskip
+        \item $\de_m:Q\times\S\imp Q$ se define como
+          \beqs
+          \de_m([q],a)=[\de(q,a)]
+          \eeqs
+  \ei\pause$M^{min}$ se conoce también como el autómata cociente de $M$ \\ denotado
+  también con $M/\equiv$.
+\end{frame}
+
+
+
+\begin{frame}
+  \titulos{Minimalidad de $M^{min}$}{}
+\bi
+\item Dado un AFD $M=\pt{Q,\S,\delta, q_0, F}$ el autómata cociente
+  $M/\!\!\equiv$ es el autómata mínimo equivalente a $M$. Es decir, se
+  tiene $L(M)=L(M/\!\!\equiv)$ y no existe un autómata equivalente a
+  $M$ con menos estados que $M/\!\!\equiv$.
+\item La equivalencia entre $M$ y $M^{min}$ se sigue de la siguiente propiedad:
+\item[] Sean $M=\pt{Q,\Sigma,\delta,q_0,F}$ un AFD y $M^{min}$ su autómata
+    cociente. Para cualesquiera $q\in Q,\;w\in\sest$ se cumple
+    \beqs
+    \delta^\star_m([q],w)=[\dest(q,w)]
+    \eeqs
+
+\item[] La prueba es por inducción sobre $w$.
+\ei
+\end{frame}
+
+
+\subsection{$k$-equivalencia}
+\begin{frame}
+  \titulos{$k$-equivalencia}{Minimización de AFD}
+\bi
+\item  Definimos la relación de $k$-equivalencia para cualquier $k\in\N$
+ como sigue:
+ \beqs  \fa w\in\sest,|w|\leq k\;(\dest(q,w)\in F\Iff\dest(q',w)\in F)
+  \eeqs
+\item Es decir, para cualquier cadena $w$ de longitud menor o igual que
+  $k$, los estados $\dest(q,w),\dest(q',w)$ son ambos finales o ambos no
+  finales.\medskip
+\item  $\equiv_k$ es una relación de equivalencia cuyas clases se denotan
+  con $[q]_k$, es decir $[q]_k=\{p\in Q\;|\;q\equiv_k p\}$
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Propiedades}{$k$-equivalencia}
+  La relación de $k$-equivalencia cumple las siguientes
+  propiedades:\espc
+  
+  \bi
+  \item[P1] $q\equiv q'$ si y sólo si $\fa k\in\N(q\equiv_k q')$.\medskip
+    \item[P2] $q\equiv_0 q'$ si y sólo si $q,q'\in F$ ó $q,q'\in Q-F$\medskip
+      \item[P3] $[q]_0=F$ si y sólo si $q\in F$.\medskip
+        \item[P4] Si $q\equiv_k q'$ entonces $q\equiv_{k-1} q'$\medskip
+          \item[P5] $[q]_k\inc[q]_{k-1}$
+
+  \ei
+  
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Propiedades}{$k$-equivalencia}
+%  La relación de $k$-equivalencia cumple las siguientes propiedades:
+  \bi
+              \item[P6] Si $q\equiv_kq'$ entonces $\fa a\in\S(\de(q,a)\equiv_{k-1}\de(q',a))$\medskip
+  \item[P7]$q\equiv_k q'$ si y sólo si $q\equiv_{k-1}q'$ y
+    $\fa a\in\S(\de(q,a)\equiv_{k-1}\de(q',a))$\medskip
+    \item[P8] Sea $P_k=\{[q]_k\;|\;q\in Q\}$ la partición dada por la
+      relación $\equiv_k$ para cualquier
+      $k\in\N$.\\ Si $P_k=P_{k-1}$ para alguna $k$ entonces $P_k=P_m$
+      para toda $m\geq k$.
+  \ei
+  
+\end{frame}
+\subsection{Construcción del autómata mínimo}
+\begin{frame}
+  \titulos{Construcción del autómata mínimo}{Minimización de AFD}
+  Dado un AFD $M=\pt{Q,\S,\de,q_0,F}$ el AFD mínimo asociado puede
+  construirse como sigue:
+  \bi
+  \item $Q:=Q-$\! estados inaccesibles desde $q_0$. 
+  \item $k:=0$ Construir la partición $P_0=\{F,Q-F\}$.
+    \item[] {\bf Repetir}
+      \bi
+      \item $k:=k+1$
+        \item Construir $P_k$ a partir de $P_{k-1}$ manteniendo a dos
+          estados $q,q'$ en la misma clase si y sólo si para toda
+          $a\in\S$, los estados $\de(q,a)$ y $\de(q',a)$ estaban en la
+          misma clase en $P_{k-1}$.
+      \ei
+      \item[] {\bf hasta} que $P_k=P_{k-1}$.
+        \item En tal caso $P_k$ es la partición generada por $\equiv$,
+          $P_k= Q/\!\boldsymbol{\equiv}=\{[q]\;|\;q\in Q\}$.
+
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Correctud del algoritmo de minimización}{}
+\bi
+\item La correctud del algoritmo anterior es consecuencia de la siguiente propiedad: 
+\item[] Si $M$ es un AFD entonces la sucesión de particiones
+  $P_0,P_1,\ldots, P_k,\ldots $ generadas
+  por las clases de $k$-equivalencia de estados se estaciona,
+\item[] es decir, existe un $n\in \N$ tal que $\fa k\geq n,\;P_k=P_n$. 
+\item[] Más aún 
+  $n\leq |Q|$, es decir, $n$ es a lo más el número de estados de $M$.
+ \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Propiedades de cerradura}{Lenguajes regulares}
+Las propiedades de cerradura nos permiten construir nuevos lenguajes
+regulares a partir de lenguajes ya conocidos por medio de algunas operaciones
+entre lenguajes.\\ \pause
+Si $L,M$ son lenguajes regulares entonces:
+\bi
+\item $L\cup M$ es regular.
+\item $LM$ es regular.
+\item $L^\star$ es regular.
+\item $L^+$ es regular.
+\item $\overline{L}$ es regular
+\item $L\cap M$ es regular.
+\item $L-M$ es regular.
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{$L=\{a^ib^{\,j}\;|\;i\neq j\}$}{Lenguajes no-regulares}
+
+ \bi
+ \item Supongamos que $L$ es regular.\espc
+   \item $a^\star b^\star$ claramente es regular.\espc
+     \item Por propiedades de cerradura $a^\star
+       b^\star-L$ también es regular.\espc
+       \item Pero $a^\star b^\star-L=\{a^ib^{\,i}\;|\;i\in\N\}$ que no es
+         regular.\espc
+         \item Por lo tanto $L$ no puede ser regular.
+ \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{$L=\{wb^n\;|\;|w|=n, n\geq 1\}$}{Lenguajes no-regulares}
+
+ \bi
+ \item Supongamos que $L$ es regular.\espc
+   \item $a^\star b^\star$ claramente es regular.\espc
+     \item Por propiedades de cerradura $L\cap a^\star
+       b^\star$ también es regular.\espc
+       \item Pero $L\cap a^\star b^\star=\{a^ib^{\,i}\;|\;i\in\N\}$ que no es
+         regular.\espc
+         \item Por lo tanto $L$ no puede ser regular.
+ \ei
+\end{frame}
+
+
+\end{document}
+  
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fcem7"
+%%% End: 

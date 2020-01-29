@@ -1,0 +1,737 @@
+%\documentclass[xcolor=dvipsnames]{beamer}
+\documentclass[xcolor=dvipsnames,handout]{beamer}
+
+\input{macros2006}
+
+
+
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+
+\newcommand{\espc}{\vspace{.5cm}}
+
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\cv}{\ensuremath{\varepsilon}}
+\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\newtheorem{teorema}{Teorema}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+\newcommand{\dest}{\ensuremath{\delta^\star}}
+
+
+
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\usepackage{BeamerColor}
+%\usecolortheme[RGB={33,66,33}]{structure}
+\usecolortheme[named=NavyBlue]{structure}
+%\usefonttheme{}
+\setbeamercovered{invisible}
+%\setbeamertemplate{headline}{\insertshortinstitute}
+%\setbeamertemplate{footline}[page number]{\insertshortinstitute}
+%\insertshortinstitute
+}
+
+% \mode<presentation>
+% {
+%   \usetheme[hideallsubsections]{Berkeley}
+% %\usecolortheme{sidebartab}
+% \usecolortheme{dolphin}
+% \useoutertheme{sidebar}
+%   % or ...
+
+%   \setbeamercovered{transparent}
+%   % or whatever (possibly just delete it)
+
+
+
+% %\setbeamertemplate{headline}{\insertshortinstitute}
+% \setbeamertemplate{footline}[page number]{\insertshortinstitute}
+% %\insertshortinstitute
+% }
+
+\usepackage[spanish]{babel}
+% or whatever
+
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+
+\title[AyLF MCIC 2016-1] % (optional, use only with long paper titles)
+{Autómatas y Lenguajes Formales 2016-1}
+\subtitle
+{Maestría en Ciencia e Ingeniería de la Computación UNAM\\
+  Tema 4: AFN con $\cv$-transiciones, 
+Teorema de Kleene I}
+
+\author[Favio E. Miranda Perea] % (optional, use only with lots of authors)
+{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[FC UNAM] % (optional, but mostly needed)
+{Facultad de Ciencias UNAM
+}
+%  \and
+%  \inst{2}%
+%  Department of Theoretical Philosophy\\
+%  University of Elsewhere}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+\date % (optional, should be abbreviation of conference name)
+{\today}
+% - Either use conference name or its abbreviation.
+% - Not really informative to the audience, more for people (including
+%   yourself) who are reading the slides online
+
+\subject{Theoretical Computer Science}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+% \pgfdeclareimage[height=0.5cm]{LogoTecBueno}{LogoTecBueno.eps}
+\logo{\includegraphics[height=1cm]{fc2.png}}
+
+
+
+
+
+
+\begin{document}
+
+\beamerdefaultoverlayspecification{<+->}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%\section{AFN}
+
+\section{AFN}
+
+%  \begin{frame}
+%    \titulos{Función $\dest$}{AFN}
+%  Sea $M=\pt{Q,\S,\delta,q_0,F}$ un AFN. La función de transición
+%  $\delta$ se extiende a cadenas mediante una función 
+%\beqs
+%\dest:Q\times\sest\imp \Pe(Q)
+%\eeqs\pause
+%%Primero definimos una extensión a conjuntos de estados mediante:
+%%\beqs
+%%\de(S,a)=\bigcup_{q\in S}\de(q,a)
+%%\eeqs
+
+%%\end{frame}
+%%\begin{frame}
+%%  \titulos{Función $\dest$}{AFN}
+%%  \beqs
+%%\dest:Q\times\sest\imp \Pe(Q)
+%%\eeqs
+%definida recursivamente como sigue:\pause
+%\bi
+%\item[] \beqs\dest(q,\cv)=q\eeqs
+%  \item[] \beqs\dest(q,wa) %\delta\big(\dest(q,w),a\big)
+%    =\bigcup_{q\in\dest(q,w)}\de(q,a)\eeqs
+%    \ei
+
+%%$\dest$ se llama la función de transición extendida de $M$. \\    
+%  \end{frame}
+
+%\begin{frame}
+%  \titulos{Función de transición extendida}{Lenguaje aceptado}
+%  \bi
+%  \item[] El lenguaje de aceptación se define mediante $\dest$ como sigue:
+%  \beqs
+%   L(M)=\{w\in\sest\;|\;\dest(q_0,w)\cap F\neq\vacio\}
+%  \eeqs\pause
+  
+%  \item[] Es decir, $w\in L(M)$ si y sólo si existe al menos un cómputo
+%    que conduce a un estado final al iniciar la máquina en $q_0$ y $w$. 
+%  \ei
+%\end{frame}
+
+%\section{AFN $\Iff$ AFD}
+
+%  \begin{frame}
+%    \titulos{Eliminación del No-determinismo}{AFN $\Iff$ AFD}
+%    \bi
+%    \item Todo AFD es a la vez un AFN con la particularidad de que
+%      $\de(p,a)$ consta de un único estado.\espc
+%      \item La idea para transformar un AFN en un AFD es considerar a
+%        cada conjunto de estados $\de(p,a)$ del AFN como un único
+%        estado del nuevo AFD. \espc
+%        \item Este método se conoce como la \alert{construcción de subconjuntos}.
+%    \ei
+%  \end{frame}
+
+
+  \begin{frame}
+    \titulos{AFN $\Imp$ AFD}{Construcción de subconjuntos}
+    Dado un AFN $M=\pt{Q,\S,\de_N,q_0,F}$ definimos un AFD
+    $M^d=\pt{Q^d,\S^d,\de, q^d_0,F^d}$ como sigue:\pause \espc
+    \bi
+    \item $Q^d=\Pe(Q)$.
+      \item $\S^d=\S$.
+        \item $\de(S,a)=\bigcup_{q\in S}\de_N(q,a)$
+          \item $q^d_0=\{q_0\}$
+            \item $F^d=\{S\inc Q\;|\;S\cap F\neq\vacio\}$
+  
+  \item  Ambos autómatas son equivalentes, es decir, $L(M)=L(M^d)$.
+    \ei
+  \end{frame}
+
+\section{AFN con $\cv$-transiciones}
+
+\begin{frame}
+  \titulos{Autómatas No-deterministas con
+    $\cv$-transiciones}{Definición}
+   Un autómata finito {\bf no} determinista con $\cv$-transiciones (AFN$\cv$) es una quintupla
+    \beqs
+    M=\pt{Q,\S,\de,q_0,F}
+    \eeqs\pause
+    donde
+    \bi
+    \item $Q$ es un conjunto finito de estados.
+      \item $\S$ es el alfabeto de entrada.
+        \item $\de:Q\times(\alert{\S\cup\{\cv\}})\imp \Pe(Q)$ es la función de transición.
+          \item $q_0\in Q$ es el estado inicial.
+            \item $F\inc Q$ es el conjunto de estados finales.
+    \ei
+  \end{frame}
+
+  \begin{frame}
+    \titulos{AFN$\cv$}{Observaciones}
+ \beqs
+    \de:Q\times(\S\cup\{\cv\})\imp \Pe(Q)
+    \eeqs\pause
+    \bi
+    \item Obsérvese que la única diferencia está en el dominio de
+      $\delta$.\espc
+      \item Transiciones de la forma $\delta(q,\cv)=a$ están
+        definidas.\espc
+        \item Tales transiciones indican que la máquina puede cambiar
+          de estado \alert{sin} leer ningún símbolo.\espc
+          \item Esto causa un no-determinismo más complicado de
+            modelar matemáticamente pero tiene grandes ventajas.
+    \ei
+  \end{frame}
+
+  \begin{frame}
+        \titulos{AFN$\cv$}{Observaciones}
+\bi
+\item Se permiten múltiples cómputos para una cadena de entrada.\espc
+  \item Pueden existir cómputos bloqueados.\espc
+    \item A diferencia de los AFD y AFN pueden existir cómputos
+      infinitos, es decir, surge la no-terminación.\espc
+      \item La presencia de $\cv$-transiciones permite mayor libertad
+        en el diseño.
+\ei
+  \end{frame}
+
+  \begin{frame}
+    \titulos{$\cv$-cerradura de un estado}{AFN$\cv$}
+    Dado un estado $q$, definimos la $\cv$-cerradura de $q$ como
+    el conjunto de estados alcanzables desde $q$ mediante cero o más
+    $\cv$-transiciones. \pause Es decir
+    \beqs
+\!\!\!\!\!    Cl_\cv(q)=\{s\in Q\;|\;\exists p_1,\ldots,p_n\;\mbox{con}\;p_1=q,p_n=s,p_i\in\de(p_{i-1},\cv)\}
+    \eeqs\pause
+    Tal definición se puede dar recursivamente:
+        \bi
+    \item $q\in Cl_\cv(q)$
+      \item Si $r\in Cl_\cv(q)$ y $\de(r,\cv)=s$ entonces $s\in Cl_\cv(q)$
+    
+    \item La definición de $\cv$-cerradura se extiende a conjuntos de
+    estados como sigue:
+    \beqs
+    Cl_\cv(S)=\bigcup_{q\in S}Cl_\cv(q)
+    \eeqs
+    \ei
+%    \beqs
+%    Cl_\cv(q)=\{r\in Q\;|\;\}
+%    \eeqs
+  \end{frame}
+
+
+
+
+\subsection{Función $\dest$}
+  \begin{frame}
+    \titulos{Función $\dest$}{AFN$\cv$}
+  Sea $M=\pt{Q,\S,\delta,q_0,F}$ un AFN$\cv$. La función de transición
+  $\delta$ se extiende a cadenas mediante una función 
+\beqs
+\dest:Q\times(\sest\cup\{\cv\})\imp \Pe(Q)
+\eeqs\pause
+%Primero definimos una extensión a conjuntos de estados mediante:
+%\beqs
+%\de(S,a)=\bigcup_{q\in S}\de(q,a)
+%\eeqs
+
+%\end{frame} 
+
+%\begin{frame}
+%  \titulos{Función $\dest$}{AFN$\cv$}
+%  \beqs
+%\dest:Q\times\sest\imp \Pe(Q)
+%\eeqs
+definida recursivamente como sigue:\pause
+\bi
+\item[] \beqs\dest(q,\cv)=Cl_\cv(q)\eeqs
+\item[] \beqs\dest(q,wa)
+                                %=Cl_\cv\Big(\delta\big(\dest(q,w),a\big)\Big)
+  =Cl_\cv\Big(\bigcup_{p\in\dest(q,w)}\de(p,a)\Big)\eeqs
+    \ei
+
+%$\dest$ se llama la función de transición extendida de $M$. \\    
+  \end{frame}
+
+\section{Eliminación de $\cv$-transiciones}
+
+\begin{frame}
+    \titulos{Eliminación de $\cv$-transiciones}{AFN$\;\Imp\;$ AFN$\cv$}
+
+Cualquier AFN$\cv$ es inmediatamente un AFN$\cv$ con la particularidad
+de que no existen $\cv$-transiciones.
+%\beqs
+%\de(q,\cv)=\{q\}
+%\eeqs
+    
+  \end{frame}
+
+\begin{frame}
+    \titulos{Eliminación de $\cv$-transiciones}{AFN$\cv\;\Imp\;$ AFN}
+Dado un AFN$\cv$ $M_1=\pt{Q_1,\S,\de_1,q_{10},F_1}$ existe un $AFN$
+equivalente $M=\pt{Q,\S,\de,q_0,F}$, definido mediante:
+\bi
+\item $Q:=Q_1$\espc
+  \item $q_0:=q_{10}$\espc
+    \item
+      $\de(q,a)=\de_1^\star(q,a)= % Cl_\cv\big(\de_1(Cl_\cv(q),a)\big)=
+      Cl_\cv\Big(\bigcup_{p\in Cl_\cv(q)}\de_1(p,a)\Big)$\espc
+      \item $F:=F_1\cup\{q_{10}\}$ si $Cl_\cv(q_{10})\cap
+        F_1\neq\vacio$\espc
+        \item $F:=F_1$ en caso contrario.
+\ei
+  \end{frame}
+
+  \begin{frame}
+    \titulos{Autómatas Finitos}{AFD$\;\Iff\;$ AFN$\;\Iff\;$ AFN$\cv$}
+    \bi
+\item Con la equivalencia AFN$\;\Iff\;$ AFN$\cv$ hemos cerrado el ciclo de
+equivalencias de autómatas finitos.
+\item Cualquier tipo de autómata finito puede convertirse en un AFD y
+  viceversa, es decir:
+  \beqs
+  AFD\;\Iff\; AFN\;\Iff\; AFN\cv
+  \eeqs
+  \item Nuestra siguiente meta es probar el teorema de
+    Kleene, el cual es uno de los resultados más importantes en la
+  teoría de la computación pues asegura la equivalencia entre dos de nuestros
+  tres conceptos fundamentales, los autómatas finitos y los lenguajes
+  regulares.
+  \ei
+  \end{frame}
+
+
+
+\section{Teorema de Kleene I}
+\subsection{Teorema de Síntesis de Kleene}
+\begin{frame}
+  \titulos{Teorema de Kleene}{}
+
+
+\begin{teorema}[Kleene] Un lenguaje es regular si y sólo si es
+  aceptado por un autómata finito.
+  \end{teorema}
+  \begin{proof}
+    La prueba es en dos partes:
+    \bi
+    \item[I] Síntesis: Dado un lenguaje regular $L$ existe un
+      autómata finito $M$ tal que $L=L(M)$.
+      \item[II] Análisis: Dado un autómata finito $M$ existe una
+        expresión regular $\al$ tal que $L(M)=L(\al)$. Es decir,
+        $L(M)$ es regular.
+    \ei
+    \end{proof}
+\end{frame}
+
+\subsection{ER $\Imp$ AF}
+\begin{frame}
+  \titulos{Teorema de Kleene I}{ER $\Imp$ AF}
+%\includegraphics{nfa-phi.png}
+\bi
+\item El teorema de sintésis de Kleene se probará construyendo un autómata
+  finito para un lenguaje regular dado analizando la forma de la
+  expresión regular que genera al lenguaje.\espc
+  \item La demostración es constructiva y se hará mediante inducción
+    sobre las expresiones regulares.
+    \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Teorema de Kleene I}{Base de la Inducción, $\al=\vacio$}
+
+Si $\al=\vacio$ entonces el siguiente autómata reconoce a $L(\al)$:  
+  \begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.6]{cap2g8.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \titulos{Teorema de Kleene I}{Base de la Inducción, $\al=\cv$}
+  Si $\al=\cv$ entonces el siguiente autómata reconoce a $L(\al)$: 
+    \begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.6]{cap2gg48.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \titulos{Teorema de Kleene I}{Base de la Inducción, $\al=a$}
+  Si $\al=a$ entonces el siguiente autómata reconoce a $L(\al)$:
+    \begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.6]{cap2gg49.png}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Teorema de Kleene I}{Paso Inductivo, $\al=\al_1+\al_2$}
+Si $\al=\al_1+\al_2$ entonces el siguiente autómata reconoce a $L(\al)$:        
+  \begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.3]{cap2gg51.png}
+\end{figure}
+donde $M_1,M_2$ son autómatas que reconocen a $L(\al_1),L(\al_2)$
+dados por la hipótesis de inducción.
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Teorema de Kleene I}{Paso Inductivo, $\al=\al_1\al_2$}
+  Si $\al=\al_1\al_2$ entonces el siguiente autómata reconoce a $L(\al)$:
+    \begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.3]{cap2gg52.png}
+\end{figure}
+donde $M_1,M_2$ son autómatas que reconocen a $L(\al_1),L(\al_2)$
+dados por la hipótesis de inducción.
+\end{frame}
+
+\begin{frame}
+  \titulos{Teorema de Kleene I}{Paso Inductivo, $\al=\al_1^\star$}
+  Si $\al=\al_1^\star$ entonces el siguiente autómata reconoce a $L(\al)$:
+    \begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.3]{cap2gg53.png}
+\end{figure}
+  donde $M_1$ es un autómata que reconoce a $L(\al_1)$
+dados por la hipótesis de inducción.
+\end{frame}
+
+
+
+
+\section{Teorema de Análisis de Kleene}
+
+%\subsection{Introducción}
+\begin{frame}
+  \titulos{Teorema de Análisis de Kleene}{$AF\Imp ER$}
+\begin{teorema}[Análisis de Kleene]
+  Dado un autómata finito $M$ existe una
+        expresión regular $\al$ tal que $L(M)=L(\al)$. Es decir,
+        $L(M)$ es regular.
+        \end{teorema}
+        \begin{proof}
+          Existen diversas demostraciones, nosotros usaremos el método
+          de ecuaciones características usando el lema de Arden.
+          \end{proof}
+        \end{frame}
+
+\subsection{Ecuaciones de Lenguajes}        
+\begin{frame}
+  \titulos{Ecuaciones de lenguajes}{Kleene II}
+ Sean $A,B\inc \sest$ y $X$ una variable:
+ \bi
+ \item Una ecuación lineal derecha para $X$ es una expresión de la
+   forma:
+   \beqs
+   X=AX+B
+   \eeqs
+ \item Análogamente, una ecuación lineal izquierda es una expresión
+     de la forma:
+     \beqs
+     X=XA+B
+     \eeqs
+     \item Donde el símbolo $+$ denota a la unión de lenguajes.
+ \ei
+\end{frame}
+
+
+
+\begin{frame}
+  \titulos{Lema de Arden}{}
+  Sean $A,B\inc\sest$ dos lenguajes y $X=AX+B$ una ecuación lineal
+  derecha. \pause Entonces
+  \bi
+  \item $A^\star B$ es una solución de la ecuación, es decir, $A^\star
+    B=A(A^\star B)+B$.\espc
+    \item Si $C$ es otra solución entonces $A^\star B\inc C$, es
+      decir, $A^\star B$ es la solución mínima.\espc
+      \item Si $\cv\notin A$ entonces $A^\star B$ es la única solución.
+  \ei
+\end{frame}
+\subsection{Teorema de Kleene II}
+\begin{frame}
+  \titulos{El sistema de ecuaciones de un AFN}{$AF\Imp ER$}
+  Dado un AFN $M=\pt{Q,\S,\de,q_0.F}$ tal que $Q=\{q_0,\ldots, q_n\}$.
+  Definimos los siguientes conjuntos:\pause
+  \bi
+  \item El conjunto de cadenas que se aceptan desde el estado $q_i$,
+    para cualquier $1\leq i\leq n$:
+    \beqs
+    L_i=\{w\in\sest\;|\;\dest(q_i,w)\cap F\neq\vacio\}
+    \eeqs
+  \item  $L_0$ es el lenguaje aceptado por $M$, es
+    decir, $L_0=L(M)$.
+    \item En general no es sencillo calcular directamente los conjuntos $L_i$. 
+  
+  \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{El sistema de ecuaciones de un AFN}{$AF\Imp ER$}
+  \bi
+  \item El conjunto de símbolos de $\S$ tal que existe una transición
+    del estado $q_i$ al estado $q_j$, para cualesquiera $1\leq i,j\leq
+    n$.
+    \beqs X_{i,j}=\{a\in\S\;|\;q_j\in\de(q_i,a)\}\eeqs
+    \item El conjunto auxiliar $Y_i$ que indica si $\varepsilon$ es
+      aceptada desde $q_i$
+      \beqs
+      Y_i = \left\{\ba{rl}
+        \{\varepsilon\} & \mbox{si}\;q_i\in F \\
+        \vacio & \mbox{en otro caso}
+        \ea
+        \right.
+      \eeqs
+  \ei
+  
+  \end{frame}
+
+  \begin{frame}
+    \titulos{El sistema de ecuaciones de un AFN}{AF$\;\Imp\;$ ER}
+
+La siguiente propiedad es fácil de demostrar para cualquier $1\leq
+i\leq n$.
+\beqs
+L_i=\sum_{j=0}^n X_{i,j}L_j + Y_i
+\eeqs \pause
+\bi
+\item Dicha propiedad genera el llamado sistema de ecuaciones
+características de una AFN.
+\item El lema de Arden nos indica como calcular los conjuntos $L_i$.
+\ei
+  \end{frame}
+
+  \begin{frame}
+    \titulos{Teorema de Análisis de Kleene}{Idea de la demostración}
+    \bi
+    \item Dado el autómata $M$ construir los conjuntos \beqs X_{i,j},\;Y_i\eeqs
+      \item Resolver el sistema de ecuaciones características mediante
+        el Lema de Arden.
+        \item La solución para $L_0$ genera una expresión regular para
+          $L(M)$.
+    \ei
+  \end{frame}
+
+
+
+%\subsection{Minimización de AFD}
+%%\subsection{Equivalencia de estados}
+%\begin{frame}
+%  \titulos{Equivalencias de estados}{Minimización}
+%  Decimos que dos estados $q,q'\in Q$ de un AFD son equivalentes $q\equiv q'$
+%  si:
+%  \beqs
+%  \fa w\in\sest\;(\dest(q,w)\in F\Iff\dest(q',w)\in F)
+%  \eeqs
+%\pause  Es decir, si $\dest(q,w),\dest(q',w)$ son ambos finales o ambos no
+%  finales.
+%\end{frame}
+%\begin{frame}
+%  \titulos{$\equiv$ es un relación de equivalencia}{Minimización de AFD}
+%  La relación $\equiv$ entre estados es una relación de equivalencia,
+%  es decir cumple lo siguiente:
+%  \bi
+%  \item Reflexividad: $q\equiv q$.
+%    \item Simetria: si $q\equiv q'$ entonces $q'\equiv q$.
+%      \item Transitividad: si $q\equiv q'$ y $q'\equiv q''$ entonces
+%        $q\equiv q''$.
+%  \ei
+%\pause  Adicionalmente la función de transición $\de$ es compatible con
+%  $\equiv$, en el siguiente sentido:
+%  \bi
+%  \item[] Si $q\equiv q'$ entonces $\fa a\in\S\;\big(\de(q,a)\equiv\de(q',a)\big)$
+%  \ei
+%\end{frame}
+%\begin{frame}
+%  \titulos{Partición del conjunto de estados}{Minimización de AFD}
+%  La relación de equivalencia $\equiv$ genera una \alert{partición} del
+%  conjunto de estados dada por las clases de equivalencia de cada
+%  estado definidas como:
+%  \beqs
+%  [q]:=\{p\in Q\;|\;q\equiv p\}
+%  \eeqs
+%\pause Es decir, los conjuntos $[q]$ cumplen lo siguiente:
+% \bi
+% \item $\fa q\in Q\;([q]\neq\vacio\;)$.
+%   \item $\fa p,q\in Q\;([q]=[p]$ ó $[q]\cap[p]=\vacio)$.
+%     \item $\bigcup_{q\in Q}[q]=Q$.
+% \ei
+
+%\end{frame}
+%\subsection{Autómata cociente}
+%\begin{frame}
+%  \titulos{El autómata cociente}{Minimización de AFD}
+%  Dado un AFD $M=\pt{Q^M,\S,\de^M,q^M_0,F^M}$ definimos el autómata
+%  mínimo $M^m=\pt{Q,\S,\de,q_0,F}$ como sigue:
+%  \bi
+%  \item $Q:=Q/\!\boldsymbol{\equiv}:=\{[q]\;|\;q\in Q^M\}$
+%    \item $q_0:=[q^M_0]$.
+%      \item $F:=\{[q]\;|\;q\in F^M\}$
+%        \item $\de:Q\times\S\imp Q$ se define como
+%          \beqs
+%          \de(q,a)=[\de^M(q,a)]
+%          \eeqs
+%  \ei\pause$M_m$ se conoce también como el autómata cociente de $M$ denotado
+%  también por $M/\equiv$.
+%\end{frame}
+%\subsection{$k$-equivalencia}
+%\begin{frame}
+%  \titulos{$k$-equivalencia}{Minimización de AFD}
+% Definimos la relación de $k$-equivalencia para cualquier $k\in\N$
+% como sigue:
+% \beqs  \fa w\in\sest,|w|\leq k\;(\dest(q,w)\in F\Iff\dest(q',w)\in F)
+%  \eeqs\pause
+%  Es decir, si para cualquier cadena $w$ de longitud menor o igual que
+%  $k$, los estados $\dest(q,w),\dest(q',w)$ son ambos finales o ambos no
+%  finales.\\ \pause
+%  $\equiv_k$ es una relación de equivalencia cuyas clases se denotan
+%  por $[q]_k=\{p\in Q\;|\;q\equiv_k p\}$
+%\end{frame}
+
+
+%\begin{frame}
+%  \titulos{Propiedades}{$k$-equivalencia}
+%  La relación de $k$-equivalencia cumple las siguientes
+%  propiedades:\espc
+  
+%  \bi
+%  \item[P1] $q\equiv q'$ si y sólo si $\fa k\in\N(q\equiv_k q')$.
+%    \item[P2] $q\equiv_0 q'$ si y sólo si $q,q'\in F$ ó $q,q'\in Q-F$
+%      \item[P3] $[q]_0=F$ si y sólo si $q\in F$.
+%        \item[P4] $q\equiv_k q'$ implica $q\equiv_{k-1} q'$
+%          \item[P5] $[q]_k\inc[q]_{k-1}$
+
+%  \ei
+  
+%\end{frame}
+
+
+%\begin{frame}
+%  \titulos{Propiedades}{$k$-equivalencia}
+%%  La relación de $k$-equivalencia cumple las siguientes propiedades:
+%  \bi
+%              \item[P6] Si $q\equiv_kq'$ entonces $\fa\in\S(\de(q,a)\equiv_{k-1}\de(q',a))$\espc
+%  \item[P7]$q\equiv_k$ si y sólo si $q\equiv_{k-1}q'$ y
+%    $\fa\in\S(\de(q,a)\equiv_{k-1}\de(q',a))$\espc
+%    \item[P8] Sea $P_k=\{[q]_k\;|\;q\in Q\}$ la partición dada por la
+%      relación $\equiv_k$ para cualquier
+%      $k\in\N$.\\ Si $P_k=P_{k-1}$ para alguna $k$ entonces $P_k=P_m$
+%      para toda $m\geq k$.
+%  \ei
+  
+%\end{frame}
+%\subsection{Construcción del autómata mínimo}
+%\begin{frame}
+%  \titulos{Construcción del autómata mínimo}{Minimización de AFD}
+%  Dado un AFD $M=\pt{Q,\S,\de,q_0,F}$ el AFD mínimo asociado puede
+%  construirse como sigue:
+%  \bi
+%  \item $Q:=Q-$\! estados inaccesibles desde $q_0$. 
+%  \item $k:=0$ Construir la partición $P_0=\{Q,Q-F\}$.
+%    \item {\bf Repetir}
+%      \bi
+%      \item $k:=k+1$
+%        \item Construir $P_k$ a partir de $P_{k-1}$ manteniendo a dos
+%          estados $q,q'$ en la misma clase si y sólo si para toda
+%          $a\in\S$, los estados $\de(q,a)$ y $\de(q',a)$ estaban en la
+%          misma clase en $P_{k-1}$.
+%      \ei
+%      \item {\bf hasta} que $P_k=P_{k-1}$.
+%        \item En tal caso $P_k$ es la partición generada por $\equiv$,
+%          $P_k= Q/\!\boldsymbol{\equiv}=\{[q]\;|\;q\in Q\}$.
+
+%  \ei
+%\end{frame}
+
+
+
+% \begin{frame}
+%   \titulos{Avisos}{}
+%   \bi
+%   \item El primer examen parcial será durante la segunda parte de la
+%     proxima sesión, el lunes 12 de febrero.\espc
+%     \item Los temas del examen parcial incluyen hasta la
+%       eliminación de $\cv$-transiciones.\espc
+%       \item Las secciones relevantes del libro son:
+%         \bc
+%         1.5, 2,4,2, 2.5,
+%         3.1, 3.2, 3.3, 4.1, 4.2
+%         \ec
+%         \espc
+%         \item Ejercicios relevantes del capítulo 4 son:
+%           \bc
+%           4.1,4.2,4.3, 4.10, 4.13, 4.16,4.17,4.18, 4.20, 4.28,4.29,
+%           4.35,4.36, 4,37
+%           \ec
+%      % \item La proxima sesión cubrirá una sesión de dudas previas al
+% %        examen y 
+
+      
+%   \ei
+%   \end{frame}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+

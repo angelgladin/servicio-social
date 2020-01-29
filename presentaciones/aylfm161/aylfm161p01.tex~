@@ -1,0 +1,689 @@
+
+\documentclass[xcolor=dvipsnames]{beamer}
+
+\input{macros2006}
+
+
+
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+
+\newcommand{\espc}{\vspace{.5cm}}
+
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\cv}{\ensuremath{\varepsilon}}
+\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\newtheorem{teorema}{Teorema}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\usepackage{BeamerColor}
+%\usecolortheme[RGB={33,66,33}]{structure}
+\usecolortheme[named=NavyBlue]{structure}
+%\usefonttheme{}
+\setbeamercovered{invisible}
+}
+
+
+
+\usepackage[spanish]{babel}
+% or whatever
+
+\usepackage[latin1]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+
+
+\title[AyLF MCIC 2016-1] % (optional, use only with long paper titles)
+{Autómatas y Lenguajes Formales 2016-1}
+\subtitle
+{Maestría en Ciencia e Ingeniería de la Computación UNAM\\
+  Sesión 1: Introducción}
+
+\author[Favio E. Miranda Perea] % (optional, use only with lots of authors)
+{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[FC UNAM] % (optional, but mostly needed)
+{Facultad de Ciencias UNAM
+}
+
+
+\date % (optional, should be abbreviation of conference name)
+{\today}
+% - Either use conference name or its abbreviation.
+% - Not really informative to the audience, more for people (including
+%   yourself) who are reading the slides online
+
+\subject{Theoretical Computer Science}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+% \pgfdeclareimage[height=0.5cm]{LogoTecBueno}{LogoTecBueno.eps}
+\logo{\includegraphics[height=1cm]{fc2.png}}
+
+
+
+
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+
+                               %\AtBeginSubsection[]
+%{
+%  \begin{frame}<beamer>
+%    \frametitle{Plan}
+%    \tableofcontents[currentsection,currentsubsection]
+%  \end{frame}
+%}
+
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command: 
+
+\beamerdefaultoverlayspecification{<+->}
+
+%\newcommand{\U}{\mathcal{U}}
+
+\begin{document}
+
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+
+\section{Introducción}
+
+
+\begin{frame}
+  \titulos{Introducción}{Fundamentos de la Computación}
+
+\bi
+\item ?` Qué son los fundamentos de la computación?
+  \item Ciencias de la computación: conglomerado de disciplinas
+    científicas y de ingeniería relacionadas
+    con el estudio y aplicación del cómputo.
+    \item Desde las mas puras y básicas dedicadas a los fundamentos de
+      la computación.
+      \item Hasta las ingenierías dedicadas a aplicaciones especificas.
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Fundamentos de la Computación}{}
+
+Los fundamentos de la computación se dividen esencialmente en dos:\espc
+\bi
+\item Teoría de la Programación:\espc
+  \bi
+  \item[]Dedicada a estudiar los lenguajes de programación para
+    implementar cómputos.
+  \ei
+  \item Teoría de la Computación:\espc
+    \bi
+    \item[]Dedicada a entender la naturaleza del cómputo, sus
+      posibilidades y limitaciones.
+      \ei
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Teoría de la Programación}{}
+  Se divide en diversas disciplinas:\espc
+  \bi
+  \item Teoría de Lenguajes de Programación
+    \item Semántica de Lenguajes
+      \item Teoría de Tipos
+        \item Estilos de Programacón: lógica, funcional,
+          imperativa,\ldots
+          \item Especificación y Verificación
+            \item Lógica Computacional
+              
+  \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Teoría de la Computación}{}
+  Mediante la teoría del cómputo podemos tratar preguntas como:
+  \bi
+  \item ?`Qué es un dispositivo de cómputo?
+    \item ?`Qué se puede computar?
+      \item ?`Qué {\bf no} se puede computar?
+        \item ?`Cual es el costo de un cómputo?
+          \item ?`Qué se puede computar {\bf eficientemente}?
+            \item ?`Como clasificar un problema de acuerdo a su dificultad?
+  \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Fundamentos de la Computación}{}
+ Nosotros nos dedicaremos exclusivamente
+  a dos aspectos de la teoría de la computación:\espc
+  \bi
+  \item Teoría de Autómatas y Lenguajes Formales\espc
+    
+    \item Introducción al análisis de algoritmos.   
+  \ei
+\end{frame}
+
+\begin{frame}
+    \framesubtitle{Introducción}
+  \frametitle{Importancia de la Teoría de la Computación}
+  \bi
+  \item Entender cuales son las capacidades y limitaciones
+    fundamentales de una computadora.
+  \item Captura de las nociones de \emph{cómputo} y
+    \emph{computabilidad efectiva} mediante
+%    Estudio de las propiedades deseables de una máquina mediante
+    abstracción matemática. 
+    \item Modelación mediante autómatas: 
+      \bi
+      \item Diseño de circuitos digitales.
+        \item Analizadores léxicos para compiladores.
+          \item Búsqueda de palabras clave en internet.
+            \item Verificación de sistemas de estados finitos
+              (por ejemplo protocolos de comunicación)
+      \ei
+  \ei
+  \end{frame}
+  
+
+
+%\section{Motivación}
+%\subsection{Abstracción del concepto de computadora}
+\begin{frame}
+  \framesubtitle{Introducción}
+  \frametitle{Abstracción del Concepto de Computadora}
+  \bi
+  \item Una computadora es una máquina que transforma ciertos datos de
+    entrada dados en resultados o datos de salida.
+    \item Podemos pensar que una computadora es una \emph{función} que
+      transforma sus argumentos de entrada en resultados.
+      \item ?` Cual sería el dominio de tal función? es decir, que
+        tipos de datos se esperan como entrada: números, palabras, textos,
+        imagenes, etc.
+      \ei\pause
+      \bc
+      ?` Cómo podemos representar los datos de entrada de manera
+      uniforme ?
+      \ec
+  \end{frame}
+
+\begin{frame}
+\frametitle{Abstracción del Concepto de Computadora}
+  \framesubtitle{Idea Básica}
+\bc
+Cualesquiera datos de entrada para una computadora pueden ser
+codificados mediante una cadena o sucesión de símbolos.
+\ec\pause
+\bi
+\item ?`Qué cadenas son aceptables como entrada ? 
+  \item ?` Qué cadenas se obtienen como salida ? 
+\item ?`Será posible caracterizar de manera finita a estos conjuntos de cadenas, los
+  cuales pueden ser infinitos?
+                                %\item Si el número de cadenas aceptadas es infinito ?` Será
+     % posible caracterizar a este conjunto de manera finita ?
+\ei
+  \end{frame}
+
+
+\section{Preliminares}
+
+
+
+
+
+
+
+\section{Alfabetos y Lenguajes}
+
+\subsection{Símbolos}
+
+\begin{frame}
+  \frametitle{?` Qué es un símbolo ? }
+
+Los \alert{símbolos} son los objetos más simples con los que trataremos: \\ \pause
+%Una
+%definición formal de símbolo nos llevaría al ámbito de la filosofía del lenguaje,
+%así que
+%Para nuestros propositos basta decir que
+\bc
+Un \alert{símbolo} o caracter es \emph{una entidad indivisible}
+\ec
+\pause
+
+{\bf Ejemplos}:
+\beqs
+\#\pause,\;\%\pause,\; \$\pause,\; \leftarrow\pause,\;\land\pause,\;
+a\pause,\;7
+\eeqs
+\pause
+Por comodidad utilizaremos como símbolos:\pause
+\bi
+\item a,b,c,d,e,\ldots\pause
+  \item 0,1,2,3,\ldots, 9
+\ei
+
+  \end{frame}
+
+\subsection{Alfabetos}
+  
+\begin{frame}
+\frametitle{Alfabetos}
+\bc
+Un \alert{alfabeto} es un conjunto \emph{finito} de símbolos.
+\ec
+\pause
+{\bf Ejemplos}:
+\bi
+\item<2-> El alfabeto del español: $a,b,c,d,e,f,\ldots,z$. %\pause
+  \item<3-> El alfabeto binario: $0,1$. %\pause
+\item<4-> El alfabeto ASCII: a,\ldots,z,A,\ldots, Z, \$,\%,\#,\ldots \\%\pause
+\ei
+\vspace{0.5cm}
+\uncover<5->{
+Usaremos la letra griega $\Sigma$ o letras mayúsculas del final del
+alfabeto $(X,Y,Z)$ para denotar alfabetos.}
+ \end{frame}
+
+\subsection{Cadenas}
+
+\begin{frame}\frametitle{Cadenas}
+\vspace{-.5cm}
+\bc
+Una \alert{cadena} o \emph{palabra} es una sucesión finita de símbolos
+tomados de un alfabeto dado. 
+\ec
+
+{\bf Ejemplos}:
+\bi
+\item<2-> En el alfabeto del español: $abc, def, feo, bonito, dsp,
+  guajolote, uizcm$.\\ %\pause
+  \item<3-> En el alfabeto binario: $0,101010,00,1100,001,11010$.\\ %\pause
+%\item<4-> El alfabeto ASCII: a,\ldots,z,A,\ldots, Z, \$,\%,\#,\ldots \\%\pause
+\ei
+\vspace{0.5cm}
+%\uncover<5->{
+%Usaremos la letra griega $\Sigma$ o letras mayúsculas del final del
+%alfabeto $(X,Y,Z)$ para denotar alfabetos.}
+
+  
+\uncover<4->{Obsérvese que los símbolos son a su vez cadenas que constan de un solo
+caracter. Más aún la \alert{cadena vacía} (i.e. la sucesión vacía de símbolos)
+se denotará con $\boldsymbol{\varepsilon}$.}
+
+\uncover<5->{Al conjunto infinito de todas las cadenas sobre $\Sigma$
+  se le denota con $\Sigma^\star$}
+
+\end{frame}
+
+%\subsection*{Longitud y Concatenación}
+
+\begin{frame}
+  \frametitle{Longitud y Concatenación}
+  \bi
+  \item La \alert{longitud} de una cadena $w$ es el número de símbolos en $w$
+    y se denota con $|w|$.
+    \item La operación básica entre cadenas es la
+      \alert{concatenación} que consiste en pegar cadenas en orden de
+      izquierda a derecha: Si $v,w$ son cadenas entonces $vw$ será la
+      cadena obtenida al pegar $v$ con $w$:\\ 
+      \bi
+      \item La concatenación de \emph{cala} y \emph{baza} es la
+        cadena \emph{calabaza}.\\ 
+        
+        \item si $v=broco$ y $w=li$ entonces $vw=brocoli$.\\ 
+          
+          \item si $x=champu$ y $y=rrado$ entonce $yx=rradochampu$.
+      \ei
+  \ei
+\end{frame}
+
+\begin{frame}
+  \frametitle{Propiedades de la Concatenación}
+  \bi
+  \item Asociatividad: $(uv)w = u(vw)$.\\ 
+    \item Identidad: $v\varepsilon = \varepsilon v= v$.\\ 
+      \item Longitud: $|vw| = |v| + |w|$.
+  \ei
+% \pause
+% La concatenación puede definirse recursivamente como sigue: sean $u,v\in\Sigma^\star,\;a\in\Sigma$
+% \bi
+% \item $u\varepsilon=\varepsilon u=u$
+%   \item $u(va)=(uv)a$
+% \ei
+  
+\bi
+\item[] ?` Es conmutativa la concatenación ?  \pause
+\item[]
+?` $vw = wv$ ?  \pause
+\item[] NO $jarrito\neq rritoja$
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Reversa}{}
+  La reversa de una cadena $u$, denotada $u^R$, se define como sigue:
+  \bc
+  Si $u=a_1a_2\ldots a_n$ entonces $u^R=a_na_{n-1}\ldots a_2a_1$.
+  \ec
+  \pause
+  % La reversa de una cadena $u$ se define recursivamente como sigue:
+  % \bi
+  % \item[] $\varepsilon^R=\varepsilon$
+  %   \item[] $(va)^R=av^R$
+  % \ei
+  \pause
+  Se cumplen las siguientes propiedades:
+  \bi
+  \item $(u^R)^R=u$
+    \item $(uv)^R=v^Ru^R$
+  \ei
+\end{frame}
+%\begin{frame}
+%  \titulos{Propiedades de la Reversa}{}
+%\end{frame}
+\begin{frame}
+  \titulos{Subcadenas, Prefijos y Sufijos}{}
+
+\bi
+\item Decimos que $v$ es una subcadena de $u$ si existen cadenas
+  $x,y\in\Sigma^\star$ tales que $u=xvy$.
+  \item Un prefijo de $u$ es una cadena $v$ tal que $u=vw$ para
+    alguna cadena $w\in\Sigma^\star$. Se dice que $v$ es un prefijo
+    propio si $v\neq u$.
+    \item Similarmente, un sufijo de $u$ es una cadena $v$ tal que
+      $u=wv$ para alguna cadena $w\in\Sigma^\star$. Se dice que $v$ es
+      un sufijo propio si $v\neq u$.
+      \item Obsérvese que tanto $\varepsilon$ como $u$ son siempre
+        sufijos y prefijos de $u$.
+\ei
+  
+\end{frame}
+
+\subsection{Lenguajes}
+
+\begin{frame}\frametitle{Definición de Lenguaje}\pause
+\bc
+Un \alert{lenguaje} $\mathcal{L}$ sobre un alfabeto $\Sigma$ es
+simplemente un conjunto de cadenas de $\Sigma$. Es decir $\mathcal{L}\inc\Sigma^\star$.
+\ec\pause
+Si $\Sigma=\{m,u\}$ entonces algunos lenguajes sobre $\Sigma$ son:
+\bi
+\item $\mathcal{L}_1=\{m,u\}=\Sigma$
+  \item $\mathcal{L}_2=\{u,uu,uuu,uuuu,uuuuu,uuuuuu,\ldots\}$.
+      \item $\mathcal{L}_3=\{mu, um, mum, umu,mmu, ummm, mumumum\}$.
+          \item $\mathcal{L}_4=\{mu,muu,muuu,muuuu,\ldots\}$.
+\item $\mathcal{L}_5=\{m,mmm,mmmmm,\ldots, m\ldots, uuum, m\ldots\}$.
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Operaciones con Lenguajes}{}
+Dado que los lenguajes son conjuntos todas las operaciones
+conjuntistas son aplicables a lenguajes. Si $L,M\inc\Sigma^\star$
+entonces
+\beqs
+L\cup M,\pause\;L\cap M,\pause\;L-M,\pause\;\bar{L}=\Sigma^\star-L
+\eeqs
+tambien son lenguajes.
+%Adicionalmente tenemos las
+%siguientes operaciones relevantes:
+\end{frame}
+
+\begin{frame}
+  \titulos{Concatenación de Lenguajes}{}
+  Al igual que en el caso de cadenas, podemos definir la concatenación
+  entre lenguajes como sigue:
+  \beqs
+  LM=\{uv\;|\;u\in L\;\mbox{y}\;v\in M\}
+  \eeqs
+Se cumplen las siguientes propiedades:
+\bi
+\item $L\varnothing=\varnothing L=\varnothing$
+  \item $L\{\varepsilon\}=\{\varepsilon\}L=L$
+    \item $L(MN)=(LM)N$
+      \item $L(M\cup N)=LM\cup LN\;\;\;\;\;\;(M\cup N)L=ML\cup NL$
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Reversa de un Lenguaje}{}
+  La reversa de un lenguaje se define como
+  \beqs
+  L^R=\{u^R\;|\;u\in L\}
+  \eeqs
+Se cumplen las siguientes propiedades:
+\bi
+\item $(L^R)^R=L$
+  \item $(LM)^R=M^RL^R$
+    \item $(L\cup M)^R=L^R\cup M^R$
+          \item $(L\cap M)^R=L^R\cap M^R$
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Cerradura de Kleene}{}
+  La cerradura o estrella de Kleene de un lenguaje se define como
+  \beqs
+  L^\star=\{u_1\ldots u_n\;|\;u_i\in L\;n\geq 0\}=\bigcup_{i=0}^\infty
+  L^i
+  \eeqs
+  donde $L^i=LL\ldots L$, $i$ veces.
+\end{frame}
+
+\begin{frame}
+  \titulos{Cerradura Transitiva}{}
+  La cerradura transitiva de un lenguaje se define como
+  \beqs
+  L^+=\{u_1\ldots u_n\;|\;u_i\in L\;n> 0\}=\bigcup_{i=1}^\infty
+  L^i
+  \eeqs
+  donde $L^i=LL\ldots L$, $i$ veces.
+\end{frame}
+
+\begin{frame}
+  \titulos{Propiedades de las cerraduras}{}
+  Se cumplen las siguientes propiedades
+  \bi
+  \item $L^\star=L^+\cup\{\varepsilon\}$
+    \item $L^\star=L^+$ si y sólo si $\varepsilon\in L$.
+      \item $(L^\star)^\star=L^\star$
+        \item $L^\star L^\star=L^\star$
+          \item $(L^+)^\star=(L^\star)^+=L^\star$
+            \item $(L^+)^+=L^+$
+              \item $L^+L^+\inc L^+$
+  \ei
+  \end{frame}
+
+\begin{frame}
+  \frametitle{Lenguajes y Computadoras}
+Con el concepto de lenguaje podemos reformular las preguntas acerca
+de los datos de entrada y salida en una computadora:\pause
+
+  \bi
+\item ?` Cual es el lenguaje de entrada de una computadora dada? \\ 
+    \item ?` Cual es el lenguaje de salida ? \\ 
+       \item ?` Serán estos lenguajes describibles finitamente? 
+  \ei
+  \end{frame}
+  
+
+
+\section{Inducción y Recursión}
+
+\begin{frame}
+  \titulos{Relevancia en Ciencias de la Computación}{Inducción}
+  \bi
+  \item Mecanismo de definición de tipos de datos\espc
+    \item Mecanismo de definición de funciones (iteración/recursión)\espc
+    \item Herramienta en correctud de programas.\espc
+      \item etc etc etc
+  \ei
+\end{frame}
+
+\subsection{Definiciones Recursivas}
+
+\begin{frame}
+  \titulos{Números Naturales}{Definiciones Recursivas}
+
+  $\N$ es el conjunto m\'as peque\~no tal que:\pause
+\bi
+\item $0\in\N$ (condición inicial)\espc
+\item Si $x\in\N$ entonces $sx\in\N$ (condición iterativa)\espc
+%\ei
+%\pause
+\item La definición inductiva de $\N$ permite definir funciones
+recursivamente:
+\beqs
+sum(x,0)=x\;\;\;sum(x,sy) = s(sum(x,y))
+\eeqs
+\ei
+\end{frame}
+
+\begin{frame}\titulos{Listas Finitas}{Definiciones Recursivas}
+
+$\mathcal{L}(A)$ es el conjunto m\'as peque\~no tal que:
+\pause
+\bi
+\item $nil\in\mathcal{L}(A)$.\espc
+\item Si $a\in A$ y $\ell\in\mathcal{L}(A)$ entonces $cons(a,\ell)\in\mathcal{L}(A)$.
+\item
+La función longitud $len:\mathcal{A}\imp\N$ se define recursivamente
+como:
+\beqs
+len(nil)=0\;\;\;\;len(cons(a,\ell))=len(\ell)+1
+\eeqs
+\ei
+\end{frame}
+\subsection{Modelación Inductiva}
+\begin{frame}
+  \titulos{Paradigma de Modelación Inductiva}{Inducción}
+De los ejemplos anteriores podemos concluir:
+\bi
+\item La inducción es un proceso de definición y razonamiento que
+  determina conjuntos (tipos de datos) \alert{numerables} cuyos elementos son
+  \alert{estructuras finitas} construibles a partir de ciertos \alert{objetos básicos}.
+  \item La inducción permite \alert{definir funciones} $f:\I\imp A$ mediante
+    principios de recursión, definiendo el valor de $f$ en cada
+    \alert{constructor} de $I$. \pause En el caso de $\I=\N$ mediante ecuaciones
+    de la forma:
+    \beqs
+    f(0)=a \;\;\;\;\; f(s(n))=g(f(n))
+    \eeqs
+    con $a\in A$ y $g:A\imp A$.
+\ei
+\end{frame}
+
+  \begin{frame}
+    \titulos{Principios de Inducción}{}
+Cualquier estructura definida recursivamente genera un principio de
+inducción útil como herramienta de demostración.\pause
+
+\bi
+\item El principio de inducción para naturales: si $0\in P$ y si para
+  cada $x\in P$ se verifica tambien $sx\in P$ entonces $\N\inc P$.\espc
+\item El principio de inducción para listas: si $nil\in P$ y si para
+  cada $a\in A$ y $x\in P$ se verifica tambien $cons(a,x)\in P$ entonces $\L(A)\inc P$.
+\ei
+  \end{frame}
+
+\subsection{Inducción en cadenas}
+
+
+
+  \begin{frame}
+    \titulos{Definición recursiva de $\Sigma^\star$}{}
+Dado un alfabeto $\Sigma$, el conjunto $\Sigma^\star$ que consta de
+todas las cadenas de símbolos de $\Sigma$ puede definirse
+recursivamente como sigue:
+
+\bi
+\item $\cv\in\sest$.\espc
+\item Si $v\in\sest$ y $a\in\S$ entonces $va\in\S$\espc
+  \item Son todas.
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Principio de Inducción para $\sest$}{}
+Sea $P\inc\sest$ un conjunto de cadenas.\pause Si
+
+\be
+\item $\cv\in P$ y\espc
+\item Si para cualquier $a\in\S$ y $v\in P$ se verifica
+que $va\in P$\espc
+\item[] entonces cualquier $u\in\sest$ pertenece a $P$. Es decir,
+  $\sest=P$.
+  \ee
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Definición Recursiva de Concatenación}{}
+ Formalmente la concatenación de cadenas es una función
+ \beqs
+ \cdot:\sest\times\sest\imp\sest
+ \eeqs
+ \pause definida por:
+ \bi
+ \item $u\cdot\cv = u$\espc
+   \item $u\cdot(va)=(u\cdot v)a$
+ \ei
+ \espc
+ \pause
+\alert{Pizarrón:} probemos que la concatenación es asociativa.
+\end{frame}
+
+\begin{frame}
+  \titulos{Longitud y reversa}{Definiciones recursivas}
+\bi
+\item Longitud: $|\cdot|:\sest\imp\N$
+\beqs
+|\varepsilon|=0  \;\;\;\;\;\;\;
+|va|=|v|+1
+\eeqs
+\espc
+\item Reversa: $\cdot^R:\sest\imp\sest$
+\beqs
+\varepsilon^R=\varepsilon\;\;\;\;\;\;\;\;\;
+(va)^R=av^R
+\eeqs
+\ei
+\end{frame}
+
+
+
+
+
+
+
+\end{document}
+
+
