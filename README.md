@@ -19,10 +19,11 @@
 - [ ] Hacer resumen del contenido de cada nota y presentación y ponerlo en un `.txt`.
 - [x] Hacer lo del `.gitignore`.
 - [ ] Ir con Favio la semana del 6 de enero (6 a 10 de enero).
-- [ ] En las presentaciones `aylfm161`, checar los diff: `aylfm161p01.tex~`, `aylfm161p06.tex\~`, 
+- [x] En las presentaciones `aylfm161`, checar los diff: `aylfm161p01.tex~`, `aylfm161p06.tex\~`, 
 `aylfm161p07.tex\~`, `aylfm161p11.tex\~` y `aylfm161p12.tex\~`
-- [ ] Checar error en el `.tex` de `/presentaciones/aylfm161/aylfm161p12.tex`.
+- [x] Checar error en el `.tex` de `/presentaciones/aylfm161/aylfm161p12.tex`.
 - [ ] Hacer un `Makefile` genérico y con base a ése, usarlo para cada diferente proyecto.
+- [ ] Agregar al `.gitignore` los archivos temporales de emacs.
 
 ## Entorno
 
