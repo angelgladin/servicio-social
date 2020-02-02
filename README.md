@@ -12,16 +12,16 @@
 
 - [x] Reunirme la última semana con Favio para acordadar que se debe hacer.
 (25 al 29 de noviembre).
-- [x] Checar que las notas (nota 192) compilen.
 - [ ] Preguntar acerca de las notas `n09alf192.tex`, `n10alf192.tex` y `n10alf192.tex` con 
   con el archivo `.diff` que cambias se deben tener.
 - [ ] Presentaciones compilen.
+    - [x] `alf192DyckChomskySchutz`
+    - [x] `aylfm161`
+    - [ ] `alfp`
+- [ ] Notas `alf192` compilen.
 - [ ] Hacer resumen del contenido de cada nota y presentación y ponerlo en un `.txt`.
 - [x] Hacer lo del `.gitignore`.
-- [ ] Ir con Favio la semana del 6 de enero (6 a 10 de enero).
-- [x] En las presentaciones `aylfm161`, checar los diff: `aylfm161p01.tex~`, `aylfm161p06.tex\~`, 
-`aylfm161p07.tex\~`, `aylfm161p11.tex\~` y `aylfm161p12.tex\~`
-- [x] Checar error en el `.tex` de `/presentaciones/aylfm161/aylfm161p12.tex`.
+- [ ] Ir con Favio el 4 de febreo.
 - [ ] Hacer un `Makefile` genérico y con base a ése, usarlo para cada diferente proyecto.
 - [ ] Agregar al `.gitignore` los archivos temporales de emacs.
 
@@ -29,6 +29,7 @@
 
 * `pdflatex`: pdfTeX 3.14159265-2.6-1.40.19 (TeX Live 2018)
 * `zsh`: zsh 5.7.1
+* `iconv`: conv (GNU libiconv 1.11) *(Es usado para cuando se requiera cambiar la codificación de los `.tex`)*
 
 ## Scripts
 
