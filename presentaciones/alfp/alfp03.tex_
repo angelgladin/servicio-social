@@ -1,0 +1,737 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+%\documentclass[xcolor=dvipsnames,handout]{beamer}
+
+\input{macros2006}
+
+
+
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+
+\newcommand{\espc}{\vspace{.5cm}}
+
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\cv}{\ensuremath{\varepsilon}}
+\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\newtheorem{teorema}{Teorema}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\usepackage{BeamerColor}
+%\usecolortheme[RGB={33,66,33}]{structure}
+\usecolortheme[named=NavyBlue]{structure}
+%\usefonttheme{}
+\setbeamercovered{invisible}
+%\setbeamertemplate{headline}{\insertshortinstitute}
+%\setbeamertemplate{footline}[page number]{\insertshortinstitute}
+%\insertshortinstitute
+}
+
+% \mode<presentation>
+% {
+%   \usetheme[hideallsubsections]{Berkeley}
+% %\usecolortheme{sidebartab}
+% \usecolortheme{dolphin}
+% \useoutertheme{sidebar}
+%   % or ...
+
+%   \setbeamercovered{transparent}
+%   % or whatever (possibly just delete it)
+
+
+
+% %\setbeamertemplate{headline}{\insertshortinstitute}
+% \setbeamertemplate{footline}[page number]{\insertshortinstitute}
+% %\insertshortinstitute
+% }
+
+\usepackage[spanish]{babel}
+% or whatever
+
+\usepackage[latin1]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+
+\title[AyLF] % (optional, use only with long paper titles)
+{Autómatas y Lenguajes Formales}
+\subtitle
+{%Maestría en Ciencia e Ingeniería de la Computación UNAM\\
+  Tema 3: Autómatas Finitos Deterministas II, 
+Autómatas No-Deterministas}
+
+\author[Favio E. Miranda Perea] % (optional, use only with lots of authors)
+{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[FC UNAM] % (optional, but mostly needed)
+{Facultad de Ciencias UNAM\footnote{Con el apoyo del proyecto PAPIME PE102117}
+}
+%  \and
+%  \inst{2}%
+%  Department of Theoretical Philosophy\\
+%  University of Elsewhere}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+\date % (optional, should be abbreviation of conference name)
+{\today}
+% - Either use conference name or its abbreviation.
+% - Not really informative to the audience, more for people (including
+%   yourself) who are reading the slides online
+
+\subject{Theoretical Computer Science}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+% \pgfdeclareimage[height=0.5cm]{LogoTecBueno}{LogoTecBueno.eps}
+\logo{\includegraphics[height=1cm]{fc2.png}}
+
+
+
+
+
+
+
+
+
+
+\begin{document}
+
+\beamerdefaultoverlayspecification{<+->}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%\section{Lenguajes Regulares II}
+%\subsection{Propiedades de Cerradura}
+%\begin{frame}
+%  \titulos{Propiedades de cerradura}{Lenguajes regulares}
+%Las propiedades de cerradura nos permiten construir nuevos lenguajes
+%regulares a partir de lenguajes ya conocidos por medio de algunas operaciones
+%entre lenguajes.\\ \pause
+%Si $L,M$ son lenguajes regulares entonces:
+%\bi
+%\item $L\cup M$ es regular.
+%\item $LM$ es regular.
+%\item $L^\star$ es regular.
+%\item $L^+$ es regular.
+%\item $\overline{L}$ es regular
+%\item $L\cap M$ es regular.
+%\item $L-M$ es regular.
+%\ei
+
+%\end{frame}
+%\subsection{Lenguajes No regulares}
+%\begin{frame}
+%  \titulos{?`Cuando no es $L$ regular?}{Lenguajes Regulares}
+%  No todos los lenguajes son regulares, por ejemplo:
+%  \beqs
+%  L=\{a^nb^n\;|\;n\geq 1\}
+%  \eeqs
+%  no es definible mediante una expresión regular.\pause
+%  \bi
+%  \item ?`Cómo decidir cuando un lenguaje no es regular?
+%    \item Mediante propiedades de cerradura.
+%      \item Mediante el lema del bombeo (pendiente).
+%  \ei
+%\end{frame}
+
+%\section{Autómatas Determinísticos II}
+
+\section{Diseño de AFD}
+
+\begin{frame}
+  \titulos{Métodos de Diseño}{AFD}
+\bi
+\item Problema de diseño: Dado un lenguaje $L\inc\sest$ diseñar un AFD $M$
+  que acepte exactamente a $L$, es decir, tal que $L(M)=L$.\espc
+\item El ensayo y error es inconveniente, las posibilidades son demasiadas.\espc
+\item El autómata debe ser \alert{completo}, es decir, debe aceptar todas las
+  palabras de $L$, en otras palabras es necesario que  $L\inc L(M)$.\espc
+\item El autómata debe ser \alert{correcto}, es decir, debe aceptar sólo
+  palabras de $L$, en otras palabras es necesario que $L(M)\inc L$.
+\ei
+
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Métodos de Diseño}{AFD}
+\bi
+\item Se debe determinar explicitamente qué condición ``recuerda'' cada estado.
+\item La única memoria que tiene un AFD son los estados.
+\item Primero se propone un conjunto de estados que ``recuerden'' condiciones
+  importantes.
+\item Después se proponen las transiciones para cambiar de un estado a otro.
+\item Finalmente se determina que estados son finales, observando que
+  condiciones de estado corresponden con la definición del lenguaje aceptado.
+\item Ejemplo: $L=\{w\in\{0,1\}^\star\mid w \mbox{ tiene un número par de } 0\mbox{ y }1\}$
+\ei
+
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Diseño por conjuntos de estados}{AFD}
+
+  \bi
+  \item Muchas veces es preferible generalizar condiciones para
+    definir grupos de estados en lugar de dar condiciones estado
+    por estado.\espc
+    \item De esta forma se disminuye la posibilidad de error y se
+      facilita la solución de un problema complejo.\espc
+      \item Las condiciones para grupos de estados deben ser:\espc
+
+        \bi
+        \item Excluyentes: un grupo de estados debe cumplir únicamente
+          una condición.\espc
+          \item Comprensivas: los grupos cumplen todos los casos posibles.
+        \ei
+  \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Diseño por conjuntos de estados}{Ejemplo}
+  \beqs
+  L=\{w\in\{0,1\}^\star\;|\;w\;\mbox{no contiene}\;11\;\mbox{pero sí}\;00\}
+  \eeqs
+\pause
+  Los grupos de estados se diseñan según las condiciones:\espc
+  \bi
+  \item La palabra consumida no contiene ni 00 ni 11.\espc
+    \item Contiene 00 pero no 11.\espc
+      \item Contiene 11.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Diseño por conjuntos de estados}{Ejemplo}
+  \beqs
+  L=\{w\in\{0,1\}^\star\;|\;w\;\mbox{no contiene}\;11\;\mbox{pero sí}\;00\}
+  \eeqs
+\pause
+  Los grupos de estados se diseñan según las condiciones:\espc
+  \bi
+  \item La palabra consumida no contiene ni 00 ni 11.
+\bi
+\item No se han leído símbolos.
+\item Se leyó un 0.
+\item Se leyó un 1.
+\ei
+    \item Contiene 00 pero no 11.
+\bi
+\item Se leyó otro 0.
+\item Se leyó un 1.
+\ei
+      \item Contiene 11.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Diseño por complemento}{AFD}
+\bi
+\item  Dado un lenguaje $L$ a veces es más facil diseñar un autómata para
+el complemento $\overline{L}=\sest-L$.\espc
+\item Si $M=\pt{Q,\S,\de,q_0,F}$ reconoce a $L$, es decir $L(M)=L$ entonces\espc
+  \item $M^c=\pt{Q,\S,\de,q_0,Q-F}$ reconoce a $\sest -L$, es decir
+    $L(M^c)=\overline{L}$\espc
+    \item Este método sólo funciona para autómatas deterministas.\espc
+\item Ejemplo: Diseñar un AFD para $L=\{w\in\{a,b\}^\star\mid w\,\mbox{no contiene }abaab\}$
+\ei
+\end{frame}
+
+\section{Lenguaje de Aceptación}
+\begin{frame}
+  \titulos{Funcionamiento de un autómata}{Informal}
+  \bi
+  \item $M$ reconoce o acepta una cadena $w$ si
+  \item Se consumen todos los símbolos de $w$ al iniciar en $q_0$
+    siguiendo las transiciones de acuerdo a $\delta$.
+    \item Al terminar, el estado actual de la máquina es final.
+      \item El lenguaje aceptado es entonces:
+        \[
+\boxed{\begin{array}{lcl}
+L(M)&:=& \{u\in\Sigma^*: M\ \text{se detiene al procesar }\\
+&& \phantom{algoooooo} \text{$u$ en un estado $q\in F$}\}.
+\end{array}}%
+\]
+\item Esta definición es todavia demasiado informal.
+  \ei
+ 
+\end{frame}
+
+%\begin{frame}
+%  \titulos{Configuraciones}{Funcionamiento de un AFD}
+
+%Dado un AFD $M$, una configuración o descripción instantanea de $M$ es un par ordenado de
+%$Q\times\sest$:
+%\beqs
+%[q,w]\;\;\;\;q\in Q,\;\;w\in\sest
+%\eeqs\pause
+%\bi
+%\item[] Una configuración representa el estado actual de la máquina
+%  mediante el estado y la cadena que falta por leer en el cómputo
+%  \ei
+%  \end{frame}
+%  \begin{frame}
+%    \titulos{Paso de computación}{Funcionamiento de un AFD}
+%  La noción informal de cómputo se formaliza mediante una relación
+%    $\vdash_M$ entre configuraciones, llamada \alert{paso de
+%    computación} tal que 
+%    \beqs
+%  [q,v]\vdash_M[p,w]
+%  \eeqs\pause
+%si y sólo si
+%\bi
+%\item $v=aw$ con $a\in\S$ y
+%  \item $\de(q,a)=p$
+%\item Determinismo: dada una configuración existe a lo más un paso de
+%  computación desde ella.
+%\ei
+%%donde
+%%\bi
+%%\item $q$ es el estado actual de la máquina $M$
+%%  \item $aw$ es la parte de la cadena de entrada que falta por
+%%    procesar
+%%    \item $a$ es el siguiente símbolo a procesar.
+%%\ei
+%\end{frame}
+
+
+%\begin{frame}
+%  \titulos{Cómputos}{Funcionamiento de un AFD}
+%  La relación de cómputo se define como la cerradura reflexiva y
+%  transitiva de la relación de paso de computación, denotada
+%  $\vdash_M^\star$.
+%  \beqs
+%  [q,v]\vdash^\star_M[p,w]
+%  \eeqs\pause
+%  si y sólo si
+%  \bi
+%  \item Existen configuraciones $\C_1,\ldots,\C_n$ tales que
+%    \item $C_1=[q,v],\;C_n=[p,w]$\espc
+%      \item $\C_i\vdash_M\C_{i+1}$ para toda $i=1,\ldots,n-1$.
+%  \ei
+%%  Los cómputos o pasos de computación entre configuraciones son una
+%%  relación binaria:
+%%  \beqs
+%%  [q_1,aw]\vdash_M[q_2,w]
+%%  \eeqs
+%%  definida como sigue:
+%%\bi
+%%\item $[q_1,aw]\vdash_M[q_2,w]$ si y sólo si existe una transición en $M$
+%%  tal que $\delta(q_1,a)=q_2$.
+%%\item La notación $\vdash_M^\star$ indica un número finito de pasos de
+%%  computación.
+%%  \ei
+%\end{frame}
+
+
+%\begin{frame}
+%  \titulos{Funcionamiento de un AFD}{Lenguaje aceptado}
+%  Con la noción de cómputo se formaliza la noción de lenguaje aceptado
+%  por un autómata como sigue:
+%  \beqs
+%  L(M)=\{w\in\sest\;|\;[q_0,w]\vdash_M^\star[q_f,\cv]\;\;\mbox{y}\;q_f\in F\}
+%  \eeqs
+%\end{frame}
+
+
+
+
+\newcommand{\dest}{\ensuremath{\delta^\star}}
+\subsection{Transiciones extendidas}
+\begin{frame}
+  \titulos{Función de transición extendida}{$\dest$}
+
+  Sea $M=\pt{Q,\S,\delta,q_0,F}$ un AFD. La función de transición
+  $\delta$ se extiende a cadenas mediante una función 
+\beqs
+\dest:Q\times\sest\imp Q
+\eeqs
+\pause
+\bi
+\item[] definida recursivamente como sigue:\espc
+\item[] $\dest(q,\cv)=q$\espc
+  \item[] $\dest(q,wa)=\delta\big(\dest(q,w),a\big)$
+   \espc
+\item[] $\dest$ se llama la función de transición extendida de $M$.\espc
+\item[] Una definición alternativa de utilidad es:
+  \item[] $\dest(q,aw)=\dest\big(\delta(q,a),w\big)$
+   \espc
+
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Función de transición extendida}{$\dest$}
+
+%  Sea $M=\pt{Q,\S,\delta,q_0,F}$ un AFD.
+  La función de transición
+  $\delta$ se extiende a cadenas mediante una función 
+\beqs
+\dest:Q\times\sest\imp Q
+\eeqs
+\bi
+\item De la
+definición se sigue que $\dest(q,w)$ devuelve el estado en el que la
+máquina termina al procesar $w$. \espc
+\item Dado que $\dest$ es una extensión
+de $\delta$ es usual sobrecargar la operación y escribir $\delta$ en
+lugar de $\dest$.
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Función de transición extendida}{Lenguaje de aceptación}
+\bi
+\item La definición informal de lenguaje de aceptación de un autómata puede
+ahora formalizarse haciendo referencia a la función de transición extendida:
+%  A veces es mas conveniente utilizar la función $\dest$ en lugar de
+%  los pasos de computación para formalizar el funcionamiento de una
+%  máquina.\\
+%\pause
+%El lenguaje de aceptación se define en tal caso como:
+  \beqs
+   L(M)=\{w\in\sest\;|\;\dest(q_0,w)\in F\}
+  \eeqs
+\item De esta manera es posible verificar formalmente la completud y correctud del diseño de un Autómata $M$ para un lenguaje $L$:
+\item Correctud ($L(M)\inc L$): Si $\dest(q_0,w)\in F$ entonces $w\in L$.
+\item Completud ($L\inc L(M)$): Si $w\in L$ entonces $\dest(q_0,w)\in F$.
+\ei
+\end{frame}
+
+
+
+\begin{frame}
+  \titulos{Modularización}{}
+\bi
+\item Algunas veces la especificación de un lenguaje $L$ tiene una forma lógica que permite descomponerlo en lenguajes más sencillos\espc
+\item De esta manera el diseño de un AFD se puede modularizar.\espc
+\item Por ejemplo si $L=L_1\cup L_2$ basta construir autómatas para $L_1$ y $L_2$ y ejecutarlos en paralelo.\espc
+\item Lo mismo sucede si $L=L_1\cap L_2$ o si $L=L_1-L_2$.\espc
+\item Por ejemplo $L=\{w\in\{0,1\}^\star\mid w \mbox{ acaba en }0 \mbox{ y } 11 \mbox{ no es subcadena de } w\}$\espc
+\item se descompone como $L=L_1 - L_2$ donde $L_1=\{w\in\{0,1\}^\star\mid w \mbox{ acaba en }0\}$ y
+$L_2= \{w\in\{0,1\}^\star\mid 11 \mbox{ es subcadena de } w\}$
+
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{El autómata producto}{Modularización}
+Sean $M_1=\pt{Q_1,\Sigma,\delta_1, q_{01},F_1}$ y $M_2=\pt{Q_2,\Sigma,\delta_2, q_{02},F_2}$ AFD tales que $L_1=L(M_1)$ y $L_2=L(M_2)$. El autómata producto, denotado $M_1\times M_2$ se define como sigue:
+\[
+M_1\times M_2 = \pt{Q_1\times Q_2,\Sigma,\delta,(q_{01},q_{02}),F} 
+\]
+donde
+\begin{itemize}
+\item $\delta((p,q),a) = (\delta_1(p,a),\delta_2(q,a))$ y
+\item Si $F=F_1\times F_2$ entonces $L(M_1\times M_2)= L_1\cap L_2$
+\item Si $F=F_1\times \overline{F_2}$ entonces $L(M_1\times M_2)= L_1 - L_2$
+\item Si $F=(F_1\times Q_2) \cup (Q_1\times F_2)$ entonces $L(M_1\times M_2)= L_1\cup L_2$
+\end{itemize}
+\end{frame}
+
+
+\section{Autómatas No-Deterministas}
+%\subsection{Introducción}
+\begin{frame}
+  \titulos{No Determinismo}{AFN}
+  \bi
+  \item El determinismo de un autómata, deseable desde el punto de
+    vista teórico, puede provocar complicaciones en la práctica.\espc
+    \item El no-determinismo es deseable.\espc
+      \item Determinismo: dado un estado $q$ y un símbolo $a$ existe una única
+        transición $\delta(q,a)=p$, es decir $\delta$ es una función.\espc
+        \item No-determinismo: no hay una transición única al leer un
+          símbolo $a$ en un estado dado $q$.
+          \ei
+          \end{frame}
+          \begin{frame}
+  \titulos{No Determinismo}{AFN}
+          \bi
+          \item Hay más de una transición, es decir, 
+            $\delta(q,a)$ deja de ser función.\espc
+                      \item O bien no hay transición, es decir,
+                        $\delta(q,a)$ no está definida ($\delta$ se vuelve
+                        función parcial).\espc
+                        \item Sin embargo la máquina funciona
+                          únicamente al leer un símbolo.\espc
+                          \item Existe el no-determinismo sin
+                            lectura de símbolos.
+                            \ei
+  
+\end{frame}
+
+
+\subsection{AFN}
+
+  \begin{frame}
+    \titulos{Autómatas Finitos No-Deterministas}{Definición}
+    Un autómata finito {\bf no} determinista (AFN) es una quintupla
+    \beqs
+    M=\pt{Q,\S,\de,q_0,F}
+    \eeqs\pause
+    donde
+    \bi
+    \item $Q$ es un conjunto finito de estados.
+      \item $\S$ es el alfabeto de entrada.
+        \item $\de:Q\times\S\imp \alert{\Pe(Q)}$ es la función de transición.
+          \item $q_0\in Q$ es el estado inicial.
+            \item $F\inc Q$ es el conjunto de estados finales.
+    \ei
+  \end{frame}
+
+    \begin{frame}
+    \titulos{Autómatas Finitos No-Deterministas}{Función de transición}
+    
+    \beqs
+    \de:Q\times\S\imp \Pe(Q)
+    \eeqs\pause
+   
+    \bi
+    \item Obsérvese que la imagen de $\de$ es ahora un elemento de
+      $\Pe(Q)$, es decir es un subconjunto de estados de $Q$.\espc
+      \item $\de(q,a)=\{q_1,q_2,\ldots,q_n\}$ indica que al leer $a$
+        en el estado $q$ la máquina puede pasar a cualquiera de los
+        estados $q_1,\ldots,q_n$.\espc
+        \item Si $\de(q,a)=\varnothing$ entonces no hay transición
+          posible desde $q$ al leer $a$, es decir, la máquina está bloqueada.
+       \ei
+  \end{frame}
+
+%  \begin{frame}
+%    \titulos{Funcionamiento de un AFN}{Formalización}
+%    Las nociones formales se modifican 
+%    como sigue:
+%    \bi
+% %   \item Configuración: $[q,w]$ sin cambios.
+%  %    \item Paso de computación: $[q,v]\vdash_M[p,w]$
+%%si y sólo si $v=aw$ con $a\in\S$ y $p\in\de(q,a)$.
+%\item Lenguaje de aceptación:        
+%      \beqs
+%  L(M)=\{w\in\sest\;|\;\exists q_f\in F\;[q_0,w]\vdash_M^\star[q_f,\cv]\}
+%  \eeqs
+%\ei
+%\end{frame}
+  
+  \begin{frame}
+    \titulos{Función $\dest$}{AFN}
+  Sea $M=\pt{Q,\S,\delta,q_0,F}$ un AFN. La función de transición
+  $\delta$ se extiende a cadenas mediante una función 
+\beqs
+\dest:Q\times\sest\imp \Pe(Q)
+\eeqs\pause
+%Primero definimos una extensión a conjuntos de estados mediante:
+%\beqs
+%\de(S,a)=\bigcup_{q\in S}\de(q,a)
+%\eeqs
+
+%\end{frame}
+%\begin{frame}
+%  \titulos{Función $\dest$}{AFN}
+%  \beqs
+%\dest:Q\times\sest\imp \Pe(Q)
+%\eeqs
+definida recursivamente como sigue:\pause
+\bi
+\item[] \beqs\dest(q,\cv)=q\eeqs
+  \item[] \beqs\dest(q,wa) %\delta\big(\dest(q,w),a\big)
+    =\bigcup_{p\in\dest(q,w)}\de(p,a)\eeqs
+\item[] Alternativamente:
+\[
+\dest(q,aw) = \bigcup_{p\in \de(q,a)}\dest(p,w)
+\]
+    \ei
+
+%$\dest$ se llama la función de transición extendida de $M$. \\    
+  \end{frame}
+
+\begin{frame}
+  \titulos{Función de transición extendida}{Lenguaje aceptado}
+  \bi
+  \item[] El lenguaje de aceptación se define mediante $\dest$ como sigue:
+  \beqs
+   L(M)=\{w\in\sest\;|\;\dest(q_0,w)\cap F\neq\vacio\}
+  \eeqs\pause
+  
+  \item[] Es decir, $w\in L(M)$ si y sólo si existe al menos un cómputo
+    que conduce a un estado final al iniciar la máquina en $q_0$ y $w$. 
+  \ei
+\end{frame}
+
+\section{AFN $\Iff$ AFD}
+
+  \begin{frame}
+    \titulos{Eliminación del No-determinismo}{AFN $\Iff$ AFD}
+    \bi
+    \item Todo AFD es a la vez un AFN con la particularidad de que
+      $\de(p,a)$ consta de un único estado.\espc
+      \item La idea para transformar un AFN en un AFD es considerar a
+        cada conjunto de estados $\de(p,a)$ del AFN como un único
+        estado del nuevo AFD. \espc
+        \item Este método se conoce como la \alert{construcción de subconjuntos}.
+    \ei
+  \end{frame}
+
+
+  \begin{frame}
+    \titulos{AFN $\Imp$ AFD}{Construcción de subconjuntos}
+    Dado un AFN $M=\pt{Q,\S,\de_N,q_0,F}$ definimos un AFD
+    $M^d=\pt{Q^d,\S^d,\de, q^d_0,F^d}$ como sigue:\pause \espc
+    \bi
+    \item $Q^d=\Pe(Q)$.
+      \item $\S^d=\S$.
+        \item $\de(S,a)=\de_N(S,a)=\bigcup_{q\in S}\de_N(q,a)$
+          \item $q^d_0=\{q_0\}$
+            \item $F^d=\{S\inc Q\;|\;S\cap F\neq\vacio\}$
+  
+  \item  Ambos autómatas son equivalentes, es decir, $L(M)=L(M^d)$.
+    \ei
+  \end{frame}
+
+%\subsection{AFN con $\cv$-transiciones}
+
+%\begin{frame}
+%  \titulos{Autómatas No-deterministas con
+%    $\cv$-transiciones}{Definición}
+%   Un autómata finito {\bf no} determinístico con $\cv$-transiciones (AFN$\cv$) es una quintupla
+%    \beqs
+%    M=\pt{Q,\S,\de,q_0,F}
+%    \eeqs\pause
+%    donde
+%    \bi
+%    \item $Q$ es un conjunto finito de estados.
+%      \item $\S$ es el alfabeto de entrada.
+%        \item $\de:Q\times(\alert{\S\cup\{\cv\}})\imp \Pe(Q)$ es la función de transición.
+%          \item $q_0\in Q$ es el estado inicial.
+%            \item $F\inc Q$ es el conjunto de estados finales.
+%    \ei
+%  \end{frame}
+
+%  \begin{frame}
+%    \titulos{AFN$\cv$}{Observaciones}
+% \beqs
+%    \de:Q\times(\S\cup\{\cv\})\imp \Pe(Q)
+%    \eeqs\pause
+%    \bi
+%    \item Obsérvese que la única diferencia está en el dominio de
+%      $\delta$.
+%      \item Transiciones de la forma $\delta(q,\cv)=a$ están
+%        definidas.
+%        \item Tales transiciones indican que la máquina puede cambiar
+%          de estado \alert{sin} leer ningún símbolo.
+%          \item Esto causa un no-determinismo más complicado de
+%            modelar matemáticamente pero tiene grandes ventajas.
+%    \ei
+%  \end{frame}
+
+%  \begin{frame}
+%        \titulos{AFN$\cv$}{Observaciones}
+%\bi
+%\item Se permiten múltiples cómputos para una cadena de entrada.
+%  \item Pueden existir cómputos bloqueados.
+%    \item A diferencia de los AFD y AFN pueden existir cómputos
+%      infinitos, es decir, surge la no-terminación.
+%      \item La presencia de $\cv$-transiciones permite mayor libertad
+%        en el diseño.
+%\ei
+%  \end{frame}
+
+%  \begin{frame}
+%    \titulos{$\cv$-cerradura de un estado}{AFN$\cv$}
+%    Dado un estado $q$, definimos la $\cv$-cerradura de $q$ como
+%    el conjunto de estados alcanzables desde $q$ mediante cero o más
+%    $\cv$-transiciones. \pause Es decir
+%    \beqs
+%    Cl_\cv(q)=\{s\in Q\;|\;\exists p_1,\ldots,p_n\;\mbox{con}\;p_1=q,p_n=s,p_i\in\de(p_{i-1},\cv)\}
+%    \eeqs\pause
+%    Tal definición se puede dar recursivamente:
+%        \bi
+%    \item $q\in Cl_\cv(q)$
+%      \item Si $r\in Cl_\cv(q)$ y $\de(r,\cv)=s$ entonces $s\in Cl_\cv(q)$
+%    \ei\pause
+%    La definición de $\cv$-cerradura se extiende a conjuntos de
+%    estados de la manera usual:\pause
+%    \beqs
+%    Cl_\cv(S)=\bigcup_{q\in S}Cl_\cv(q)
+%    \eeqs
+%%    \beqs
+%%    Cl_\cv(q)=\{r\in Q\;|\;\}
+%%    \eeqs
+%  \end{frame}
+
+
+
+
+%    \begin{frame}
+%    \titulos{Eliminación de $\cv$-transiciones}{AFN$\cv\;\Iff\;$ AFN}
+   
+%  \end{frame}
+
+  
+%\subsection{Resumen}
+%\begin{frame}
+%  \frametitle{Resumen de Hoy}
+%\bi
+%\item Cerradura de lenguajes regulares.\espc
+%\item Formalización del concepto de cómputo mediante configuraciones y
+%  transiciones extendidas.\espc
+%  \item Autómatas finitos no-determinísticos.\espc
+%    \item Eliminación del no-determinismo mediante la construcción de subconjuntos
+%\ei
+%\end{frame}
+
+
+
+%\subsection{Próxima Sesión}
+%\begin{frame}
+%  \frametitle{Próxima Sesión}
+%  \bi
+%      \item Diseño de AFN$\cv$\espc
+%      \item Eliminación de $\cv$-transiciones: AFN $\Iff$ AFN$\cv$.\espc
+%      \item Autómatas finitos no-determinísticos.\espc
+%        \item Teorema de Kleene I
+%  \ei
+%  \end{frame}
+
+
+
+
+
+\end{document}
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fcem7"
+%%% End: 

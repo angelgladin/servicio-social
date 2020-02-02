@@ -1,0 +1,1150 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+%\documentclass[xcolor=dvipsnames,handout]{beamer}
+
+\input{macros2006}
+
+
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+\newcommand{\espc}{\vspace{.5cm}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\cv}{\ensuremath{\varepsilon}}
+\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\newtheorem{teorema}{Teorema}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+\newcommand{\dest}{\ensuremath{\delta^\star}}
+
+\newcommand{\blanks}{\mbox{\textvisiblespace}}
+
+
+% \newcommand{\izq}{\leftarrow}
+% \newcommand{\der}{\rightarrow}
+\newcommand{\ev}{\mathop{\mathsf{ev}}}
+\newcommand{\Pc}{\mathcal{P}}
+%\newcommand{\Dc}{\mathcal{D}}
+%\newcommand{\Tc}{\mathcal{T}}
+% \newcommand{\fa}{\forall}
+% \newcommand{\ex}{\exists}
+\newcommand{\lwu}{{\sc While1 }}
+\newcommand{\lw}{{\sc While }}
+\newcommand{\lgt}{{\sc Goto }}
+\newcommand{\lmt}{{\sc LTuring }}
+\newcommand{\mt}{\ensuremath{\mathcal{MT}}}
+\newcommand{\lfp}{\mathop{\boldsymbol{\mu}}} %\mathsf{lfp}}}
+\newcommand{\gfp}{\mathop{\boldsymbol{\nu}}} %\mathsf{gfp}}}
+\newcommand{\psup}{\Phi^{\sqsupseteq}}
+\newcommand{\psub}{\Phi^{\sqsubseteq}}
+\newcommand{\mq}{\sqsubseteq}
+% \newcommand{\ba}{\begin{array}}
+% \newcommand{\ea}{\end{array}}
+%\newcommand{\pt}[1]{\langle #1 \rangle}
+\newcommand{\nil}{\mathtt{nil}}
+\newcommand{\goto}{\mathop{\mathtt{goto}}}
+\newcommand{\eqdef}{=_{def}}
+\newcommand{\coitm}{\mathop{\mathsf{MCoIt}}}
+\newcommand{\recm}{\mathop{\mathsf{MRec}}}
+\newcommand{\corecm}{\mathop{\mathsf{MCoRec}}}
+\newcommand{\afdmn}{\mathsf{AF2}^{M\mu\nu}}
+\newcommand{\while}[2]{\mathsf{while}\;#1\;\mathsf{do}\;#2}
+\newcommand{\dci}{[\![}
+\newcommand{\dcd}{]\!]}
+\newcommand{\bl}{\blanks} %{\text{\textblank}}
+
+\newcommand{\Pl}{\mathcal{P}_\mathcal{L}}
+%\newcommand{\Sc}{\mathcal{S}}
+%\newcommand{\A}{\mathcal{A}}
+\newcommand{\Ol}{\mathcal{O}_\mathcal{L}}
+\newcommand{\Dl}{\mathcal{D}_\mathcal{L}}
+\newcommand{\Ec}{\mathcal{E}}
+\newcommand{\Lc}{\mathcal{L}}
+%\newcommand{\N}{\mathbb{N}}
+%\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+% \newcommand{\bc}{\begin{center}}
+% \newcommand{\ec}{\end{center}}
+% \newcommand{\be}{\begin{enumerate}}
+% \newcommand{\ee}{\end{enumerate}}
+% \newcommand{\bi}{\begin{itemize}}
+% \newcommand{\ei}{\end{itemize}}
+% \newcommand{\beq}{\begin{equation}}
+% \newcommand{\eeq}{\end{equation}}
+% \newcommand{\beqs}{\begin{equation*}}
+% \newcommand{\eeqs}{\end{equation*}}
+%\newcommand{\vacio}{\varnothing}
+
+\newcommand{\mright}{\mathtt{right}}
+\newcommand{\mleft}{\mathtt{left}}
+\newcommand{\mwrite}[1]{\mathtt{write}\,#1}
+\newcommand{\wwrite}[1]{\mathtt{write}\,#1}
+\newcommand{\wread}[1]{\mathtt{read}\,#1}
+\newcommand{\wcons}{\mathop{\mathtt{cons}}}
+\newcommand{\weq}{\mathop{\mathtt{=?}}}
+\newcommand{\whd}{\mathop{\mathtt{hd}}}
+\newcommand{\wtl}{\mathop{\mathtt{tl}}}
+\newcommand{\wif}[3]{\mathtt{if}\,#1\;\mathtt{then}\;#2\;\mathtt{else\;}\;#3}
+\newcommand{\mif}[3]{\mathtt{if}\,#1\;\mathtt{then\;goto}\;#2\;\mathtt{else\;goto}\;#3}
+\newcommand{\gif}[3]{\mathtt{if}\,#1\;\mathtt{then\;goto}\;#2\;\mathtt{else\;goto}\;#3}
+\newcommand{\wh}[2]{\mathtt{while}\,#1\;\mathtt{do\;}\;#2\;\mathtt{end}}
+\newcommand{\halt}{\mathtt{halt}}
+\newcommand{\init}{\mathop{\mathsf{init}}}
+\newcommand{\outp}{\mathop{\mathsf{output}}}
+\newcommand{\sfin}{\mathop{\mathsf{final}}}
+
+%\newcommand{\imp}{\rightarrow}
+%\newcommand{\Imp}{\Rightarrow}
+\newcommand{\suc}{\mathop{\mathsf{suc}}}
+\renewcommand{\Db}{\mathbb{T}}
+\newcommand{\ds}[1]{\llbracket #1 \rrbracket}
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\usepackage{BeamerColor}
+%\usecolortheme[RGB={33,66,33}]{structure}
+\usecolortheme[named=NavyBlue]{structure}
+%\usefonttheme{}
+\setbeamercovered{invisible}
+%\setbeamertemplate{headline}{\insertshortinstitute}
+%\setbeamertemplate{footline}[page number]{\insertshortinstitute}
+%\insertshortinstitute
+}
+
+\usepackage[spanish]{babel}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{alltt}
+\usepackage{amssymb,amsmath,stmaryrd,amsthm}
+\usepackage{mathrsfs}
+
+\title[AyLF]{Autómatas y Lenguajes Formales}
+\subtitle
+{%Maestría en Ciencia e Ingeniería de la Computación UNAM\\
+  Tema 15: Lenguajes de programación equivalentes a la Máquina de Turing}
+
+\author[Favio E. Miranda Perea]{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+
+
+\institute[FC UNAM]{Facultad de Ciencias UNAM\footnote{Con el apoyo del proyecto PAPIME PE102117}}
+
+\date{\today}
+
+\subject{Theoretical Computer Science}
+
+% \pgfdeclareimage[height=0.5cm]{LogoTecBueno}{LogoTecBueno.eps}
+\logo{\includegraphics[height=1cm]{fc2.png}}
+
+
+
+
+\begin{document}
+
+\beamerdefaultoverlayspecification{<+->}
+
+\begin{frame}
+  \titlepage
+ \end{frame}
+
+
+\begin{frame}[fragile]
+\titulos{Un programa en máquinas de Turing}{Inversión de ceros y unos} 
+%El siguiente programa {\tt swap} invierte una cadena de ceros y unos.
+\bc
+\begin{alltt}
+ 1: if 1 then goto 2 else goto 5
+ 2: write 0
+ 3: right
+ 4: goto 1
+ 5: if 0 then goto 6 else goto 9
+ 6: write 1
+ 7: right
+ 8: goto 1
+ 9: left
+10: if \(\bl\) then 11 else 9
+11: halt
+\end{alltt}
+\ec
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \titulos{Un programa no estructurado}{Uso de goto}
+El siguiente programa {\tt reverse} implementa la función reversa.
+\begin{alltt}
+read X
+1: Y := nil;
+2: if X then goto 3 else goto 7;
+3: Z := hd X;
+4: Y := cons Z Y;
+5: X := tl X;
+6: goto 2;
+write Y
+\end{alltt}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \titulos{Un programa estructurado}{Uso de secuencias y ciclos}
+El siguiente programa {\tt reverse} implementa la función reversa.
+%  \titulos{Ejemplo}{\lw}
+% Este programa obtiene la reversa de un elemento de $\mathbb{T}$, si la entrada
+% es $d_1.d_2.\ldots.d_n.nil$ entonces la salida será $d_n.d_{n-1}.\ldots.d_1.nil$:
+\begin{alltt}
+read X;
+  Y := nil;
+  while X do
+    Y := cons (hd X) Y;
+    X := tl X;
+  end
+write Y 
+\end{alltt}
+\end{frame}
+
+
+\begin{frame}
+\titulos{La máquina de Turing clásica}{$\mt$} %de una cinta es una tupla de la forma
+\[
+ T = \pt{\Sigma, Q, q_0, q_f, \delta},
+\]
+donde
+\bi
+\item $\Sigma \neq \vacio$ es un alfabeto finito que contiene un símbolo
+  distinguido $\bl$, llamado símbolo blanco,
+\item $Q \neq \vacio$ es el conjunto finito de estados, el cual incluye $q_0$ y $q_f$,
+\item $q_0$ es el estado inicial,
+\item $q_f$ es el estado final de aceptación,
+\item $\delta: Q \times \Sigma \to Q \times \Sigma \times D$, es la función
+  (parcial) de
+  transición. % tal que  si $\delta(\ell,s) = (\ell',s',m)$ entonces
+% \bi
+% \item $\ell$ es el estado actual,
+% \item $s$ el símbolo que está leyendo la cabeza,
+% \item $\ell'$ el estado al cual nos llevará la transición,
+% \item $s'$ el símbolo que se escribirá,
+% \item $m$ el movimiento que realizará la cabeza. 
+% \ei
+\item $D = \{\izq, \der, -\}$ es el conjunto de movimientos%  realizados por la cabeza lectora
+% ya se a la izquierda, a la derecha o permanecer en la misma posición.
+% \item En adelante denotamos con $\mt$ al conjunto de máquinas de Turing.
+\ei
+% En nuestra definición consideramos que el alfabeto usado es $\{0,1,\bl\}$ y
+
+\end{frame}
+
+
+\begin{frame}
+\titulos{Lenguajes de programación}{Modelo teórico}
+   Un lenguaje de programación es una terna
+ \[\mathcal{L}=\pt{\Pl,\Dl,\ds{\cdot}_\Lc}\]
+ donde
+\bi
+\item $\Pl\neq\vacio$ es el conjunto de programas de $\Lc$\medskip
+\item $\Dl\neq\vacio$ es el conjunto de datos (de entrada y salida) de $\Lc$\medskip
+\item $\ds{\cdot}_\Lc$ es la función semántica de $\Lc$ tal que
+\beqs
+\ds{\cdot}_\Lc:\Pl\to\Dl\rightharpoonup\Dl
+\eeqs
+\item $\ds{\cdot}_\Lc$ es una función que le asocia a cada programa $p\in\Pl$
+  una función parcial $\ds{p}_\Lc:\Dl\rightharpoonup\Dl$.
+%\item $\ds{p}_\Lc$ transforma datos de entrada en datos de salida.
+\ei
+\end{frame}
+
+
+\begin{frame}
+\titulos{Semántica operacional}{$\mathcal{L}=\pt{\Pl,\Dl,\ds{\cdot}_\Lc}$}
+  Una semántica operacional para $\Lc$ es
+  una tupla \[\Ol=\pt{\Sc,\Ec,\cdot\rhd\cdot\to\cdot,\sfin,\init,\outp}\] tal que
+\bi
+\item $\Sc\neq\vacio$ es el conjunto de memorias % \footnote{En inglés {\em
+      % stores}} para $\Ol$.
+\item $\Ec\neq\vacio$ es el conjunto de estados cuya definición involucra
+  usualmente a $\Sc$.
+
+\item $\sfin:\Pl\to\Pc(\Ec)$ es la función que define estados finales. Es decir,
+  un estado $s$ es final para el programa $p$ si y sólo si $s\in\sfin(p)$.
+\item $\init:\Pl\times\Dl\to\Ec$ es la función de inicialización de la \\ ejecución.
+
+\ei
+\end{frame}
+
+
+\begin{frame}
+\titulos{Semántica operacional}{$\mathcal{L}=\pt{\Pl,\Dl,\ds{\cdot}_\Lc}$}
+  Una semántica operacional para $\Lc$ es
+  una tupla \[\Ol=\pt{\Sc,\Ec,\cdot\rhd\cdot\to\cdot,\sfin,\init,\outp}\] tal que
+\bi
+\item $\outp:\Pl\times\Ec\to\Dl$ es la función de salida.\medskip
+  \item $\cdot\rhd\cdot\to\cdot\inc\Pl\times \Ec\times\Ec$ es una relación ternaria de transición entre
+  programas, estados y estados
+\medskip 
+\item Significado intencional:
+\bc
+$p\rhd s\to s'$ {\em si y sólo si la ejecución del programa $p\in\Pl$ causa la
+transición del estado
+$s$ al estado $s'$}
+\ec
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\titulos{El lenguaje \lmt}{}
+\bi
+\item Datos: $\Dl=\{0,1,\bl\}^\star$ \medskip
+\item Programas: % $\Pl$ se define mediante la siguiente gramática
+% \bi
+% \item[]
+  \[\Pl\ni p::= 1:\I_1;\ldots;m:\I_m:m+1:\halt\]
+\item Instrucciones  
+\[
+\ba{rll}
+\I::= &
+  \mright\;|\;\mleft\;|\;\mwrite{s}\;|\;\\
+& \mif{s}{\ell}{\ell'}\;|\;\goto \ell
+\ea
+\]
+%\ei
+donde $s\in\{0,1,\bl\}$ y $\ell,\ell'\in\N$.
+% \item La función semántica $\ds{\cdot}$ se define mediante una semántica
+%   operacional
+\ei
+\end{frame}
+
+\begin{frame}
+\titulos{Semántica operacional}{\lmt}
+\[
+p= 1:\I_1;\ldots;m:\I_m:m+1:\halt
+\]
+\bi
+\item Memorias: $\Sc=_{def}\Dl\times\{0,1,\bl\}\times\Dl$.\medskip
+\item Usualmente escribiremos $L\underline{s}R\in\Sc$ en vez de
+  $(L,s,R)\in\Sc$. \medskip % Obsérvese que una memoria puede verse como la cinta
+  % de una máquina de Turing.
+\item Estados: $\Ec=\N\times\Sc$ \medskip 
+
+\item Estados finales: $\sfin(p)=\{\pt{m+1,\sigma}|\sigma\in\Sc\}$.\medskip
+\item Función de inicialización: ${\sf init}:\Pl\times\Dl\to\Ec,\;{\sf
+    init}(x)=\pt{1,\underline{\bl} x}$\medskip
+\item Función de salida: ${\sf output}:\Pl\times\Ec\to\Dl$,
+\[
+\;{\sf output}(\pt{\ell,L\underline{s}R})=R
+\]
+\ei  
+\end{frame}
+
+
+\begin{frame}
+\titulos{Relación de transición}{\lmt} %$p=1:\I_1;\ldots;m:\I_m;m+1:\halt$}
+\bi
+\item Si $\I_\ell=\mright$ entonces
+  $p\rhd\pt{\ell,L\underline{s}s'R}\to\pt{\ell+1,Ls\underline{s'}R}$\medskip
+\item Si $\I_\ell=\mright$ entonces
+  $p\rhd\pt{\ell,L\underline{s}}\to\pt{\ell+1,Ls\underline{\bl}}$\medskip
+\item Si $\I_\ell = \mleft$ entonces 
+$p\rhd\pt{\ell,Ls\underline{s'}R}\to\pt{\ell+1,L\underline{s}s'R}$\medskip
+\item Si $\I_\ell=\mleft$ entonces
+  $p\rhd\pt{\ell,\underline{s}R}\to\pt{\ell+1,\underline{\bl}sR}$\medskip
+  \item Si $\I_\ell=\mwrite{s}$ entonces
+  $p\rhd\pt{\ell,L\underline{s'}R}\to\pt{\ell+1,L\underline{s}R}$\medskip
+\item Si $\I_\ell=\goto \ell'$ entonces
+  $p\rhd\pt{\ell,L\underline{s}R}\to\pt{\ell',L\underline{s}R}$\medskip
+\item Si $\I_\ell=\mif{s}{\ell'}{\ell''}$ entonces
+  $p\rhd\pt{\ell,L\underline{s}R}\to\pt{\ell',L\underline{s}R}$\medskip
+\item Si $\I_\ell=\mif{s}{\ell'}{\ell''}$ entonces
+  $p\rhd\pt{\ell,L\underline{s'}R}\to\pt{\ell'',L\underline{s'}R}$
+\ei
+\end{frame}
+
+
+\begin{frame}
+\titulos{De $\mathcal{MT}$ a \lmt}{}
+
+Sea $T=\pt{\Sigma,Q,q_0,q_f,\delta}$ con $\Sigma=\{0,1,\bl\}$ una máquina de
+Turing clásica. \medskip\pause
+\bi
+\item Existe un
+programa $p_T$ del lenguaje \lmt tal que 
+\beqs
+L(T)\inc\{x\in\Sigma^\star\;|\;\ds{p_T}(x)\mbox{ existe}\}
+\eeqs
+\medskip
+\item Más aún, si $(q_0,\underline{\bl} x)\to^\star(q_f,w\underline{s}\,y)$
+  entonces 
+\[\ds{p_T}(x)=y.\]
+\ei 
+
+\end{frame}
+
+\begin{frame}
+\titulos{De \lmt a $\mt$}{}
+    Sea $p$ un programa en \lmt\pause
+\medskip 
+\bi
+\item Existe una máquina de Turing clásica $T_p$ tal que:
+\medskip
+\bc si $\ds{p}(x)=y$
+  entonces $x\in L(T)$.
+\ec 
+\medskip
+\item Más aún, si $p\rhd_{\lmt} (1,\underline{\bl}x)\to^\star (m+1,w\underline{s}y)$ entonces 
+\medskip
+\[(q_1,\underline{\bl}x)\vdash^\star (q_f,w\underline{s}y).\]
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Árboles binarios}{Tipo de datos}
+El conjunto de árboles $\mathbb{T}$ se define recursivamente como:
+\bi
+\item {\tt{nil}} es un elemento de $\mathbb{T}$.\medskip
+\item Si $t_1,\;t_2\in\mathbb{T}$ entonces $(t_1 . t_2)\in\mathbb{T}$.\medskip
+\item Son todos. %$\mathbb{T}$ es el conjunto más pequeño que satisface lo anterior.
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Árboles binarios}{Codificación de booleanos y naturales}
+\bi
+\item Los valores de verdad {\tt{true}} y {\tt{false}} se definen como:
+\bi
+\item {\tt{false =  nil}}
+\item {\tt{true  =  (nil.nil)}}
+\ei
+\medskip
+\item El número natural $n$ se codifica mediante un árbol de tamaño $n+1$, construido de la siguiente forma:
+\bi
+\item Definimos $\underline{n} = {\tt{nil}}^n$ donde
+\begin{displaymath}
+\begin{array}{ccc}
+{\tt{nil}}^0  & = & {\tt{nil}}\\
+{\tt{nil}}^{n+1} & = & ({\tt{nil}} . {\tt{nil}}^n)
+\end{array}
+\end{displaymath}
+\item $\mathcal{N} = \{ \underline{n} | n \in \mathbb{N} \}$. \medskip% Los elementos de $\mathcal{N}$ se llaman \textit{numerales}.
+\item Por ejemplo, el numeral correspondiente al número natural 4 es
+% \[
+$\underline{4} = ({\tt{nil.(nil.(nil.(nil.nil)))}})$. \medskip
+\item Por simplicidad escribiremos $0,1,2,\ldots$ en vez de $\underline{0},
+\underline{1}, \underline{2},\ldots$ o ${\tt{nil}}^0$,${\tt{nil}}^1$,
+${\tt{nil}}^2,\ldots$. 
+\ei
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{El lenguaje \lw}{}
+%  El lenguaje \lw se define como sigue:
+\bi
+\item Datos: $\Dl=\mathbb{T}$.
+\item Programas: %$\Pl$ se define mediante la siguiente gramática
+% \bi
+% \item[] 
+\[\Pl\ni p::= \wread X;\,C_1,\ldots,C_m\,;\wwrite{Y}\]
+\item Comandos:
+%\item[] 
+\[
+C::= X:=e\;|\;\wh{e}{\vec{C}}
+\]
+\item Expresiones: \[e,f::= X\;|\;\mathsf{d}\;|\;\wcons\;e\;f\;|\;\whd e\;|\;\wtl
+  e\;|\;\weq e\;f\]
+%\ei
+% donde $\vec{C}$ es una secuencia de comandos de la forma
+% $\vec{C}\eqdef C_1;C_2;\ldots;C_n$. 
+\item Longitud o número de lineas en una secuencia de comandos, denotada
+%$|\vec{C}|$:% es un concepto de importancia y se define recursivamente como sigue:
+\bi
+\item $|X:=e|=1$
+\item $|\wh{e}{\vec{C}}|=|\vec{C}|+1$
+\item $|C_1;\ldots;C_n|=|C_1|+\ldots+|C_n|$
+\ei
+\ei
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \titulos{Ejemplo}{\lw}
+El siguiente programa realiza la suma dos numerales. Aquí $XY$ es una variable
+que recibe a un dato de entrada el cual debe ser de la forma $(n.m)$ para devolver $n+m$.
+\begin{alltt}
+read XY;  (* add X Y *)
+  X := hd XY;
+  Y := tl XY;
+  while X do
+    Y := cons nil Y;
+    X := tl X;
+  end
+write Y
+\end{alltt}
+\end{frame}
+
+% \begin{frame}[fragile]
+%   \titulos{Ejemplo}{\lw}
+% Este programa obtiene la reversa de un elemento de $\mathbb{T}$, si la entrada
+% es $d_1.d_2.\ldots.d_n.nil$ entonces la salida será $d_n.d_{n-1}.\ldots.d_1.nil$:
+% \begin{alltt}
+% read X;
+%   Y := nil;
+%   while X do
+%     Y := cons (hd X) Y;
+%     X := tl X;
+%   end
+% write Y 
+% \end{alltt}
+% \end{frame}
+
+
+\begin{frame}
+  \titulos{Semántica Operacional}{\lw}
+\bi
+% \item La función semántica se define mediante la siguiente semántica
+%   operacional:
+% \bi
+\item Memorias: $\Sc=\{\sigma|\;\sigma:Var\to\Db\}$\medskip
+\item Estados: $\Ec=\N\times\Sc$.\medskip
+\item Evaluación de expresiones: la relación de transición se servirá de la
+  siguiente función $\ev:\Ec \to Expr \to\Db$ % donde para cada estado $s$ escribimos $\ev_s$ en vez de $\ev\,s$, así 
+% $\ev_s:Expr\to\Db$ 
+\bi
+\item $\ev_s(X)=\sigma(X)$ donde $s=\pt{\ell,\sigma}$.
+\item $\ev_s(d)=d$
+\item $\ev_s (\wcons e\,f)=((\ev_\sigma e).(\ev_\sigma f))$
+\item $\ev_s (\whd e)=nil$, si $\ev_\sigma e=nil$
+\item $\ev_s (\whd e)=t$, si $\ev_\sigma e= (t.r)$
+\item $\ev_s (\wtl e)=nil$, si $\ev_\sigma e=nil$
+\item $\ev_s (\wtl e)=r$, si $\ev_\sigma e= (t.r)$
+\item $\ev_s (\weq e\;f)=true$, si $\ev_\sigma e=\ev_\sigma f$ 
+\item $\ev_s (\weq e\;f)=false$, si $\ev_\sigma e\neq\ev_\sigma f$ 
+\ei
+\ei
+%\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Relación de transición}{\lw}
+% : sea 
+% $p=\wread X;\vec{C};\wwrite Y$}{\lw}
+\bi
+\item Si $\I_\ell=X:=e$ y $\ev_{\pt{\ell,\sigma}}(e)=d$ entonces
+\beqs
+p\rhd\pt{\ell,\sigma}\to\pt{\ell+1,\sigma[X/d]}
+\eeqs 
+donde $\sigma[X/d]$ denota a la actualización de $\sigma$ en $X$ por $d$. % la memoría que resulta al actualizar $\sigma$ con
+% el valor $d$ para la variable $X$.
+\item Si $\I_\ell=\wh{e}{\vec{D}}$ con $|\vec{D}|=k$ y $\ev_s(e)=nil$, entonces
+\beqs
+p\rhd\pt{\ell,\sigma}\to\pt{\ell+k+1,\sigma}
+\eeqs
+\item Si $\I_\ell=\wh{e}{\vec{D}}$ con $|\vec{D}|=k$ y 
+$\ev_s(e)\neq nil$, entonces
+  \beqs
+p\rhd\pt{\ell,\sigma}\to\pt{\ell+k+1,\sigma''},\eeqs
+% donde $|\vec{I}|=k$,
+donde
+\bi
+\item $p\rhd \pt{\ell+1,\sigma}\to^\star\pt{\ell+k,\sigma'}$
+\item $p\rhd\pt{\ell,\sigma'}\to
+\pt{\ell+k+1,\sigma''}$
+\ei
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Semántica Operacional}{\lw}
+\[
+p=\wread{X};\vec{C};\wwrite Y
+\]
+\bi
+\item Estados finales: $\sfin(p)=\{\pt{m+1,\sigma}\;|\;\sigma\in\Sc\}$, donde $m=|\vec{C}|$.
+\item Función de inicialización: ${\sf init}:\Pl\times\Dl\to\Ec$, 
+\beqs
+{\sf init}(p,d)=\big\langle 1,[X\mapsto d,Y\mapsto\nil,Z_1\mapsto\nil,\ldots,Z_n\mapsto\nil]\big\rangle
+\eeqs
+ donde
+$Vars(p)=\{X,Y,Z_1,\ldots,Z_n\}$.
+\item Función de salida: ${\sf output}:\Pl\times\Ec\to\Dl,$
+\[
+{\sf output}(p,\sigma)=\sigma(Y)
+\]
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{El lenguaje \lgt}{}
+\bi
+\item $\Dl=\mathbb{T}$ \medskip %  el conjunto de árboles . 
+\item $\Pl$ se define mediante la siguiente gramática
+\bi
+\item[] $\Pl\ni p::= \wread{X};1:\I_1;\ldots;m:\I_m;\wwrite{Y}$\medskip
+\item[] $\I::= X:=e\;|\;\gif{X}{\ell}{\ell'}\;|\;\goto\ell$\medskip
+\item[] $e,f::= X\;|\;\mathsf{d}\;|\;\wcons\;Y\;Z\;|\;\whd X\;|\;\wtl
+  X\;|\;\weq Y\;Z$\medskip
+\item[] donde $\ell,\ell'\in\N$. 
+\medskip
+\ei
+\item Obsérvese que, a diferencia de \lw, en este lenguaje
+en cada expresión $e$ hay exactamente una presencia de operador\medskip
+\item Además la longitud
+$|\vec{\I}|$ de una secuencia de instrucciones es simplemente el número de
+instrucciones que  la componen.
+\ei
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+\titulos{Suma de dos numerales}{\lgt}
+\begin{alltt}
+  read XY;
+   1: X:= hd XY;
+   2: Y:= tl XY;
+   3: if X then goto 4 else goto 7;  
+   4: Y:= cons nil Y;
+   5: X:= tl X;
+   6: goto 3;
+  write Y.
+\end{alltt}
+\end{frame}
+
+\begin{frame}
+\titulos{Semántica operacional}{\lgt}
+% la función semántica se define mediante la siguiente semántica
+%   operacional:
+\bi
+\item Memorias: $\Sc=\{\sigma|\;\sigma:Var\to\Db\}$
+\item Estados: $\Ec=\N\times\Sc$.
+\item Evaluación de expresiones: si $s=\pt{\ell,\sigma}$ entonces definimos
+  la función de evaluación $ev_s:Expr\to\Dl$ como sigue:
+\bi
+\item $ev_s(X)=\sigma(X)$
+\item $ev_s(d)=d$
+\item $ev_s(\whd X)=nil$, si $\sigma(X)=nil$
+\item $ev_s(\whd X)=d$, si $\sigma(X)=(d.e)$
+\item $ev_s(\wtl X)=nil$, si $\sigma(X)=nil$
+\item $ev_s(\wtl X)=e$, si $\sigma(X)=(d.e)$
+\item $ev_s(\wcons X\; Y)=(d.e)$ si $\sigma(X)=d,\;\sigma(Y)=e$
+\item $ev_s(=? X\; Y)=true$ si $\sigma(X)=\sigma(Y)$.
+\item $ev_s(=? X\; Y)=false$ si $\sigma(X)\neq\sigma(Y)$.
+\ei
+\item Obsérvese que la función $\ev_s$ no es recursiva a diferencia \\ de la función
+correspondiente en el lenguaje \lw.
+\ei
+\end{frame}
+
+\begin{frame}
+\titulos{Relación de transición}{\lgt}
+\bi
+\item Si $\I_\ell\eqdef X:=e$ y $\ev_{\pt{\ell,\sigma}}(e)=d$ entonces
+\beqs
+p\rhd\pt{\ell,\sigma}\to\pt{\ell+1,\sigma[X/d]}
+\eeqs 
+\item Si $\I_\ell=\gif{X}{\ell'}{\ell''}$ y $\sigma(X)=\nil$ entonces
+  \beqs
+p\rhd\pt{\ell,\sigma}\to\pt{\ell'',\sigma}
+\eeqs
+\item Si $\I_\ell=\gif{X}{\ell'}{\ell''}$ y $\sigma(X)\neq\nil$ entonces
+  \beqs
+p\rhd\pt{\ell,\sigma}\to\pt{\ell',\sigma}
+\eeqs
+\item Si $\I_\ell=\goto\ell'$  entonces
+  \beqs
+p\rhd\pt{\ell,\sigma}\to\pt{\ell',\sigma}
+\eeqs
+\ei
+\end{frame}
+
+\begin{frame}
+\titulos{Semántica operacional}{\lgt}%\titulos{}{}
+\[
+p=\wread X;1:\I_1;\ldots;m:\I_m;\wwrite Y.
+\]
+\bi
+\item Estados finales: $\sfin(p)=\{\pt{m+1,\sigma}\;|\;\sigma\in\Sc\}$. \medskip %, donde $m=|\vec{C}|$.
+\item Función de inicialización: ${\sf init}:\Pl\times\Dl\to\Ec$
+\beqs
+{\sf
+    init}(p,d)=\big\langle 1,[X\mapsto d,Z_1\mapsto\nil,\ldots,Z_n\mapsto\nil]\big\rangle
+\eeqs 
+donde % $p=\wread{X};\vec{C};\wwrite{Y}$ y 
+$Vars(p)=\{X,Y,Z_1,\ldots,Z_n\}$.\medskip
+\item Función de salida: ${\sf output}:\Pl\times\Ec\to\Dl,
+\;{\sf output}(p,\sigma)=\sigma(Y)$
+\ei
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \titulos{Compilador}{Equivalencia de lenguajes de programación}
+Sean $\Sc=\pt{\Pc_\Sc,\Dc_\Sc,\ds{\cdot}_\Sc}$ y $\Tc=\pt{\Pc_\Tc,\Dc_\Tc,\ds{\cdot}_\Tc}$ dos lenguajes de
+programación. 
+\bi
+\item Un compilador de $\Sc$ en $\Tc$ es un par de funciones
+$\mathcal{C}=\pt{F,c}$ tal que $F:\Pc_\Sc\to\Pc_\Tc,\;c:\Dc_\Sc\to\Dc_\Tc$ y \medskip
+\item se cumple que %para cualquier programa $p\in\Pc_\Tc$ se cumple que
+\beqs
+\fa p\in\Pc_\Sc\fa x\in\Dc_\Sc\big(c(\ds{p}_\Sc(x))=\ds{F(p)}_\Tc(c(x))\big)
+\eeqs
+\medskip
+\item o equivalentemente: $\fa p\in\Pc_\Sc\fa x\in\Dc_\Sc\fa y\in\Dc_\Tc$
+\beqs
+%\big(\;
+\ds{p}_\Sc(x)=y\mbox{ si y
+  sólo si }\ds{F(p)}_\Tc(c(x))=c(y)
+%\big)
+\eeqs
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{De $\lw$ a $\lgt$}{}
+  \begin{itemize}
+  \item $\lwu$: restricción de $\lw$ de modo que cada expresión contiene un
+    único operador.\medskip
+  \item $\lwu$ es equivalente a $\lw$.\medskip
+ \item Basta transformar instrucciones que contengan expresiones con más de un
+   operador mediante el uso de variables auxilares. \medskip
+\item Por ejemplo $X:=\wcons X (\whd Y)$ se convierte en
+\[W:=\whd Y;X:=\wcons X\;W\]
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Traducción de comandos de \lwu a \lgt}{$C\mapsto \widehat{\ell}:C^\star$}
+Sea $C$ un comando del lenguaje \lwu y $\ell$ una etiqueta. Definimos la
+secuencia de comandos etiquetados del lenguaje \lgt $\widehat{\ell}:C^\star$% , donde
+% $\widehat{\ell}$ es la etiqueta de la primera instrucción en $C^\star$,
+como sigue:
+
+\bi
+\item Si $C\eqdef X:=e$ entonces $\widehat{\ell}:C^\star\eqdef X:=e$.\medskip
+\item Si $C\eqdef \wh{X}{D_1;\ldots;D_k}$ entonces
+\beqs
+\ba{rll}
+C^\star & \eqdef & \widehat{\ell}:\gif{X}{\widehat{\ell}+1}{\widehat{\ell_{k+1}}+1};\\
+& &\ell+1:D_1^\star;\\
+& &\widehat{\ell_2}:D_2^\star;\\
+& &\vdots\\
+& &\widehat{\ell_k}:D_k^\star\\
+& &\widehat{\ell_{k+1}}:\goto\ell;\\
+%\ell''+2:C'^\star
+\ea
+\eeqs
+\ei
+
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Traducción de programas de \lwu a \lgt}{$p\mapsto p_G$}
+\bi
+\item Dado $p$ en
+  \lwu: \[p\eqdef \wread{X};C_1;\ldots;C_m;\wwrite{Y}\]  \medskip
+\item Definimos el programa $p_G$ en \lgt como:
+\beqs
+p_G\eqdef
+\wread{X};1:C_1^\star;\widehat{\ell_2}:C_2^\star;\ldots;\widehat{\ell_m}:C_m^\star;\wwrite{Y}
+\eeqs
+\medskip
+\item donde $\widehat{\ell_2}=|C_1^\star|+1$ y
+  $\widehat{\ell_{j+1}}=\widehat{\ell_j}+|C_j^\star|$ para $1< j< m$.
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{De \lwu a \lgt}{}
+\bi
+\item Traducción de estados: sea $s=\pt{\ell,\sigma}$ un estado en \lwu. Definimos el estado $\bar{s}$ en \lgt como $\bar{s}\eqdef\pt{\widehat{l},\sigma}$
+\medskip
+\item Simulación:  
+\bc
+Si $p\rhd_{\text{\lwu}} s\to s'$ entonces $p_G\rhd_{\text{\lgt}} \bar{s}\to^\star\bar{s'}$
+\ec
+% \begin{proof}
+%   Por inducción sobre la relación $p\rhd_{\text{\lwu}} s\to s'$.
+% \end{proof}
+\medskip
+\item Compilación:
+%\begin{proposition}
+Sea $\mathcal{C}=\pt{F,c}$ con
+$F:\Pc_{\text{\lwu}}\to\Pc_{\text{\lgt}}$ tal que $F(p)=p_G$ y $c=id$ la función
+identidad. $\mathcal{C}$ es un compilador de \lwu a \lgt. 
+%\end{proposition}
+
+% \begin{proof}
+%   Si $\ds{p}_{\text{\lwu}}(x)=y$ basta ver que $\ds{p_G}_{\text{\lgt}}(x)=y$ puesto que $c$ es la función
+%   identidad, pero esto es consecuencia inmediata del lema de simulación.
+% \end{proof}
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Transformación de Böhm-Jacopini $\ell:\I_\ell\mapsto \I_\ell^\star$}{De \lgt a \lw}
+  Dada una instrucción etiquetada $\ell:\I_\ell$ del lenguaje \lgt. Definimos la secuencia
+  de comandos $\I_\ell^\star$ del lenguaje \lw
+%\eqdef\ell:C'_1;\ldots \ell':C'_n$ 
+de acuerdo a los siguientes casos:
+\bi
+\item Si $\I_\ell\eqdef X:=e$ entonces 
+\[\I_\ell^\star\eqdef X:=e;PC:=\ell+1\] 
+\medskip
+\item Si $\I_\ell\eqdef\mif{X}{\ell'}{\ell''}$ entonces
+\beqs
+\I_\ell^\star\eqdef \wif{X}{PC:=\ell'}{PC:=\ell''}
+\eeqs
+\medskip
+\item Si $\I_\ell\eqdef\goto\ell'$ entonces 
+$\I_\ell^\star\eqdef PC:=\ell'$\medskip
+\item Aquí $PC$ es una variable nueva% , es decir, una variable que no figura en
+% $\I_\ell$ y cuyas presencias en $\I_\ell^\star$ son únicamente las mostradas
+% en la definición. 
+\ei
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}
+  \titulos{Traducción de \lgt a \lw}{}
+  Si $p$ es un programa en \lgt, \[p\eqdef \wread{X};1:\I_1;\ldots;m:\I_m;\wwrite{Y}\]
+ definimos el programa $p_W$ en \lw como:\pause
+\beqs
+\ba{rll}
+    p_W & \eqdef & \wread{X}; \\
+        &        & PC:=1; \\
+        &        & {\tt while}\; PC\; {\tt do}\\
+        &        & \;\;\;{\tt case}\;PC\;{\tt of}\\ 
+        &        & \;\;\;\;\;\;1 \Imp\I_1^\star; \\
+        &        & \;\;\;\;\;\;\vdots \\ 
+        &        & \;\;\;\;\;\;m \Imp\I_m^\star;\\ %PC:=0 \\ 
+        &        & \;\;\;\;\;\;{\tt otherwise}\Imp PC:=0;\\
+        &        & {\tt end};\\
+        &        & \wwrite{Y}
+%C_1^\star;\ell_2:C_2^\star;\ldots;\ell_m:C_m^\star;\wwrite{Y}
+\ea
+\eeqs
+% donde $\ell_2=|C_1^\star|+1$ y $\ell_{j+1}=\ell_j+|C_j^\star|$ para $1< j< m$.
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \titulos{Ejemplo}{Reversa}
+
+% Veamos el resultado de aplicar la transformación de Böhm-Jacopini al programa
+% {\tt reverse} del ejemplo \ref{ej:gotorev} para la reversa. 
+
+\begin{alltt}
+  read X;
+    PC := 1;
+    while PC do
+     case PC of
+      1 => Y:=nil;PC:=2;
+      2 => if X then PC:=3 else PC:=7;
+      3 => Z:=hd x; PC:=4;
+      4 => Y:=cons Z Y;PC:=5;
+      5 => X:=tl X; PC:= 6;
+      6 => PC:=2;
+      otherwise => PC:=0
+    end 
+  write Y
+\end{alltt}
+
+
+\end{frame}
+
+\begin{frame}
+  \titulos{De \lgt a \lwu}{}
+\bi
+\item Traducción de estados:  Sean $p=\wread{X},1:\I_1,\ldots,m:\I_m,\wwrite{Y}$ un programa y $s=\pt{\ell,\sigma}$ un estado en \lgt. Definimos el estado $\bar{s}$ en
+  \lw como $\bar{s}\eqdef\pt{\widetilde{\ell},\widetilde{\sigma}}$ donde % $\widetilde{1}=1$
+  % y $\widetilde{\ell+1}=\widetilde{\ell}+|\widetilde{\I_\ell}|+3$
+$\widetilde{1}=4,\;\widetilde{\ell+1}=\widetilde{\ell}+|\widetilde{\I_\ell}|$
+  para
+  $1<\ell\leq m$ y $\widetilde{\sigma}=\sigma[PC/n]$ donde $n$
+es un valor único que queda
+%una memoria que difiere de $\sigma$ a lo más en la variable nueva $PC$.  % la cual queda 
+determinado hasta el momento de la ejecución.\medskip
+\item Simulación:   Si $p\rhd_{\text{\lgt}} s\to s'$ entonces $p_W\rhd_{\text{\lw}} \bar{s}\to^+\bar{s'}$\medskip
+\item Compilación: Sea $\mathcal{C}=\pt{F,c}$ con
+$F:\Pc_{\text{\lgt}}\to\Pc_{\text{\lwu}}$ tal que $F(p)=p_W$ y $c=id$ es la función
+identidad. $\mathcal{C}$ es un compilador de \lgt a \lwu
+\ei
+
+\end{frame}
+
+\begin{frame}
+  \titulos{Teorema de la programación estructurada}{Böhm-Jacopini}
+Cualquier programa no estructurado  puede implementarse en un lenguaje
+estrictamente secuencial que contenga las siguientes 
+instrucciones: secuencia (;) ,condicional ({\tt if}) e iteración ({\tt while})
+\end{frame}
+
+
+\begin{frame}
+  \titulos{De \lmt a \lgt}{Codificación de datos}
+ La función de codificación $(\cdot)^\dag:\{0,1,\bl\}^\star\to\mathbb{T}$ se
+ define como $w^\dag=s_1^\dag s_2^\dag\ldots s_n^\dag.$ donde $w=s_1s_2\ldots
+ s_n$ y
+\beqs
+\bl^\dag=nil,\;0^\dag=nil.nil,\;1^\dag=nil.(nil.nil)
+\eeqs
+%y se extiende a cadenas de la forma usual, 
+
+
+% La transformación se basa en la idea de simular una memoria
+% $\sigma=L\underline{s}R$ de \lmt,
+% mediante una memoria con tres variables $Rt,Lf,C$ en \lgt de manera que $C$
+% almacena al (código del) símbolo actual $s$, $Lf$ a la cadena izquierda
+% $L$ y $Rt$ a la cadena derecha $R$.
+
+\end{frame}
+
+\begin{frame}
+  \titulos{Traducción de instrucciones de \lmt a \lgt}{$\ell:\I_\ell\mapsto
+    \widehat{\ell}:\widetilde{\I_\ell}$}
+\bi
+\item Si $\I_\ell\eqdef\mright$ entonces 
+\beqs
+\ba{rll}
+\widehat{\ell}:\widetilde{\I}_\ell & \eqdef & \widehat{\ell}: A_1:=nil\\
+&& \widehat{\ell}+1: A_2:= (=?\; Rt\; A_1)\\
+&& \widehat{\ell}+2: \mif{A_2}{\widehat{\ell}+3}{\widehat{\ell}+6}\\
+&& \widehat{\ell}+3: Lf:= \wcons\;C\;Lf\\
+&& \widehat{\ell}+4: C:=\bl\\
+&& \widehat{\ell}+5: \goto \widehat{l+1}\\
+&& \widehat{\ell}+6: Lf := \wcons\;C\;Lf\\
+&& \widehat{\ell}+7: C:= \whd Rt\\
+&& \widehat{\ell}+8: Rt:=\wtl Rt
+\ea
+\eeqs 
+donde las variables $A_1,A_2$ son nuevas.
+\item Si $\I_\ell\eqdef\mleft$ entonces $\widehat{\ell}:\widetilde{\I_\ell}$ se define
+  análogamente al \\ caso anterior.
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Traducción de instrucciones de \lmt a \lgt}{$\ell:\I_\ell\mapsto
+    \widehat{\ell}:\widetilde{\I_\ell}$}
+\bi
+\item Si $\I_\ell\eqdef\mwrite s$ entonces $\widehat{\ell}:\widetilde{\I_\ell}\eqdef
+  \widehat{\ell}:C:=s$\medskip
+\item Si $\I_\ell\eqdef\mif{s}{\ell'}{\ell''}$ entonces
+\beqs
+\ba{rll}
+\widehat{\ell}:\widetilde{\I}_\ell & \eqdef & \widehat{\ell}: A_1:=s\\
+&& \widehat{\ell}+1: A_2:= (=?\; C\; A_1)\\
+&& \widehat{\ell}+2: \mif{A_2}{\widehat{\ell'}}{\widehat{\ell''}}
+\ea
+\eeqs 
+donde las variables $A_1,A_2$ son nuevas.\medskip
+\item Si $\I_\ell\eqdef\goto\ell'$ entonces $\widetilde{\I}_\ell\eqdef\goto\widehat{\ell'}$
+% \item Obsérvese que dada $\ell$ la etiqueta $\widehat{\ell}$ no ha sido definida
+% pues depende de un programa en consideración y se calcula de acuerdo a la siguiente definición.
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Traducción de \lmt a \lgt}{}
+  Dado un programa $p$ en \lmt
+\[p\eqdef 1:\I_1,2:\I_2,\ldots,m:\I_m;m+1:\halt\]
+\medskip
+\pause
+definimos  el programa $p_G$ en \lgt como sigue:
+\beqs
+p_G\eqdef \wread Rt;1:\widetilde{\I_1},\widehat{2}:\widetilde{\I_2},\ldots,\widehat{m}:\widetilde{\I_m};\wwrite{Rt}
+\eeqs
+\medskip
+donde $\widehat{2}=1+|\widetilde{\I_1}|$ y $\widehat{j+1}=|\widetilde{\I_j}|+\widehat{j},\;1<j<m$.
+\end{frame}
+
+\begin{frame}
+  \titulos{De \lmt a \lgt}{}
+  \begin{itemize}
+  \item Traducción de estados:   Dado un estado $s\eqdef\pt{\ell,L\underline{s}R}$ en \lmt definimos el estado
+  $\bar{s}$ en \lgt como $\bar{s}\eqdef\pt{\widehat{\ell},\sigma}$ donde
+\beqs
+\sigma\eqdef[Lf\mapsto (L^{rev})^\dag,\;C\mapsto s^\dag,\;Rt\mapsto R^\dag]
+\eeqs
+y $L^{rev}$ denota a la reversa de la cadena $L$.\medskip
+  \item Simulación:   Si $p\rhd_{\text{\lmt}} s\to s'$ entonces $p_G\rhd_{\text{\lgt}} \bar{s}\to^+\bar{s'}$\medskip
+  \item Compilación: Sea $\mathcal{C}=\pt{F,c}$ con
+%$F:\Pc_{\text{\lmt}}\to\Pc_{\text{\lgt}},\;
+\bc
+$F(p)=p_G$ y $c(x)=x^\dag$.
+\ec
+\medskip
+$\mathcal{C}$ es un compilador de \lmt a \lgt  
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \titulos{De \lgt a \mt}{Codificación de datos}
+%\begin{definition}[Codificación]
+Sea $\Sigma=\{0,(,),\cdot,\bl\}$
+El conjunto de datos de \lgt, $\Dc_\lgt=\mathbb{T}$ se codifica en $\Sigma$
+mediante la función $(\cdot)^\ddag:\mathbb{T}\to\Sigma^\star$
+como sigue:
+\bi
+\item $nil^\ddag=0$\medskip
+\item $(x.y)^\ddag=\mathtt{(}x^\ddag\,.\,y^\ddag)$\medskip
+\item Por ejemplo el árbol $(nil.(nil.nil))$ se codifica con la cadena $(0.(0\text{.}0))$
+\ei
+%\end{definition}
+
+
+\end{frame}
+
+\newcommand{\ce}{{\tt C.E}}
+\newcommand{\cp}[2]{{\tt copy #1 to #2}}
+\newcommand{\erase}{\mathop{\mathtt{erase}}}
+\newcommand{\cgoto}{\mathop{\mathtt{goto}}}
+\newcommand{\cex}[2]{{\tt compute #1 in #2}}
+\newcommand{\cif}[3]{{\tt if #1 then goto #2 else goto #3}}
+
+
+
+
+\begin{frame}
+  \titulos{Macros en \mt multicinta}{}
+  Sea $M$ una máquina de Turing multicinta cuyo alfabeto codifica expresiones
+  del lenguaje \lgt. Los siguientes macros son
+  implementables.
+\be
+\item \ce: mover la cabeza de todas las cintas al primer
+  blanco a la izquierda de la cadena actual (configuración estandar).
+\item \cp{C}{D}: copia a la cinta {\tt D} el contenido de la cinta
+  {\tt C}.
+\item $\erase C$: borra el contenido de la cinta C.
+\item \cex{e}{C}: calcula el valor de la \lgt\!-expresión $e$ (codificada), escribiendo el
+  resultado en la cinta C
+\item \cif{C}{q1}{q2} : verifica si el contenido de la cinta C no es 0 (el código
+  de nil) en cuyo caso se cambia el estado a {\tt q1} y en caso contrario se
+  cambia el estado a {\tt q2}.
+\item $\cgoto{\mathtt{q}}$: cambia el estado a {\tt q} 
+\ee
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Traducción de \lmt a \mt}{}
+  Sea $p=\wread X;1:\I_1,\ldots,m:\I_m;\mwrite Y$ un programa en \lgt tal que
+  $Vars(p)=\{X,Y,Z_1,\ldots,Z_n\}$. Definimos la máquina de Turing multicinta
+  $T_p=\pt{\Sigma,Q,q_1,q_f,\delta}$ como sigue:
+\bi
+\item Existen $n+3$ cintas, una por cada variable de $p$, denotada exactamente igual, más una cinta
+  auxiliar denotada $\A$. \medskip
+\item $\Sigma=\{(,),\cdot,0,\bl\}$ \medskip
+\item $Q=\{q_1\ldots,q_m,q_f\}\cup Q'$ donde existe un estado $q_\ell$ para
+  cada instrucción $\I_\ell$ del programa \lgt y $Q'$ es un conjunto de estados
+  auxiliares utilizados únicamente en los macros anteriores. \medskip %  de la proposición \ref{pr:macros}
+\item El estado inicial es $q_1$ y el estado final es $q_f$.
+\ei
+\end{frame}
+\begin{frame}
+%\titulos{}{}
+  \titulos{Traducción de \lmt a \mt}{}
+\bi
+\item Las acciones de la máquina al llegar a un estado correspondiente a una
+  instruccion del programa \lgt son las siguientes:
+% La función de transición $\delta$ de $M_p$ se define a
+%   partir de las siguientes descripciones para las acciones que realiza la
+%   máquina al llegar a cada estado correspondiente a una instrucción.
+\bi
+\item Si $\I_\ell\eqdef X:=e$ entonces \medskip
+\bc
+$q_\ell$: \cex{e}{$\A$};\;$\erase X$;\;\cp{$\A$}{X};\;\ce;\;$\cgoto{q_{\ell+1}}$
+\ec
+\medskip
+\item Si $\I_\ell\eqdef \mif{X}{\ell'}{\ell''}$ entonces\medskip
+\bc
+$q_\ell$: \cex{X}{$\A$};\;\ce;\;\cif{$\A$}{$q_{\ell'}$}{$q_{\ell''}$}
+\ec
+\medskip
+\item Si $\I_\ell\eqdef\goto q_{\ell'}$ entonces\medskip
+\bc
+$q_\ell:\cgoto{q_{\ell'}}$ 
+\ec
+
+\ei
+
+\ei
+\end{frame}
+
+\begin{frame}[fragile]
+  \titulos{Ejemplo}{\mt}
+  La máquina $T_{\tt reverse}$ asociada al programa goto para {\sc reverse} se describe como sigue:
+  \begin{alltt}
+    q1: compute nil in A;erase Y;copy A to Y;
+        C.E.;goto q2
+    q2: if X then goto q3 else goto q7
+    q3: compute hd X in A;erase Z;copy A to Z;
+        C.E.;goto q4
+    q4: compute cons Z Y in A;erase Y;copy A to Y;
+        C.E.;goto q5
+    q5: compute tl X in A;erase X;copy A to X;
+        C.E.;goto q6
+    q6: goto q2 
+  \end{alltt}
+
+
+
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Corrección de la transformación de \lmt a \mt}{}
+%  La correctud de esta transformación se sigue de la siguiente 
+
+% \begin{proposition}
+\bi
+\item Si $p$ es un programa en $\lmt$ tal que $\ds{p}(x)=y$ entonces $y\in L(T_p)$. \medskip
+\item Más aún, si la tupla 
+\[(q,w_X,w_Y,w_{Z_1},\ldots,w_{Z_n},w_\A)\] es una configuración de $T_p$ indicando que $T_p$ se encuentra en el estado $q$ siendo $w_V$ el contenido de la cinta correspondiente a cada variable $V$ % o a la cinta auxiliar $\A$ 
+entonces
+\beqs
+(q_1,(x^\ddag,0,\ldots,0))\vdash^\star (q_f,(w_X,y^\ddag,\ldots,w_{Z_n},w_\A))
+\eeqs
+%\end{proposition}
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Equivalencia de nociones de computabilidad}{}
+
+\begin{proposition}
+  Los lenguajes \lw, \lgt y \lmt son equivalentes a $\mt$.
+\end{proposition}
+
+\begin{proof}
+Hemos mostrado que:
+\bi
+\item  \lw $\Leftrightarrow$ \lgt
+\item \lgt $\Imp\,\mt$ 
+\item \lmt $\Imp$\lgt. 
+\item  \lmt $\Leftrightarrow\,\mt$. De donde también tenemos que \lgt
+  $\Leftrightarrow\,\mt$.
+\ei
+\end{proof}
+
+\end{frame}
+
+
+\end{document}

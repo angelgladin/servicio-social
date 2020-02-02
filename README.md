@@ -12,17 +12,19 @@
 
 - [x] Reunirme la última semana con Favio para acordadar que se debe hacer.
 (25 al 29 de noviembre).
-- [ ] Preguntar acerca de las notas `n09alf192.tex`, `n10alf192.tex` y `n10alf192.tex` con 
+- [ ] Preguntar acerca de las notas `n09alf192.tex`, `n10alf192.tex` y `n11alf192.tex` con 
   con el archivo `.diff` que cambias se deben tener.
-- [ ] Presentaciones compilen.
+- [x] Presentaciones compilen.
     - [x] `alf192DyckChomskySchutz`
     - [x] `aylfm161`
-    - [ ] `alfp`
+    - [x] `alfp`
+- [ ] Agregar el `Makefile` a `aylfm161` y `alf192DyckChomskySchutz`.
+- [ ] Quitar los archivos de `diff` en `alfp`.
 - [ ] Notas `alf192` compilen.
 - [ ] Hacer resumen del contenido de cada nota y presentación y ponerlo en un `.txt`.
 - [x] Hacer lo del `.gitignore`.
 - [ ] Ir con Favio el 4 de febreo.
-- [ ] Hacer un `Makefile` genérico y con base a ése, usarlo para cada diferente proyecto.
+- [x] Hacer un `Makefile` genérico y con base a ése, usarlo para cada diferente proyecto.
 - [ ] Agregar al `.gitignore` los archivos temporales de emacs.
 
 ## Entorno

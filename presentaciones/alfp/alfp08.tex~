@@ -1,0 +1,816 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+%\documentclass[xcolor=dvipsnames,handout]{beamer}
+
+\input{macros2006}
+
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+\newcommand{\espc}{\vspace{.5cm}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\cv}{\ensuremath{\varepsilon}}
+\newcommand{\sest}{\ensuremath{\Sigma^\star}}
+\newtheorem{teorema}{Teorema}
+\renewcommand{\S}{\Sigma}
+\newcommand{\de}{\delta}
+\newcommand{\izq}{\leftarrow}
+\newcommand{\der}{\rightarrow}
+\newcommand{\dest}{\ensuremath{\delta^\star}}
+
+
+\mode<presentation>
+{
+\usetheme[secheader]{Boadilla}
+%\useinnertheme{rounded}
+\useoutertheme{infolines}
+%\usepackage{BeamerColor}
+%\usecolortheme[RGB={33,66,33}]{structure}
+\usecolortheme[named=NavyBlue]{structure}
+%\usefonttheme{}
+\setbeamercovered{invisible}
+%\setbeamertemplate{headline}{\insertshortinstitute}
+%\setbeamertemplate{footline}[page number]{\insertshortinstitute}
+%\insertshortinstitute
+}
+
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+
+\title[AyLF MCIC 2016-1]{Autómatas y Lenguajes Formales 2016-1}
+\subtitle
+{Maestría en Ciencia e Ingeniería de la Computación UNAM\\
+  Tema 8: Gramáticas, jerarquía de Chomsky, ambigüedad}
+
+\author[Favio E. Miranda Perea]{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+
+
+\institute[FC UNAM]{Facultad de Ciencias UNAM}
+
+\date{\today}
+
+\subject{Theoretical Computer Science}
+
+% \pgfdeclareimage[height=0.5cm]{LogoTecBueno}{LogoTecBueno.eps}
+\logo{\includegraphics[height=1cm]{fc2.png}}
+
+\begin{document}
+
+
+\beamerdefaultoverlayspecification{<+->}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%\section{Introducción a las gramáticas}
+%\subsection{Introducción}
+\begin{frame}
+  \titulos{Gramáticas}{Introducción}
+    \bi
+\item Un mecanismo relevante para generar un lenguaje es mediante el
+   concepto de gramática formal.\medskip
+   \item Las gramáticas formales fueron introducidas por Noam Chomsky en
+     1956.\medskip
+     \item La intención era tener un modelo para la descripción de
+       lenguajes naturales.\medskip
+       \item Posteriormente se utilizaron como herramienta para
+         presentar la sintaxis de lenguajes de programación y para el
+         diseño de analizadores léxicos de compiladores
+        % \item Volveremos a éllas más tarde.
+     \ei
+\end{frame}
+
+%\subsection{Definiciones básicas}
+\begin{frame}
+  \titulos{Gramáticas}{Definición}
+  Una gramática es una cuaterna \alert{$G=\pt{V,T,S,P}$} tal que:\pause
+  \bi
+  \item $V$ es un alfabeto de \alert{variables} o \alert{símbolos
+      no-terminales}, los cuales se denotan con mayúsculas $A,B,C,\ldots$\medskip
+    \item $T$ es un alfabeto de \alert{símbolos terminales}, los  
+      cuales se denotan con minúsculas $a,b,c,\ldots$. Además se
+      requiere $T\cap V=\vacio$.\medskip
+      
+      \item $S\in V$ es una variable distinguida llamada el \alert{símbolo
+        inicial}.\medskip
+        \item $P$ es un conjunto finito de reglas de reescritura,
+          llamadas \alert{reglas de producción} o producciones.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Reglas de Producción}{Gramáticas}
+El conjunto de reglas de producción $P$ es un conjunto finito de
+pares $\pt{\al,\beta}$ tales que\pause
+\bi
+\item $\al\in (V\cup T)^\star - T^\star$. Es decir, $\al$ es una
+  cadena de símbolos terminales ó no terminales, con al menos un
+  símbolo no-terminal.\medskip
+  \item  $\beta\in (V\cup T)^\star$. Es decir, $\beta$ es una cadena de
+    símbolos de $V\cup T$ , los cuales podrían ser todos terminales.\medskip
+    \item Usualmente en vez de escribir $\pt{\al,\beta}\in P$
+      escribimos
+      \beqs
+      \al \imp \beta
+      \eeqs
+   \item[] y decimos que $\al$ produce a $\beta$, o que $\al$ se reescribe
+      en $\beta$.
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Derivaciones}{Generación de cadenas}
+  Las reglas de producción sirven para generar cadenas, proceso que se
+  formaliza mediante las derivaciones formales:\\ \pause
+ 
+  Dadas dos palabras $w,v\in (V\cup T)^\star$ decimos que $v$ es
+    \alert{derivable} a partir de $w$ en {un paso} ($w\imp v$) si y sólo si:\pause\medskip
+    \bi
+    \item Existe una regla $\al\imp\beta$ en $P$ y  cadenas $\gamma_1,\gamma_2\in(V\cup T)^\star$ tales
+      que:
+  \beqs
+  w=\gamma_1\al\gamma_2\;\;\mbox{y}\;\;v=\gamma_1\beta\gamma_2
+  \eeqs\medskip
+  \item Algunos autores utilizan $\Imp$ en vez de $\imp$ para denotar
+    la relación de derivación. Nosotros preferimos sobrecargar el
+    operador $\imp$.
+  \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Derivaciones formales}{$\imp^\star$}
+ Decimos que una cadena $v$ es \alert{derivable} a partir de $w$ si existen
+ palabras $\ga_2,\ldots,\ga_n$ tales que
+ \beqs
+ w=\ga_1\imp \ga_2\ldots\ga_{n+1}\imp\ga_n=v
+ \eeqs \pause
+En tal caso escribimos \alert{$w\imp^\star v$}. 
+\end{frame}
+
+\begin{frame}
+  \titulos{Lenguaje generado
+   por una gramática}{$L(G)$}
+  Dada una gramática $G=\pt{V,T,S,P}$ definimos al lenguaje generado
+  por $G$, denotado $L(G)$, como el conjunto de palabras de símbolos
+  \alert{terminales} derivables a partir del símbolo
+  inicial $S$. Es decir,\pause
+\beqs
+L(G)=\{w\in T^\star\;|\;S\imp^\star w\}
+\eeqs
+\end{frame}
+
+
+%\subsection{Ejemplos}
+
+
+
+\begin{frame}
+\titulos{$L = (a+b)^\star$}{Ejemplos}
+\bi
+  \item Cualquier cadena de aes y bes debe generarse.
+  \item La cadena vacía debe generarse: \beqs S\imp\cv\eeqs
+    \item Si $w\in L$ entonces $wa\in L$
+      \beqs
+      S\imp Sa\eeqs
+    \item Si $w\in L$ entonces $wb\in L$
+      \beqs
+      S\imp Sb\eeqs
+      \item Ejemplo de derivación: $w=ababb$
+        \beqs
+        S\imp Sb\imp Sbb\imp Sabb\imp Sbabb\imp Sababb\imp ababb
+        \eeqs
+  \ei
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}
+  \titulos{$L=\{a^ib^j\;|\;i,j\in\N,i\leq j\}$}{Ejemplos}
+  \bi
+  \item La cadena vacía debe generarse ($i=j=0$): \beqs S\imp\cv\eeqs
+    \item Debe haber al menos tantas bes como aes, primero aes y luego bes: \beqs S\imp aSb\eeqs
+      \item Puede haber más bes al final:  \beqs S\imp Sb\eeqs
+      \item Ejemplo de derivación: $w=aabbb$
+        \beqs
+        S\imp aSb\imp aaSbb\imp aaSbbb\imp aabbb
+        \eeqs
+  \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{$L=\{a^ib^ja^jb^i\;|\;i,j\in\N\}$}{Ejemplos}
+  \bi
+  \item Primero generamos el centro de la palabra, $b^ja^j$:
+    \beqs
+     S\imp B\;\;\; B\imp bBa\;\;\;B\imp \cv
+    \eeqs
+  \item Después los extremos $a^i,\;b^i$:
+    \beqs
+    S\imp aSb
+    \eeqs
+      \item Ejemplo de derivación: $w=aababb$
+        \beqs
+        S\imp aSb\imp aaSbb\imp aaBbb\imp aabBabb \imp aababb
+\eeqs
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{$L=\{a^{i} b^{i} a^{j} b^{j}\;|\;i,j\in\N\}$}{Ejemplos}
+  \bi
+  \item El lenguaje $\{a^i b^i\;|\; i\in\N\}$ se genera mediante:
+    \beqs
+    P\imp \cv\;\;\;\;\;P\imp aPb
+    \eeqs
+    \item Para generar a $L$ simplemente agregamos:
+      \beqs
+      S\imp PP
+      \eeqs
+      \item Ejemplo de derivación: $w=aabbab$
+        \beqs
+        S\imp PP \imp aPbP\imp aPbaPb\imp aaPbbaPb \imp aaPbbab\imp aabbab
+\eeqs
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{$L=\{a^{i} b^{i}\;|\;i\in\N\}\cup\{b^{i} a^{i}\;|\;i\in\N\}$}{Ejemplos}
+  \bi
+  \item El lenguaje $\{a^i b^i\;|\; i\in\N\}$ se genera mediante:
+    \beqs
+    P\imp \cv\;\;\;\;\;P\imp aPb
+    \eeqs
+    \item El lenguaje $\{b^i a^i\;|\; i\in\N\}$ se genera mediante:
+    \beqs
+    Q\imp \cv\;\;\;\;\;Q\imp bQa
+    \eeqs
+    
+    \item Para generar a $L$ simplemente agregamos:
+      \beqs
+      S\imp P\;\;\; S\imp Q
+      \eeqs
+ \item Ejemplo de derivación: $w=bbbaaa$
+        \beqs
+        S\imp P \imp aPb\imp aaPbb\imp aaaPbbb \imp aaabbb
+\eeqs
+  \ei
+\end{frame}
+
+
+
+\begin{frame}
+  \titulos{Correctud y completud}{Diseño de gramáticas}
+\bi
+\item Si bien muchas veces el diseño de una gramática $G$ para un lenguaje dado $L$  es intuitivamente claro y correcto, esto debe mostrarse formalmente, mostrando que $L=L(G)$. Esto se hace, por supuesto, mostrando lo siguiente:
+\medskip
+\item Correctud: la gramática $G$ genera únicamente cadenas de $L$, es decir, $L(G)\inc L$.
+\medskip
+\item Completud: toda cadena de $L$ es generada por $G$, es decir, $L\inc L(G)$.
+\ei
+
+\end{frame}
+
+
+
+%\subsection{Jerarquía de Chomsky}
+
+\begin{frame}
+  \titulos{Lenguajes recursivamente enumerables o tipo
+    0}{Jerarquía de Chomsky}
+  Son aquellos lenguajes generados por una gramática sin restricciones
+  adicionales.\\
+  Tales gramáticas pueden incluir reglas de la forma
+  \beqs
+  \alert{\al\imp\cv}
+  \eeqs
+  De manera que la gramática es capaz de borrar cadenas. \pause Tales
+  gramáticas se conocen como \alert{contraibles}.\\
+Ejemplo:
+\beqs
+aS\imp bSb,\; aSb\imp \cv,\; SbS\imp bcS
+  \eeqs
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Lenguajes recursivamente enumerables o tipo
+    0}{Jerarquía de Chomsky}
+\bi
+\item La siguiente es una gramática de tipo 0:
+\[
+S\to AT\;\;\;\;\;\;A\to 0AO\;\;\;\;A\to 1AI\;\;\;\;O0\to 0O
+\]
+\[
+O1\to 1O\;\;\;\;\;I0\to 0I\;\;\;\;\;I1\to1I\;\;\;\;\;OT\to 0T
+\]
+\[
+IT\to 1T\;\;\;\;\;\alert{A\to\varepsilon}\;\;\;\;\;\alert{T\to\varepsilon}
+\]
+\medskip
+\item $L(G)=\{ww\mid w\in\{0,1\}^\star\}$
+\medskip
+\item La idea del diseño de esta gramática y la razón del nombre {\em recursivamente enumerable} se discutirán más adelante.
+\ei
+\end{frame}
+
+
+
+\begin{frame}
+  \titulos{Lenguajes dependientes del contexto o tipo 1}{Jerarquía de
+    Chomsky}
+  Son aquellos generados por gramáticas con todas sus producciones son de la forma
+  \beqs
+\alert{\al_1A\al_2\imp\al_1\beta\al_2}
+  \eeqs
+  con $\al_1,\al_2\in(V\cup T)^\star,\;A\in V,\;\beta\neq\cv$.\\
+  
+  Con la posible excepción de la regla $S\imp\cv$, en cuyo caso se
+  prohibe la presencia de $S$ a la derecha de las producciones.\\
+\pause  Por ejemplo la siguiente gramática dependiente del contexto genera al
+lenguaje $L=\{a^ib^ic^i\;|\;i\geq 0\}$
+  \beqs
+  S\imp A\;\;\;
+  A\imp aABC\;|\;abC\;\;\;
+      CB\imp BC \eeqs
+   \beqs bB\imp bb
+         \;\;\;bC\imp bc
+         \;\;\;cC\imp cc
+         \eeqs
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Lenguajes libres del contexto o tipo 2}{Jerarquía de
+    Chomsky}
+\bi
+\item   Son aquellos generados por gramáticas con todas sus producciones de
+  la forma
+  \beqs
+  \alert{A\imp\al}
+  \eeqs
+  con $A\in V,\;\al\in(V\cup T)^\star$.\medskip
+\item  Esta definición incluye a la regla $S\imp\cv$. \medskip
+\item   La mayoría de las gramáticas para lenguajes de programación caen en
+  esta categoría.
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{Lenguajes regulares o tipo 3}{Jerarquía de Chomsky}
+  Son aquellos generados por una gramática de una de las siguientes
+  formas:
+  \bi
+  \item Lineal por la derecha: todas las producciones de la forma
+    \beqs
+    \alert{A\imp aB\;\;\;A\imp a\;\;\;A\imp\cv}
+    \eeqs
+    con $A,B\in V,\;a\in T$
+  
+  \item Lineas por la izquierda: todas las producciones de la forma
+       \beqs
+    \alert{A\imp Ba\;\;\;A\imp a\;\;\;A\imp\cv}
+    \eeqs
+    con $A,B\in V,\;a\in T$
+\item No se permite mezclar ambos tipos de producciones.
+  \ei
+  \end{frame}
+
+  \begin{frame}
+    \titulos{Jerarquía de Chomsky}{Observaciones}
+    \bi
+    \item Decimos que un lenguaje es de tipo $i$ si y sólo si $i$ es el índice mas grande tal que existe una gramática de tipo $i$ que genera a $L$
+% la gramática con
+%       índice más mayor que lo genera es de tipo $i$.
+      \item La jerarquía de gramáticas genera una jerarquía en los
+        lenguajes generados:
+        \beqs
+        \alert{\mathcal{L}_3\subsetneq \mathcal{L}_2\subsetneq \mathcal{L}_1\subsetneq \mathcal{L}_0}
+        \eeqs
+        \item La jerarquía de Chomsky permite refinar la teoría de la
+          computación clasificando lenguajes en función de los
+          recursos computacionales necesarios para reconocerlos.
+    \ei
+    
+  \end{frame}
+
+
+%\section{Gramáticas Regulares}
+
+%\subsection{Introducción}
+%\begin{frame}
+%  \titulos{Gramáticas Regulares}{Definición}
+%    \bi
+%  \item Lineal por la derecha: todas las producciones de la forma
+%    \beqs
+%    \alert{A\imp aB\;\;\;A\imp a\;\;\;A\imp\cv}
+%    \eeqs
+%    con $A,B\in V,\;a\in T$
+  
+%  \item Lineas por la izquierda: todas las producciones de la forma
+%       \beqs
+%    \alert{A\imp Ba\;\;\;A\imp a\;\;\;A\imp\cv}
+%    \eeqs
+%    con $A,B\in V,\;a\in T$
+%\ei
+%No se permite mezclar ambos tipos de producciones.
+%\end{frame}
+
+
+
+
+\begin{frame}
+  \titulos{Gramáticas Regulares}{}
+    \bi
+  \item Una gramática regular es una gramática lineal por la
+    derecha o lineal por la izquierda.\espc
+   \item  No se permite mezclar ambos tipos de producciones.\espc
+     \item Se puede probar que toda gramática lineal por la izquierda
+       es equivalente a una gramática lineal por la derecha.
+       \ei
+       \end{frame}
+       \begin{frame}
+  \titulos{Gramáticas Regulares}{Lenguajes Regulares}
+       \bi
+       \item Decimos que un lenguaje $L$ es regular si \alert{existe} una
+         gramática regular $G$  que lo genere, es decir, si 
+         $L=L(G)$.\espc
+         \item Si $L$ es generado por una gramática de tipo $i$, no se puede
+           asegurar de inmediato que $L$ sea un lenguaje de tipo
+           $i$. Debe asegurarse que $i$ es máximo.
+\ei
+\end{frame}
+
+%\subsection{Ejemplos}
+\begin{frame}
+  \titulos{$L=0^\star10^\star 10^\star$}{Ejemplos}
+  $L$ es generado por:
+  \beqs
+ \ba{rll}
+ S & \imp & A1A1A \\
+ A & \imp & 0A\;|\;\cv
+ \ea
+\eeqs
+esta gramática no es regular, \pause pero el lenguaje si lo es al existir una
+gramática regular equivalente:
+\beqs
+ \ba{rll}
+ S & \imp & 0S\;|\;1A \\
+ A & \imp & 0A\;|\;1B \\
+ B & \imp & 0B\;|\;\cv \\
+ \ea
+\eeqs
+\end{frame}
+
+
+\begin{frame}
+  \titulos{$L=(a+b)^\star b$}{Ejemplos}
+  $L$ es generado por:
+
+\beqs
+ \ba{rll}
+ S & \imp & aS\;|\;bC \\
+ C & \imp & bC\;|\;aS\;|\;\cv\\
+ \ea
+\eeqs
+\end{frame}
+
+%\subsection{AF $\;\Iff\;$ GR}
+\begin{frame}
+  \titulos{Lenguajes y gramáticas regulares}{AF$\;\Imp\;$ GR}
+  Dado un AF  $M=\pt{Q,\S,\de,q_0,F}$ existe una gramática regular
+  $G=\pt{V,T,S,P}$ tal que $L(M)=L(G)$. Es decir, todo lenguaje
+  regular es generado por una gramática regular.\pause\\
+  Definimos a $G$ como sigue:
+  \bi
+  \item Suponemos s.p.g. que no hay $\cv$-transiciones.
+    \item $V=Q\;\;\;\;\;T=\S\;\;\;S=q_0$
+             \item $P$ se define como sigue:
+          \bi
+          \item Si $p\in\de(q,a)$ entonces
+            agregamos $q\imp ap$ a $P$.\espc
+            \item Si $q_f\in\de(q,a)$ con $q_f\in F$ entonces
+              agregamos $q\imp a$.
+           % \item Si $q_F\in F$ entonces agregamos $q_F\imp\cv$ a $P$.
+          \ei
+  \ei
+\end{frame}
+
+
+
+%\begin{frame}
+%  Por ejemplo, para el autómata $M$ dado por: 
+%\beqs
+%\VCDraw{
+%\begin{VCPicture}{(0,0)(6,3)}  
+%\State[q_0]{(0,3)}{q_0} \State[q_1]{(3,3)}{q_1}
+%\FinalState[q_2]{(6,0)}{q_2} 
+%\Initial{q_0} %\Final{q_3}
+%\EdgeL{q_0}{q_1}{1}\ArcR{q_1}{q_2}{0}\ArcR{q_2}{q_1}{1}
+%\ArcL{q_2}{q_0}{0} %\ArcL{q_2}{q_0}{a}
+%\LoopN{q_0}{0} \LoopN{q_1}{1} %\LoopS{q_2}{a,b}
+%\end{VCPicture}
+%}
+%\eeqs
+%La gramática obtenida es:
+%\beqs
+%q_0\imp 0q_0\;|\;1q_1\;\;\;\;\;q_1\imp
+%1q_1\;|\;0q_2\;|\;0\;\;\;\;\;\;q_2\imp 0q_0\;|\;1q_1
+%\eeqs
+
+%\end{frame}
+  
+%\begin{frame}
+
+
+%Para el autómata $M$:
+
+
+%  \beqs
+%\VCDraw{
+%\begin{VCPicture}{(0,0)(3,3)}  
+%\FinalState[q_0]{(0,3)}{q_0} \FinalState[q_1]{(3,3)}{q_1}
+%\State[q_2]{(3,0)}{q_2} 
+%\Initial{q_0} %\Final{q_3}
+%\ArcL{q_0}{q_1}{b}\ArcL{q_1}{q_0}{a}\ArcL{q_1}{q_2}{b}
+%\ArcL{q_2}{q_1}{b}\ArcL{q_2}{q_0}{a}
+%\LoopN{q_0}{a} %\LoopN{q_1}{b}\LoopS{q_2}{a,b}
+%\end{VCPicture}
+%}
+%\eeqs
+
+%la gramática generada es:
+
+
+%\beqs
+%q_0\imp aq_0\;|\;bq_1\;|\;a\;|\;b\;\;\;\;q_1\imp
+%aq_0\;|\;bq_2\;|\;a\;\;\;\;q_2\imp aq_0\;|\;bq_1\;|\;a
+%\eeqs
+%\end{frame}
+
+
+
+
+\begin{frame}
+  \titulos{Lenguajes y gramáticas regulares}{GR$\;\Imp\;$ AF}
+  Dada una gramática regular $G=\pt{V,T,S,P}$ existe un AF
+  $M=\pt{Q,\S,\de,q_0,F}$ tal que $L(M)=L(G)$. Es decir todo lenguaje
+  generado por una gramática regular es un lenguaje regular. \pause \\
+  Definimos a $M$ como sigue:
+  \bi
+  \item Suponemos s.p.g. que $G$ es lineal derecha.
+   \item  $Q=V\cup\{q_F\}\;\;\;\;\S=T\;\;\;\;q_0=S\;\;\;\;F=\{q_F\}$
+          \item $\de$ se define como sigue:
+            \bi
+            \item Si $A\imp aB\in P$ entonces $B\in\de(A,a)$.
+              \item Si $A\imp a\in P$ entonces $q_F\in\de(A,a)$.
+                \item Si $A\imp\cv\in P$ entonces $q_F\in\de(A,\cv)$.
+            \ei
+  \ei
+\end{frame}
+
+
+%\section{Gramáticas Libres de Contexto}
+\begin{frame}
+  \titulos{Gramáticas libres de contexto}{Definición}
+Una gramática es libre o independiente del contexto si 
+todas sus producciones son de
+  la forma
+  \beqs
+  \alert{A\imp\al}
+  \eeqs
+  con $A\in V,\;\al\in(V\cup T)^\star$.\\
+\pause  Esta definición incluye a la regla $S\imp\cv$. \\
+
+\pause Obsérvese que en particular toda gramática regular es libre de contexto.
+\end{frame}
+
+%\subsection{Ejemplos}
+
+\begin{frame}
+  \titulos{Gramáticas libres de contexto}{Ejemplos}
+\bi
+\item $L=a^\star$
+  \beqs
+  S\imp aS\;|\;\cv
+  \eeqs
+\item $L=a^\star b^\star$
+     \beqs
+   \ba{rll}
+    S & \imp & aS\;|\;bA\;|\;\cv\\
+    A & \imp & bA\;|\;b\;|\;\cv
+   \ea
+   \eeqs
+   \item $L=0^+1^+$
+   \beqs
+   \ba{rll}
+   S & \imp & CU\\
+   C & \imp & 0C\;|\;0 \\
+   U & \imp & 1U\;|\;1
+   \ea
+   \eeqs
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Gramáticas libres de contexto}{Ejemplos}
+\bi
+\item $L=\{a^nba^m\;|\;n,m\geq 1\}=a^+ba^+$
+    \beqs
+   \ba{rll}
+   S & \imp & aS\;|\;aB\\
+   B & \imp & bC \\
+   C & \imp & aC\;|\;a
+   \ea
+   \eeqs
+\item $L=\{a^n b^n\;|\;n\in\N\}$  que no es regular
+  \beqs
+S\imp aSb\;|\;\cv
+\eeqs
+\item $L=\{w\in\{a,b\}^\star\;|\;w=w^R\}$ que no es regular
+  \beqs
+S\imp aSa\;|\;bSb\;|\;a\;|\;b\;|\;\cv
+  \eeqs
+  
+  \ei
+\end{frame}
+
+
+%\subsection{Derivaciones y árboles}
+
+
+\begin{frame}
+  \titulos{Derivaciones por la izquierda}{GLC}
+  Una derivación $S\imp^\star w$ es una derivación por la izquierda si
+  en cada paso se reescribe la variable mas a la izquierda en la
+  palabra.\\ \pause
+  En la gramática
+  \beqs
+  S\imp aAs\;|\;a\;\;\;\;\;A\imp SbA\;|\;SS\;|\;ba
+  \eeqs\pause
+  tenemos la siguiente derivación por la izquierda de $aabbaa$.
+  \beqs
+  \alert{S}\imp a\alert{A}S\imp a\alert{S}bAS\imp aab\alert{A}S\imp aabba\alert{S}\imp aabbaa
+  \eeqs
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Derivaciones por la derecha}{GLC}
+  Una derivación $S\imp^\star w$ es una derivación por la derecha si
+  en cada paso se reescribe la variable mas a la derecha en la
+  palabra.\\ \pause
+  En la gramática
+  \beqs
+  S\imp aAs\;|\;a\;\;\;\;\;A\imp SbA\;|\;SS\;|\;ba
+  \eeqs \pause
+  tenemos la siguiente derivación por la derecha de $aabbaa$.
+  \beqs
+  \alert{S}\imp aA\alert{S}\imp a\alert{A}a\imp aSb\alert{A}a\imp a\alert{S}bbaa\imp aabbaa
+  \eeqs
+  
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Árboles de derivación}{GLC}
+  \bi
+  \item Los árboles de derivación o árboles sintácticos son un
+    mecanismo para representar las derivaciones de gramáticas libres
+    de contexto.\espc
+  \item  En compiladores se utilizan para el análisis sintáctico de
+    programas fuente (parsing) y sirven de base para la generación de
+    código.\espc
+    \item Puede ser que dos derivaciones distintas tengan el mismo
+      árbol.
+\ei
+    \end{frame}
+\begin{frame}
+  \titulos{Árboles de derivación}{GLC}
+  \bi
+    \item Puede haber mas de un árbol de derivación para una cadena.\espc
+      \item Lo ideal es que cada cadena tenga sólo un árbol asociado,
+        esto implica que el lenguaje no es ambiguo.\espc
+        \item Desafortunadamente existen lenguajes ambiguos.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Construcción de árboles de derivación}{GLC}
+  Dada una gramática libre de contexto $G=\pt{V,T,S,P}$, un árbol de
+  derivación en $G$ se construye como sigue: \pause
+\bi
+\item La raiz contiene al símbolo inicial $S$.
+\item Cada nodo interior contiene una variable
+  \item Cada hoja contiene un símbolo de $V\cup T\cup\{\cv\}$.
+    \item Si un nodo interior contiene una variable $A$ entonces sus
+      hijos contienen símbolos (de izquierda a derecha)
+      $a_1,\ldots,a_n$ si y sólo si $A\imp a_1a_2\ldots a_n$ está en
+      $P$.
+      \item La palabra generada se puede leer al leer las hojas de
+        izquierda a derecha.
+\ei
+\end{frame}
+
+%\subsection{Ambigüedad}
+
+\begin{frame}
+  \titulos{Ambigüedad}{GLC}
+  \bi
+  \item Una gramática se dice \alert{ambigua} si existe una palabra
+    $w$ con dos o más árboles de derivación distintos.
+    \item En general una palabra puede tener mas de una derivación,
+      pero un sólo árbol, en tal caso no hay ambigüedad.
+      \item Algunas veces se puede suprimir la ambigüedad
+        directamente.
+        \item Sin embargo no hay un algoritmo para remover ambigüedad.
+          \item Pero aún, hay lenguajes cuya ambigüedad es inevitable.
+  \ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Ejemplos}{Ambigüedad}
+  \beqs
+  S\imp AA\;\;\;A\imp aSa\;|\;a
+  \eeqs
+La palabra $a^5$ tiene las siguientes derivaciones:\pause
+\bi
+\item $S\imp AA\imp aA\imp aaSa\imp aaAAa\imp aaaAa\imp aaaaa$\espc
+  \item $S\imp AA\imp aSaA\imp aAAaA\imp aaAaA\imp aaaaA\imp aaaaa $\espc
+    \item Las dos derivaciones son por la izquierda y generan
+      árboles distintos.
+\ei
+\end{frame}
+
+
+\begin{frame}
+  \titulos{Lenguajes Ambiguos}{Ambigüedad}
+  \bi
+  \item Un lenguaje $L$ es ambiguo si existe una gramática ambigua $G$
+    que genera a $L$.
+    \item $L=\{a^{2+3i}\;|\;i\geq 0\}$ es ambiguo.\espc
+    \item Un lenguaje es inherentemente ambiguo si todas las
+      gramáticas que lo generan son ambiguas.
+      \item $L=\{a^nb^nc^md^m\;|\;n,m\geq
+        1\}\cup\{a^nb^mc^md^n\;|\;n,m\geq 1\}$ es inherentemente
+        ambiguo.
+        \ei
+\end{frame}
+
+\begin{frame}
+  \titulos{$L=\{a^{2+3i}\;|\;i\geq 0\}$}{Lenguajes ambiguos}
+  \bi
+\item[] $L$ es ambiguo por se generado por la gramática ambigua \beqs
+  S\imp AA\;\;\;A\imp aSa\;|\;a
+  \eeqs
+\item[] Sin embargo este lenguaje también es generado por una gramática no
+ambigua:
+\beqs
+S\imp aa\;|\;aaU\;\;\;\;\;\;U\imp aaaU\;|\;aaa
+\eeqs
+\item[] en este caso la derivación de $a^5$ es:
+\beqs
+S\imp aaU\imp aaaaa
+\eeqs
+\item[] por lo tanto $L$ no es un lenguaje inherentemente ambiguo
+\ei
+\end{frame}
+
+\begin{frame}
+  \titulos{$L=\{a^nb^nc^md^m\;|\;n,m\geq
+        1\}\cup\{a^nb^mc^md^n\;|\;n,m\geq 1\}$}{Lenguajes
+        inherentemente ambigüos}
+\bi
+\item[] $L$ es generado por la gramática:
+\beqs
+\ba{l}
+S\imp AB\;|\;C\;\;\;\;A\imp aAb\;|\;ab\;\;\;\;B\imp cBd\;|\;cd \\
+C\imp aCd\;|\; aDd\;\;\;\;\; D\imp bDc\;|\;bc
+\ea
+\eeqs
+\item[] La cadena $aabbccdd$ tiene dos derivaciones por la izquierda:
+\item[] $S\imp AB\imp aAbB\imp aabbB\imp aabbcBd\imp aabbccdd$
+\item[] $S\imp C\imp aCd\imp aaDdd\imp aabDcdd\imp aabbccdd$
+\item[] Probar la ambiguedad inherente es complicado.  
+\ei
+\end{frame}
+
+
+\end{document}
+  
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "fcem7"
+%%% End: 
