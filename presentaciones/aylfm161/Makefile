@@ -6,7 +6,7 @@ TEXFLAGS := -interaction=nonstopmode
 BUILDDIR := build
 PDFDIR := pdf
 
-TEXFILESWILDCARD := alfp*
+TEXFILESWILDCARD := aylfm161*
 
 all: compile_all clean
 

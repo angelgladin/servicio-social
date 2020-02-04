@@ -6,20 +6,22 @@ TEXFLAGS := -interaction=nonstopmode
 BUILDDIR := build
 PDFDIR := pdf
 
+TEXFILESWILDCARD := alf192DyckChomskySchutz
+
 all: compile_all clean
 
 compile_all:
 	mkdir -p $(BUILDDIR)
 	mkdir -p $(PDFDIR)
-	for file in alf192*.tex ; do \
+	for file in $(TEXFILESWILDCARD).tex ; do \
 		$(TEX) $(TEXFLAGS) -output-directory=$(BUILDDIR) $$file ; \
 	done
-	mv $(BUILDDIR)/*.pdf ../$(pdf)
+	mv $(BUILDDIR)/*.pdf ./$(PDFDIR)
 
 clean:
 	-rm -rf $(BUILDDIR)
 
-cleanall:
+clean_all:
 	-rm -rf $(BUILDDIR)
 	-rm -rf $(PDFDIR)
 
@@ -27,5 +29,5 @@ compile_one:
 	mkdir -p $(BUILDDIR)
 	mkdir -p $(PDFDIR)
 	$(TEX) -output-directory=$(BUILDDIR) $(file)
-	mv $(BUILDDIR)/*.pdf ../$(pdf)
-
+	@$(eval PDFFILE := $(shell basename $(file) .tex))
+	mv $(BUILDDIR)/$(PDFFILE).pdf ./$(PDFDIR)

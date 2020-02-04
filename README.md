@@ -85,11 +85,11 @@ $ for x in *.* ; do file $x ; done
     - [x] `alf192DyckChomskySchutz`
     - [x] `aylfm161`
     - [x] `alfp`
-- [ ] Agregar el `Makefile` a `aylfm161` y `alf192DyckChomskySchutz`.
+- [x] Agregar el `Makefile` a `aylfm161` y `alf192DyckChomskySchutz`.
 - [ ] Quitar los archivos de `diff` en `alfp`.
 - [x] Notas `alf192` compilen.
 - [ ] Hacer resumen del contenido de cada nota y presentación y ponerlo en un `.txt`.
 - [x] Hacer lo del `.gitignore`.
 - [ ] Ir con Favio el 4 de febrero.
 - [x] Hacer un `Makefile` genérico y con base a ése, usarlo para cada diferente proyecto.
-- [ ] Agregar al `.gitignore` los archivos temporales de emacs.
+- [ ] Agregar al `.gitignore` los archivos temporales de emacs (lo voy a hacer hasta al final).
