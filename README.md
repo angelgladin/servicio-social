@@ -8,7 +8,73 @@
 * [Formato](/documentos/formato.pdf)
 * [Calendario 2020](documentos/calendario-anual-2020.pdf)
 
-## TODO's
+## Entorno
+
+* `pdflatex`: pdfTeX 3.14159265-2.6-1.40.19 (TeX Live 2018)
+* `make`: GNU Make 3.81
+* `zsh`: zsh 5.7.1
+* `iconv`: conv (GNU libiconv 1.11) *(Es usado para cuando se requiera cambiar la codificación 
+de los `.tex` de `ISO-8859-1` a `UTF-8`, es opcional su instalación si no se va a usar)*
+
+
+## Compilación
+
+Para la automatización de las tareas de compilación y limpieza del proyecto, se hizo uso 
+de la herramienta `make`. **Es importante que tener los binarios especificados en 
+la sección de Entorno**.
+
+Los directorios que contengan un `Makefile` se podrán realizar las tareas descritas anteriormente.
+
+#### Compilación de todos los `.tex`
+
+En el directorio, poner el siguiente comando:
+
+```bash
+$ make
+```
+
+Compilará todos los `.tex` que coincidan con la expresión regular descrita en el `Makefile` 
+en la variable `TEXFILESWILDCARD := regex` donde `regex` es la expresión regular. Seguido de 
+compilar los `.tex`, moverá los `.pdf` generados a una carpeta llamada `pdf`.
+
+#### Limpieza del proyecto
+
+Si se requiere eliminar los archivos generados y los `.pdf`, se puede hacer con:
+
+```bash
+$ make clean_all
+```
+
+#### Compilar solo un archivo `.tex`
+
+Hay casos donde solo se quiere compilar un solo archivo, para eso hay una tarea en el 
+`Makefile` que lo hace. Para ello se deberá teclear lo siguiente:
+
+```bash
+$ make compile_one file=[FILE_NAME].tex
+```
+
+Donde `FILE_NAME` es el archivo `.tex` que se quiere compilar.
+
+
+## Scripts útiles
+
+Si hay archivos con codificación que no sea `UTF-8` se puede cambiar con la ayuda del binario 
+`iconv`. Un ejemplo de ello es que si en un directorio tenemos varios `.tex` con diferente 
+codificación, se la podemos cambiar con el siguiente comando:
+
+```bash
+$ for file in *.tex ; do iconv --from-code=ISO-8859-1 --to-code=UTF-8 "$file" > "$file.aux" && mv -f "$file.aux" "$file" ; done
+```
+
+En caso de que no sepamos de antemano la codificación, podemos iterar sobre los archivos 
+y en cada uno imprimir su codificación:
+
+```bash
+$ for x in *.* ; do file $x ; done
+```
+
+### TODO's
 
 - [x] Reunirme la última semana con Favio para acordadar que se debe hacer.
 (25 al 29 de noviembre).
@@ -20,66 +86,9 @@
     - [x] `alfp`
 - [ ] Agregar el `Makefile` a `aylfm161` y `alf192DyckChomskySchutz`.
 - [ ] Quitar los archivos de `diff` en `alfp`.
-- [ ] Notas `alf192` compilen.
+- [x] Notas `alf192` compilen.
 - [ ] Hacer resumen del contenido de cada nota y presentación y ponerlo en un `.txt`.
 - [x] Hacer lo del `.gitignore`.
 - [ ] Ir con Favio el 4 de febreo.
 - [x] Hacer un `Makefile` genérico y con base a ése, usarlo para cada diferente proyecto.
 - [ ] Agregar al `.gitignore` los archivos temporales de emacs.
-
-## Entorno
-
-* `pdflatex`: pdfTeX 3.14159265-2.6-1.40.19 (TeX Live 2018)
-* `zsh`: zsh 5.7.1
-* `iconv`: conv (GNU libiconv 1.11) *(Es usado para cuando se requiera cambiar la codificación de los `.tex`)*
-
-## Scripts
-
-Para cambiar la codificación de los archivos `.tex` de _ISO-8859-1_ a _UTF-8_ en un directorio 
-se puede hacer con el siguiente comando:
-
-```bash
-$ for file in *.tex; do iconv --from-code=ISO-8859-1 --to-code=UTF-8 "$file" > "$file.aux" && mv -f "$file.aux" "$file"; done
-```
-
-#### TODO
-
-```bash
-$ pdflatex -output-directory=build aylfm161p12.tex
-$ mkdir -p build
-```
-
-https://tex.stackexchange.com/questions/369771/how-to-delete-files-generated-by-latex
-
-### Compilación
-
-Para compilar un solo archivo:
-
-```bash
-$ pdflatex [filename].tex
-```
-
-Compilación de varios `.tex` estando en un directorio:
-
-```bash
-$ for x in *.tex; do pdflatex "$x"; done
-```
-
-### Remover archivos generados
-
-Remover los `.aux`, `.log`, `.out`, `.nav`, `.smn` y `.toc`:
-
-```bash
-$ rm -f *.{aux,log,out,nav,smn,toc}
-```
-
-Remover los `.pdf`:
-
-```bash
-$ rm -f *.pdf
-```
-
-## Referencias
-Obtener versión de `pdflatex` [aquí](https://tex.stackexchange.com/questions/366586/how-to-find-out-and-interpret-the-latex-version-number).
-
-[Compilación](https://guides.lib.wayne.edu/latex/compiling)
