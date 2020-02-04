@@ -23,11 +23,11 @@ Para la automatización de las tareas de compilación y limpieza del proyecto, s
 de la herramienta `make`. **Es importante que tener los binarios especificados en 
 la sección de Entorno**.
 
-Los directorios que contengan un `Makefile` se podrán realizar las tareas descritas anteriormente.
+Los directorios que contengan un `Makefile` podrán realizar las tareas descritas anteriormente.
 
 #### Compilación de todos los `.tex`
 
-En el directorio, poner el siguiente comando:
+En el directorio, teclear el siguiente comando:
 
 ```bash
 $ make
@@ -51,7 +51,7 @@ Hay casos donde solo se quiere compilar un solo archivo, para eso hay una tarea 
 `Makefile` que lo hace. Para ello se deberá teclear lo siguiente:
 
 ```bash
-$ make compile_one file=[FILE_NAME].tex
+$ make compile_one file=FILE_NAME.tex
 ```
 
 Donde `FILE_NAME` es el archivo `.tex` que se quiere compilar.
@@ -61,14 +61,15 @@ Donde `FILE_NAME` es el archivo `.tex` que se quiere compilar.
 
 Si hay archivos con codificación que no sea `UTF-8` se puede cambiar con la ayuda del binario 
 `iconv`. Un ejemplo de ello es que si en un directorio tenemos varios `.tex` con diferente 
-codificación, se la podemos cambiar con el siguiente comando:
+codificación, se las podemos cambiar con el siguiente comando:
 
 ```bash
 $ for file in *.tex ; do iconv --from-code=ISO-8859-1 --to-code=UTF-8 "$file" > "$file.aux" && mv -f "$file.aux" "$file" ; done
 ```
 
 En caso de que no sepamos de antemano la codificación, podemos iterar sobre los archivos 
-y en cada uno imprimir su codificación:
+en el directorio donde estemos situados, y para cada uno de ellos imprimirá detalles del
+archivo y si es texto, indicará su codificación.
 
 ```bash
 $ for x in *.* ; do file $x ; done
@@ -89,6 +90,6 @@ $ for x in *.* ; do file $x ; done
 - [x] Notas `alf192` compilen.
 - [ ] Hacer resumen del contenido de cada nota y presentación y ponerlo en un `.txt`.
 - [x] Hacer lo del `.gitignore`.
-- [ ] Ir con Favio el 4 de febreo.
+- [ ] Ir con Favio el 4 de febrero.
 - [x] Hacer un `Makefile` genérico y con base a ése, usarlo para cada diferente proyecto.
 - [ ] Agregar al `.gitignore` los archivos temporales de emacs.
