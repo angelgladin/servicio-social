@@ -93,3 +93,18 @@ $ for x in *.* ; do file $x ; done
 - [ ] Ir con Favio el 4 de febrero.
 - [x] Hacer un `Makefile` genérico y con base a ése, usarlo para cada diferente proyecto.
 - [ ] Agregar al `.gitignore` los archivos temporales de emacs (lo voy a hacer hasta al final).
+
+### Agregar al emacs de Favio
+
+Agregar esto al `init.el`
+
+```lisp
+(set-language-environment "UTF-8")
+
+;; make unix lineendings default
+(setq default-buffer-file-coding-system 'utf-8-unix)
+```
+
+Usar acentos en Latex [aquí](https://www.johndcook.com/blog/emacs_unicode/)
+
+
