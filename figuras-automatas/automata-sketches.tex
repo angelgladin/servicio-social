@@ -224,7 +224,152 @@
             edge [loop above] node {1,2,3} ( )
             edge node [above] {3} (c);
 \end{tikzpicture}
-%%%%%%%%
 
 %%%%%%%%
+\begin{tikzpicture}
+    \node[state,initial]   (a) at (0,2) {a};
+    \node[state] (b) at (3,2) {b};
+    \node[state]           (c) at (1.5,0) {c};
+    \node[state, accepting] (d) at (4.5,0) {d};
+
+    \draw
+        (a)
+            edge node {1} (b)
+            edge node {0} (c)
+        (b)
+            edge node {0} (c)
+            edge node {1} (d)
+        (c)
+            edge [loop below] node {0,1} ( )
+        (d)
+            edge node {0,1} (c);
+\end{tikzpicture}
+%%%%%%%%
+
+\begin{tikzpicture}
+    \node[state,initial]   (a) at (0,2) {a};
+    \node[state] (b) at (3,2) {b};
+    \node[state]           (c) at (1.5,0) {c};
+    \node[state, accepting] (d) at (4.5,0) {d};
+
+    \draw
+        (a)
+            edge node {1} (b)
+            edge node {0} (c)
+        (b)
+            edge node {0} (c)
+            edge [bend right] node [left] {1} (d)
+        (c)
+            edge [loop below] node {0,1} ( )
+        (d)
+            edge [bend right] node [right] {1} (b)
+            edge node {0,1} (c);
+\end{tikzpicture}
+
+%%%%%%%%
+\begin{tikzpicture}
+    \node[state,initial] (a) {a};
+    \node[state, accepting] (b) [right of =a] {b};
+    \node[state] (c) [below of =a] {c};
+
+    \draw
+        (a)
+            edge node {1} (b)
+            edge [bend left] node {1} (c)
+        (b)
+            edge node {1} (c)
+        (c)
+            edge [bend left] node {1,2} (a)
+            edge [loop below] node {2} ( );
+\end{tikzpicture}
+
+%%%%%%%%
+
+\begin{tikzpicture}
+    \node[state,initial] (q1) {$\{ a \}$};
+    \node[state, accepting] (q2) [right of=q1] {$\{ b,c \}$};
+    \node[state] (q3) [right of =q2] {$\{ a,c \}$};
+    \node[state] (q4) [below of =q1] {$\{ c \}$};
+    \node[state, accepting] (q5) [below of =q3] {$\{ a,b,c \}$};
+
+    \draw
+        (q1)
+            edge node {1} (q2)
+            edge [bend left] node {2} (q4)
+        (q2)
+            edge node {1} (q3)
+            edge node {2} (q4)
+        (q3)
+            edge node {2} (q4)
+            edge node {1} (q5)
+        (q4)
+            edge [loop below] node {2} ( )
+            edge [bend left] node {1} (q1)
+        (q5)
+            edge [loop below] node {1} ( )
+            edge node {2} (q4);
+\end{tikzpicture}
+
+%%%%%%%%
+\begin{tikzpicture}
+    \node[state, initial, accepting] (a) {a};
+    \node[state] (b) [right of=a] {b};
+    \node[state, initial] (c) [below of=a] {c};
+    \node[state, accepting] (d) [right of=c] {d};
+
+    \draw
+        (a)
+            edge [bend right] node [below] {0} (b)
+            edge node {0} (c)
+        (b)
+            edge [bend right] node [above] {1} (a)
+        (c)
+            edge [loop below] node {0} ( )
+            edge node {1} (d);
+\end{tikzpicture}
+%%%%%%%%
+
+%%% TODO página 184 aristas, de aquí en adelante
+\begin{tikzpicture}
+    \node[state, initial, accepting] (q1) at (1,4) {$\{ a,c \}$};
+    \node[state] (q2) at (4,4) {$\{ b,c \}$};
+    \node[state] (q3) at (2.5,2.5) {$\{ c \}$};
+    \node[state, accepting] (q4) at (0,1) {$\{ d \}$};
+    \node[state, accepting] (q5) at (5,1) {$\{ a,d \}$};
+    \node[state] (q6) at (2.5,0) {$\{ \emptyset \}$};
+\end{tikzpicture}
+%%%%%%%%
+
+\begin{tikzpicture}
+    \node[state, initial] (a) {a};
+\end{tikzpicture}
+%%%%%%%%
+
+\begin{tikzpicture}
+    \node[state, initial, accepting] (a) {a};
+    \node[state] (b) [right of=a] {b};
+\end{tikzpicture}
+
+%%%%%%%%
+\begin{tikzpicture}
+    \node[state, initial] (a) at (0,3) {a};
+    \node[state, accepting] (b) at (3,3) {b};
+    \node[state] (c) at (1.5,0) {c};
+\end{tikzpicture}
+
+%%%%%%%%
+\begin{tikzpicture}
+    \node[state, initial] (a) at (0,3) {a};
+    \node[state, accepting] (b) at (3,3) {b};
+    \node[state] (c) at (1.5,0) {c};
+\end{tikzpicture}
+%%%%%%%%
+
+\begin{tikzpicture}
+    \node[state, initial] (a) at (0,3) {a};
+    \node[state, accepting] (b) at (3,3) {b};
+    \node[state] (c) at (1.5,0) {c};
+\end{tikzpicture}
+%%%%%%%%
+
 \end{document}
