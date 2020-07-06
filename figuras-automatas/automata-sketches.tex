@@ -40,7 +40,6 @@
 \begin{document}
 
 %%%%%%%%
-
 \begin{tikzpicture}
     \node[state] (1) {1};
     \node[state, right of=1] (2) {2};
@@ -50,7 +49,6 @@
 \end{tikzpicture}
 
 %%%%%%%%
-
 \begin{tikzpicture}
     \node[state] (1) at (0,4) {1};
     \node[state] (2) at (4,4) {2};
@@ -66,7 +64,6 @@
 \end{tikzpicture}
 
 %%%%%%%%
-
 \begin{tikzpicture}
     \node[state, initial]   (a) at (0,3)   {a};
     \node[state]            (b) at (3,3)   {b};
@@ -82,7 +79,6 @@
 \end{tikzpicture}
 
 %%%%%%%%
-
 \begin{tikzpicture}
     \node[state, initial] (a) at (0,4) {a};
     \node[state] (b) at (4,4) {b};
@@ -107,7 +103,6 @@
 \end{tikzpicture}
 
 %%%%%%%%
-
 \begin{tikzpicture}
     \node[state,initial]    (a)                 {a};
     \node[state]            (b)  [right of=a]   {b};
@@ -148,8 +143,8 @@
             edge[bend left] node[above] {1} (a)
             edge[bend left] node[right] {0} (c);
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state,initial]    (a)                 {a};
     \node[state]            (b) [right of=a]    {b};
@@ -172,7 +167,6 @@
 \end{tikzpicture}
 
 %%%%%%%%
-
 \begin{tikzpicture}
     \node[state, initial] (a) {a};
     \node[state] (b) [right of=a] {b};
@@ -244,8 +238,8 @@
         (d)
             edge node {0,1} (c);
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state,initial]   (a) at (0,2) {a};
     \node[state] (b) at (3,2) {b};
@@ -284,7 +278,6 @@
 \end{tikzpicture}
 
 %%%%%%%%
-
 \begin{tikzpicture}
     \node[state,initial] (q1) {$\{ a \}$};
     \node[state, accepting] (q2) [right of=q1] {$\{ b,c \}$};
@@ -327,9 +320,8 @@
             edge [loop below] node {0} ( )
             edge node {1} (d);
 \end{tikzpicture}
-%%%%%%%%
 
-%%% TODO página 184 aristas, de aquí en adelante
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial, accepting] (q1) at (1,4) {$\{ a,c \}$};
     \node[state] (q2) at (4,4) {$\{ b,c \}$};
@@ -356,8 +348,8 @@
         (q6)
             edge [loop below] node {0,1} ( );
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial] (a) {a};
 
@@ -365,8 +357,8 @@
         (a)
             edge [loop above] node {$\Sigma$} ( );
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial, accepting] (a) {a};
     \node[state] (b) [right of=a] {b};
@@ -409,8 +401,8 @@
         (c)
             edge [loop below] node {0,1} ( );
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial] (a) at (0,2) {a};
     \node[state, accepting] (b) at (2,2) {b};
@@ -425,8 +417,8 @@
         (c)
             edge [loop below] node {0,1} ( );
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial] (a1) at (0,2) {a1};
     \node[state] (b1) at (2,2) {b1};
@@ -456,7 +448,6 @@
 \end{tikzpicture}
 
 %%%%%%%%
-
 \begin{tikzpicture}
     \node[state, initial] (a1) {a1};
     \node[state] (b1) [right of=a1] {b1};
@@ -475,8 +466,8 @@
         (c2)
             edge [loop below] node {0,1} ( );
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial] (a1) {a1};
     \node[state] (b1) [right of=a1] {b2};
@@ -510,7 +501,6 @@
 \end{tikzpicture}
 
 %%%%%%%%
-
 \begin{tikzpicture}
     \node[state, initial, accepting] (a) {a};
     \node[state] (e) [right of=a] {e};
@@ -533,8 +523,8 @@
             edge [bend right] node {1} (d)
             edge node {0} (c);
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial, accepting] (a) {a};
     \node[state] [right of=a] (d) {d};
@@ -553,8 +543,8 @@
             edge [bend left] node {1} (a)
             edge node {0} (c);
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial] (a) {a};
     \node[state, accepting] (b) [right of=a] {b};
@@ -582,8 +572,8 @@
         (f)
             edge node {0,1} (e);
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial] (a) {a};
     \node[state] (b) [right of=a] {b};
@@ -606,8 +596,8 @@
         (e)
             edge [loop below] node {0,1} ( );
 \end{tikzpicture}
-%%%%%%%%
 
+%%%%%%%%
 \begin{tikzpicture}
     \node[state, initial] (a) {a};
     \node[state] (b) [right of=a] {b};
@@ -621,6 +611,7 @@
         (c)
             edge [loop above] node {0,1} ( );
 \end{tikzpicture}
+
 %%%%%%%%
 
 \end{document}
