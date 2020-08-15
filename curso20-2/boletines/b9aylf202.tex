@@ -1,0 +1,185 @@
+\documentclass[letterpaper,11pt]{article}
+% \usepackage{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+
+\marginsize{2cm}{2cm}{1cm}{1cm}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Bolet\'in de Ejercicios 9\\
+\Large{M\'aquinas de Turing}}
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes Gonz\'alez Huesca }
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{enumerate}
+
+\item Dise\~na m\'aquinas de Turing, de tu elecci\'on, para \textbf{reconocer} 
+ cadenas en los siguientes lenguajes. No olvides explicar a detalle la idea 
+ del dise\~no.
+  \begin{itemize}
+   \item $L_1 = \{wcw \mid w\in \{a,b\}^\star \}$
+   \item $L_2 = \{www \mid w\in \{0,1\}^\star \}$
+   \item $L_3 = \{w\in\{a,b,c\}^\star \mid \#_{a} = \#_{b} = \#_{c} \}$
+   \item $L_4 = \{a^3 b^{3n} \mid n\geq 1 \}$
+   \item $L_5 = \{a^m b^n c^\ell \mid m > n \text{ y } m < \ell \}$
+   \item $L_6 = \{w\in \{1\}^\star \mid |w| = 2^i, i\geq 0 \}$
+  \end{itemize}
+  
+ \item Considera la siguiente m\'aquina de Turing:
+  \[
+   \begin{array}{c|c|c|c|c|c}
+    \delta & 0 & 1 & X & Y & \blanks \\ \hline
+    q_0 & (q_1,X,\der) & (q_1,1,\der) & & & \\ \hline
+    q_1 & (q_1,0,\der) & (q_2,Y,\izq) & & (q_1,Y,\der) & \\ \hline
+    q_2 & (q_4,0,\izq) & & (q_3,X,\der) & (q_2,Y,\izq)  & \\ \hline
+    q_3 &  & & (q_3,X,\izq) & (q_3,Y,\izq)  &  (q_f,\blanks\,,\der)\\\hline
+    q_4 & (q_4,0,\izq) & & (q_0,X,\der) &   &  \\
+   \end{array}
+  \]
+  \begin{enumerate}
+  \item Procesa las cadenas $011,010,101,0110$, mediante configuraciones.
+  \item ?`Qu\'e lenguaje reconoce esta m\'aquina?
+  \end{enumerate}
+
+ \item Considere la siguiente m\'aquina:
+ \[
+  \begin{array}{c|c|c|c}
+   \delta &  0 & 1 & \blanks\\\hline
+   q_0 & (q_1,\blanks,\der) & (q_5,\blanks,\der) &  \\ \hline
+   q_1 & (q_1,0,\der) & (q_2,1,\der) &  \\  \hline
+   q_2 & (q_3,1,\izq) & (q_2,1,\der) & (q_4,\blanks,\izq) \\ \hline
+   q_3 & (q_3,0,\izq) & (q_3,1,\izq) & (q_0,\blanks,\der) \\ \hline
+   q_4 & (q_4,0,\izq) & (q_4,\blanks,\izq) & (q_f,0,\der) \\ \hline
+   q_5 & (q_5,\blanks,\der) & (q_5,\blanks,\der) & (q_f,\blanks,\der)\\
+   \end{array}
+  \]
+  \begin{enumerate}
+  \item Procese las cadenas $000100$ y $001000$.
+  \item Considerando que un n\'umero~$n$ se representa con $n$ ceros, 
+  ?`Qu\'e funci\'on calcula esta m\'aquina?
+  \end{enumerate}
+  
+ \item Suponga dos m\'aquinas de Turing dadas $M_f$ y $M_g$ que calculan las
+  funciones $f$ y $g$ respectivamente.  Describa c\'omo construir una m\'aquina 
+  de Turing que calcule cada funci\'on siguiente:
+  \begin{enumerate}
+   \item $f + g $
+   \item el m\'inimo de $f$ y $g$
+   \item $f\circ g$
+  \end{enumerate}
+  
+ \item Dise\~na una m\'aquina de Turing sobre el alfabeto $\Sigma = \{c,d\}$ 
+  para el proceso de hallar el primer s\'imbolo no blanco a la izquierda de 
+  una cadena de blancos. Por ejemplo se debe cumplir que:
+   \[
+    cd \blanks\blanks \dots\blanks q_0 \blanks 
+    \vdash^\star c q_{\mathfrak{F}} d \blanks\blanks \dots\blanks
+   \]
+
+    
+ \item Dise\~na una m\'aquina de Turing $M$ que calcule el doble de un n\'umero
+  binario.
+  Dar la definici\'on formal de $M$, la idea del dise\~no, el significado de 
+  cada estado y el procesamiento formal de la entrada $101$ mediante 
+  configuraciones
+
+ \item Demuestra que todo lenguaje regular es recursivo. Para esto proceda como 
+  sigue:
+  \begin{enumerate}
+  \item De un algoritmo \textit{informal} que transforme a un aut\'omata 
+  finito~$A$ en una m\'aquina de Turing equivalente~$M_A$ que siempre se 
+  detiene. 
+  \item Defina formalmente el algoritmo del inciso anterior especificando 
+  c\'omo transformar la definici\'on formal de $A$ en la definici\'on formal 
+  de $M_A$.
+  \item Justifique porqu\'e $M_A$ siempre se detiene.
+  \item Muestre un ejemplo de la ejecuci\'on del algoritmo, obteniendo $M_A$ 
+  para un aut\'omata finito $A$ que acepte al siguiente lenguaje :
+  $L=\{w\in\{a,b\}^\star\mid \text{ toda } a\text{ tiene una } b \text{ a la 
+    derecha }\}$
+  \end{enumerate}
+  
+ \item Demuestra que todo lenguaje libre de contexto es recursivo simulando un 
+  aut\'omata de pila con una m\'aquina de Turing.
+  Para esto puede usar la siguiente idea: dise\~nar una m\'aquina de Turing 
+  con dos cintas, la primera simula la entrada y la segunda simula la pila.
+
+
+ \item  Encuentra una gram\'atica sensible de contexto que genere al lenguaje
+  $$ L = \{ ww  \mid w \in \{a, b\}^\star \}$$ 
+
+ \item Codifica las m\'aquinas resultantes del ejercicio 1.
+  
+ \item Describa lo que realiza la siguiente m\'aquina as\'i como escriba una 
+  posible codificaci\'on para la siguiente m\'aquina de Turing:
+\[
+ \begin{array}{c|ccccc}
+  Q & 0 & 1 & X & Y & B \\\hline
+  q_0 & (q_0,X,\der) & - & - & (q_3,Y,\der) & - \\
+  q_1 & (q_1,0,\der) & (q_2,Y,\izq) & - & (q_1,Y,\der) & - \\
+  q_2 & (q_2,0,\izq) & - & (q_0,X,\der) & (q_2,Y,\izq) & - \\
+  q_3 & - & - & - & (q_3,Y,\der) & (q_4,B,\der) \\
+  q_4 & - & - & - & - & - 
+ \end{array}
+\]
+
+
+ \item Decodifica las siguientes m\'aquinas de Turing y determina qu\'e 
+  realiza cada una. 
+  El alfabeto de entrada es $\Sigma=\{0,1\}$ codificado con 
+  $\blanks := 1,\;0:=11,\;1:=111$
+  \begin{enumerate}
+   \item 
+   \[
+    0101^30101^30100101^201^301^20100101^201^501^201001^301^201^401^201001^4 
+   \]
+   \[
+    01^30101^301001^501^30101^301001^50101^20101^30010101^20101^3
+   \]
+   \item 
+   \[
+    0101101110111010 0111011101011010 01110101101010   
+    \]
+    \[
+    010110101010 010111011101010 01110111011101010 01110101101010
+   \]
+
+  \end{enumerate}
+
+
+\end{enumerate}
+
+
+\end{document}

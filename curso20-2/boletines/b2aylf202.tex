@@ -1,0 +1,185 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.9cm]{geometry}
+% \usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Bolet\'in de Ejercicios 2\\
+\Large{Expresiones regulares y Aut\'omatas Finitos Deterministas}}
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes Gonz\'alez Huesca }
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Expresiones Regulares}
+
+\begin{enumerate}
+ \item A continuaci\'on se presenta una definici\'on recursiva de un 
+subconjunto de~$\{a,b\}^*$. \\
+Proporcione una descripci\'on con palabras adem\'as de la expresi\'on regular 
+que define a tal lenguaje. 
+  \be
+   \item[i)] $a \in L$ 
+   \item[ii)] Para cada  $x \in L$,  $ax\in L$ y $xb\in L$ 
+   \item[iii)] Son todas.
+  \ee
+
+ \item Pruebe o refute las siguientes afirmaciones, donde~$\al, \beta$ son 
+  expresiones  regulares cualesquiera:
+  \begin{enumerate}
+   \item $ (\al + \beta)^{*} \beta = (\al^{*}\beta^*)^{*}\beta $
+   \item $ (\al + \beta)^{*} = \al^{*} + \beta^{*} $
+  \end{enumerate}
+
+%   \newpage
+  
+ \item Considere $\Sigma = \{ a, b, c\}$, para cada uno de los siguientes 
+  lenguajes proporcione una expresi\'on regular que genere el mismo lenguaje:
+  \be
+   \item $L = \{ w\in\Sigma^\star \mid w \text{ tiene un n\'umero par de }a\}$
+   \item $L = \{ w\in{a,b}^\star \mid w \text{ no tiene la subcadena } bb 
+    \text{ y termina en a }\}$
+   \item $L = \{ w\in\Sigma^\star \mid w \text{ tiene a lo m\'as tres } a 
+    \text{ consecutivas } \}$
+   \item $L = \{ w\in\Sigma^\star \mid \#_b = 4n+1, \; n\in \N \}$
+   \item $L = \{ a^n b^m \mid n\geq 4, \; m\leq 3, n,m\in \N \}$
+   \item $L = \{ w\in\Sigma^\star \mid |w| = 3n, \; n\in\N \}$
+   \item $L = \{ w\in\Sigma^\star \mid abc\text{ no es subcadena de } w \}$
+   \item $L = \{ uwu \in\Sigma^\star \mid |u| = 2 \}$
+   \item $L = \{ a^n b^m \mid n,m \geq 1,\; n\cdot m \geq 3 \}$
+   \item $L = \{ ab^n w \mid n\geq 3 \text{ y } w \text{ empieza con } aba \}$
+   \item $L = \{a^n \mid n= 3 + 2j, \; n\in N\}$
+  \ee
+  
+  \newpage
+  
+ \item Simplifique lo m\'as posible las siguientes expresiones regulares 
+  mediante equivalencias y describa con palabras el lenguaje correspondiente.
+  \be
+   \item $ a\big(\vacia + (b+aa)(aa+b)^\star\big) + a(b+aa)^\star$
+   \item $\big(\vacia + (00+1)(1+00)^\star\big)0 + (00+1)^\star0 $
+   \item $\vacia^\star a + b^{\star^\star} b a + b^\star a $
+   \item $ ab\big(bb + aa \big)^\star$
+  \ee
+
+  \item Escriba una definici\'on recursiva de una funci\'on~$rev$ tal que 
+   $rev(\al)$ devuelve la expresi\'on regular correspondiente al 
+   lenguaje~$L(\al)^r$.
+  
+ \item Para cada una de las siguientes expresiones regulares escriba una 
+  expresi\'on regular para la reversa del lenguaje~$L(\al)$ usando la 
+definici\'on proporcionada en el ejercicio anterior.
+  \be
+   \item $\al = (aab+bbaba)^\star baba $
+   \item $\al = baba(aabab+aba)^\star $
+   \item $\al = (001 + 11010)^\star 1010 $
+  \ee
+
+ \item Mostrar las siguientes equivalencias de expresiones regulares:
+  \be
+   \item $\big((01 + 1)^\star(10+0)^\star + \vacio^\star\big)^\star =
+     (0+1)^\star(01+10)$
+   \item $ 1^\star01\big((01)^\star +1\big)^\star = 
+    \big((11\vacio^\star)+1^\star)^\star 1^\star\big)^\star01\big((01)^\star 
+      +1\big)^\star$
+   \item  $a(ba)^\star = (ab)^\star a$
+   \item $(a^\star b)^\star = (a + b)^\star$  
+  \ee
+
+ \item Para cualquier expresi\'on regular~$\alpha$, sea~$\bar{\alpha}$ la 
+expresi\'on que describe al lenguaje complementario a~$L(\alpha)$. 
+Suponga que $L_1,L_2$ son dos lenguajes descritos por expresiones 
+regulares~$\beta_1,\beta_2$ respectivamente. 
+  Encontrar una expresi\'on regular para $L_1\cap L_2$.
+
+\end{enumerate}
+\section*{Aut\'omatas finitos deterministas}
+
+\begin{enumerate}
+ 
+ \item Sean $x,y\in\Sigma^\star$. Pruebe la siguiente propiedad de la funci\'on
+  de transici\'on extendida para AFD:
+  $$ \delta^\star(q,xy)=\delta^\star\big(\delta^\star(q,x),y\big)$$
+  Concluya a partir de esto la defini\'on alternativa de $\delta^\star$, es 
+  decir, que si $a\in\Sigma$ y $x\in\Sigma^\star$ entonces
+  $$ \delta^\star(q,ax)=\delta^\star\big(\delta(q,a),x\big) $$
+  [ Sugerencia: Inducci\'on sobre $y$. ]
+  
+ \item Dise\~nar AFD's para que reconozcan cada uno de los siguientes 
+lenguajes:
+\be
+   \item El lenguaje sobre el alfabeto $\{0,1\}$ en el que todas las cadenas 
+    \textbf{no} terminan con $01$.
+   \item El lenguaje sobre el alfabeto $\{0,1\}$ tal que las cadenas \textbf{no}
+    contienen la subcadena $110$.
+   \item $ L = \{ ab^n w \mid n\geq 3,\; w \text{ comienza con } aba \}$
+   \item $ L = \{w \in \{0,1\}^\star \mid |w| = 4n \text{ y }
+      w \text{ contiene ceros en las posiciones pares } \}$ \\
+    Adem\'as, mostrar mediante la funci\'on $\delta^\star$ la aceptaci\'on de 
+    la cadena $10001010$.
+%    \item $ L = \{ a^n \mid n=i+jk,\; i,k \text{ estan fijos },\;j\in\N\}$
+   \item $L = \{w\in\{0,1\}^\star \mid 00 \text{ no es subcadena de } w \text{ 
+    y } w \text{ termina con } 01\}$
+   \item El lenguaje sobre el alfabeto $\{a,b\}$ tal que las cadenas inician 
+    con $bbab$ o si inician con una $a$ entonces terminan en $b$.
+   \item $L = \{w\in\{0,1\}^\star \mid \text{ cada bloque de 3 s\'imbolos 
+     consecutivos de } w \text{ tiene la subcadena } 01\} $ \\
+    Por ejemplo, las siguientes cadenas pertenecen a $L$, 
+    $001,010,101,011, 0011, 1011,010101$ y las siguientes no:
+    $111,000,0111,10100$.
+   \item El lenguaje sobre el alfabeto $\{a,b\}$ cuyas cadenas tienen longitud 
+    par pero no contienen a la subcadena $bb$.
+    \item $L = \{ w \in \{0,1\}^\star \mid w \text{ tiene un n\'umero par de 
+ceros y un n\'umero par de unos}\}$
+  \ee
+  
+  \item Para cada uno de los aut\'omatas siguientes, describir informalmente el 
+lenguaje aceptado por $M$ y demostrar por inducci\'on sobre la longitud de una 
+cadena que la descripci\'on es correcta.
+   \[
+   \begin{array}{rc|c|c|c|rc|c|c|c}
+    M_1: &&&&&\hspace*{30pt} M_2: &&&& \\
+    &\delta & a & b & &
+	&\delta & a & b & \\\hline 
+	
+    inicial & q_{0} & q_0 & q_1  & &
+    inicial,final & q_0 &q_{1} & q_0 \\\hline
+    
+	final & q_{1} & q_1 &q_0 &&
+	final & q_{1} & q_2 & q_0 \\\hline 
+	
+	& & & & &
+	& q_{2} & q_2 & q_2\\\hline
+	\end{array}
+  \]
+ 
+[ Sugerencia: la hipo\'otesis de inducci\'on es un enunciado sobre las cadenas 
+que pueden leerse desde cada estado del aut\'otmata.]
+\end{enumerate}
+
+\end{document}

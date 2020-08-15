@@ -1,0 +1,285 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[includeheadfoot,margin=1in]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+\usepackage{array}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Tarea-Examen 3}
+\author{3 de junio de 2020\\\textbf{Fecha de entrega: 9 de junio de 2020}}
+\date{Trabajo individual a registrar mediante un archivo o archivos en la 
+plataforma GoogleClassroom.}
+
+\begin{document}
+\maketitle
+
+% \vspace*{-10pt}
+
+\begin{enumerate}
+ \item \textbf{[2pts]} Transforma la siguiente gram\'atica a una 
+equivalente en \textbf{forma normal de Chomsky} mostrando todos los pasos 
+necesarios en detalle. Adem\'as da una descripci\'on del lenguaje generado por 
+la gram\'atica mediante un an\'alisis informal. 
+%   \begin{small}
+%   \textbf{Hint:} No olvides revisar si $\vacia \in L(G)$.
+%   \end{small}
+%   \[
+%   \begin{array}{rlcrl}
+%    S \imp & AB \mid ABC & \qquad \qquad &
+%    B \imp & AB \mid CB \mid \vacia \mid b \\
+%    A \imp & BA \mid BC \mid \vacia \mid a & \qquad \qquad &
+%    C \imp & BC \mid AB \mid A \mid c 
+%   \end{array}
+%   \]
+%  
+%  \[
+%    \begin{array}{rlcrl}
+%       S \imp & A \mid B \mid C  & \qquad \qquad
+%       A \imp & aAa \mid B \\
+%       B \imp & bB \mid bb & \qquad \qquad
+%       C \imp & aCaa \mid D \\
+%       D \imp & baD \mid abD\mid aa
+%    \end{array}
+%   \]
+
+ \[
+  \begin{array}{rlcrl}
+   S \imp & ABC \mid D & \qquad \qquad &
+   C \imp & Ad \mid Cd \mid \vacia \\
+   A \imp & aC \mid E & \qquad \qquad &
+   E \imp & aa \\
+   B \imp & bB \mid A \mid \vacia & & 
+  \end{array}
+  \]
+
+  \item[] \textbf{Hasta 1 punto extra:} Tranforma la gram\'atica anterior en 
+  una equivalente en \textbf{forma normal de Greibach} mostrando todos los 
+  pasos necesarios a detalle.  
+
+\item \textbf{[2pts]} Dise\~na un aut\'omata de pila que reconozca el 
+lenguaje
+$$ L = \{a^i b^j \mid 0\leq i\leq j \leq 2i \}$$
+puede ser no-determinista y aceptar por pila vac\'ia o por estados finales.
+Describe la idea del dise\~no y muestra la aceptaci\'on de la cadena 
+$w=aabbb$ mediante configuraciones. 
+
+% \item \textbf{[2.5pts]} Dise\~na un aut\'omata de pila 
+% que reconozca el lenguaje
+% $$ L = \{a^n b^{n+m} a^m \mid n,m \geq 0\} $$ 
+% Describe la idea del dise\~no y muestra la aceptaci\'on de la cadena 
+% $w=aabbba$ 
+% mediante configuraciones.
+
+\item \textbf{[2pts]} Proporciona una gram\'atica que genere el lenguaje:
+$$ L =\{ a^i c b^k \; \mid  \; i,k\geq 1 \text{ y } i\leq k\}$$
+Da una descripci\'on de las cadenas pertenecientes al lenguaje mediante un 
+an\'alisis informal. 
+Adem\'as convierte la gram\'atica en un aut\'omata de pila que acepte el mismo 
+lenguaje y muestra una configuraci\'on que acepta a la cadena~$w = acbb$. 
+
+
+% \item \textbf{[2.5pts]} Proporciona un aut\'omata de pila que acepte el %mismo 
+% lenguaje y decide si las cadenas $w_1$ y $w_2$ pertenecen al lenguaje.
+% 
+% % \item \textbf{[2.5pts]} Aplica el algoritmo CYK para decidir si las  
+% % cadenas pertenecen al lenguaje $L(G)$. Primero transforma la gram\'atica a 
+% % una equivalente en \textbf{FNC}.
+% \[
+%  \begin{array}{rrclr}
+% %   G1: & & & & \qquad \qquad  w_1 =1010 \qquad w_2 = 001 \\
+% %   & S & \imp & S01 \mid A \mid AB &\\
+% %   & A & \imp & 1A0 \mid S \mid \vacia &\\
+% %   & B & \imp & 1C &\\
+% %   & C & \imp & 0C \mid 0 \mid \vacia &\\
+% G2: & & && \qquad \qquad  w_1 = aba \qquad w_2 = bbb \\
+%   & S & \imp & X \mid Y &\\
+%   & X & \imp & aZb \mid bZa &\\
+%   & Z & \imp & aZb \mid bZa \mid \vacia &\\
+%   & Y & \imp & aB \mid bA &\\
+%   & A & \imp & a \mid aA &\\
+%   & B & \imp & b 
+%  \end{array}
+% \]
+
+\item \textbf{[2pts]} Aplica el algoritmo CYK para decidir si las  
+cadenas pertenecen al lenguaje $L(G)$. Primero transforma la gram\'atica a 
+una equivalente en \textbf{FNC}.
+\[
+ \begin{array}{rrclr}
+  G: & & & & \qquad \qquad  w_1 =1010 \qquad w_2 = 001 \\
+  & S & \imp & S01 \mid A \mid AB &\\
+  & A & \imp & 1A0 \mid S \mid \vacia &\\
+  & B & \imp & 1C &\\
+  & C & \imp & 0C \mid 0 \mid \vacia &\\
+% G: & & && \qquad \qquad  w_1 = aba \qquad w_2 = bbb \\
+%   & S & \imp & X \mid Y &\\
+%   & X & \imp & aZb \mid bZa &\\
+%   & Z & \imp & aZb \mid bZa \mid \vacia &\\
+%   & Y & \imp & aB \mid bA &\\
+%   & A & \imp & a \mid aA &\\
+%   & B & \imp & b 
+ \end{array}
+\]
+
+ 
+ \item \textbf{[2pts]} Dise\~na una m\'aquina de Turing que acepte cadenas en 
+    el lenguaje:
+  $$ L_{par} = \{ w\in \{(\,,)\}^\star \mid \text{ los par\'entesis en } w
+   \text{ est\'an balanceados }\} $$
+  Describe la idea del algoritmo de aceptaci\'on y procesa la cadena~$()(())$ 
+  usando configuraciones.
+
+ \item \textbf{[2pts]} La siguiente m\'aquina de Turing~$M_f$, calcula una 
+  funci\'on~$f$ que recibe cadenas en~$\{a, b\}^\star$ y devuelve cadenas 
+  en~$\{a,b\}^\star$. 
+  
+  \begin{center}
+  \begin{tikzpicture}[node distance=3.3cm,every 
+    node/.style={scale=0.9},semithick]
+    \node[state,initial,initial text=] (q0) {$q_{0}$};
+    \node[state] (q1) [above right of=q0] {$q_1$};
+    \node[rectangle,draw] (Mb) [right of=q0] {$M_{borrar}$};
+    \node[state] (q2) [right of=Mb] {$q_2$};
+    \node[state] (q3) [right of=q1] {$q_3$};
+    \node[state] (q4) [right of=q2] {$q_4$};
+    \node[state] (q5) [right of=q4] {$q_5$};
+    \node[state,accepting by double] (qf) [above right of=q1] {$q_6$};
+    \path[->] (q0) edge [loop below] node [below] {$b/b,\der$} (q0);
+    \path[->] (q1) edge [loop left] node [left] {$b/b,\izq$} (q1);
+    \path[->] (q2) edge [loop below] node [below] {$a/a,\der$} (q2);
+    \path[->] (q3) edge [loop right] node [above] {$b/b,\izq$} node 
+    [above=10pt] {$a/a,\izq$} (q3);
+    \path[->] (q4) edge [loop above] node [above] {$b/b,\der$} node 
+    [above=10pt] {$a/a,\der$} (q4);
+    \path[->] (q5) edge [loop above] node [above] {$b/b,\izq$} node 
+    [above=10pt] {$a/a,\izq$} (q5);
+    \path[->] (q0) edge node [left] {$\blanks/\blanks,\izq$} (q1);
+    \path[->] (q1) edge node [left] {$\blanks/\blanks,\der$} (qf);
+    \path[->] (q3) edge node [right] {$\blanks/\blanks,\der$} (qf);
+    \path[->] (q4) edge node [above] {$\blanks/a,\izq$} (q5);
+    \path[->] (q2) edge node [left] {$\blanks/a,\izq$} (q3);
+    \path[->] (q0) edge node [above] {$a/a,-$} (Mb);
+    \path[->] (Mb) edge node [above] {} (q2);
+    \path[->] (q2) edge node [above] {$b/b,\der$} (q4);
+%     \path[->] (q0) edge [bend right] node [below] {$\blanks/\blanks,\der$} (q5);
+    \path[->] (q5) edge [bend left] node [below] {$\blanks/\blanks,\der$} (q0);
+   \end{tikzpicture}
+  \end{center}
+
+  El macro~$M_{borrar}$ que aparece en~$M_f$ borra el s\'imbolo que se 
+  encuentra en el sector donde est\'a colocada la cabeza, es decir si se 
+  comienza en la configuraci\'on $wp_0 sv$ se termina en $wp_f v$ donde 
+  $p_0$ es el estado inicial y $p_f$ es el estado final en~$M_{borrar}$.
+  
+  \begin{enumerate}
+  \item ?`Cu\'al es la cadena que queda al final en la cinta de~$M_f$ si al 
+inicio se encuentra la cadena~$aab$? 
+  \item Para cualquier cadena $w\in \{a, b\}^\star$ describe la cadena 
+  resultante~$f(w)$, ?`en qu\'e posici\'on de la cinta termina la cabeza?
+  \item Da el diagrama de~$M_{borrar}$ para completar la m\'aquina $M_f$ y 
+explica la idea de tu dise\~no.
+  \end{enumerate}
+
+  
+% 
+%  \item Suponga dos m\'aquinas de Turing dadas $M_f$ y $M_g$ que calculan las
+%   funciones $f$ y $g$ respectivamente (sobre n\'umeros naturales).  
+%   Describa c\'omo construir una m\'aquina de Turing que calcule 
+%   %la funci\'on siguiente:
+% %   \begin{enumerate}
+% %    \item 
+% $f + g $.
+% %    \item el m\'inimo de $f$ y $g$.
+% %    \item $f\circ g$.
+% %   \end{enumerate}
+    
+  
+  
+%  \item Dise\~na un macro~$M_{insertar}$ que cambia el contenido de la cinta 
+%   de $wv$ por $wzv$.
+%   La cabeza de la m\'aquina se encuentra exactamente en la posici\'on donde 
+% se  insertar\'a el s\'imbolo~$z$. Adem\'as se considera que~$\Sigma$ es 
+% cualquier alfabeto y que $w\in \big(\Sigma \cup \{\blanks\}\big)^\star$, 
+%   $z\in \Sigma \cup \{\blanks\}$ y $v\in \Sigma^\star$.\\
+%   Por ejemplo, la configuraci\'on de inicio es $wq_0v$ y la configuraci\'on 
+%   final debe ser $wq_0zv$.\\
+%   Para simplificar el dise\~no se puede suponer que $\Sigma = \{a,b\}$.\\
+  
+  
+%  \item Decodifica la siguiente m\'aquina de Turing sobre el 
+%   alfabeto~$\{0,1\}$ y donde $0:= 11$, $1:=111$. 
+%   Recuerda las codificaciones para los estados inicial~$q_0:=1$ y 
+%   final~$q_1:=11$.
+%   $$0101101011010 010111010111010 01010111010110$$
+%   $$011101101111011010 011110101111110110110 01110111011111011010$$
+%   $$01111101011111101110110 011111101101111110110110$$
+%   $$01111110111011111101110110 01111110101101010$$
+%   
+%   ?`Cu\'al es la funci\'on de esta m\'aquina, es decir qu\'e le hace a una 
+%   cadena que se encuentra al inicio en la cinta? 
+%   ?`D\'onde queda la cabeza de la m\'aquina al llegar al estado final?
+%   
+  
+%  \item Demuestra que todo lenguaje regular es recursivo, es decir que 
+% un lenguaje reconocido por un aut\'omata finito tambi\'en puede ser 
+% reconocido 
+% por una máquina de Turing que \textbf{siempre se detiene}. \\
+% Para esto procede como sigue:
+%   \begin{enumerate}
+%   \item De un algoritmo \textit{informal} que transforme a un aut\'omata 
+%   finito~$A$ en una m\'aquina de Turing equivalente~$M_A$ que siempre se 
+%   detiene. 
+%   \item Defina formalmente el algoritmo del inciso anterior especificando 
+%   c\'omo transformar la definici\'on formal de $A$ en la definici\'on formal 
+%   de $M_A$.
+%   \item Justifique porqu\'e $M_A$ siempre se detiene.
+%   \item Muestre un ejemplo de la ejecuci\'on del algoritmo, obteniendo $M_A$ 
+%   para un aut\'omata finito $A$ que acepte al siguiente lenguaje :
+%   $L=\{w\in\{a,b\}^\star\mid \text{ toda } a\text{ tiene una } b \text{ a la 
+%     derecha }\}$
+%   \end{enumerate}
+%   
+%  \item \textbf{[Extra: hasta 1.5 pts.]} \\
+%   Proporciona una explicaci\'on \textit{detallada} de \textbf{una y s\'olo una}
+%   de las siguientes:
+%   \begin{enumerate}
+%    \item ?`Cu\'al es el problema del paro y su relaci\'on con las m\'aquinas de 
+%     Turing?
+%    \item Describe comparativamente los lenguajes vistos en el curso as\'i como 
+%     las m\'aquinas que los reconocen.
+% %    \item Describe qu\'e es un lenguaje recursivo y uno recursivo enumerable. 
+%   \end{enumerate}
+
+
+
+\end{enumerate}
+
+
+\end{document}

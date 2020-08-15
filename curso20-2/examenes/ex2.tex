@@ -1,0 +1,113 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[includeheadfoot,margin=1in]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+\usepackage{array}
+
+\usepackage{pgf}
+\usepackage{tikz}
+
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Examen 2}
+\author{24 de marzo de 2020}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+  
+  \item El lenguaje $L\subseteq \{0,1\}^\star$ se define recursivamente como 
+  sigue:
+%   \[
+%    \begin{array}{l}
+%      0 \in L \\
+%      \text{Si } x\in L  \text{ entonces } x001,\; 11x\in L\\
+%      \text{Son todas} 
+%    \end{array}
+%   \]
+
+  \[
+   \begin{array}{l}
+     \vacia \in L \\
+     0 \in L \\
+     \text{Si } w\in L \text{ entonces } w1, w10 \in L\\
+     \text{Son todas} 
+   \end{array}
+  \]
+  Realiza lo siguiente:
+  \begin{enumerate}
+    \item Dise\~na una expresi\'on regular que reconozca 
+a~$L$.
+    \item Dise\~na un aut\'omata finito~$M$ que acepte 
+a~$L$, 
+da la idea del dise\~no y su definici\'on formal mediante la funci\'on $\delta$ 
+o un diagrama. 
+\item \textbf{Punto extra} Muestra que la cadena $011001$ no es aceptada por 
+el aut\'omta que dise\~naste. 
+  \end{enumerate}
+      
+\item Dise\~ne un aut\'omata finito determinista para cadenas en 
+$\{a, b\}^\star$ tal que \\
+% terminan con la cadena $abb$.  \\
+no tiene la cadena $aa$ ni la cadena $bb$ como subcadenas. \\
+% tiene un n\'umero impar de $b$'s y un n\'umero par de $a$'s. \\
+% empiezan o terminan en $ab$.
+
+
+\item Para el siguiente aut\'omata, describir detalladamente pero sin usar 
+expresiones regulares el lenguaje aceptado. Adem\'as muestra una cadena de 
+longitud 6 que sea aceptada. 
+\[
+ \begin{array}{rc|c|c}
+      &  & a & b \\\hline\hline
+inicial& q_0 & q_1 & q_2 \\\hline
+    & q_1 & q_3 & q_4 \\\hline
+    & q_2 & q_5 & q_6 \\\hline
+final & q_3 & q_3 & q_4 \\\hline
+    & q_4 & q_5 & q_6 \\\hline
+final & q_5 & q_3 & q_4 \\\hline
+final & q_6 & q_5 & q_6 \\\hline
+ \end{array}
+\]
+% 
+% \includegraphics[width=0.5\textwidth]{ex2.png}
+% 
+% Es el lenguaje de w's que no acaban en $ab$.
+% Recursivamente:
+% \[
+%    \begin{array}{l}
+%      aa,\,bb,\,ba \in L \\
+%      \text{Si } w\in L \text{ entonces } wa,\, aw,\, bw \in L\\
+%      \text{Son todas} 
+%    \end{array}
+%   \]
+% 
+ 
+
+\end{enumerate}
+
+
+\end{document}

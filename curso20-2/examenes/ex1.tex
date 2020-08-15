@@ -1,0 +1,168 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[includeheadfoot,margin=1in]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+\usepackage{array}
+
+\usepackage{pgf}
+\usepackage{tikz}
+
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Examen 1}
+\author{25 de febrero de 2020}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+
+
+%  \item Considere las expresiones regulares:
+%  $$\alpha = 0^* + 1^* \qquad\qquad \beta = 01^* + 10^* + 1^*0 + (0^*1)^*$$
+%  \begin{enumerate}
+%   \item Encuentre una cadena en $L(\alpha)$ y no en $L(\beta)$.
+%   \item Encuentre una cadena en $L(\beta)$ y no en $L(\alpha)$.
+%   \item Encuentre una cadena en $L(\alpha)$ y en $L(\beta)$.
+%   \item Encuentre una cadena en $\{0,1\}^*$ que no est\'e ni en $L(\alpha)$ 
+%   ni en $L(\beta)$.
+%  \end{enumerate}
+
+
+\item Sea $L = \{ab, aa, baa\}$. Considerar las siguientes cadenas en 
+$\{a,b\}^\star$:
+\begin{enumerate}
+ \item $abaaabab$
+ \item $abaabaabaa$
+ \item $aaaabaaaa$
+ \item $baaaaabaaaab$
+\end{enumerate}
+\begin{itemize}
+ \item (\textbf{2pts}) Indicar cu\'ales de las palabras pertenecen a $L^+$ 
+mostrando las subcadenas correspondientes.
+ \item (\textbf{1pt}) Proponer dos cadenas diferentes a las anteriores y a la 
+cadena vac\'ia que pertenezcan a $L^\star$.
+\end{itemize}
+
+
+\item (\textbf{2pts}) Decida si los lenguajes $(L^\star)^R$ y $(L^R)^\star$ 
+son iguales o no para cualquier $L$.\\ Justifique formalmente su respuesta. 
+
+% \item (\textbf{2pts}) Proporcione una definici\'on \textit{no recursiva} del 
+% lenguaje
+%   $$L = \{w\in\Sigma^* \mid aa \text{ no es subcadena de } w\}$$
+% Use lenguajes y operaciones entre ellos y \textbf{no} expresiones regulares.
+%  
+ \item Sean $L_1$ y $L_2$ los siguientes lenguajes sobre el alfabeto  
+ $\Sigma = \{a,b\}$:
+ \[
+  \begin{array}{rlcrl}
+   L_1: & &\hspace{20pt} & L_2: & \\
+   & \vacia \in L_1 &  & & \vacia \in L_2\\
+   & a \in L_1 & & & a \in L_2 \\
+   & \text{Si } w\in L_1 \text{ entonces } wb, wba \in L_1 & & &
+     \text{Si } w\in L_2 \text{ entonces } bw, abw \in L_2 
+  \end{array}
+ \]
+ \begin{itemize}
+  \item (\textbf{1pt}) Analizar ambos lenguajes mostrando algunas cadenas que 
+pertenzcan a cada lenguaje respectivamente. 
+  \item (\textbf{2pts}) Demostrar que \textbf{alguno} de ellos es equivalente 
+al lenguaje
+ $$L = \{w\in\Sigma^* \mid aa \text{ no es subcadena de } w\}$$
+%  del ejercicio anterior.
+ \end{itemize}
+
+ 
+ \textbf{Hasta dos puntos extra:} Demostrar que los tres son equivalentes, 
+  argumenta correctamente las equivalencias.
+%  
+%  \item Proporcione expresiones regulares que correspondan a los lenguajes 
+%   $L_1$ y $L_2$ del ejercicio anterior.
+
+%   \item Construir expresiones regulares para los siguientes lenguajes
+%   sobre   $\Sigma^\star=\{a,b,c\}$.
+%   \begin{enumerate}
+%   \item $L=\{vwv\in\{a,b\}^\star\;|\;|v|=2\}$
+% 
+%   \item $L=\{a^nb^m\;|\;n,m\geq 1,\;nm\geq 3\}$
+%   \end{enumerate}
+% %   
+% \item (\textbf{2pts}) Decidir si la siguiente equivalencia entre expresiones 
+% regulares es v\'alida mediante una demostraci\'on formal, en caso contrario dar 
+% un contraejemplo.
+%  \begin{enumerate}
+% % %   \item $\big((01+1)^\star(10+0)^\star +
+% % %    \vacio^\star\big)^\star(10+01)=(0+1)^\star(01+10)$
+% % %    \item[] $\big((11\vacio^\star)+1^\star)^\star 1^\star\big)^\star
+% % %      01((01)^\star +1)^\star=1^\star 01 ((01)^\star+1)^\star$
+%  \item[] $a(ba)^{*} = (ab)^{*} a$
+% %  \item $(a^{*} b^*)^{*} = (a + b)^{*}$
+% % \item[]  $(\alpha + \beta)^\star\beta \; = \; (\alpha^\star\beta)^\star$
+%  \end{enumerate}
+
+ 
+  
+%   \item El lenguaje $L\subseteq \{0,1\}^\star$ se define recursivamente como 
+%   sigue:
+% %   \[
+% %    \begin{array}{l}
+% %      0 \in L \\
+% %      \text{Si } x\in L  \text{ entonces } x001,\; 11x\in L\\
+% %      \text{Son todas} 
+% %    \end{array}
+% %   \]
+% 
+%   \[
+%    \begin{array}{l}
+%      \vacia \in L \\
+%      0 \in L \\
+%      \text{Si } w\in L \text{ entonces } w1, w10 \in L\\
+%      \text{Son todas} 
+%    \end{array}
+%   \]
+%   Realiza lo siguiente:
+%   \begin{enumerate}
+%     \item (\textbf{1.5pts}) Dise\~na una expresi\'on regular que reconozca 
+% a~$L$.
+%     \item (\textbf{1.5pts}) Dise\~na un aut\'omata finito~$M$ que acepte a~$L$, 
+% da la idea del dise\~no y su definici\'on formal.
+%   \end{enumerate}
+      
+% \item Dise\~ne un aut\'omata finito determinista para cadenas en 
+% $\{a, b\}^\star$ tal que \\
+% terminan con la cadena $abb$.  \\
+% no tiene la cadena $aa$ ni la cadena $bb$ como subcadenas. \\
+% tiene un n\'umero impar de $b$'s y un n\'umero par de $a$'s. \\
+% empiezan o terminan en $ab$.
+
+
+\item (\textbf{2pts}) Demuestre que dado $LL = L$ para alg\'un lenguaje 
+$L$ es porque $\vacia \in L$ \'o $L= \vacio$.
+
+
+\end{enumerate}
+
+\end{document}

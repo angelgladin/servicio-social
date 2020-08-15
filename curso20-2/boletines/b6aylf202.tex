@@ -1,0 +1,115 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.9cm]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Bolet\'in de Ejercicios 6\\
+\Large{Gram\'aticas}}
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes Gonz\'alez Huesca }
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\begin{enumerate}
+ \item Dise\~nar gram\'aticas para los siguientes lenguajes, indica si es 
+regular, libre de contexto o de alg\'un otro tipo.
+\bi
+ \item $L_0 = \{w \in\{0,1\}^\star \mid w \text{ termina en } 10\}$
+ \item $L_1 = \{ ww^R \mid w\in \{a,b \}^\star \}$
+ \item $L_2 = \{ w \in \{a,b\}^\star \mid \#_{a} \leq \#_{b} \}$
+ \item $L_3 = \{w \in\{0,1\}^\star \mid w \text{ \textbf{no} contiene la 
+  subcadena } 110\}$
+ \item $L_4 = \{ w\in \{0,1\}^\star \mid \text{en donde cada } 0 
+  \text{ est\'a seguido de } 11\}$
+ \item $L_5 = \{ a^n \mid n\text{ es un n\'umero primo } \}$
+ \item $L_6 = \{ w_1cw_2 \mid w_1,w_2\in \{a,b\}^\star,\; w_1 \neq w_2 \}$
+ \item $L_7 = \{ ab^n w \mid n\geq 3,\; w \text{ comienza con } aba \}$
+ \item $L_8 = \{ a ^{n!} \mid n\in\N \}$
+ \item $L_9 = \{ w\in\{0,1\}^\star \mid \text{cada bloque de 3 s\'imbolos 
+     consecutivos de } w \text{ tiene la subcadena } 01\} $
+ \item $L_{10} = \{a^n b^m \in \{a,b\}^\star \mid n + m \text{ es par } \}$
+ \item $L_{11} = \{w \in \{a,b,c\}^\star \mid w \text{ contiene al menos una 
+  vez cada s\'imbolo de } \{a,b,c\} \}$
+ \item $L_{12} = \{ a^n b^m\in \{a,b \}^\star \mid n\neq m \}$
+ \item $L_{13} = \{w \in \{0,1\}^\star \mid w \text{ \textbf{no} termina 
+  con } 01\}$
+ \item $L_{14} = \{ w \in \{0,1\}^\star \mid |w| = 4n \text{ y }
+      w \text{ contiene ceros en las posiciones pares } \}$ 
+ \item $L_{15} = \{ (ab)^n a^m\in \{a,b\}^\star \mid n>m,\,m\geq 0 \}$
+ \item $L_{16} = \{a^n b^m \mid n \text{ es impar o } m \text{ es par }\}$
+ \item $L_{17} = \{w\in \{a,b\}^\star \mid |w|\geq 2 \text{ tiene al menos una 
+  } a \text{ y termina en } b \}$
+ \item $L_{18} = \{w\in \{a,b\}^\star \mid w \text{ inicia y termina en } a 
+  \text{ y no hay dos } b \text{ consecutivas }\}$
+\ei
+
+\item Demuestre las siguientes propiedades de cerradura para lenguajes libres 
+  de contexto:
+  \be
+   \item Si $L$ es libre de contexto y $R$ es regular entonces $L\cap R$ es 
+    libre de contexto.
+   \item Si $L$ es libre de contexto y $R$ es regular entonces $LR$ es libre 
+    de contexto.
+  \ee
+
+ \item Encuentre una gram\'atica libre de contexto para los siguientes 
+  lenguajes:
+  \bi
+   \item $L_1=\{a^ib^jc^k \mid i=2j \text{ \'o } j=2k,\, i,j,k\in N\}$ \\
+    Adem\'as de una derivaci\'on por la izquierda de la cadena~$aaaabbcc$.
+   \item $L_2 = \{a^ibc^k \mid i > k \geq 1\}$ 
+   \item $L_3 = \{a^ib^jc^k \mid i> i+k,\, i,j,k\in N\}$ 
+  \ei
+  
+ \item Sean $L_1 = \{x^ny^m \mid 1<n\leq m \leq 3n\}$ y $L_2 = L(G)$ donde $G$ 
+  es:  
+  \[
+   \begin{array}{rlcrl}
+    S \imp & A & \hspace*{20pt} &A \imp & xAy \mid B \mid C\\
+    B \imp & xByy \mid \vacia & &  C \imp & xCyyy \mid \vacia \\
+   \end{array}
+  \]
+  ?`Qu\'e relaci\'on de contenci\'on existe entre $L_1$ y $L_2$ ?
+
+  
+ \item Demuestra que las siguientes gram\'aticas son ambiguas y trata de  
+encontrar gram\'aticas equivalentes que no lo sean. 
+  \be
+   \item $G_1 : \;\; S\imp aS \mid aSbS \mid \vacia$
+   \item $G_2 : \;\; S \imp 0S \mid 1S \mid 1A \qquad \qquad A\imp 0A\mid 1A 
+    \mid \vacia $
+  \ee
+ 
+\end{enumerate}
+\end{document}
+

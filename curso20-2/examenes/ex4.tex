@@ -1,0 +1,193 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[includeheadfoot,margin=1in]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+\usepackage{array}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Tarea-Examen 2}
+\author{30 de abril de 2020\\\textbf{Fecha de entrega: 5 de mayo de 2020}}
+\date{Trabajo individual a registrar mediante un archivo o archivos en la 
+plataforma GoogleClassroom.}
+
+\begin{document}
+\maketitle
+
+\vspace*{-10pt}
+
+\begin{enumerate}
+\item (1.5 pts.) Encuentra una expresi\'on regular para el lenguaje aceptado 
+por el 
+siguiente aut\'omata siguiendo el m\'etodo de ecuaciones de lenguajes, muestra 
+el sistema de ecuaciones y las soluciones de cada una de ellas:
+\begin{center}
+\begin{tikzpicture}[node distance=2.5cm,every node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=] (q0) {$q_0$};
+    \node[state,accepting by double] (q1) [right of=q0] {$q_1$};
+    \node[state,accepting by double] (q2) [right of=q1] {$q_2$};
+    \path[->] (q0) edge [loop above] node [above] {0} (q0);
+    \path[->] (q0) edge [bend left] node [above] {1} (q1);
+    \path[->] (q1) edge [bend left] node [above] {1} (q2);
+    \path[->] (q2) edge [loop right] node [above] {1} (q2);
+    \path[->] (q2) edge [bend left] node [above] {0} (q1);
+    \path[->] (q1) edge [bend left] node [above] {0} (q0);
+ \end{tikzpicture}
+\end{center}
+
+\item (1.5 pts.)  Obtener una gram\'atica regular que genere el mismo lenguaje 
+que el 
+aceptado por el siguiente aut\'omata:
+\begin{center}
+\includegraphics[width=.3\textwidth]{AFD}
+\end{center}
+
+
+ \item (2 pts.) Genera un aut\'omata finito (con transiciones $\vacia$) cuyo 
+lenguaje 
+de aceptaci\'on es el  mismo que el generado por la siguiente gram\'atica: 
+  \[ 
+   \begin{array}{rrlcrrl}
+    & S \imp & aA \mid \vacia &\qquad\qquad& D \imp & bC \mid b \mid aF \mid a\\
+    & A \imp & aB \mid bE & & E \imp & bE \mid aF \mid a \mid \vacia \\
+    & B \imp & aA \mid bC \mid b &  & F \imp & aF \mid a \mid bF \mid b \\
+    & C \imp & bD \mid aF \mid a \mid bS &&&
+   \end{array}
+  \]
+ \textbf{Hasta 1 punto extra:} Transforma el aut\'omata dado en uno 
+  \textbf{sin} transiciones $\vacia$.
+
+  
+  
+\item (1.5 pts.) Dise\~na una GLC para
+  $L=\{w\in\{a,b\}^\star\;|\;w=a^ib^{2i}c^k\;o \;  w=a^kb^ic^{2i},\;i,k\geq 
+0\}$. \\
+Muestre la derivaci\'on m\'as a la derecha, as\'i como el \'arbol 
+correspondiente para la cadena $aabbbbccc$.
+%   
+% \item  La gram\'atica $G$ permite construir el siguiente \'arbol de 
+% derivaci\'on para la cadena $abccc$:
+% \begin{tikzpicture}[level distance=12mm]
+%   \tikzstyle{level 1}=[sibling distance=20mm]
+%   \tikzstyle{level 2}=[sibling distance=10mm]
+%  
+%   \node {$S$}
+%     child {node {$A$}
+%       child {node {$aAb$}
+%         child {node {$\vacia$}}}
+%      }
+%     child {node {$B$}
+%         child {node {$cBc$}
+%             child {node {$c$}}}
+%     };
+%  \end{tikzpicture}
+% \begin{enumerate}
+% \item Dar la definici\'on formal de $G$, asumiendo que las variables, 
+% terminales y producciones de $G$ son \'unicamente las involucradas en el \'arbol 
+% anterior.
+% \item Construya dos derivaciones para $abccc$ cuyo \'arbol de derivaci\'on sea 
+% el anterior y de manera que una sea por la izquierda y la otra arbitraria.
+% \item ?` Qui\'en es $L(G)$ ? justifique su respuesta.
+% \end{enumerate}
+
+\item (2 pts.) Considere la siguiente gram\'atica  $G$:
+% \beqs
+%   \ba{rll}
+%   S & \imp & A b \, | \, aaB\\
+%   A &\imp  & a \, | \, Aa\\
+%   B &\imp  & a \, | \, b \, | \, c \\
+%   \ea
+%   \eeqs
+%   
+\[
+    S\imp aSA\;|\;\cv\;\;\;\;\;\;\; A\imp bcA\;|\;\cv
+\]   
+\begin{enumerate}
+\item Demuestre que $G$ es ambigua mostrando dos \'arboles distintos de 
+derivaci\'on para una misma cadena $w$.
+\item Defina una gram\'atica $G'$ no ambigua equivalente a $G$.
+\item Muestre el \'unico \'arbol de derivaci\'on para la cadena $w$ empleada en 
+el inciso a).
+\item Justifique por qu\'e $G'$ no es ambigua.
+\end{enumerate}
+
+
+ \item (1.5 pts.) Proporciona una gram\'atica libre de contexto para el 
+  siguiente lenguaje:
+    $$ L = \{ a^i b^j c^k \mid i=j \text{ \'o } i=k \}$$
+  \begin{small}
+   \textbf{[Hint]} Utiliza operaciones de lenguajes que son cerradas para 
+    lenguajes libres de contexto. 
+\end{small}
+
+ \item[] \textbf{Hasta 1 punto extra:}  Considera la siguiente gram\'atica:
+  \[
+     S \rightarrow AB \qquad \qquad 
+     A \rightarrow aA \mid \vacia \qquad \qquad 
+     B \rightarrow ab \mid bB \mid \vacia
+  \]
+  \begin{center}
+  \begin{small}
+  \textit{Cualquier derivaci\'on de una cadena en esta gram\'atica debe 	
+  comenzar con \\ la producci\'on~$S\imp AB$. 
+  Est\'a claro que toda cadena derivable desde $A$ \\
+  s\'olo tiene una derivaci\'on usando $A$ y lo mismo ocurre con $B$.\\ 
+  Por lo tanto, la gram\'atica \textbf{no} es ambigua.}
+  \end{small}
+  \end{center}
+  ?`El razonamiento anterior es correcto? Es decir, ?`es cierto que la 
+  gram\'atica no es ambigua? Justifica tus respuestas. 
+
+    
+ \item[] \textbf{Hasta 1 punto extra:}  Dada la gram\'atica cuyas producciones 
+son:
+  \[
+    S \rightarrow aAbC \qquad \qquad 
+    A \rightarrow aAb \mid ab \qquad \qquad
+    C \rightarrow cC \mid c 
+  \]
+  Describe y justifica cu\'al es el lenguaje que genera. ?`Es un lenguaje 
+  regular? \\Si tu respuesta es afirmativa proporciona una gram\'atica regular 
+  para el mismo lenguaje, sino \textbf{explica a detalle} porqu\'e no es 
+  regular.
+
+% % \item \textbf{Hasta 1 punto extra:} Sean $G = (N,T,P,S)$ una gram\'atica 
+% % lineal por la derecha y 
+% %   $G' = (N,T,P',S)$ la gram\'atica que se obtiene a partir de $G$ de la 
+% %   siguiente manera.
+% %   \begin{itemize}
+% %    \item Si $A \rightarrow a \in P$ entonces  $A \rightarrow a \in P'$
+% %    \item Si $A \rightarrow aB \in P$ entonces $B \rightarrow aA \in P'$
+% %   \end{itemize}
+% %   ?`Qui\'en es $L(G')$? Demuestra tu respuesta.
+% %   %Demuestra que $L(G') = (L(G))^{R}$
+
+\end{enumerate}
+
+\end{document}

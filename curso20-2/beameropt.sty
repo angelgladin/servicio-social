@@ -1,0 +1,128 @@
+%
+% Beamer options and commands
+%
+  
+% Colors
+% ------
+\definecolor{dyellow}{RGB}{113,93,1}
+\definecolor{orange}{RGB}{255,127,3}
+\definecolor{ppink}{RGB}{238,122,233}
+\definecolor{lgreen}{RGB}{19,168,54}
+\definecolor{dgreen}{RGB}{48,128,20}
+\definecolor{lred}{RGB}{238,44,44}
+\definecolor{lblue}{RGB}{79,148,205}
+\definecolor{dblue}{RGB}{7,2,72}
+\definecolor{lgray}{RGB}{211,211,211}
+\definecolor{sgipurple}{RGB}{142,56,142}
+\definecolor{sgiblue}{RGB}{113,113,198}
+\definecolor{sgilblue}{RGB}{125,158,192}
+\definecolor{sgigreen}{RGB}{56,142,142}
+\definecolor{sgilgreen}{RGB}{113,198,113}
+\definecolor{sgilgray}{RGB}{197,193,170}
+\definecolor{sgired}{RGB}{198,113,113}
+
+\definecolor{mpurple4}{RGB}{93,71,139}
+\definecolor{mgreen4}{RGB}{83,118,20}
+\definecolor{msapo4}{RGB}{166,169,56}
+\definecolor{mrosita4}{RGB}{173,87,132}
+
+% \definecolor{claro}{RGB}{79,148,205}
+\definecolor{claro}{RGB}{79,79,205}
+% \definecolor{fuerte}{RGB}{25,25,112}
+\definecolor{fuerte}{RGB}{255,255,0}
+\definecolor{cclaro}{RGB}{189,189,255}
+\definecolor{bullet}{RGB}{40,40,190}
+\definecolor{titles}{RGB}{13,35,178}
+
+\definecolor{myred}{HTML}{AA1111}
+\definecolor{myblue}{HTML}{563ED0}
+\definecolor{myorange}{HTML}{FF4100}
+\definecolor{myyellow}{HTML}{FFAC00}
+\definecolor{mygreen}{HTML}{00BF40}
+\definecolor{mypurple}{HTML}{AE005C}
+\definecolor{mypink}{HTML}{FF009B}
+
+\definecolor{calertb}{RGB}{176,196,222}
+\definecolor{ccb}{RGB}{255,185,15}
+\definecolor{llblue}{RGB}{198,226,255}
+
+\definecolor{mycolor}{RGB}{230,230,255}
+
+% Options for presentation
+% ------------------------
+\mode<presentation>
+{
+\useoutertheme{infolines}
+\useinnertheme{rectangles}
+\setbeamertemplate{itemize items}[square]
+\setbeamertemplate{enumerate items}[square]
+% \setbeamertemplate{items}[circles]
+\setbeamersize{text margin left=5mm, text margin right=5mm}
+
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{frametitle}{bg=mpurple4,fg=white}
+\setbeamercolor{normal text}{bg=white,fg=black}
+\setbeamercolor{structure}{bg=mpurple4!30!white,fg=black}
+\setbeamercolor{title}{bg=mpurple4,fg=white}
+\setbeamercolor{subtitle}{bg=mpurple4,fg=white}
+\setbeamercolor{titlelike}{bg=white,fg=mpurple4}
+
+\setbeamercolor{alerted text}{fg=lred,bg=calertb}
+
+% \setbeamercolor{separation line}{bg=mpurple4,fg=mpurple4}
+% \setbeamercolor{fine separation line}{bg=white,fg=red}
+\setbeamercolor{author in head/foot}{bg=mpurple4!30!white,fg=mpurple4!80!black}
+\setbeamercolor{title in head/foot}{bg=mpurple4!30!white,fg=mpurple4!80!black}
+\setbeamercolor{date in head/foot}{bg=mpurple4!30!white,fg=mpurple4!80!black}
+\setbeamercolor{institute in head/foot}
+{bg=mpurple4!30!white,fg=mpurple4!80!black}
+\setbeamercolor{section in head/foot}{bg=mpurple4!60!white, fg=Red}
+\setbeamercolor{subsection in head/foot}
+{bg=mpurple4!50!white, fg=mpurple4!50!white}
+
+\setbeamertemplate{headline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.65ex,dp=1.5ex,center]{section in 
+head/foot}%
+    \usebeamerfont{section in head/foot}\insertsectionhead\hspace*{2ex}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.65ex,dp=1.5ex,center]{subsection 
+in head/foot}%
+    \usebeamerfont{subsection in head/foot}\hspace*{2ex}\insertsubsectionhead
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\beamerdefaultoverlayspecification{<+->}
+% \beamertemplatenavigationsymbolsempty
+% \setbeamertemplate{footline}[frame number]
+}
+% ------------------------
+% Options
+
+
+% Titles
+% ------
+\newcommand{\titulos}[2]{\frametitle{#1}\framesubtitle{#2}}
+\newcommand{\fot}[1]{\footnote{\scriptsize{#1}}}
+
+% 
+% ---------
+\newcommand{\boxalert}[1]{{
+\usebeamercolor{alertedtext}\colorbox{bg}{\alert{#1}}}}
+
+\newcommand{\cb}[2]{\colorbox{#1}{#2}}
+
+
+% blocks of theorems
+\newenvironment<>{varblock}[2][.9\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block begin}}
+  {\par%
+    \usebeamertemplate{block end}%
+  \end{actionenv}}
+\setbeamertemplate{blocks}[shadow=false]

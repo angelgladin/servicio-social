@@ -1,0 +1,144 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.9cm]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Bolet\'in de Ejercicios 8\\
+\Large{Aut\'omatas de Pila y Algoritmo CYK}}
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes Gonz\'alez Huesca }
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\begin{enumerate}
+
+\item Dise\~na aut\'omatas de pila \textbf{no deterministas} que reconozcan 
+  los siguientes lenguajes, pueden ser aut\'omatas que acepten por estados 
+  finales o por pila vac\'ia.
+  \begin{itemize}
+   \item El conjunto de cadenas en $\{a,b\}^\star$ que \textbf{no} contienen 
+    cadenas de la forma $ww$.
+   \item $L_1 = \{ a^i b^j c^k \mid i\neq j \text{ \'o } j\neq k \}$
+   \item $L_2 = \{ a^i b^j c^k \mid i = j \text{ \'o } j = k \}$
+  \end{itemize}
+
+  \item Dise\~na aut\'omatas de pila \textbf{no deterministas} para los 
+  siguientes lenguajes y muestra los pasos de c\'omputo para las
+  cadenas en los correspondientes lenguajes, debes mostrar la secuencia de 
+configuraciones obtenidas.
+%   el \'arbol generado por las transiciones del aut\'omata. 
+  \be
+   \item $v = 010100$ con $L = \{ w\in \{0,1\}^\star \mid \#_0 = 2\#_1  \}$
+   \item $v = aaaabab$ con 
+    $L = \{ a^nw \mid n\geq 0,\; w\in \{a,b\}^\star, |w|\leq n\}$
+   \item $v = 00111222$ con 
+    $L = \{ 0^i 1^j 2^k \mid i,j,k\geq 0, j=i \text{ \'o } j=k \}$
+   \item $v = aacbbb$ con 
+    $L = \{ a^i c b^k \mid i\leq k,\;i,k\geq 1\} $
+  \ee
+  
+%  \item Transforma el aut\'omata que acepta por estados finales en uno que 
+%   acepta por pila vac\'ia.
+% 
+%   \item Transforma el aut\'omata que acepta por pila vac\'ia en uno que 
+% acepta por estados finales. 
+ 
+ \item Da aut\'omatas de pila \textbf{deterministas} que acepten los siguientes 
+  lenguajes:
+  $$L_1 = \{ 0^n1^m \mid n\leq m \} \qquad L_2 = \{ 0^n1^m \mid n\geq m 
+\} \qquad 
+L_3 = \{ 0^n1^m0^n \mid n,m\;\text{son arbitrarios} \}$$
+
+ \item Convierte las siguientes gram\'aticas a aut\'omatas de pila que acepten 
+  el mismo lenguaje:
+  \begin{itemize}
+   \item $G_1 : \;\;
+      S \imp 0S1 \mid A \quad \quad A \imp 1A0 \mid S \mid \vacia$ 
+   \item $G_2 : \;\;
+      S \imp aA \qquad \qquad A\imp aABC \mid bB \mid a \quad \quad B\imp b
+      \qquad \quad C\imp c $
+   \item $G_3 : \;\;
+      S \imp aAA  \qquad \quad A \imp aS \mid bS \mid a $
+   \item $G_4 : \;\;
+      S\imp abA \mid bB \mid aba \quad \quad A\imp b\mid aB \mid bA 
+      \qquad \quad B\imp aB \mid aA$
+  \end{itemize}
+  
+ \item Encuentre una gram\'atica libre de contexto que genere el lenguaje 
+  aceptado por el aut\'omata\\ $M = \pt{\{q_0, q_1\}, \{a, b\}, \{A, Z_0\}, 
+  \delta, q_0 , Z_0, \{q_1\}}$ con las siguientes transiciones:
+  \[
+    \delta(q_0,a,Z_0)  =  \{(q_0,AZ_0)\} \qquad 
+    \delta(q_0,b,A)  =  \{(q_0, AA) \} \qquad 
+    \delta(q_0,a,A)  = \{(q_1,\vacia) \}
+  \]
+%   $$ M = \pt{\{p,q\}, \{0,1\}, \{X,Z\_0},\delta, q, Z_0}$$
+% \[
+%  \begin{array}{rcl}
+%   \delta(q,1,Z_0) & = & \{(q,XZ_0)\} \\
+%   \delta(q,1,X) & = & \{(q,XX)\} \\
+%   \delta(q,0,X) & = & \{(p,X)\} \\
+%   \delta(q,\vacia,X) & = & \{(q,\vacia)\} \\
+%   \delta(p,1,X) & = & \{(p,\vacia)\} \\
+%   \delta(p,0,Z_0) & = & \{(q,Z_0)\} \\
+%  \end{array}
+% \]
+
+
+ \item Convierte los aut\'omatas de pila del ejercicio 1. en gram\'aticas 
+  libres de contexto.
+  
+  \item Si $A$ y $B$ son lenguajes definimos 
+  $$ A\diamond B = \{ xy \mid x\in A,\; y\in B,\; |x| = |y| \}$$
+  Muestra que si $A$ y $B$ son libres de contexto entonces $A\diamond B$ 
+  tambi\'en lo es.
+
+
+ \item Aplique el algoritmo \textsc{CYK} a las cadenas siguientes para decidir 
+  si pertencen a $L(G)$ para cada una de las gram\'aticas dadas.
+  \be
+   \item $w = bbacb$, $w = caaab$ con $G$ dada por:\\
+   $S\imp CA \mid DB \quad\quad C\imp b\quad\quad D\imp c
+   \quad\quad A \imp CB \quad\quad B\imp EB \mid b \quad\quad E\imp a$
+   \item $w = aaaaa$, $w= baba $ con $G$ dada por:\\
+   $S\imp AB \mid BC \qquad\qquad A\imp BA \mid a \qquad \qquad B\imp CC\mid b
+    \qquad \qquad C\imp AB\mid a$
+   \item $w = 00111$ con $G$ dada por: \\
+   $S \imp AB\mid BE\mid 0\mid 1 \quad\quad A \imp CB\mid CA\mid 0 
+  \quad\quad B \imp BE\mid 1\quad \quad C \imp 0\quad \quad E \imp 1  $
+  \ee  
+  
+\end{enumerate}
+
+
+\end{document}

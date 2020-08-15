@@ -1,0 +1,124 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.9cm]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Bolet\'in de Ejercicios 3\\
+\Large{Aut\'omatas Finitos No-Deterministas y con transiciones $\vacia$}}
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes Gonz\'alez Huesca }
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+%    
+% \section*{Aut\'omatas finitos no-deterministas}
+
+\be
+\item Para cada uno de los lenguajes descritos abajo
+\begin{enumerate}
+ \item Dise\~ne un $AFN$ (sin $\vacia$-transiciones) que acepte $L_i$.
+ \item Transforme el aut\'omata anterior a un $AFD$ mediante la 
+  construcci\'on de subconjuntos.
+\end{enumerate}
+\bi
+ \item $L_1 = \{ w\in \{0,1\}^* \mid w \text{ en donde cada } 0 
+ \text{ est\'a seguido de } 11\}$
+ \item $L_2 = \{a^n b^m \in \{a,b\}^* \mid n + m \text{ es par } \}$
+ \item $L_3 = \{w \in \{a,b,c\}^* \mid w \text{ contiene al menos una vez 
+cada s\'imbolo de } \{a,b,c\} \}$
+\ei
+ 
+\item Para cada uno de los aut\'omatas en la siguiente figura, encontrar un 
+$AFD$ equivalente:
+\begin{center}
+\includegraphics[width=.75\textwidth]{afns}
+\end{center}
+
+\item Para cada uno de los $AFN_{\vacia}$ descritos por 
+las siguientes tablas de transici\'on, de un diagrama y procese las cadenas  
+$ba,\, ababa$ siguiendo la definici\'on recursiva de $\delta^*$ (y mostrando el 
+c\'alculo de las cerraduras):
+\[
+\dest(q,\vacia) = Cl_{\vacia}(q)  \qquad  \qquad 
+\dest(q,wa) = Cl_{\vacia}\Big(\bigcup_{q'\in\dest(q,w)}\delta(q',a)\Big)
+\]
+  
+  
+  \[
+   \begin{array}{r|c|c|c|c|r|c|c|c|c|}
+    M_1: &&&&&\hspace*{30pt} M_2: &&&& \\
+	& \delta & a & b & \vacia & 
+	& \delta & a & b & \vacia \\\hline 
+    inicial & q_{0} & \vacio & \vacio & \{q_1\} & 
+    inicial,final& q_{0} & \vacio & \vacio & \{q_1\} \\\hline
+	& q_{1} & \{q_2\} & \vacio & \{q_4\} &
+	& q_{1} & \{q_2\} & \vacio & \{q_4\}\\\hline 
+	& q_{2} & \vacio & \{q_3\} & \vacio & 
+	& q_{2} & \vacio & \{q_3\} & \vacio \\\hline
+	& q_{3} & \{q_3\} & \vacio & \{q_1\} &
+	& q_{3} & \{q_3\} & \vacio & \{q_1\}\\\hline
+    final & q_{4} & \vacio & \{q_5,q_6\} & \vacio &
+	& q_{4} & \vacio & \{q_5,q_6\} & \vacio \\\hline
+	& q_{5} & \{q_4\} & \vacio & \vacio &
+	& q_{5} & \{q_4\} & \vacio & \vacio \\\hline
+	& q_{6} & \vacio & \vacio & \{q_0\} &
+	& q_{6} & \vacio & \vacio & \{q_0\}\\\hline
+   \end{array}
+  \]
+  
+  \vspace*{20pt}
+  
+  \[
+   \begin{array}{r|c|c|c|c|r|c|c|c|c|}
+    M_3: &&&&&\hspace*{30pt} M_4: &&&& \\
+	& \delta & a & b & \vacia & 
+	& \delta & a & b & \vacia \\\hline 
+	
+    inicial,final & q_{0} & \vacio & \vacio & \{q_1\} & 
+    inicial & q_{0} & \{q_1, q_2 \} & \vacio & \vacio \\\hline
+    
+	& q_{1} & \{q_2\} & \{q_3\} & \vacio &
+	final & q_{1} & \{q_0\} & \vacio & \vacio \\\hline 
+	
+	& q_{2} & \vacio & \{q_1\} & \vacio & 
+	& q_{2} & \vacio & \{q_3\} & \vacio \\\hline
+	
+	& q_{3} & \vacio & \vacio & \{q_0\} &
+	& q_{3} & \{q_3\} & \vacio & \{q_1\}\\\hline
+	\end{array}
+  \]
+\ee
+
+
+\end{document}

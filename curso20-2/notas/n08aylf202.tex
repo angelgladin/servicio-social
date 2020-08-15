@@ -1,0 +1,282 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{alltt}
+
+\usepackage[section]{placeins}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales  \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 8
+\thanks{\small{Material desarrollado bajo el proyecto UNAM-PAPIME PE102117 
+2017--2018.}}} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Gram\'aticas Regulares}
+
+Recordemos que una gram\'atica regular es una gram\'atica lineal por la 
+derecha o lineal por la izquierda y que no se permite mezclar ambos tipos de 
+producciones:
+$$\text{derecha} \qquad \qquad A\imp aB\;\;\;A\imp a\;\;\;A\imp\vacia$$
+$$\text{izquierda} \qquad \qquad A\imp Ba\;\;\;A\imp a\;\;\;A\imp\vacia$$
+con $A,B\in V,\;a\in T$, obs\'ervese que los s\'imbolos no-terminales est\'an 
+a la derecha o a la izquierda respectivamente.
+
+\defin{Decimos que un lenguaje~$L$ es regular si existe una gram\'atica 
+regular~$G$ que lo genere, es decir, si $L=L(G)$.
+}
+
+Tambi\'en recordemos que un lenguaje tiene un tipo $i$ si $L$ es generado por 
+una gram\'atica de ese tipo el cual debe asegurarse que $i$ es m\'aximo.
+           
+\paragraph{Ejemplo:}
+Sea el lenguaje~$L=0^\star10^\star 10^\star$ y es generado por:
+\[
+ \begin{array}{rll}
+ S & \imp & A1A1A \\
+ A & \imp & 0A\;|\;\vacia
+ \end{array}
+\]
+Esta gram\'atica no es regular, pero el lenguaje si lo es al existir una
+gram\'atica regular equivalente:
+\[
+ \begin{array}{rll}
+ S & \imp & 0S\;|\;1A \\
+ A & \imp & 0A\;|\;1B \\
+ B & \imp & 0B\;|\;\cv \\
+ \end{array}
+\]
+
+\paragraph{Ejemplo:}
+El lenguaje~$L=(a+b)^\star b$ es generado por la siguiente gram\'atica:
+\[
+ \begin{array}{rll}
+ S & \imp & aS\;|\;bC \\
+ C & \imp & bC\;|\;aS\;|\;\cv\\
+ \end{array}
+\]
+
+\section{Lenguajes y gram\'aticas regulares}
+Hay una correspondencia entre los lenguajes regulares y las gram\'aticas 
+regulares, veamos las dos partes de esta equivalencia que involucran a los 
+aut\'omatas finitos:
+
+\be
+\item Aut\'omatas Finitos $\;\Imp\;$ Gram\'aticas regulares\\
+Dado una m\'aquina finita $M=\pt{Q,\Sigma,\delta,q_0,F}$ existe una 
+gram\'atica regular $G=\pt{V,T,S,P}$ tal que $L(M)=L(G)$. 
+Es decir, todo lenguaje regular es generado por una gram\'atica regular.
+
+La construcci\'on de una gram\'atica regular~$G$ dado un aut\'omata~$M$ se 
+obtiene como sigue:
+\bi
+ \item Suponemos sin p\'erdida de generalidad que no hay 
+  $\vacia$-transiciones en $M$, es decir puede ser que $M$ sea no-determinista.
+ \item Se definen las partes de $G$, $V=Q \qquad T=\Sigma \qquad S=q_0$. \\
+  Es decir que los estados ser\'an los s\'imbolos no-terminales y los 
+  terminales ser\'an exactamente los s\'imbolos del alfabeto.
+ \item Las reglas de producci\'on~$P$ se definen como sigue:
+  \bi
+   \item Si $p\in\delta(q,a)$ entonces agregamos $q\imp ap$ a $P$.
+   \item Adem\'as, si $q_f\in\delta(q,a)$ con $q_f\in F$ entonces agregamos 
+    $q\imp a$.
+   \footnote{No hay necesidad de agregar transiciones del tipo $q\imp \vacia$ 
+    ya que se asegura con las opciones anteriores que los estados finales 
+    est\'an representados por $q\imp a$ si $\delta(q,a) = q_f$.}
+  \ei
+\ei
+
+
+\item Gram\'atica regular $\;\Imp\;$ Aut\'omata Finito\\
+Dada una gram\'atica regular~$G=\pt{V,T,S,P}$ existe un aut\'omata 
+finito~$M=\pt{Q,\Sigma,\delta,q_0,F}$ tal que $L(M)=L(G)$. Es decir todo 
+lenguaje generado por una gram\'atica regular es regular.
+
+Definimos al aut\'omata~$M$ en base a las reglas de producci\'on como sigue:
+\bi
+ \item Suponemos sin p\'erdida de generalidad que $G$ es lineal derecha.
+ \item El alfabeto es exactamente el conjunto de s\'imbolos terminales 
+  $\Sigma=T$ y los estados ser\'an $Q=V\cup\{q_F\}\qquad q_0=S\qquad F=\{q_F\}$
+ \item La funci\'on de transici\'on~$\delta$ se define como sigue:
+  \bi
+   \item Si $A\imp aB \in P$ entonces $B\in\delta(A,a)$.
+   \item Si $A\imp a \in P$ entonces $q_F\in\delta(A,a)$.
+   \item Si $A\imp \vacia \in P$ entonces $q_F\in\delta(A,\vacia)$.
+  \ei
+\ei
+
+\ee
+
+\paragraph{Ejemplo:}
+Considere el siguiente aut\'omata, la gram\'atica correspondiente obtenida con 
+el m\'etodo anterior se encuentra a su derecha:
+
+\begin{minipage}{.4\textwidth}
+ \centering
+  \begin{tikzpicture}[node distance=3.5cm,every 
+    node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state,accepting by double] (q2) [below of=q0] {$q_2$};
+    \path[->] (q0) edge node [above] {1} (q1);
+    \path[->] (q1) edge [bend left] node [above] {0} (q2);
+    \path[->] (q2) edge node [left] {0} (q0);
+    \path[->] (q2) edge [bend left] node [left] {1} (q1);
+    \path[->] (q0) edge [loop above] node [above] {0} (q0);
+    \path[->] (q1) edge [loop above] node [above] {1} (q1);
+ \end{tikzpicture}
+ \end{minipage}
+ \begin{minipage}{.4\textwidth}
+ \centering
+  \[
+  \begin{array}{rcl}
+    q_0 & \imp & 0q_0 \mid 1q_1\\
+    q_1 & \imp & 1q_1 \mid 0q_2 \mid 0 \\
+    q_2 & \imp & 0q_0 \mid 1q_1
+  \end{array}
+  \]
+\end{minipage}
+
+\subsection{Equivalencia entre gram\'aticas lineales}
+Se puede probar que toda gram\'atica lineal por la izquierda es equivalente a 
+una gram\'atica lineal por la derecha.
+Veamos c\'omo convertir gram\'aticas lineales por la izquierda a lineales por 
+la derecha y viceversa, para ello utilizamos las transformaciones a 
+aut\'omatas finitos.
+\be
+ \item Dada una gram\'atica lineal por la derecha se debe construir un 
+  aut\'omata finito que reconozca al mismo lenguaje.
+ \item Para construir la gram\'atica lineal por la izquierda se debe obtener 
+  un aut\'omata \textit{dual}:
+  \bi
+   \item intercambiar los estados inicial y final
+   \item invertir las transiciones    
+  \ei
+ \item Obtener una nueva gram\'atica del aut\'omata nuevo y despu\'es  
+  reordenar las reglas de producci\'on $A \imp aB$ en $ A \imp Ba$.
+\ee
+El m\'etodo anterior se puede usar cuando el aut\'omata tiene un s\'olo estado 
+final.\\
+Para la transformaci\'on de lineal izquierda a lineal derecha se siguen los 
+mismos pasos que antes.
+
+\paragraph{Ejemplo:}
+Convertir la siguiente gram\'atica lineal por la derecha en una equivalente 
+lineal por la izquierda:
+$$ S \imp 0A \qquad \qquad \qquad A \imp 1A \mid \vacia $$
+Se obtiene primero el aut\'omata: \hspace*{20pt}
+\begin{tikzpicture}[node distance=3.5cm,every 
+node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=] (qS) {$q_{S}$};
+    \node[state] (qA) [right of=qS] {$q_A$};
+    \node[state,accepting by double] (q) [right of=qA] {$q$};
+    \path[->] (qS) edge node [above] {0} (qA);
+    \path[->] (qA) edge node [above] {$\vacia$} (q);
+    \path[->] (qA) edge [loop above] node [right] {1} (qA);
+ \end{tikzpicture}
+ 
+\noindent Despu\'es el aut\'omata inverso o dual: \hspace*{20pt}
+\begin{tikzpicture}[node distance=3.5cm,every 
+node/.style={scale=0.8},semithick]
+    \node[state,accepting by double] (qS) {$q_{S}$};
+    \node[state] (qA) [right of=qS] {$q_A$};
+    \node[state,initial,initial text=] (q) [right of=qA] {$q$};
+    \path[->] (qA) edge node [above] {0} (qS);
+    \path[->] (q) edge [bend right] node [above] {$\vacia$} (qA);
+    \path[->] (qA) edge [loop above] node [right] {1} (qA);
+ \end{tikzpicture}
+
+\noindent Las transiciones del aut\'omata anterior son:
+$$ q\imp\vacia q_A \qquad \qquad q_A\imp  1q_A \mid 0 $$
+
+\noindent Y por \'ultimo se invierten los s\'imbolos y se elimina $\vacia$:
+$$ q\imp q_A \qquad \qquad q_A\imp q_A 1 \mid 0 $$
+
+\section{Aplicaciones pr\'acticas de los lenguajes regulares}
+\bi
+\item Expresiones regulares para filtrar cadenas en archivos. \\
+Hay muchos usos de las expresiones regulares en Unix, por ejemplo en la 
+b\'usqueda de patrones o las expresiones usadas por los comandos 
+\verb=awk= o \verb=grep= 
+\footnote{\url{
+http://www.gnu.org/software/grep/manual/grep.html\#Regular-Expressions}}.
+Veamos algunos ejemplos:
+\bi
+ \item \verb= $ ls -ld [[:upper:]]* = \\
+  esta l\'inea obtiene todos los archivos que inician con may\'uscula en 
+  cierto directorio.
+ \item \verb= $ grep '\<c...h\>' /usr/share/dict/words= \\
+  este comando obtiene las palabras del diccionario que empiezan en \verb=c=, 
+  terminan en \verb=h= y tienen exactamente 5 caracteres (cada punto indica 
+  que hay un caracter).
+ \item \verb= $ grep -c "go" demo_text= \\
+  obtiene el n\'umero de l\'ineas en el archivo \verb=demo_text= que 
+  contienen la cadena \verb=go=.
+\ei 
+
+
+\item An\'alisis de programas booleanos\\
+Por ejemplo programas que modelan sistemas de estados finitos como el 
+comportamiento de un elevador o una m\'aquina despachadora. 
+\begin{figure}[!ht]
+ \centering
+ \includegraphics[width=.6\textwidth]{elevator.png}
+ \caption{Eventos de un elevador y puertas}
+\end{figure}
+
+
+\item An\'alisis l\'exico\\
+Parte inicial de un compilador que se encarga de separar un programa en 
+peque\~nos grupos de caracteres llamados \textit{tokens}, es decir en nombres 
+de variables, n\'umeros, \textit{keywords}, etc.
+Se describe el analizador l\'exico a trav\'es de una o varias expresiones
+regulares para distinguir las clases de tokens.
+Por ejemplo, las siguientes expresiones identifican los espacios en blanco, 
+nombres y n\'umeros:
+\begin{alltt}
+ \(\alpha1\) = <hspace> + <newline>,
+ \(\alpha2\) = [letter] ([letter] + [digit])*,
+ \(\alpha3\) = [digit] [digit]*(\% + E [digit] [digit]*),
+\end{alltt}
+
+Se debe procesar un archivo y el analizador verifica subcadenas del programa 
+que son precisamente los tokens, usualmente se considera al prefijo m\'as largo 
+que sea un token como separador.\\
+La forma m\'as sencilla de realizar un an\'alisis l\'exico o \textit{lexer} es 
+mediante aut\'omatas no determin\'isticos, debe haber un aut\'omata por cada 
+definici\'on de token y el aut\'omata principal es la uni\'on de los 
+anteriores. 
+
+\ei
+\end{document}

@@ -1,0 +1,129 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\ 
+Nota de Clase 2
+\thanks{\small{Material desarrollado bajo el proyecto UNAM-PAPIME PE102117 
+2017--2018.}}} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+Para entender los fundamentos de la computaci\'on es necesario estudiar otros 
+conceptos como las funciones computables, los c\'omputos que dependen de las 
+construcciones disponibles en los lenguajes de programaci\'on y tambi\'en en 
+las 
+propias computadoras. 
+
+Estos conceptos ser\'an abstraidos por las m\'aquinas abstractas y el estudio 
+de 
+las propiedades de ellas. 
+Como vimos anteriormente, las cadenas y los lenguajes son conceptos b\'asicos 
+para estudiar los datos que procesar\'an los c\'omputos.
+Con el concepto de lenguaje podemos reformular las preguntas acerca
+de los datos de entrada y salida en una computadora:
+\bi
+ \item ?` Cu\'al es el lenguaje de entrada de una computadora dada? 
+ \item ?` Cu\'al es el lenguaje de salida ? 
+ \item ?` Ser\'an estos lenguajes describibles finitamente? 
+\ei
+
+Estas preguntas est\'an relacionadas a las preguntas que caracterizan a los 
+modelos de c\'omputo y los aspectos que representan.
+Los modelos de c\'omputo est\'an dise\~nados como un marco para estudiar el 
+reconocimiento de lenguajes. 
+En este curso se estudiar\'an tres clases de modelos de c\'omputo que se 
+caracterizan por diferentes propiedades:
+\bi
+\item memoria finita: aut\'omatas finitos
+\item memoria finita en un dispositivo de almacenamiento: aut\'omatas de pila
+\item memoria sin restricci\'on: m\'aquinas de Turing, l\'ogica combinatoria, 
+c\'alculo lambda.
+\ei
+
+\medskip
+
+Estos modelos han sido estudiados por muchos, en particular por Noam Chomsky 
+quien ha propuesto la noci\'on de lenguaje y de gram\'atica (este concepto se 
+revisar\'a m\'as adelante en el curso) para establecer una equivalencia entre 
+ellos.
+En 1956, Chomsky propuso una jerarqu\'ia, que lleva su nombre, para clasificar 
+los modelos de c\'omputo, los lenguajes que son reconocidos por estos modelos y 
+las gram\'aticas que describen los lenguajes. 
+Esta equivalencia se basa en las caracter\'isticas de los modelos para abstraer 
+lenguajes, ya sea usando m\'aquinas o usando gram\'aticas.
+
+\newpage
+
+La jerarqu\'ia establece un orden en los lenguajes o gram\'aticas que depende 
+de la cantidad y organizaci\'on de la memoria requerida para procesar un 
+lenguaje:\\
+% tabla de la jeraquia completa
+
+\begin{tabular}{c|c|c|c}
+ Tipo & Lenguajes & Modelo de C\'omputo & Gram\'aticas \\\hline\hline
+ 3 & Regulares & M\'aquinas de estados finitos & Regulares \\\hline
+ 2 & Libres de Contexto & Au\'omatas de Pila & Libres de contexto\\\hline
+ 1 & Sensibles al contexto & M\'aquina de Turing & No-contra\'ibles \\
+ & & limitada en memoria  & \\\hline
+ 0 & Recursivamente enumerables o & M\'aquina de Turing & Sin restricci\'on \\
+ & semidecidibles  & & \\
+\end{tabular}
+\smallskip
+
+Existe otro tipo de lenguajes que se encuentra entre el tipo 0 y el 1, estos 
+son los lenguajes recursivos pero no pertenecen a esta clasificaci\'on.\\
+La relaci\'on de contenci\'on en la jerarqu\'ia es
+\[
+\mathcal{L}_3\subseteq \mathcal{L}_2\subseteq \mathcal{L}_1\subseteq 
+\mathcal{L}_0
+\]
+
+\noindent Y al incluir los lenguajes recursivos, las contenciones son las 
+siguientes: todo lenguaje regular es libre de contexto; todo lenguaje libre de 
+contexto es sensible al contexto; todo lenguaje sensible al contexto es 
+recursivo y todo lenguaje recursivo es recursivamente enumerable.
+
+\medskip
+
+La jerarqu\'ia de Chomsky permite refinar la teor\'ia de la computaci\'on 
+clasificando lenguajes en funci\'on de los recursos computacionales 
+necesarios para reconocerlos, es decir cada categor\'ia tiene 
+asociado un tipo de m\'aquina que reconoce a sus lenguajes.
+A continuaci\'on empezaremos a estudiar los lenguajes y las m\'aquinas que los 
+reconocen comenzando por los regulares.
+
+
+
+
+% revisar libro de elaine rich... cap 3.
+
+\end{document}

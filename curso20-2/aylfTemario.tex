@@ -1,0 +1,266 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+% \usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+
+
+\usepackage{multicol}
+\setlength{\columnsep}{1.2cm}
+\input{macrosAyLF}
+
+\title{Autómatas y Lenguajes Formales, Semestre 2020-2\\
+Facultad de Ciencias UNAM}
+\author{
+% \small\texttt{\href{mailto: liliana.mar@gmail.com}{}}}
+% \and A. Liliana Reyes Cabello 
+Lourdes del Carmen Gonz\'alez Huesca 
+\small\texttt{\href{mailto:luglzhuesca@ciencias.unam.mx}{
+luglzhuesca@ciencias.unam.mx}}
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{comment}
+\section{Prerrequisitos}
+
+\begin{itemize}
+\item Nociones elementales de teoría de conjuntos: operaciones con conjuntos, funciones
+\item Relaciones binarias, sus propiedades y operaciones, en particular relaciones de equivalencia.
+\item Inducción: definición de números naturales, inducción, inducción fuerte.
+\item Programación: es deseable tener nociones de programación funcional.
+\end{itemize}
+
+Para cubrir los primeros tres puntos sugiero leer el  capítulo 1 del libro \cite{martin} así como resolver sus ejercicios, 
+para el último punto sugiero el libro \cite{hutton}.
+\end{comment}
+
+
+\section*{Temario}
+\begin{multicols}{2}
+\begin{enumerate}
+\item Introducción
+  \begin{itemize}
+  \item Cadenas y lenguajes.
+  \item Definiciones inductivas.
+  \item Inducción estructural.
+  \end{itemize}
+\item Lenguajes regulares
+  \begin{itemize}
+  \item Expresiones regulares
+  \item Autómatas finitos (AFD, AFN, AFN$\varepsilon$)
+  \item Teorema de Kleene (Derivadas de expresiones regulares y ecuaciones de 
+  lenguajes) 
+%   \item Homomorfismos
+  \item Teorema de Myhill-Nerode (Minimización de autómatas)
+  \end{itemize}
+\item Lenguajes libres de contexto
+  \begin{itemize}
+  \item Gramáticas y formas normales
+  \item Autómatas de Pila
+  \item Ambigüedad
+  \item Algoritmos y procedimientos de decisión.
+%   \item Lenguajes de Dyck y Teorema de Chomsky-Schützenberger
+  \end{itemize}
+\item Máquinas de Turing
+  \begin{itemize}
+  \item Definición y diseño de máquinas de Turing.
+  \item Lenguajes recursivos y recursivamente enumerables.
+%   \item Equivalencias (programas {\sc While})
+%   \item Decidibilidad (Teorema de Rice)
+  \end{itemize}
+% \item Otros formalismos
+%   \begin{itemize}
+%   \item Funciones $\mu$-recursivas
+%   \item Cálculo lambda  
+%   \end{itemize}
+\end{enumerate}
+\end{multicols}
+
+\section*{Evaluaci\'on}
+\noindent 
+El curso se calificará mediante 6 exámenes parciales cuyas fechas de 
+aplicaci\'on tentativas aparecen abajo. Los ex\'amenes ser\'an de los temas 
+incluidos en las tareas y boletines correspondientes.
+% y que tendr\'an eventualmente ejercicios pr\'acticos. 
+% Adem\'as se aplicar\'an ejercicios semanales presenciales e individuales.
+Los porcentajes son los siguientes: 
+\begin{itemize}
+\item Exámenes parciales: 60\%\\
+ {\footnotesize Fechas: 
+%  29 de agosto, 19 de septiembre, 15 de octubre, 12 de 
+% noviembre y la primera fecha de examen final.
+18 de febrero, 10 de marzo, 31 de marzo, 28 de abril, 19 de mayo y la segunda 
+fecha de examen final.}
+\item Tareas semanales: 40\% 
+% \item Ejercicios presenciales: 20\%
+\end{itemize}
+\noindent
+No habrá examen final ni reposiciones. 
+Se debe tener promedio aprobatorio en exámenes y un promedio aprobatorio para 
+obtener calificaci\'on final. 
+Las dem\'as consideraciones para tener derecho a calificaci\'on final se 
+encuentran en la p\'agina del curso:
+\url{https://sites.google.com/ciencias.unam.mx/aylf/AyLF}
+
+
+\section*{Material del curso}
+\noindent 
+No habrá un texto oficial para el curso, existen varias fuentes que 
+pueden ser consultadas que se encuentran listadas a continuación. 
+En su lugar habr\'a notas y presentaciones de clase. 
+Los libros \cite{hmu},\cite{kozen},\cite{linz},\cite{martin} son básicos y con 
+el enfoque clásico, el resto presentan un enfoque distinto o más general o 
+avanzado.
+\vspace*{-10pt}
+\begin{thebibliography}{50}
+\bibitem{anderson} 
+  James A. Anderson. Automata Theory with Modern Applications. Cambridge 
+  University Press 2006.
+  
+\bibitem{davis} 
+  Martin Davis, Ron Sigal, Elaine J. Weyuker. Computability, Complexity
+  and Languages: Fundamentals of Theoretical Computer Science. Academic Press, 
+  1983.
+  
+\bibitem{fernandez} 
+  Maribel Fernández, Models of Computation, An Introduction to Computability 
+  Theory. Springer 2009.
+  
+\bibitem{gopalak} 
+  Ganesh Gopalakrishnan. Computation Engineering, Applied Automata Theory and 
+  Logic. Springer 2006.
+
+\bibitem{hankin} 
+  Chris Hankin. Lambda Calculi, A Guide for Computer Scientists, Clarendon 
+  Press, Oxford 2004.
+
+\bibitem{hmu} 
+  J.E. Hopcroft, R. Motwani y J. Ullman. Introduction to Automata Theory, 
+  Languages, and Computation. 3rd. Edition, Pearson, 2006
+  
+% \bibitem{hutton} 
+% Graham Hutton. Programming in Haskell. Cambridge University Press. 2007.
+
+\bibitem{jones} 
+  Neil D. Jones. Computability and Complexity from a Programming Perspective. 
+  MIT Press 1997.
+
+\bibitem{kozen} 
+  Dexter C. Kozen. Automata and Computability. Undergraduate Texts in Computer
+  Science. Springer, 1997.
+  
+\bibitem{linz} 
+  Peter Linz. An Introduction to Formal Languages and Automata. 5th. Edition. 
+  Jones \& Bartlett. 2011.
+  
+\bibitem{martin} 
+  John Martin. Introduction to Languages and the Theory of Computation, 4th 
+  Edition, McGraw-Hill 2010.
+  
+\bibitem{rich} 
+  Elaine Rich. Automata, Computability and Complexity, Theory and Applications. 
+  Pearson Prentice Hall, 2008.
+  
+\bibitem{rosenberg} 
+  Arnold L. Rosenberg. The Pillars of Computation Theory, State, Encoding, 
+  Nondeterminism. Springer 2010.
+  
+\bibitem{shallit} 
+  Jeffrey Shallit. A Second Course in Formal Languages and Automata Theory. 
+  Cambridge University Press 2009.
+  
+\bibitem{sane}
+  S.S.Sane. theory of Computer Science. Technical Publications, 2007
+  
+\end{thebibliography}
+
+
+% %\vspace{-1cm}
+
+% \be
+
+
+% \item (1.5 pts) Para cada $n\geq 0$, se definen las cadenas $a_n$ y $b_n$ en $\{0,1\}^*$ como sigue:
+
+% \[
+% a_0=0; \quad b_0=1; \qquad \text{para } n>0,\; a_n=a_{n-1}b_{n-1}; \; \; b_n=b_{n-1}a_{n-1}
+% \]
+
+% Demuestre para cada $n\geq 0$ las cadenas $a_n$ y $b_n$ tienen la misma longitud.
+% %\item Las cadenas $a_{2n}$ y $b_{2n}$ difieren en cada posición.
+
+% \item (3 pts) A continuación se presenta una definición recursiva de
+%   un subconjunto de $\{a,b\}^*$. Proporcione una descripción con
+%   palabras y la expresión regular que
+%   define a tal lenguaje. 
+% % Suponga que la definición incluye una última expresión implícita: ``Un elemento no es parte de $L$, a menos que pueda obtenerse con las expresiones previas''
+
+% \be
+% \item $a \in L$ 
+% \item Para cada  $x \in L$,  $ax\in L$ y $xb\in L$ 
+% \item Son todas.
+% % \text{ son parte
+% %     de } $L$
+% %\item $a \in L \text{; para cada } x \in L \text{, } xb \text{ y } xba \text{ son parte de }L$
+% \ee
+
+% % \item (2.5 pts) Para cada $n\geq 0$, se definen las cadenas $a_n$ y $b_n$ en $\{0,1\}^*$ como sigue:
+
+% % \[
+% % a_0=0; \quad b_0=1; \qquad \text{para } n>0,\; a_n=a_{n-1}b_{n-1}; \; \; b_n=b_{n-1}a_{n-1}
+% % \]
+
+% % Demuestre para cada $n\geq 0$ las cadenas $a_n$ y $b_n$ tienen la misma longitud.
+% % %\item Las cadenas $a_{2n}$ y $b_{2n}$ difieren en cada posición.
+
+
+% \item (2.5 pts) Sea $\al$ una expresión regular arbitraria en el alfabeto $\Sigma$. Encuentre una expresión regular más sencilla que corresponda al mismo lenguaje de la siguiente expresión
+% \[
+% 	\al(\al^*\al+\al^*)+\al^*
+% \]
+
+
+% \item (3 pts) Diseñe un AFD (Autómata Finito Determinista) que
+%   reconozca al lenguaje 
+% $$\{w\in\{a,b\}^*\;|\;\text{tal que } w \text{ {\bf no} tiene ni a } aa \text{ ni a } bb \text{ como subcadena} \}$$
+
+
+% \item ({\bf Hasta 1.5 puntos extra}) Respecto al ejercicio 1,
+%   demuestre que las cadenas $a_{2n}$ y $b_{2n}$ difieren en cada posición.
+% % Escriba una expresión regular para cada uno de estos lenguajes
+
+% % \be
+% % \item El conjunto de cadenas binarias en las cuales el número de ceros es divisible entre 3.
+% % \item Las cadenas sobre el alfabeto $\{a, b, c\}$ que contienen un número par de aes
+% % \ee
+
+% \ee
+
+
+
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

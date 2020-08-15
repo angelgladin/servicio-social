@@ -1,0 +1,75 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.9cm]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Bolet\'in de Ejercicios 7\\
+\Large{Formas normales de Gram\'aticas Libres de contexto}}
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes Gonz\'alez Huesca }
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\begin{enumerate}
+ \item Transformar las siguientes gram\'aticas a \textbf{FNChomsky}, detallando 
+los 
+  pasos:
+  \[
+   \begin{array}{rrlcrrl}
+    G1 : & & & \qquad \qquad & G2 : &  &  \\    
+    & S \imp & X \mid Y &&& S \imp & 0S1 \mid A \mid AB\\
+    & X \imp & aZb \mid bZa &&& A \imp & 1A0 \mid S \mid \vacia \\
+    & Z \imp & aZb \mid bZa \mid \vacia &&& B \imp & 0B \mid 1C\\
+    & A \imp & a \mid aA &&& C \imp & 0C \mid 0 \mid \vacia \\
+    & B \imp & b &&& D \imp & 0C \mid 1D \mid F \\
+    & & &&& F \imp & 1F\mid \vacia 
+   \end{array}
+  \]
+
+  \item Transformar las siguientes gram\'aticas a \textbf{FNGreibach}, 
+detallando los 
+  pasos:
+  \[
+   \begin{array}{rrlcrrl}
+    G1 : & & & \qquad \qquad &G2 : & &  \\    
+    & S \imp & CA \mid DB  && & S \imp & AB \mid BC\\
+    & A \imp & CB & & & A \imp & BA \mid a \\
+    & B \imp & EB\mid b & & & B \imp & CC\mid b\\
+    & C \imp & b & & & C \imp & AB \mid a \\
+    & D \imp & c & & & &\\
+    & E \imp & a & & & &
+   \end{array}
+  \]
+
+\end{enumerate}
+\end{document}

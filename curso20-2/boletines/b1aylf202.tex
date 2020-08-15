@@ -1,0 +1,128 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=]{geometry}
+% \usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Autómatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Boletín de Ejercicios 1\\
+\Large{Introducci\'on: cadenas y lenguajes }}
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes Gonz\'alez Huesca }
+\date{\today}
+
+\begin{document}
+\maketitle
+
+% \section*{Cadenas y Lenguajes}
+\begin{enumerate}
+ \item Demostrar las propiedades de la concatenaci\'on de cadenas:
+  \bi
+   \item Asociatividad: $(uv)w = u(vw)$.
+   \item Identidad: $v\varepsilon = \varepsilon v= v$.
+   \item Longitud: $|vw| = |v| + |w|$.
+  \ei
+ 
+ \item Demostrar que para cualesquiera cadenas~$u,v,w$ y n\'umero natural $n$, 
+se cumplen las siguientes propiedades:
+  \be
+   \item $|w^r| = |w|$
+   \item $(w^r)^r = w$
+   \item $(uv)^R=v^Ru^R$
+   \item Para cada $n\geq 0$, $(w^n)^R = (w^R)^n $
+  \ee
+ 
+ \item Sea $\Sigma=\{a,b\}$, el lenguaje $L$ se define como:
+  \be
+   \item[i)] $\vacia \in L$
+   \item[ii)] Si $w_1,w_2\in L$ entonces $a w_1 b w_2,\,b w_1 a w_2 \in L$.
+   \item[iii)] Son todas las cadenas en $L$.
+  \ee
+  Demuestre que las cadenas en $L$ tienen el mismo n\'umero de $a$'s que de 
+  $b$'s  ($\#_a = \#_b$).
+ 
+ \item Sea $w$ una cadena sobre el alfabeto $\Sigma$ y $n,m \in  \mathbb{N}$ . 
+  Demuestre que  $ w^{n} \cdot w^{m} = w^{n+m}$.
+    \textit{Pista: usar la definici\'on de concatenacion repetida 
+    $w^{n+1} = w^n\cdot w$ y $w^{1+n} = w\cdot w^n$.}
+ \item Para cada~$n\geq 0$, se definen las cadenas $a_n$ y $b_n$ en $\{0,1\}^*$ 
+  como sigue:
+  \[ 
+   a_0=0; \quad b_0=1; \qquad \text{para } n>0,\; a_n=a_{n-1}b_{n-1}; \quad
+   b_n=b_{n-1}a_{n-1}
+  \]
+  Demuestre las siguientes propiedades de las cadenas descritas
+  \be
+   \item Para cada~$n\geq 0$ las cadenas $a_n$ y $b_n$ tienen la misma   
+    longitud.
+   \item Las cadenas $a_{2n}$ y $b_{2n}$ son pal\'indromos.
+   \item Las cadenas $a_{n}$ y $b_{n}$ difieren en cada posición.
+  \ee
+  
+ \item Sea $w = babbab$ una cadena sobre el alfabeto~$\Sigma = \{a, b\}$. 
+  Describa los conjuntos de \textit{todos} los prefijos y sufijos de $w$.
+ 
+ \item Proponga una definición no recursiva sencilla para el lenguaje~$L$ dado 
+  por la siguiente definición recursiva:
+  \be
+   \item[i)]  $\vacia \in L$.
+   \item[ii)] Si $x\in L$ entonces $0x1\in L,\;1x0\in L$.
+   \item[iii)] Si $x,y\in L$ entonces $xy\in L$
+   \item[iv)] Son todas.
+  \ee
+
+ \item Dado el alfabeto $\Sigma = \{1,2,3,a,b,c\}$ y los lenguajes
+  $L_1 = \{1,2,3\}$ y $L_2 =\{a,b,c\}$, definir los siguientes lenguajes:
+  \be
+   \item $L_1^2$
+   \item $L_1 \cup L_2$
+   \item $L_1L_2$
+   \item $(L_1L_2)^2$
+  \ee 
+ 
+ \item Demuestre que para todo lenguaje $L\subseteq\{0,1\}^\star$, si 
+  $L^2\subseteq L$ entonces $L^+ \subseteq L$.
+
+ \item Sean $L_1,L_2$ y $L_3$ lenguajes en un alfabeto $\Sigma$.
+  Decida si los siguientes pares de lenguajes son equivalentes o no. 
+  Justifique su respuesta mediante una demostraci\'on o un contraejemplo 
+  seg\'un sea el caso:
+  \begin{center}
+  \begin{tabular}{rccc}
+   $a)$ & $L_1 \big(L_2 \cap L_3\big)$ &\hspace{5pt}& $L_1 L_2 \cap  L_1 L_3$\\
+   $b)$ & $L_1^\star \cap L_2^\star $ & & $\big(L_1\cap L_2\big)^\star$\\
+   $c)$ & $L_1^\star L_2^\star$ & & $ \big(L_1 L_2\big)^\star$ \\
+   $d)$ & $L_1^\star \big(L_2 L_1^\star\big)^\star$ & & 
+    $\big(L_1^\star L_2\big)^\star L_1^\star$ \\
+   $e)$ & $\big(L_1 \cup L_2\big)^\star$ & & 
+    $\big(L_1^\star L_2^\star\big)^\star$
+  \end{tabular}
+  \end{center}
+
+\end{enumerate}
+
+\end{document}
+
+

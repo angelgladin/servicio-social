@@ -1,0 +1,193 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[includeheadfoot,margin=1in]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+\usepackage{array}
+
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Tarea-Examen }
+\author{\textbf{Fecha de entrega: 1 de abril de 2020}}
+\date{Trabajo individual a registrar mediante un archivo o archivos en la 
+plataforma GoogleClassroom}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+
+\item Dise\~na un AFN$_{\vacia}$, mediante el m\'etodo de S\'intesis de Kleene, 
+que reconozca el lenguaje $L$ generado por la expresi\'on regular:
+% \[\al= a(b+ba)^\star + a(a+ab)^\star bb\]
+% \[\big((a^+ + ab)^\star(\vacio^\star+(aba)^\star)^\star\big)^\star\]
+\[\alpha = (0+1)^*(01 + 110)\]
+\[\alpha \;= \; 1^\star01\big((01)^\star + 1\big)^\star\]
+\small{\textbf{Consideraciones:} 
+Se debe mostrar el proceso de construcci\'on de los subaut\'omatas 
+correspondientes a las subexpresiones regulares de $\alpha$.
+No est\'a permitido simplificar $\alpha$ ni omitir estados en la 
+construcci\'on. Se pueden omitir algunas transiciones $\vacia$. }
+
+\item Transforma el siguiente aut\'omtata en uno AFN al eliminar las 
+$\vacia$-transiciones  (s\'olo es necesario dar la tabla de 
+transiciones). Muestra el c\'alculo de las $Cl_{\vacia}$ de 
+cada estado.
+\begin{center}
+\begin{tikzpicture}[node distance=2.5cm,every node/.style={scale=0.8},semithick]
+    \node[state,initial,initial text=] (q0) {$q_0$};
+    \node[state] (q1) [above left of=q0] {$q_1$};
+    \node[state] (q2) [above right of=q0] {$q_2$};
+    \node[state] (q3) [right of=q0] {$q_3$};
+    \node[state] (q4) [right of=q3] {$q_4$};
+    \node[state,accepting by double] (q5) [right of=q4] {$q_5$};
+    \path[->] (q0) edge node [above] {$\vacia$} (q1);
+    \path[->] (q1) edge [bend left] node [above] {a} (q2);
+    \path[->] (q2) edge [loop above] node [above] {b} (q2);
+    \path[->] (q2) edge node [above] {$\vacia$} (q0);
+    \path[->] (q0) edge node [above] {$\vacia$} (q3);
+    \path[->] (q0) edge [bend left] node [above] {$\vacia$} (q5);
+    \path[->] (q3) edge node [below] {a} (q4);
+    \path[->] (q4) edge node [below] {a} (q5);
+ \end{tikzpicture}
+\end{center}
+
+
+% \item Considera los siguientes aut\'omatas:
+% \begin{figure}[!ht]
+% \centering
+% \begin{footnotesize}
+% \begin{minipage}{.4\textwidth}
+% $M_1$: \\
+\begin{tikzpicture}[node distance=2.5cm,every 
+node/.style={scale=0.7},semithick]
+    \node[state,initial,initial text=] (q0) {$q_0$};
+    \node[state,accepting by double] (q1) [above right of=q0] {$q_1$};
+    \node[state] (q2) [above right of=q1] {$q_2$};
+    \node[state] (q3) [below right of=q2] {$q_3$};
+    \node[state] (q4) [below right of=q0] {$q_4$};
+    \node[state] (q5) [right of=q4] {$q_5$};
+    \node[state] (q6) [right of=q5] {$q_6$};
+    \path[->] (q0) edge [loop above] node [above] {b} (q0);
+    \path[->] (q0) edge node [above] {$\vacia$} (q1);
+    \path[->] (q0) edge node [below] {$\vacia$} (q4);
+    \path[->] (q1) edge node [above] {a} (q2);
+    \path[->] (q2) edge node [above] {b} (q3);
+    \path[->] (q3) edge node [above] {b} (q1);
+    \path[->] (q4) edge [loop above] node [above] {b} (q4);
+    \path[->] (q4) edge node [above] {$\vacia$} (q5);
+    \path[->] (q5) edge [bend left] node [above] {b} (q6);
+    \path[->] (q6) edge [bend left] node [above] {a} (q5);
+ \end{tikzpicture}
+% \end{minipage}
+% \end{footnotesize}
+% \hspace{20pt}
+% \begin{footnotesize}
+% \begin{minipage}{.4\textwidth}
+%  $M_2$:\\
+% \begin{tikzpicture}[node distance=3cm,every node/.style={scale=0.8},semithick]
+%     \node[state,initial,initial text=,accepting by double] (q0) {$q_0$};
+%     \node[state] (q1) [above right of=q0] {$q_1$};
+%     \node[state] (q2) [below right of=q1] {$q_2$};
+%     \node[state] (q3) [below of=q0] {$q_3$};
+%     \node[state] (q4) [above right of=q3] {$q_4$};
+%     \node[state,accepting by double] (q5) [below right of=q4] {$q_5$};
+%     \path[->] (q0) edge node [above] {a} (q1);
+%     \path[->] (q0) edge node [left] {$\vacia$} (q3);
+%     \path[->] (q1) edge node [above] {b} (q2);
+%     \path[->] (q2) edge node [above] {b} (q0);
+%     \path[->] (q2) edge [loop right] node [above] {a} (q2);
+%     \path[->] (q3) edge node [above] {b} (q4);
+%     \path[->] (q4) edge node [above] {b} (q5);
+%     \path[->] (q5) edge node [above] {b} (q3);
+%  \end{tikzpicture}
+% \end{minipage}
+% \end{footnotesize}
+% \end{figure}
+% \FloatBarrier
+% \bi
+% \item Calcula el aut\'omata que reconce $L_2L_1^\star$ donde $L_1 = L(M_1)$  
+% y $L_2 = L(M_2)$.
+% \item Transforma uno de los aut\'omatas del ejercicio en determinista 
+% mostrando la cerradura $\vacia$ para cada estado. 
+% \ei
+
+% \item Dado el siguiente aut\'omata, da un diagrama de \'el, 
+% una trasformaci\'on que lo convierta en determinista as\'i como un 
+% aut\'omata  equivalente m\'inimo.
+% \[
+%  \begin{array}{cl|c|c|c}
+%   & \delta & a & b & \vacia \\\hline
+%   inicial, final & q_0 & q_1 & -- & --\\
+%    & q_1 & q_4 & q_2 & -- \\
+%    & q_2 & q_3 & -- & q_0 \\
+%    & q_3 & -- & q_2 & -- \\
+%    & q_4 & -- & -- & q_0
+% \end{array}
+% \]
+
+\item Minimiza el siguiente aut\'omata:
+\[
+ \begin{array}{cl|c|c}
+  & \delta & a & b \\\hline
+inicial, final & q_0 & q_4 & q_2 \\
+ final    & q_1 & q_2 & q_1  \\
+  final   & q_2 & q_4 & q_3  \\
+   final  & q_3 & q_2 & q_1 \\
+     & q_4 & q_4 & q_4 \\ 
+%      & q_5 & q_2 & q_6 \\
+% final & q_6 & q_3 & q_6 \\
+\end{array} 
+\]
+\[
+ \begin{array}{cl|c|c}
+  & \delta & a & b \\\hline
+inicial, final & q_0 & q_1 & q_3 \\
+    & q_1 & q_2 & q_3  \\
+  final   & q_2 & q_5 & q_2  \\
+    & q_3 & q_4 & q_1 \\
+    final  & q_4 & q_5 & q_4 \\ 
+     & q_5 & q_5 & q_5 \\
+\end{array} 
+\]
+
+% \item \textbf{(Punto extra)} Contesta una y s\'olo una de las siguientes:
+% 
+% \item Eliminar el no-determinismo del aut\'omata del ejercicio 2.
+% 
+% \item Suponga que un lenguaje $L$ es finito, ?`cu\'al es el n\'umero (m\'inimo) 
+% de estados que un AFD debe tener para aceptar el lenguaje $L$?
+% 
+% \item Suponga que $M$ es un AFN$\vacia$ que acepta a un lenguaje 
+% $L\subseteq \Sigma^*$. Describa c\'omo modificar $M$ para obtener un 
+% AFN$\vacia$ que reconozca $L(\al)^r$, es decir $rev(L) = \{w^r \mid x \in L\}$.
+
+\end{enumerate}
+
+\end{document}

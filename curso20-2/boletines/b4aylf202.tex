@@ -1,0 +1,71 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.9cm]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Bolet\'in de Ejercicios 4\\
+\Large{Lenguajes regulares y el teorema de s\'intesis Kleene}}
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes Gonz\'alez Huesca }
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+
+
+\be
+\item Considere las siguientes expresiones regulares:
+\bi
+ \item $\alpha_1 = 1^\star 01\big( (01)^\star+1\big)^\star $
+ \item $\alpha_2 = (a+b)^\star(aaa+bbb)(a+b)^\star$
+  %Muestre, usando $\delta^\star$, la aceptaci\'on de la cadena $abbbb$.
+ \item $\alpha_3 = (01)(01)^\star + (010)(010)^\star$
+ \item $\alpha_4 = (0+1)^*(01 + 110)$
+ \item $\alpha_5 = (0+1)^*(011 + 01010)(0+1)^*$
+\ei
+Para cada una de ellas realice las siguientes acciones:
+\be
+ \item Dise\~nar un AFN$\vacia$, $M_i$ para cada $\alpha_i$ mediante el 
+  m\'etodo de s\'intesis de Kleene (se pueden omitir algunas transiciones 
+$\vacia$).
+ \item Calcular el conjunto~$Cl_{\vacia}(q)$ para cada estado $q$ de cada 
+$M_i$.
+ \item Encontrar el AFN equivalente a~$M_i$ que reconoce a $L(\alpha_i)$.
+ \item Encuentre el AFD equivalente a~$M_i$ que reconoce a $L(\alpha_i)$.
+ \item Encuentre el AFD {\bf m\'inimo} equivalente a~$M_i$ que reconoce a 
+  $L(\alpha_i)$.
+\ee
+
+\ee
+
+\end{document}

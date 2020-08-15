@@ -1,0 +1,133 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.9cm]{geometry}
+\usepackage{anysize}
+
+% \usepackage[utf8]{inputenc}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}   % font shapes...
+\usepackage[T1]{fontenc} % join the compound symbols as a single symbol
+
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+%\pagestyle{fancyplain}
+\input{../macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2020-2 \\ 
+Facultad de Ciencias UNAM \\
+Bolet\'in de Ejercicios 5\\
+\Large{Teorema de an\'alisis de Kleene y Gram\'aticas de lenguajes}}
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and 
+Lourdes Gonz\'alez Huesca }
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\begin{enumerate}
+
+
+\item Encuentre la expresi\'on regular $\alpha_i$ tal que $L(M_i) = (\alpha_i)$ 
+para cada aut\'omata $M_i$:
+\[
+   \begin{array}{r|c|c|c|r|c|c|c|}
+    M_1: &&&&\hspace*{30pt} M_2: &&& \\
+	& \delta & a & b & 
+	& \delta & a & b  \\\hline 
+	
+    inicial,final & q_{0} & q_2 & q_0 & 
+    inicial & q_{0} & q_1& q_1 \\\hline
+    
+	& q_{1} & q_0 & q_2 & 
+	final & q_{1} & q_1 & q_2 \\\hline 
+	
+	& q_{2} & q_1 & q_3 & 
+	& q_{2} & q_1 & q_0 \\\hline
+	
+	& q_{3} & q_3 & q_1 &
+	& & &\\\hline
+	\end{array}
+  \]
+
+  
+  
+%  \item Sean $G = (N,T,P,S)$ una gram\'atica lineal por la derecha y 
+%   $G' = (N,T,P',S)$ la gram\'atica que se obtiene a partir de $G$ de la 
+%   siguiente manera.
+%   \begin{itemize}
+%    \item Si $A \rightarrow a \in P$ entonces  $A \rightarrow a \in P'$
+%    \item Si $A \rightarrow aB \in P$ entonces $B \rightarrow aA \in P'$
+%   \end{itemize}
+%   ?`Qui\'en es $L(G')$? Demuestra tu respuesta.
+%   %Demuestra que $L(G') = (L(G))^{R}$
+
+ \item Dada la gram\'atica $G= \pt{\{S,A,B,C\}, \{a,b,c\}, P, S}$ cuyas
+  producciones son: 
+   \[
+     \begin{array}{rcl}
+       S & \rightarrow & aABC \\
+       A & \rightarrow & aA \mid a \\
+       B & \rightarrow & bB \mid b \\
+       C & \rightarrow & cC \mid c \\
+     \end{array}
+   \]
+ contesta las siguientes preguntas.
+ \begin{enumerate}
+  \item ?`Qu\'e lenguaje genera, es decir qu\'en es $L(G)$?
+  \item ?`Cu\'al es el tipo de gram\'atica m\'as restringido al que pertenece 
+  $G$?
+  \item ?`$L(G)$ es regular? En caso de que tu respuesta sea afirmativa, da una
+   gram\'atica regular, en caso contrario justifica por qu\'e no lo es. 
+ \end{enumerate}
+
+%  \item Demuestra que las siguientes gram\'aticas son ambiguas y encuentra 
+%   gram\'aticas equivalentes que no lo sean:
+%   \bi
+%    \item $G_1 : \;\; S\imp aS \mid aSbS \mid \vacia$
+%    \item $G_2 : \;\; S \imp 0S \mid 1S \mid 1A \qquad \qquad A\imp 0A\mid 1A 
+%     \mid \vacia $
+%   \ei
+%  
+ \item Construya aut\'omatas que reconozcan los lenguajes generados por cada 
+  una de las gram\'aticas siguientes:
+  \[
+   \begin{array}{rrlcrrl}
+    G1 : & & & \qquad \qquad &G2 : & &  \\    
+    & S \imp & aA \mid bC \mid b && & S \imp & bS \mid aA \mid \vacia\\
+    & A \imp & aS \mid bB & & & A \imp & aA \mid bB \mid b\\
+    & B \imp & aC \mid bA \mid a & & & B \imp & bS\\
+    & C \imp & aB \mid bS & & & &
+   \end{array}
+  \]
+  
+ \item Transforma las gram\'aticas lineales por la derecha del ejercicio 
+  anterior en gram\'aticas lineales por la izquierda.
+
+ \item Defina gram\'aticas regulares que correspondan a los lenguajes 
+  generados por las siguientes expresiones regulares:
+  \bi
+   \item $\alpha_1 = bba(ab)^\star$
+   \item $\alpha_2 = (aab+bbaba)^\star$
+  \ei
+  
+\end{enumerate}
+
+
+
+\end{document}

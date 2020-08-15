@@ -1,0 +1,62 @@
+%%%% Options of packages
+
+% space between paragraphs
+\setlength{\parskip}{0.12em}
+
+% parameters to allow hbox or vbox overfulled by length, to prevent errors!!!
+\hfuzz=5.002pt 
+\vfuzz=5.002pt
+
+\hypersetup{
+%     bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={My title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Creator},   % creator of the document
+    pdfproducer={Producer}, % producer of the document
+    pdfkeywords={keyword1} {key2} {key3}, % list of keywords
+    pdfnewwindow=true,      % links in new window
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=mpurple4!50!black,  % color of internal links (change box color 
+% with linkbordercolor)
+    citecolor=gray,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=blue,           % color of external links
+    frenchlinks=false,
+    pdfborder={0 0 0}
+}
+
+\tikzset{
+  invisible/.style={opacity=0},
+  visible on/.style={alt={#1{}{invisible}}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} 
+    % \pgfkeysalso doesn't change the path
+    },
+  }
+
+
+% for non-french itemize spaces...
+% \frenchbsetup{StandardItemLabels=true}
+% \setlist[itemize]{label=\textbullet}
+% \addto\captionsenglish{
+%   \renewcommand{\labelitemi}{}
+% }
+
+
+% to use the normal font for bold math symbols
+% \SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
+
+
+% for tick StandardItemLabels
+% \pgfplotsset{compat=1.10}
+
+% to prevent split footnotes
+% \interfootnotelinepenalty=10000
+
+
