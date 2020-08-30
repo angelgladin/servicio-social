@@ -21,6 +21,8 @@
 
 \usepackage{url}
 
+\usepackage{todonotes} % Para hacer anotaciones, remover cuando ya no tengan anotaciones.
+
 %\pagestyle{fancyplain}
 \input{macrosAyLF}
 
@@ -513,17 +515,42 @@ $$ L\cup M \qquad L\cap M \qquad L-M \qquad \bar{L}=\Sigma^\star-L$$
 tambien son lenguajes.
 Adicionalmente tenemos las siguientes operaciones relevantes:
 
+% [ANGEL_GLADIN] Ejemplos agregados, peraciones con lenguajes
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo:}
+Si $\Sigma=\{0, 1\}$, tomando $L = \{ 00, 01 \}$ y $M = \{ 01, 10, 11 \}$ lenguajes sobre $\Sigma$, entonces
+\bi
+ \item $L \cup M = \{ 00, 01, 10, 11 \}$
+ \item $L \cap M = \{ 01 \}$
+ \item $L-M = \{ 00 \}$
+ \item $\bar{L}=\Sigma^\star-L = \{ 10, 11, 100, 101, \ldots \}$ %TODO
+\ei
+\todo{[END] Ejemplo}
+
+
 \subsubsection{Concatenación de Lenguajes}
 \noindent Al igual que en el caso de cadenas, podemos definir la concatenación 
 entre lenguajes como sigue:
 $$  LM=\{uv\;|\;u\in L\;\mbox{y}\;v\in M\} $$
-Y cumple las siguientes propiedades:
+
+% [ANGEL_GLADIN] Ejemplos agregados, concatenación con lenguajes
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo:}
+Sea $L = \{ 001, 10, 111 \}$ y $M = \{ \cv, 001 \}$, se tiene que
+$$ LM = \{ 001, 10, 111, 001001, 10001, 111001 \} $$
+Las primeras tres cadenas en $LM$ son las cedaneas en $L$ concatenadas con $\cv$. Con $\cv$ la identidad
+para la concatenación, las cadenas resultantes son las mismas que las cadenas en $L$. Pero las últimas tres
+cadenas en $LM$ son formadas tomando cada cadena en $L$ y concatenándolo con la segunda cadena de $M$.
+\todo{[END] Ejemplos}
+
+La concatenación de lenguajes cumple las siguientes propiedades:
 \bi
  \item $L\varnothing=\varnothing L=\varnothing$
  \item $L\{\vacia\}=\{\vacia\}L=L$
  \item $L(MN)=(LM)N$
  \item $L(M\cup N)=LM\cup LN \qquad \qquad (M\cup N)L=ML\cup NL$
 \ei
+
 \noindent Tambi\'en consideramos la concatenaci\'on repetida de un mismo 
 lenguaje llamada \textit{potencia} de un lenguaje como: 
 $$L^n = \underbrace{L\,\dots\, L}_\text{ n-veces }$$
@@ -531,7 +558,15 @@ $$L^n = \underbrace{L\,\dots\, L}_\text{ n-veces }$$
 \subsubsection{Reversa de un Lenguaje}
 \noindent La reversa de un lenguaje se define como
 $$ L^R=\{u^R\;|\;u\in L\}$$
-Y cumple las siguientes propiedades:
+
+% [ANGEL_GLADIN] Ejemplos agregados, reversa de un lenguaje
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo:}
+Sea $L = \{ 001, 010, 011 \}$, se sigue que $L^R = \{ 100, 010, 110 \}$.
+\todo{[END] Ejemplo}
+
+
+La reversa de una Lenguaje cumple las siguientes propiedades:
 \bi
  \item $(L^R)^R=L$
  \item $(LM)^R=M^RL^R$
@@ -539,6 +574,7 @@ Y cumple las siguientes propiedades:
  \item $(L\cap M)^R=L^R\cap M^R$
 \ei
 
+% [ANGEL_GLADIN] Ejemplos agregados, cerradura de Kleene
 \subsubsection{Cerradura de Kleene}
 \noindent La cerradura o estrella de Kleene de un lenguaje se define como
  \[
@@ -547,13 +583,39 @@ Y cumple las siguientes propiedades:
  \]
 donde $L^i$ es la potencia $i$-ésima de $L$.
 
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo:}
+Tomemos $L = \{ 0, 11 \}$. $L^0 = \{ \cv \}$, independientemente de cual sea el lenguaje $L$; la potencia 0,
+representa la selección de cero cadenas de $L$. $L^1 = L$, que representa la elección de una cadena de $L$. De
+esta manera, los primeros dos términos en la expanción de $L^\star$ nos da $\{ \cv, 0, 11 \}$.
+
+Ahora consideremos a $L^2$. Tomamos dos cadenas de $L$, con repeticiones permitidas,de esta manera hay cuatro
+elecciones. Estas cuatro elecciones nos dan $L^2 = \{ 00, 011, 110, 1111 \}$. De manera similar con  $L^3$, es
+el conjunto de cadenas que deben ser formadas haciendo tres elecciones dee las dos cadenas en $L$, dándonos
+
+$$ \{ 000, 0011, 0110, 1100, 01111, 11011, 11110, 111111 \} $$
+
+Para calcular $L^\star$, deebemos calcular $L^i$ para cada $i$ y tomar la unión de todos esos lenguajes. $L^i$
+tiene $2^i$ elementos. Aunque cada $L^i$ es finito, la unión de números infinitos de términos $L^i$ es
+generalmente un lenguaje infinito como se muestra en el ejemplo.
+\todo{[END] Ejemplo}
+
+
 \subsubsection{Cerradura Positiva}
 \noindent La cerradura positiva de un lenguaje se define como
 \[
   L^+ = \{u_1\ldots u_n\;|\;u_i\in L\;n> 0\}
   = \bigcup_{i=1}^\infty L^i
 \]
-  %  donde $L^i=LL\ldots L$, $i$ veces.
+%  donde $L^i=LL\ldots L$, $i$ veces.
+
+% [ANGEL_GLADIN] Ejemplos agregados, cerradura positiva
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo:}
+Sea $L = \{ a \}$, entonces
+$$ L^+ = \{ a, aa, aaa, aaaa, \ldots \} $$
+Donde la cerradura positiva es el conjunto infinito de todas las cadenas posibles excluyendo a $\cv$.
+\todo{[END] Ejemplo}
 
 \subsubsection{Propiedades de los operadores de cerradura}
 Se cumplen las siguientes propiedades
