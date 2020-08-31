@@ -21,6 +21,10 @@
 
 \usepackage{url}
 
+\usepackage{todonotes} % Para hacer anotaciones, remover cuando ya no tengan anotaciones.
+\newcommand{\Den}[1]{\mathcal{L} \llbracket #1 \rrbracket} % Macro para expresar denotación.
+
+
 %\pagestyle{fancyplain}
 \input{macrosAyLF}
 
@@ -118,7 +122,20 @@ sigue:
 \ei
 }
 
+% [ANGEL_GLADIN] Ejemplos expresiones regulares
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo:}
+Sea $\Sigma = \{ 0,1 \}$,
 
+\begin{tabular}{ll}
+  $\circ\quad$ $(0 + 1)^\star$                   & Todas las cadenas de 0's y 1's. \\
+  $\circ\quad$ $01^\star$                        & Un 0 seguido cualquier número de 1's. \\
+  $\circ\quad$ $0(0 + 1)^\star$                  & Todas las cadenas de 0's y 1's, empezando con un 0. \\
+  $\circ\quad$ $(0 + 1)^\star 01^\star 01^\star$ & Todas las cadenas de 0's y 1's que contienen al menos dos 0's. \\
+\end{tabular}
+
+\todo{[END] Ejemplo}
+\\
 Toda expresión regular denota a un lenguaje definido como sigue:
 
 \defin{El lenguaje definido por una expresión regular $r$ denotado por $\L \llbracket r \rrbracket \subseteq \Sigma^{\ast}$ se define como:
@@ -132,6 +149,28 @@ Toda expresión regular denota a un lenguaje definido como sigue:
 \end{align*}\label{Lenguajes}
 A la operación $\L\llbracket \cdot \rrbracket$ se le conoce como denotación.
 }
+
+% [ANGEL_GLADIN] Ejemplos expresiones regulares
+\todo{[START] Ejemplo}
+\paragraph{Ejemplos:}
+Sea $\Sigma = \{ a, b, c \}$,
+\begin{alignat*}{2}
+  \Den{aa^\star}                    &= \{ a \}\{ a \}^\star
+                                    &&= \{ a, aa, aaa, aaaa, \ldots \}\\ 
+  \Den{a(b+c)d}                     &= \{ a \} \{ \{ b \} \cup \{ c \} \} \{ d \}
+                                    &&= \{ abd, acd \}\\ 
+  \Den{(a + b)^\star}               &= \{ a \cup b \}^\star
+                                    &&= \{ \cv, a, b, ab, ba, abb, aba, \ldots \}\\ 
+  \Den{ab^\star c}                  &= \{ a \}\{ b \}^\star \{ c \}
+                                    &&= \{ ac, abc, abbc, abbbc, \ldots \}\\ 
+  \Den{a^\star + b^\star + c^\star} &= \{ a \}^\star \{ b \}^\star \{ c \}^\star
+                                    &&= \{ \cv, a, b, c, \ldots, a^k, b^k, c^k, \ldots \}\\ 
+  \Den{\cv}                         &= \Den{\varnothing^\star}
+                                    &&= \{ \cv \}\\
+  \Den{(a+b)c}                      &= (\{ a \} \cup \{ b \})\{ c \}
+                                    &&= \{ ac, bc \}
+\end{alignat*}
+\todo{[END] Ejemplo}
 
 Más aún todo lenguaje regular puede denotarse con una expresión regular como lo asegura la siguiente
 
@@ -152,6 +191,14 @@ Un lenguaje regular puede ser denotado por más de una expresión regular por lo
   equivalentes, y usamos la notación $\al = \beta$, si y sólo si $L \llbracket
   \al \rrbracket = L \llbracket \beta \rrbracket$.
 }
+
+% TODO
+\todo{[START] Duda}
+TODO
+\todo{[END] Duda}
+
+
+% Da ejemplos de la def. 4, es decir verifica algunas igualdades de expresiones regulares usando la def. 4
 
 % \noindent Dada una expresi\'on regular $\al$, su significado~$L(\al)$ es un 
 % lenguaje regular definido como sigue:
@@ -255,7 +302,9 @@ Si~$L,M$ son lenguajes regulares entonces:
 \ei
 
 
-
+% TODO
+TODO
+% Seccion 3: da ejemplos del uso de propiedades de cerradura para verificar que un lenguaje es regular.
 
 
 
@@ -273,7 +322,9 @@ de un programa, como son palabras reservadas, identificadores, tipos de datos,
 etc.(lex, flex, etc.)
 \ei
 
-
+% TODO
+TODO
+% Seccion 4: pon ligas y/o bibliografía a las aplicaciones y busca algunas más
 
 \section{La derivada de un lenguaje}\label{De}
 
