@@ -21,6 +21,9 @@
 
 \usepackage{url}
 
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+
 \usepackage{todonotes} % Para hacer anotaciones, remover cuando ya no tengan anotaciones.
 \newcommand{\Den}[1]{\mathcal{L} \llbracket #1 \rrbracket} % Macro para expresar denotación.
 
@@ -192,10 +195,37 @@ Un lenguaje regular puede ser denotado por más de una expresión regular por lo
   \al \rrbracket = L \llbracket \beta \rrbracket$.
 }
 
-% TODO
-\todo{[START] Duda}
-TODO
-\todo{[END] Duda}
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo:} Sean $r$ y $s$ expresiones regulares, donde $r = \cv + (0+1)^\star 1$ y $s = (0^\star 1^\star)$.
+Por demostrar que $r$ y $s$ son equivalentes.
+
+\dem{\hfill
+\begin{itemize}
+  \item[$(\subseteq)$] Sea $w \in \Den{r} = \cv + (0+1)^\star 1$.
+  
+  Si $w = \cv$, entonces $w \in \Den{s}$ por definición.
+  
+  Si $w \neq \cv$ entonces $w$ puede ser representado como $w = w'1$ donde $w' \in \Den{(0+1)^\star}$. Supongamos que
+  $w'$ contiene $k$ instancias del símbolo 1. Esto significa que $w'$ puede ser escrito de la forma
+  $w' = x_1 1 x_2 \ldots x_k 1 x_{k+1}$ donde $x_i \in 0^\star$, pero entonces
+  $w = w'1 = (x_1 1)(x_2 1) \ldots (x_{k+1} 1) = (0^\star 1)(0^\star 1)\ldots(0^\star 1)$.
+
+  Teniendo así que $w \in \Den{(0^\star 1)^\star}$.
+
+  \item[$(\supseteq)$] Sea $w \in \Den{s} = (0^\star 1)^\star$.
+  
+  Entonces $w = \cv$ ó $w = x_1 x_2 \ldots x_n$, con $n > 0$ tal que $x_i \in \Den{0^\star 1}$.
+  
+  Si $w = \cv$, entonces $w \in \Den{r}$.
+  
+  Si $w = x_1 x_2 \ldots x_n$ entonces se puede representar a $w = w' 1 = x_1 x_2 \ldots x_{n-1} 0^z 1$ con $z \geq 0$.
+
+  Sin embargo $w' = x_1 x_2 \ldots x_{n-1} 0^z \in \Den{(0+1)^\star}$, y se sigue que
+  $w' 1 \in \Den{(0+1)^\star}1 \subseteq \Den{r}$.
+\end{itemize}
+}
+
+\todo{[END] Ejemplo}
 
 
 % Da ejemplos de la def. 4, es decir verifica algunas igualdades de expresiones regulares usando la def. 4
@@ -303,9 +333,9 @@ Si~$L,M$ son lenguajes regulares entonces:
 
 
 % TODO
+\todo{[START] Demostración}
 TODO
-% Seccion 3: da ejemplos del uso de propiedades de cerradura para verificar que un lenguaje es regular.
-
+\todo{[END] Demostración}
 
 
 \section{Aplicaciones de las expresiones regulares}
@@ -320,11 +350,41 @@ conversi\'on del programa fuente en una sucesi\'on de elementos l\'exicos
 (lexemas o tokens), en esta sucesi\'on se identifican las distintas componentes 
 de un programa, como son palabras reservadas, identificadores, tipos de datos, 
 etc.(lex, flex, etc.)
+
+\todo{[START] Ejemplo}
+\item Usando \texttt{grep} y expresiones regulares para cazade patrones de texto en Linux.\\
+El programa \texttt{grep} significa \textit{glabal regular expression print}. Esto significa que se puede hacer
+uso de \texttt{grep} para ver si la entrada recibida es cazada por un patrón especificado. Tomando como
+ejemplo el texto de la licencia\footnote{Se puede consultar en el sitio \url{https://www.gnu.org/licenses/gpl-3.0.txt}.}
+\textbf{GNU General Public License version 3}.
+
+\textit{Bracket Expressions:} Poniendo un grupo de caractetes dentro de los corchetes (\texttt{[} y \texttt{]})
+se puede especificar que el caracter en esa posición puede ser cualquier caracter que se encuentre dentro de
+los corchetes.
+
+Por ejemplo, para encontrar las líneas que contienen \texttt{too} ó \texttt{two}, se puede especificar de
+manera clara usando el siguiente patrón\footnote{Se asume que la licencia fue guardada con el nombre \texttt{GPL-3}.}.
+
+\begin{verbatim}
+$ grep "t[wo]o" GPL-3
+\end{verbatim}
+
+Y la \textit{salida} mostrará las posibles dos variantes en el archivo:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+your programs, \textcolor{red}{too}.
+freedoms that you received.  You must make sure that they, \textcolor{red}{too}, receive
+  Developers that use the GNU GPL protect your rights with \textcolor{red}{two} steps:
+a computer ne\textcolor{red}{two}rk, with no transfer of a copy, is not conveying.
+System Libraries, or general-purpose \textcolor{red}{too}ls or generally available free
+    Corresponding Source from a ne\textcolor{red}{two}rk server at no charge.
+...
+...
+\end{Verbatim}
+
+\todo{[END] Ejemplo}
 \ei
 
-% TODO
-TODO
-% Seccion 4: pon ligas y/o bibliografía a las aplicaciones y busca algunas más
 
 \section{La derivada de un lenguaje}\label{De}
 
@@ -596,6 +656,10 @@ lenguaje es regular o no.
  \bibitem{Rab} M. O. Rabin, D. Scott. Finite Automata and their Decision Problems. IMB Journal Res. Develop, No. 3. 1959.
 
  \bibitem{Ran} G. N. Raney. Sequential Functions. Journal ACM, Vol. 5 No. 177. 1958.
+ 
+ 
+ \todo{Ejemplo uso de grep}
+ \bibitem{} Using Grep \& Regular Expressions to Search for Text Patterns in Linux \url{https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux} 
 
 \end{thebibliography}
 

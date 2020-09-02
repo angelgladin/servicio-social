@@ -9,12 +9,11 @@
   - [x] Agrega ejemplos específicos después de la def. 2, y luego usa esos mismos
 para dar ejemplos de la def. 3
 
-  - [ ] Da ejemplos de la def. 4, es decir verifica algunas igualdades de expresiones regulares usando la def. 4
+  - [x] Da ejemplos de la def. 4, es decir verifica algunas igualdades de expresiones regulares usando la def. 4
 
   - [ ] Seccion 3: da ejemplos del uso de propiedades de cerradura para verificar que un lenguaje es regular.
 
-  - [ ] Seccion 4: pon ligas y/o bibliografía a las aplicaciones y busca algunas más
-
+  - [x] Seccion 4: pon ligas y/o bibliografía a las aplicaciones y busca algunas más
 
 * Nota 3 (`n03alf192.tex`)
 
@@ -28,13 +27,31 @@ para dar ejemplos de la def. 3
 
 ## Comentarios de Ángel
 
-Generé unos pdf's con unas anotaciones para que me diga si le pareció bien o necesita que modifique 
-lo que agregué.
+Generé unos [pdf's](revision-pdf/n01alf19) con unas anotaciones para que me diga si le 
+pareció bien o necesita que modifique lo que agregué.
 
-Para la Nota 1, utilicé **Introduction to Automata Theory, Languages, and Computation By Hopcroft, Motwani, & Ullman (2nd, Second Edition)** de la página 83-85.
+Para la Nota 1, utilicé **Introduction to Automata Theory, Languages, and Computation By Hopcroft, Motwani, & Ullman (2nd, Second Edition)** de la página 83-85. Para la parte de los ejemplos 
+también utilicé esta [presentación](resources/RegularExpressions.ppt).
 
-James A. Anderson - Automata Theory with Modern Applications -Cambridge University Press (2006)
+
+Para la Nota 2, utilicé [James A. Anderson - Automata Theory with Modern Applications -Cambridge University Press (2006)](resources/James%20A.%20Anderson%20-%20Automata%20Theory%20with%20Modern%20Applications%20-Cambridge%20University%20Press%20(2006).pdf) en la página 25 para la parte de denotaciones. 
+
+En la definición 4 para demostrar que dos expresionees regulares son equivalentes use esta
+[diapositiva](resources/unit4_10.pdf) página 13 y 14.
+
+Para demostrar las partes de la cerradura utilicé esta [diapositiva](resources/lec05.pdf).
+
+El ejemplo de expresión regular lo encontré 
+[aquí](https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux).
+
+
+
+### Fuentes
 
 https://cs.fit.edu/~dmitra/FormaLang/Lectures/RegularExpressions.ppt
 
-### Dudas
+https://www.cs.colorado.edu/~astr3586/courses/csci3434/lec05.pdf
+
+http://www1.idc.ac.il/toky/automata/lectures/unit4_10.pdf
+
+https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux
