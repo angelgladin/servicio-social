@@ -27,7 +27,7 @@ para dar ejemplos de la def. 3
 
 ## Comentarios de Ángel
 
-Generé unos [pdf's](revision-pdf/n01alf19) con unas anotaciones para que me diga si le 
+Generé unos [pdf's](revision-pdf/) con unas anotaciones para que me diga si le 
 pareció bien o necesita que modifique lo que agregué.
 
 Para la Nota 1, utilicé **Introduction to Automata Theory, Languages, and Computation By Hopcroft, Motwani, & Ullman (2nd, Second Edition)** de la página 83-85. Para la parte de los ejemplos 
