@@ -20,6 +20,7 @@
 \usepackage{comment}
 \usepackage[autostyle=true,spanish=mexican]{csquotes}
 
+\usepackage{todonotes} % Para hacer anotaciones, remover cuando ya no tengan anotaciones.
 \usepackage{url}
 
 \usepackage{pgf}
@@ -73,10 +74,6 @@ $ M=\pt{Q,\Sigma,\delta,q_0,F} $ donde
  \item $F\inc Q$ es el conjunto de estados finales.
 \ei
 }
-
-% TODO
-TODO
-% Agrega 3 ejemplos de AFD en toda la nota, definiendo primero con la tabla, luego con el diagrama de estados y el lenguaje de aceptación.
 
 Los aut\'omatas finitos definidos se denominan \textbf{aut\'omatas finitos 
 deterministas} ya que para cada estado~$q$ y para cada s\'imbolo~$a\in\Sigma$, 
@@ -332,10 +329,6 @@ Las condiciones para grupos de estados deben ser:
  \item Comprensivas: los grupos cumplen todos los casos posibles.
 \ei
 
-% TODO
-TODO
-% Agrega el diagrama para el ejemplo de la seccion 3.1 y pon otros ejemplos; pon otros ejemplos en la sección 3.2
-
 \paragraph{Ejemplo:}
 Dise\~nar un AFD para
 $$L=\{w\in\{0,1\}^\star\;|\;w\;\mbox{no contiene}\;11\;\mbox{pero s\'i}\;00\}$$
@@ -407,6 +400,10 @@ el segundo y uno en el tercero.
  % \end{center}
 \ee
 
+\todo{[START] Ejemplo}
+TODO: PONER AQUÍ EL AUTOMATA DEL EJEMPLO DE ARRIBA
+\todo{[END] Ejemplo}
+
 \subsection{Dise\~no por complemento}
 \noindent Dado un lenguaje $L$ a veces es m\'as facil dise\~nar un aut\'omata 
 para
@@ -465,6 +462,14 @@ $$L=\{w\in\{a,b\}^\star\mid w\,\mbox{no contiene }abaab\}$$
  \end{center}
 \ee
 
+\todo{[START] Ejemplo}
+TODO 
+\todo{[END] Ejemplo}
+
+\todo{[START] Ejemplo}
+TODO
+\todo{[END] Ejemplo}
+
 \subsection{Modularizaci\'on}
 Algunas veces la especificaci\'on de un lenguaje~$L$ tiene una forma l\'ogica 
 que permite descomponerlo en lenguajes m\'as sencillos. 
@@ -500,9 +505,14 @@ Una estrategia a seguir es calcular la tabla de transiciones para el nuevo
 aut\'omata y renombrar los estados nuevos. As\'i mismo, si existen estados que 
 no est\'an conectados se pueden eliminar.
 
-% TODO
+\todo{[START] Ejemplo}
 TODO
-%  Pon otros ejemplos en la 3.3, tanto las tablas como los diagramas, uno por cada operación: union, intersección, diferencia.
+\todo{[END] Ejemplo}
+
+\todo{[START] Ejemplo}
+TODO
+\todo{[END] Ejemplo}
+
 
 \paragraph{Ejemplo:}
 Sea $L=\{w\in\{0,1\}^\star\mid w \mbox{ acaba en }0 \mbox{ y } 11 
@@ -559,5 +569,27 @@ M\; :
   (q_2,p_2) & (q_1,p_2) & (q_2,p_2) & r_8 &\\\hline 
 \end{array}
 \]
+
+\todo{[START] Ejemplo, unión}
+TODO
+\todo{[END] Ejemplo, unión}
+
+\todo{[START] Ejemplo}
+TODO
+\todo{[END] Ejemplo}
+
+\todo{[START] Ejemplo, diferencia}
+TODO
+\todo{[END] Ejemplo, diferencia}
+
+
+\todo{[START] Ejemplos}
+\subsection{Ejemplos de Autómatas Finitos Deterministas}
+\paragraph{Ejemplo 1:}
+
+\paragraph{Ejemplo 2:}
+
+\paragraph{Ejemplo 3:}
+\todo{[END] Ejemplos}
 
 \end{document}
