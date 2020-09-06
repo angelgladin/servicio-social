@@ -11,7 +11,7 @@ para dar ejemplos de la def. 3
 
   - [x] Da ejemplos de la def. 4, es decir verifica algunas igualdades de expresiones regulares usando la def. 4
 
-  - [ ] Seccion 3: da ejemplos del uso de propiedades de cerradura para verificar que un lenguaje es regular.
+  - [x] Seccion 3: da ejemplos del uso de propiedades de cerradura para verificar que un lenguaje es regular.
 
   - [x] Seccion 4: pon ligas y/o bibliografía a las aplicaciones y busca algunas más
 
@@ -43,6 +43,12 @@ Para demostrar las partes de la cerradura utilicé esta [diapositiva](resources/
 
 El ejemplo de expresión regular lo encontré 
 [aquí](https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux).
+
+En la nota 2 no demostré que el complmento de un lenguaje es cerrado  solo usando 
+expresiones regulares porque no supe como y las [formas que vi](https://math.stackexchange.com/questions/2018315/complement-of-regular-language-is-regular), 
+primero debía mostrar que es cerrado bajo homomorfismos y luego usar eso.
+Lo más sencillo que encontré fue lo común, con el autómata. Entonces por eso escribí 
+**pendiente**.
 
 
 

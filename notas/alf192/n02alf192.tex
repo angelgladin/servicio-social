@@ -323,20 +323,83 @@ entre lenguajes. \\
 Si~$L,M$ son lenguajes regulares entonces:
 \bi
 \item $L\cup M$ es regular.
+\todo{[START]}
+\dem{
+Sean $r$ y $s$ expresiones regulares tales que $L = \Den{r}$ y $M = \Den{s}$ respectivamente.
+
+Construimos una expresión regular $p$ tal que $p = r + s$ que acepta el lenguaje $L \cup M$, es decir,
+$\Den{r + s} = \Den{r} \cup \Den{s}$.
+
+\textbf{Prueba de correctud:} Trivial por definición de expresiones regulares.
+
+El lenguaje $L \cup M$ es regular ya que hay una expresión regular $r + s$ que acepta el lenguaje.
+}
+\todo{[END]}
+
 \item $LM$ es regular.
+\todo{[START]}
+\dem{
+Sean $r$ y $s$ expresiones regulares tales que $L = \Den{r}$ y $M = \Den{s}$ respectivamente.
+
+Construimos una expresión regular $p$ tal que $p = rs$ que acepta el lenguaje $LM$, es decir,
+$\Den{rs} = \Den{r}\Den{s}$.
+
+\textbf{Prueba de correctud:} Trivial por definición de expresiones regulares.
+
+El lenguaje $LM$ es regular ya que hay una expresión regular $r + s$ que acepta el lenguaje.
+}
+\todo{[END]}
+
 \item $L^\star$ es regular.
+\todo{[START]}
+\dem{
+Sea $r$ una expresión regular tal que $L = \Den{r}$.
+
+Afirmamos que hay expresión regular $r'$ tal que $r' = r^\star$ que acepta el lenguaje $L$, es decir,
+$\Den{r^\star} = (\Den{r})^\star$.
+
+\textbf{Prueba de correctud:} Trivial por definición de expresiones regulares.
+
+El lenguaje $L^\star$ es regular ya que hay una expresión regular $r^\star$ que acepta el lenguaje.
+}
+\todo{[END]}
+
 \item $L^+$ es regular.
+\todo{[START]}
+\dem{
+Análoga al inciso anterior.
+}
+\todo{[END]}
+
 \item $\overline{L}$ es regular
+\todo{[START]}
+\dem{
+Pendiente\footnote{
+  Por construcción de un Autómata Finito Determinista.
+}.
+}
+\todo{[END]}
+
 \item $L\cap M$ es regular.
+\todo{[START]}
+\dem{
+Observemos que $L_1 \cap L_2 = \overline{\overline{L_1} \cup \overline{L_2}}$. Como los lenguajes regulares son
+cerrados bajo la unión y complemento se tiene que:
+
+$\overline{L_1}$ y $\overline{L_2}$ son regulares y que $\overline{L_1} \cup \overline{L_2}$ es regular.
+
+De ahí que $L_1 \cap L_2 = \overline{(\overline{L_1} \cup \overline{L_2})}$ es regular.
+}
+\todo{[END]}
+
 \item $L-M$ es regular.
+\todo{[START]}
+\dem{
+Observemos que $L-M = L \cap \overline{M}$. Pero ya sabemos de antemano que los lenguajes regulares son cerrado bajo
+complemento e intersección.
+}
+\todo{[END]}
 \ei
-
-
-% TODO
-\todo{[START] Demostración}
-TODO
-\todo{[END] Demostración}
-
 
 \section{Aplicaciones de las expresiones regulares}
 \bi
