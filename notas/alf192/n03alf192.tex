@@ -27,6 +27,21 @@
 \usepackage{tikz}
 \usetikzlibrary{automata,arrows}
 \usetikzlibrary{babel}
+
+\usetikzlibrary{arrows,automata,positioning, calc}
+\tikzset{node distance=2.5cm, % Minimum distance between two nodes. Change if necessary.
+        every state/.style={ % Sets the properties for each state
+            semithick,
+            fill=gray!10},
+        initial text={}, % No label on start arrow
+        double distance=2pt, % Adjust appearance of accept states
+        every edge/.style={ % Sets the properties for each transition
+            draw,
+            ->,>=stealth', % Makes edges directed with bold arrowheads
+            auto,
+            semithick}
+        }
+
 %\pagestyle{fancyplain}
 \input{macrosAyLF}
 
@@ -463,11 +478,143 @@ $$L=\{w\in\{a,b\}^\star\mid w\,\mbox{no contiene }abaab\}$$
 \ee
 
 \todo{[START] Ejemplo}
-TODO 
+\paragraph{Ejemplo:}
+Sea $\Sigma = \{ a, *, / \}$, diseñar un AFN para
+$$ L = \{ w \mid w\,\mbox{no es un comentario en el leguaje de programación C} \} $$
+
+\begin{minipage}[t]{0.4\linewidth}
+  Cadena no aceptada
+  \begin{verbatim}
+    /*a*/
+    /**/
+    /***/
+    /*aaa*aaa*/
+  \end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{0.4\linewidth}
+  Cadena aceptada
+  \begin{verbatim}
+    /**
+    /**/a
+    aaa/**/
+    /*/
+  \end{verbatim}
+\end{minipage}
+
+
+\be
+ \item Primero diseñar $\overline{L} = \{ w \mid w\,\mbox{es un comentario en el leguaje de programación C} \}$:
+ \begin{center}
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [right of=q1] {$q_2$};
+    \node[state] [above of=q2] (q5) {$q_5$};
+    \node[state] (q3) [right of=q2] {$q_3$};
+    \node[state, accepting] (q4) [right of=q3] {$q_4$};
+  
+    \draw
+        (q0)
+            edge [bend left] node {$a,*$} (q5)
+            edge node {$/$} (q1)
+        (q1)
+            edge node {$/,a$} (q5)
+            edge node {$*$} (q2)
+        (q2)
+            edge [loop below] node {$a,/$} ( )
+            edge [bend left] node {$*$} (q3)
+        (q3)
+            edge [loop below] node {$*$} ( )
+            edge [bend left] node {$a$} (q2)
+            edge node {$/$} (q4)
+        (q4)
+            edge [bend right] node [above] {$\Sigma$} (q5)
+        (q5)
+            edge [loop above] node {$\Sigma$} ( );
+  \end{tikzpicture}
+ \end{center}
+ 
+ \item Se cambian los estados finales a $Q - F$ para obtener $M$:
+  \begin{center}
+    \begin{tikzpicture}
+      \node[state, initial, accepting] (q0) {$q_0$};
+      \node[state, accepting] (q1) [right of=q0] {$q_1$};
+      \node[state, accepting] (q2) [right of=q1] {$q_2$};
+      \node[state, accepting] [above of=q2] (q5) {$q_5$};
+      \node[state, accepting] (q3) [right of=q2] {$q_3$};
+      \node[state] (q4) [right of=q3] {$q_4$};
+  
+      \draw
+        (q0)
+            edge [bend left] node {$a,*$} (q5)
+            edge node {$/$} (q1)
+        (q1)
+            edge node {$/,a$} (q5)
+            edge node {$*$} (q2)
+        (q2)
+            edge [loop below] node {$a,/$} ( )
+            edge [bend left] node {$*$} (q3)
+        (q3)
+            edge [loop below] node {$*$} ( )
+            edge [bend left] node {$a$} (q2)
+            edge node {$/$} (q4)
+        (q4)
+            edge [bend right] node [above] {$\Sigma$} (q5)
+        (q5)
+            edge [loop above] node {$\Sigma$} ( );
+  \end{tikzpicture}
+ \end{center}
+\ee
 \todo{[END] Ejemplo}
 
 \todo{[START] Ejemplo}
-TODO
+\paragraph{Ejemplo:}
+Sea $\Sigma = \{ 0, 1 \}$, diseñar un AFN para
+
+$$ L = \{ w\in\{0,1\}^\star\mid w\,\mbox{no contiene }00 \} $$
+
+\be
+ \item Primero se diseña la parte de $M^c$ que acepta la cadena $00$:
+ \begin{center}
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state, accepting] (q2) [right of=q1] {$q_2$};
+
+    \draw
+        (q0)
+            edge [loop above] node {1} ( )
+            edge [bend left] node {0} (q1)
+        (q1)
+            edge [bend left] node {1} (q0)
+            edge node {0} (q2)
+        (q2)
+            edge [loop above] node {$\Sigma$} ( );
+  \end{tikzpicture}
+ \end{center}
+ 
+ \item Se obtienen los complementos de los estados para obtener $M$:
+ \begin{center}
+  \begin{tikzpicture}
+    \node[state, initial, accepting] (q0) {$q_0$};
+    \node[state, accepting] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [right of=q1] {$q_2$};
+
+    \draw
+        (q0)
+            edge [loop above] node {1} ( )
+            edge [bend left] node {0} (q1)
+        (q1)
+            edge [bend left] node {1} (q0)
+            edge node {0} (q2)
+        (q2)
+            edge [loop above] node {$\Sigma$} ( );
+  \end{tikzpicture}
+ \end{center}
+\ee
+
+
+
 \todo{[END] Ejemplo}
 
 \subsection{Modularizaci\'on}
@@ -504,14 +651,6 @@ y los estados finales como:
 Una estrategia a seguir es calcular la tabla de transiciones para el nuevo 
 aut\'omata y renombrar los estados nuevos. As\'i mismo, si existen estados que 
 no est\'an conectados se pueden eliminar.
-
-\todo{[START] Ejemplo}
-TODO
-\todo{[END] Ejemplo}
-
-\todo{[START] Ejemplo}
-TODO
-\todo{[END] Ejemplo}
 
 
 \paragraph{Ejemplo:}
