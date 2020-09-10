@@ -21,7 +21,7 @@ para dar ejemplos de la def. 3
 
   - [x] Agrega el diagrama para el ejemplo de la seccion 3.1 y pon otros ejemplos; pon otros ejemplos en la sección 3.2
 
-  - [ ] Pon otros ejemplos en la 3.3, tanto las tablas como los diagramas, uno por cada operación: union, intersección, diferencia.
+  - [x] Pon otros ejemplos en la 3.3, tanto las tablas como los diagramas, uno por cada operación: union, intersección, diferencia.
 
 ---
 
@@ -61,6 +61,8 @@ complemento, utilicé estas [diapositivas](resources/Small13.pdf)
 En la parte donde puse `TODO: PONER AQUÍ EL AUTOMATA DEL EJEMPLO DE ARRIBA`, hago 
 ese autómata yo, o descomento el que ya está?
 
+Para los ejemplos de modularización utilicé está [diapositiva](resources/lecture-3.pdf). 
+
 ### Fuentes
 
 https://cs.fit.edu/~dmitra/FormaLang/Lectures/RegularExpressions.ppt
@@ -72,3 +74,5 @@ http://www1.idc.ac.il/toky/automata/lectures/unit4_10.pdf
 https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux
 
 https://web.stanford.edu/class/archive/cs/cs103/cs103.1142/lectures/13/Small13.pdf
+
+https://www.andrew.cmu.edu/user/ko/pdfs/lecture-3.pdf
