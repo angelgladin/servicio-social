@@ -17,7 +17,7 @@ para dar ejemplos de la def. 3
 
 * Nota 3 (`n03alf192.tex`)
 
-  - [ ] Agrega 3 ejemplos de AFD en toda la nota, definiendo primero con la tabla, luego con el diagrama de estados y el lenguaje de aceptación.
+  - [x] Agrega 3 ejemplos de AFD en toda la nota, definiendo primero con la tabla, luego con el diagrama de estados y el lenguaje de aceptación.
 
   - [x] Agrega el diagrama para el ejemplo de la seccion 3.1 y pon otros ejemplos; pon otros ejemplos en la sección 3.2
 
@@ -61,7 +61,11 @@ complemento, utilicé estas [diapositivas](resources/Small13.pdf)
 En la parte donde puse `TODO: PONER AQUÍ EL AUTOMATA DEL EJEMPLO DE ARRIBA`, hago 
 ese autómata yo, o descomento el que ya está?
 
-Para los ejemplos de modularización utilicé está [diapositiva](resources/lecture-3.pdf). 
+Para los ejemplos de modularización utilicé está [diapositiva](resources/lecture-3.pdf).
+
+En la última secciión de poner 3 ejemplos de autómatas use está 
+[diapositiva](https://www.cs.usfca.edu/~galles/cs411/lecture/lecture3.pdf) de la 
+página 17-19.
 
 ### Fuentes
 
@@ -76,3 +80,5 @@ https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-
 https://web.stanford.edu/class/archive/cs/cs103/cs103.1142/lectures/13/Small13.pdf
 
 https://www.andrew.cmu.edu/user/ko/pdfs/lecture-3.pdf
+
+https://www.cs.usfca.edu/~galles/cs411/lecture/lecture3.pdf

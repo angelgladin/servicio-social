@@ -42,6 +42,10 @@
             semithick}
         }
 
+\newcommand{\TransitionTableAndAutomataSideBySide}[2]{
+\[ \renewcommand{\arraystretch}{1.3} #1 \qquad\qquad\raisebox{-0.45\totalheight}{#2} \]
+}
+
 %\pagestyle{fancyplain}
 \input{macrosAyLF}
 
@@ -838,14 +842,112 @@ M\; :
 \ee
 \todo{[END] Ejemplo}
 
-
 \subsection{Ejemplos de Autómatas Finitos Deterministas}
 \todo{[START] Ejemplos}
-\paragraph{Ejemplo 1:}
+\paragraph{Ejemplo:}
+$$ L = \{ w \in \{ 0,1 \}^\star \mid w\,\mbox{contiene la subcadena }1001 \} $$
 
-\paragraph{Ejemplo 2:}
+\TransitionTableAndAutomataSideBySide {
+  \begin{array}[c]{|c|c|c|}\hline 
+    \delta & 0 & 1\\\hline 
+    q_0 & q_0 & q_1\\\hline 
+    q_1 & q_2 & q_1\\\hline 
+    q_2 & q_3 & q_1\\\hline
+    q_3 & q_0 & q_4\\\hline
+    q_4 & q_4 & q_4\\\hline
+  \end{array}
+} {
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [right of=q1] {$q_2$};
+    \node[state] (q3) [right of=q2] {$q_3$};
+    \node[state, accepting] (q4) [right of=q3] {$q_4$};
+  
+    \draw
+        (q0)
+            edge [loop above] node {0} ( )
+            edge node {1} (q1)
+        (q1)
+            edge [loop above] node {1} ( )
+            edge node {0} (q2)
+        (q2)
+            edge [bend left] node {1} (q1)
+            edge node {0} (q3)
+        (q3)
+            edge node {1} (q4)
+            edge [bend left] node {0} (q0)
+        (q4)
+            edge [loop above] node {0,1} ( );
+  \end{tikzpicture}
+}
 
-\paragraph{Ejemplo 3:}
+\paragraph{Ejemplo:}
+$$ L = \{ w \in \{ 0,1 \}^\star \mid w\,\mbox{termina con }111 \} $$
+
+\TransitionTableAndAutomataSideBySide {
+  \begin{array}[c]{|c|c|c|}\hline 
+    \delta & 0 & 1\\\hline 
+    q_0 & q_0 & q_1\\\hline 
+    q_1 & q_0 & q_2\\\hline 
+    q_2 & q_0 & q_3\\\hline
+    q_3 & q_0 & q_3\\\hline
+  \end{array}
+} {
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [right of=q1] {$q_2$};
+    \node[state, accepting] (q3) [right of=q2] {$q_3$};
+
+    \draw
+        (q0)
+            edge [loop above] node {0} ( )
+            edge node {1} (q1)
+        (q1)
+            edge [bend left] node {0} (q0)
+            edge node {1} (q2)
+        (q2)
+            edge [bend left=45] node {0} (q0)
+            edge node {1} (q3)
+        (q3)
+            edge [loop above] node {1} ( )
+            edge [bend left=60] node {0} (q0);
+  \end{tikzpicture}
+}
+
+\paragraph{Ejemplo:}
+$$ L = \{ w \in \{ 1,2,3 \}^\star \mid w\,\mbox{contiene la subcadena }123 \} $$
+
+\TransitionTableAndAutomataSideBySide {
+  \begin{array}[c]{|c|c|c|c|}\hline 
+    \delta & 1 & 2 & 3\\\hline 
+    a      & b & a & a\\\hline 
+    b      & b & c & a\\\hline 
+    c      & b & a & d\\\hline
+    d      & d & d & d\\\hline
+  \end{array}
+} {
+  \begin{tikzpicture}
+    \node[state,initial]    (a)                 {a};
+    \node[state]            (b)  [right of=a]   {b};
+    \node[state]            (c)  [right of=b]   {c};
+    \node[state,accepting]  (d)  [right of=c]   {d};
+
+    \draw
+        (a)
+            edge [bend right] node {1} (b)
+            edge[loop above] node {2,3} (a)
+        (b) edge [bend right] node[above] {3} (a)
+            edge [bend right] node {2} (c)
+            edge[loop above] node {1} (b)
+        (c) edge node {3} (d)
+            edge [bend right] node[above] {1} (b)
+            edge [bend left=45] node[above] {2} (a)
+        (d)
+            edge[loop above] node {1,2,3} (d);
+  \end{tikzpicture}
+}
 \todo{[END] Ejemplos}
 
 \end{document}
