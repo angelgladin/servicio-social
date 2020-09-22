@@ -4,7 +4,7 @@
 
   * Sección 1
 
-  - [ ] Pon 3 ejemplos de AFN, la def formal, la tabla y el diagrama.
+  - [x] Pon 3 ejemplos de AFN, la def formal, la tabla y el diagrama.
 
   - [ ] Pon ejemplos de ejecución de la delta estrella, usando los automatas anteriores, 
       dos que acepten y dos que no acepten.
@@ -33,5 +33,19 @@
 
 ## Comentarios de Ángel
 
+* Nota 4
+
+  * Sección 1
+
+      Para el primer ejemplo del AFN utilicé la página 57-58 de este [libro](resources/Jfry%20DUlman%20-%20Introduction%20To%20Automata%20Theory,%20Languages,%20And%20Computation%20(2001,%20Addison%20Wrslry,2001)%20-%20libgen.lc.pdf).
+
+      Para el segundo AFN utilicé esta [dipositiva](resources/3a.pdf) página 5.
+      
+      Para el tercer AFN utilicé esta [dipositiva](resources/lec02.pdf) página 14.
+
 
 ### Fuentes
+
+https://people.cs.clemson.edu/~goddard/texts/theoryOfComputation/3a.pdf
+
+https://www.cse.cuhk.edu.hk/~siuon/csci3130/slides/lec02.pdf

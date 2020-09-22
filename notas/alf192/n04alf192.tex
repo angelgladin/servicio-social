@@ -150,6 +150,69 @@ terminan en \texttt{01}.
   \end{tikzpicture}
 }
 
+\item Sea un $M = \pt{\{q_0, q_1, q_2, q_3\}, \{0,1\}, \delta, q_0, \{q_3\}}$ un AFN acepta todas las cadenas que
+contienen \texttt{00} o \texttt{11} como subcadena.
+
+\TransitionTableAndAutomataSideBySide {
+  \begin{array}[c]{|c|c|c|}\hline 
+    \delta & 0            & 1            \\\hline 
+    q_0    & \{q_0, q_1\} & \{q_0, q_2\} \\\hline 
+    q_1    & \{q_3\}      & \vacio       \\\hline 
+    q_2    & \vacio       & \{q_3\}      \\\hline
+    q_3    & \{q_3\}      & \{q_3\}      \\\hline
+  \end{array}
+} {
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [below of=q0] {$q_2$};
+    \node[state, accepting] (q3) [below of=q1] {$q_3$};
+  
+    \draw
+        (q0)
+            edge [loop above] node {0,1} ( )
+            edge [bend left] node {0} (q1)
+            edge [bend right] node [left] {1} (q2)
+        (q1)
+            edge [bend left] node {0} (q3)
+        (q2)
+            edge [bend right] node [below] {1} (q3)
+        (q3)
+            edge [loop below] node {0,1} ( );
+  \end{tikzpicture}
+}
+
+\item Sea un $M = \pt{\{q_0, q_1, q_2, q_3\}, \{0,1\}, \delta, q_0, \{q_3\}}$ un AFN que acepta todas las cadenas que
+terminan en \texttt{01}.
+
+\TransitionTableAndAutomataSideBySide {
+  \begin{array}[c]{|c|c|c|}\hline 
+    \delta & 0            & 1            \\\hline 
+    q_0    & \{q_0, q_1\} & \{q_0\} \\\hline 
+    q_1    & \{q_2\}      & \vacio       \\\hline 
+    q_2    & \vacio       & \{q_3\}      \\\hline
+    q_3    & \{q_3\}      & \{q_3\}      \\\hline
+  \end{array}
+} {
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [right of=q1] {$q_2$};
+    \node[state, accepting] (q3) [right of=q2] {$q_3$};
+  
+    \draw
+        (q0)
+            edge [loop above] node {0,1} ( )
+            edge node {0} (q1)
+        (q1)
+            edge node {0} (q2)
+        (q2)
+            edge node {1} (q3)
+        (q3)
+            edge [loop above] node {0,1} ( );
+  \end{tikzpicture}
+}
+
 \ee
 \todo{[END] Ejemplos}
 
