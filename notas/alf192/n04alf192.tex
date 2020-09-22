@@ -121,8 +121,6 @@ procesamiento de~$w$ que conduce a un estado final al iniciar la m\'aquina en
 $q_0$.
 
 \todo{[START] Ejemplos}
-% TODO 1. Pon 3 ejemplos de AFN, la def formal, la tabla y el diagrama.
-
 \paragraph{Ejemplos de AFN:}
 \be
 \item Sea un $M = \pt{\{q_0, q_1, q_2\}, \{0,1\}, \delta, q_0, \{q_2\}}$ un AFN que acepta todas las cadenas que
@@ -183,7 +181,7 @@ contienen \texttt{00} o \texttt{11} como subcadena.
 }
 
 \item Sea un $M = \pt{\{q_0, q_1, q_2, q_3\}, \{0,1\}, \delta, q_0, \{q_3\}}$ un AFN que acepta todas las cadenas que
-terminan en \texttt{01}.
+contienen la subcadena \texttt{011}.
 
 \TransitionTableAndAutomataSideBySide {
   \begin{array}[c]{|c|c|c|}\hline 
@@ -217,7 +215,6 @@ terminan en \texttt{01}.
 \todo{[END] Ejemplos}
 
 \todo{[START] Ejecución}
-% TODO 2. Pon ejemplos de ejecución de la delta estrella, usando los automatas anteriores, dos que acepten y dos que no acepten.
 \paragraph{Ejemplos de ejecución de $\dest$ para el AFN del inciso 1:}
 
 \begin{itemize}
@@ -245,28 +242,36 @@ terminan en \texttt{01}.
     \item $\dest(q_0, 110) = \delta(q_0, 0) = \{q_0, q_1\}$
   \ee
 
-  Como $\{q_0, q_1\} \cap F = \vacio$, entonces no es aceptado.
+  Como $\{q_0, q_1\} \cap \{q_2\} = \vacio$, entonces no es aceptado.
 \end{itemize}
 
-\paragraph{Ejemplos de ejecución de $\dest$ para el AFN del inciso 2:}
+\paragraph{Ejemplos de ejecución de $\dest$ para el AFN del inciso 3:}
 
 \begin{itemize}
-  \item Cadena aceptada, con la entrada \texttt{}.
-  
+  \item Cadena aceptada, con la entrada \texttt{1\color{blue}001}\texttt{0}.
   \be
-    \item $\dest$
+    \item $\dest(q_0, \vacia) = \{q_0\}$
+    \item $\dest(q_0, 1) = \delta(q_0, 1) = \{q_0\}$
+    \item $\dest(q_0, 10) = \delta(q_0, 0) = \{q_0, q_1\}$
+    \item $\dest(q_0, 100) = \delta(q_0, 0) \cup \delta(q_1, 0) = \{q_0\} \cup \{q_2\} = \{q_0, q_2\}$
+    \item $\dest(q_0, 1001) = \delta(q_0, 1) \cup \delta(q_2, 1) = \{q_0\} \cup \{q_3\} = \{q_0, q_3\}$
+    \item $\dest(q_0, 10010) = \delta(q_0, 0) \cup \delta(q_3, 0) = \{q_0\} \cup \{q_3\} = \{q_0, q_3\}$
   \ee
 
-  \item Cadena no aceptada, con la entrada \texttt{}.
-  
+  Por lo que la entrada es aceptada, ya que al procesarla nos lleva a un estado final que es $q_3$, porque
+  $\dest(q_0, 10010) \cap \{q_3\} \neq \vacio$.
+
+  \item Cadena no aceptada, con la entrada \texttt{0101}.
   \be
-    \item $\dest$
+    \item $\dest(q_0, \vacia) = \{q_0\}$
+    \item $\dest(q_0, 0) = \delta(q_0, 0) = \{q_0, q_1\}$
+    \item $\dest(q_0, 01) = \delta(q_0, 1) \cup \delta(q_1, 1) = \{q_0\} \cup \vacio = \{q_0\}$
+    \item $\dest(q_0, 010) = \delta(q_0, 0) = \{q_0, q_1\}$
+    \item $\dest(q_0, 0101) = \delta(q_0, 1) \cup \delta(q_1, 1) = \{q_0\} \cup \vacio = \{q_0\}$
   \ee
+
 \end{itemize}
 \todo{[END] Ejecución}
-
-
-
 
 \subsection{Eliminaci\'on del no-determinismo}
 \label{ssec:elimNdet}

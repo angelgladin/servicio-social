@@ -6,7 +6,7 @@
 
   - [x] Pon 3 ejemplos de AFN, la def formal, la tabla y el diagrama.
 
-  - [ ] Pon ejemplos de ejecución de la delta estrella, usando los automatas anteriores, 
+  - [x] Pon ejemplos de ejecución de la delta estrella, usando los automatas anteriores, 
       dos que acepten y dos que no acepten.
 
   - [ ] Pon 3 ejemplos de la transformacion a AFD, uno de los anteriores y otros dos 
