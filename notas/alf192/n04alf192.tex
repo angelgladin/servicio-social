@@ -124,7 +124,7 @@ $q_0$.
 \paragraph{Ejemplos de AFN:}
 \be
 \item Sea un $M = \pt{\{q_0, q_1, q_2\}, \{0,1\}, \delta, q_0, \{q_2\}}$ un AFN que acepta todas las cadenas que
-terminan en \texttt{01}.
+terminan en \texttt{01}.\label{anf:ejemplo1}
 
 \TransitionTableAndAutomataSideBySide {
   \begin{array}[c]{|c|c|c|}\hline 
@@ -298,13 +298,7 @@ $M^D=\pt{Q^D,\Sigma,\delta_D,q^D_0,F^D}$ como sigue:
 \ei  
 }
 
-
 A continuación mostramos que ambos autómatas son equivalentes.
-
-\todo{[START] Ejemplos}
-3. Pon 3 ejemplos de la transformacion a AFD, uno de los anteriores y otros dos diferentes.
-\todo{[END] Ejemplos}
-
 
 \begin{lemma}
   Sea $M$ un autómata finito no determinista. Se cumple lo siguiente
@@ -317,12 +311,180 @@ A continuación mostramos que ambos autómatas son equivalentes.
 \end{proof}
 
 \begin{proposition}
- Sea $M$ un autómata finito no determinista. Se cumple que  $L(M)=L(M^D)$.
+Sea $M$ un autómata finito no determinista. Se cumple que  $L(M)=L(M^D)$.
 \end{proposition}
 \begin{proof}
   La demostración se sigue del lema anterior.
 \end{proof}
 
+\todo{[START] Ejemplos}
+\paragraph{Ejemplos de transformación de AFN a AFD}
+
+\begin{itemize}
+  \item Tomemos el \hyperref[anf:ejemplo1]{primer ejemplo del AFN}, que es el que acepta todas las cadenas que terminan
+  en \texttt{01}.
+
+  \begin{itemize}
+    \item $Q^D$ es el conjunto de subconjuntos de $Q$, es decir, el conjunto potencia de $Q$. Notemos que si $Q$ tiene
+    $n$ estados, entonces $Q^D$ tiene $2^n$ estados. Suele pasar que no todos estos estados son accesibles desde el
+    estado inicial de $Q^D$. Los estados inaccesibles pueden ser ``desechados', y así el número de estados de $M^D$
+    puede ser mucho menor que $2^n$.
+
+    \item $F^D$ es el conjunto de subconjuntos $S$ de $Q$ tal que $S \cap F \neq \vacio$. Es decir, $F^D$ es todos los
+    conjuntos de los estados de $M$ que incluye al menos un esrado de aceptación de $M$.
+    
+    \item Para cada conjunto $S \subseteq Q$, y para cada símbolo $a$ como entrada en $\Sigma$,
+    $$ \delta_D(S,a) = \bigcup_{q \in S}\delta(q,a) $$
+    
+    Esto es, calcular $\delta_D(S,a)$ observamos a todos los estados $q \in S$, miremos qué estados de $M$ van de $q$
+    con la entrada $a$, y tomemos la unión de todos esos estados.
+    
+    \[
+      \begin{array}[c]{r||l|l} 
+                            & 0            & 1            \\\hline\hline
+        \vacio              & \vacio       & \vacio       \\\hline
+        \to \{q_0\}         & \{q_0, q_1\} & \{q_0\}      \\\hline
+        \{q_1\}             & \vacio       & \{q_2\}      \\\hline
+        * \{q_2\}           & \vacio       & \vacio       \\\hline
+        \{q_0, q_1\}        & \{q_0, q_1\} & \{q_0, q_2\} \\\hline
+        \circ \{q_0, q_2\}  & \{q_0, q_1\} & \{q_0\}      \\\hline
+        * \{q_1, q_2\}      & \vacio       & \{q_2\}      \\\hline
+        * \{q_0, q_1, q_2\} & \{q_0, q_1\} & \{q_0, q_2\} 
+      \end{array}  
+    \]
+
+    Observemos que la construcción de los subconjuntos produce $2^3 = 8$ estados, correspondientes a los tres estados.
+    También que el estado $ \{q_0\}$ es el inicial y los estados con el $*$ a la derecha son estados no accesibles.
+
+  \end{itemize}
+
+  Con la tabla anterior, sabemos qué estados son accesible y sus transiciones. A continuación se mostrará el $AFN$
+  completado. Notemos que solo tiene tres estados, lo cual por conincidencia, es exactamente el mismo número de estados
+  del $AFN$. Sin embargo, el $AFD$ tiene seis transiciones.
+
+  \begin{center}
+    \begin{tikzpicture}
+      \node[state, initial] (q0) {$\{q_0\}$};
+      \node[state] (q1) [right of=q0] {$\{q_0, q_1\}$};
+      \node[state, accepting] (q2) [right of=q1] {$\{q_0, q_2\}$};
+    
+      \draw
+          (q0)
+              edge [loop above] node {1} ( )
+              edge node {0} (q1)
+          (q1)
+              edge [loop above] node {0} ( )
+              edge node {1} (q2)
+          (q2)
+            edge [bend left] node {0} (q1)
+            edge [bend left=50] node {1} (q0); 
+    \end{tikzpicture}
+  \end{center}
+
+\item Consideremos un $M = \pt{\{q_0, q_1\}, \{0,1\}, \delta, q_0, \{q_1\}}$ un AFN que acepta todas las cadenas que
+terminan con \texttt{1}.
+
+\TransitionTableAndAutomataSideBySide {
+  \begin{array}[c]{r||l|l}
+    \delta & 0            & 1       \\\hline\hline
+    q_0    & \{q_0, q_1\} & \{q_1\} \\\hline
+    q_1    & \vacio       & \vacio  \\
+  \end{array}
+} {
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$q_0$};
+    \node[state, accepting] (q1) [right of=q0] {$q_1$};
+  
+    \draw
+        (q0)
+            edge [loop above] node {0,1} ( )
+            edge node {1} (q1);
+  \end{tikzpicture}
+}
+
+Donde, siguiendo la definición para eliminar en no-determinismo se tiene el siguiente AFN:
+
+\TransitionTableAndAutomataSideBySide {
+  \begin{array}[c]{r||l|l}
+                        & 0       & 1            \\\hline\hline
+    \to \{q_0\}         & \{q_0\} & \{q_0, q_1\} \\\hline
+    \circ \{q_0, q_1\}  & \{q_0\} & \{q_0, q_1\} \\
+  \end{array}
+} {
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$\{q_0\}$};
+    \node[state, accepting] (q1) [right of=q0] {$\{q_1, q_1\}$};
+  
+    \draw
+        (q0)
+            edge [loop above] node {0} ( )
+            edge [bend left] node {1} (q1)
+        (q1)
+            edge [loop above] node {1} ( )
+            edge [bend left] node {0} (q0);
+  \end{tikzpicture}
+}
+
+\item Consideremos un $M = \pt{\{q_0, q_1, q_2\}, \{0,1\}, \delta, q_0, \{q_2\}}$ un AFN que acepta todas las cadenas
+que terminan con el penúltimo símbolo que siempre sea \texttt{1}.
+
+\TransitionTableAndAutomataSideBySide {
+  \begin{array}[c]{r||l|l}
+    \delta & 0       & 1           \\\hline\hline
+    q_0    & \{q_0\} & \{q_0,q_1\} \\\hline
+    q_1    & \{q_2\} & \{q_2\}     \\\hline
+    q_2    & \vacio  & \vacio      \\
+  \end{array}
+} {
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state, accepting] (q2) [right of=q1] {$q_2$};
+  
+    \draw
+        (q0)
+            edge [loop above] node {0,1} ( )
+            edge node {1} (q1)
+        (q1)
+            edge node {0,1} (q2);
+  \end{tikzpicture}
+}
+
+Donde, siguiendo la definición para eliminar en no-determinismo se tiene el siguiente AFN:
+
+\TransitionTableAndAutomataSideBySide {
+  \begin{array}[c]{r||l|l}
+                            & 0            & 1                 \\\hline\hline
+    \to \{q_0\}             & \{q_0\}      & \{q_0, q_1\}      \\\hline
+    \{q_0, q_1\}            & \{q_0, q_2\} & \{q_0, q_1, q_2\} \\\hline
+    \circ \{q_0, q_1\}      & \{q_0\}      & \{q_0, q_1\}      \\\hline
+    \circ\{q_0, q_1, q_2\}  & \{q_0, q_2\} & \{q_0, q_1, q_2\} \\
+  \end{array}
+} {
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$\{q_0\}$};
+    \node[state] (q1) [right of=q0] {$\{q_0, q_1\}$};
+    \node[state, accepting] (q2) [right of=q1] {$\{q_0, q_1, q_2\}$};
+    \node[state, accepting] (q3) [below of=q1] {$\{q_0, q_2\}$};
+  
+    \draw
+        (q0)
+            edge [loop above] node {0} ( )
+            edge node {1} (q1)
+        (q1)
+            edge node {1} (q2)
+            edge [bend left] node {0} (q3)
+        (q2)
+            edge [loop above] node {1} ()
+            edge node {0} (q3)
+        (q3)
+            edge node {0} (q0)
+            edge [bend left] node {1} (q1);
+  \end{tikzpicture}
+}
+
+\end{itemize}
+\todo{[END] Ejemplos}
 
 \section{AFN con \texorpdfstring{$\vacia$}--transiciones}
 
