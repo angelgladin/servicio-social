@@ -9,7 +9,7 @@
   - [x] Pon ejemplos de ejecución de la delta estrella, usando los automatas anteriores, 
       dos que acepten y dos que no acepten.
 
-  - [ ] Pon 3 ejemplos de la transformacion a AFD, uno de los anteriores y otros dos 
+  - [x] Pon 3 ejemplos de la transformacion a AFD, uno de los anteriores y otros dos 
       diferentes.
 
   * Sección 2
@@ -42,6 +42,15 @@
       Para el segundo AFN utilicé esta [dipositiva](resources/3a.pdf) página 5.
       
       Para el tercer AFN utilicé esta [dipositiva](resources/lec02.pdf) página 14.
+
+      En los ejemplos de transformar un AFN aun AFD utilicé los siguientes videos:
+      https://www.youtube.com/watch?v=pnyXgIXpKnc
+      
+      https://www.youtube.com/watch?v=Y92dtMnarAU
+
+      Y también del [libro](resources/Jfry%20DUlman%20-%20Introduction%20To%20Automata%20Theory,%20Languages,%20And%20Computation%20(2001,%20Addison%20Wrslry,2001)%20-%20libgen.lc.pdf) 
+      de las páginas 60-63.
+
 
 
 ### Fuentes
