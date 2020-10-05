@@ -14,7 +14,7 @@
 
   * Sección 2
 
-  - [ ] Lo mismo que en la sección 1, hay que poner también ejemplos del cálculo de la 
+  - [x] Lo mismo que en la sección 1, hay que poner también ejemplos del cálculo de la 
       épsilon cerradura, para la delta estrella hay que pensar con cuidado los ejemplos 
       pues si no es mucha talacha, pero sí pon un ejemplo donde la épsilon cerradura 
       tenga varios estados.
@@ -50,6 +50,11 @@
 
       Y también del [libro](resources/Jfry%20DUlman%20-%20Introduction%20To%20Automata%20Theory,%20Languages,%20And%20Computation%20(2001,%20Addison%20Wrslry,2001)%20-%20libgen.lc.pdf) 
       de las páginas 60-63.
+
+  * Sección 2
+
+      El cálculo de la épsilon cerradura lo saqué de este [libro](resources/Jfry%20DUlman%20-%20Introduction%20To%20Automata%20Theory,%20Languages,%20And%20Computation%20(2001,%20Addison%20Wrslry,2001)%20-%20libgen.lc.pdf) 
+      de las páginas 73-77.
 
 
 

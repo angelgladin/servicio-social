@@ -577,6 +577,95 @@ definida recursivamente como sigue:
 \ei
 }
 
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo}
+
+Consideremos el siguiente AFN con $\vacia$-transiciones que acepta números decimales que consisten de:
+\begin{enumerate}
+  \item Un signo opcional \texttt{+} ó \texttt{-},
+  \item Una cadena de dígitos,
+  \item Un punto decimal, y
+  \item Otra cadena de dígitos. Tanto puede ser ésa cadena, o la cadena (2) puede ser vacía, pero al menor una de las
+  dos cadenas de dígitos debe ser no vacía.
+\end{enumerate}
+
+\begin{center}
+  \begin{tikzpicture}
+    \node[state, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [right of=q1] {$q_2$};
+    \node[state] (q3) [right of=q2] {$q_3$};
+    \node[state] (q4) [below of=q2] {$q_4$};
+    \node[state, accepting] (q5) [right of=q3] {$q_5$};
+  
+    \draw
+        (q0)
+            edge node {$\vacia, +, -$} (q1)
+        (q1)
+            edge [loop above] node {$0,1,\ldots,9$} ( )
+            edge node {$.$} (q2)
+            edge node [left] {$0,1,\ldots,9$} (q4)
+        (q2)
+            edge node {$0,1,\ldots,9$} (q3)
+        (q3)
+            edge [loop above] node {$0,1,\ldots,9$} ( )
+            edge node {$\vacia$} (q5)
+        (q4)
+            edge node [right] {$.$} (q3);
+  \end{tikzpicture}  
+\end{center}
+
+Que formalmente queda como,
+$M=\pt{\{q_0, q_1, \ldots, q_5\}, \{\texttt{.}, +, -, 0, 1, \ldots, 0\},\delta, q_0, \{q_5\}}$ 
+donde $\delta$ está definido por la tabla de transiciones de abajo,
+
+$$
+  \begin{array}[c]{r||l|l}
+                            & 0            & 1                 \\\hline\hline
+    \to \{q_0\}             & \{q_0\}      & \{q_0, q_1\}      \\\hline
+    \{q_0, q_1\}            & \{q_0, q_2\} & \{q_0, q_1, q_2\} \\\hline
+    \circ \{q_0, q_1\}      & \{q_0\}      & \{q_0, q_1\}      \\\hline
+    \circ\{q_0, q_1, q_2\}  & \{q_0, q_2\} & \{q_0, q_1, q_2\} \\
+  \end{array}
+$$
+
+Calculemos $\dest(q_0, \texttt{5.6})$. Un resumen de los pasos necesitados se harán a continuación:
+
+\begin{itemize}
+  \item $\dest(q_0, \texttt{5}) = Cl_{\vacia}(q_0) = \{q_0, q_1\}$.
+  
+  \item Calculemos $\dest(q_0, \texttt{5})$ de la siguiente manera:
+  \begin{enumerate}
+    \item Primero calculemos las transiciones con la entrada \texttt{5} de los estados $q_0$ y $q_1$ que se obtuvieron
+    en el cálculo de $\dest(q_0, \vacia)$ de arriba. Que es, calcular
+    $\delta(q_0, \texttt{5}) \cup \delta(q_1, \texttt{5}) = \{q_1, q_4\}$.
+
+    \item Ahora, la $\vacia$-cerradura de los elementos del conjunto calculado en el paso (1). Tenemos
+    $Cl_{\vacia}(q_1) \cup Cl_{\vacia}(q_4) = \{q_1\} \cup \{q_4\} = \{q_1, q_4\}$. Que es $\dest(q_0, \texttt{5})$.
+    Este patrón de dos pasos se repite para los siguientes dos símbolos.
+  \end{enumerate}
+
+  \item Calculemos $\dest(q_0, \texttt{5.})$ de la siguiente manera:
+  \begin{enumerate}
+    \item Primero calculemos $\delta(q_1, \texttt{.}) \cup \delta(q_4, \texttt{.}) = \{q_2\}\cup\{q_3\} = \{q_2,q_3\}$.
+    \item Después,
+    $\dest(q_0, \texttt{5.}) = Cl_{\vacia}(q_2) \cup Cl_{\vacia}(q_3) = \{q_2\} \cup \{q_3, q_5\} = \{q_2, q_3, q_5\}$
+  \end{enumerate}
+
+  \item Calculemos $\dest(q_0, \texttt{5.6})$ de la siguiente manera:
+  \begin{enumerate}
+    \item Primero calculemos
+    $\delta(q_2, \texttt{6})\cup\delta(q_3, \texttt{6})\cup\delta(q_5, \texttt{6})=\{q_3\}\cup\{q_3\}\cup\vacio=\{q_3\}$.
+    \item Después, $\dest(q_0, \text{5.6}) = Cl_{\vacia}(q_3) = \{q_3, q_5\}$.
+  \end{enumerate}
+
+\end{itemize}
+
+Teniendo así que $\dest(q_0, \texttt{5.6})$ contiene el estado de aceptación $q_5$, así la cadena \texttt{5.6} está en
+el lenguaje de ese AFN$\vacia$.
+
+\todo{[END] Ejemplo}
+
 \subsection{Eliminaci\'on de \texorpdfstring{$\cv$}--transiciones}
 
 Estudiaremos el proceso de eliminaci\'on de transiciones $\vacia$. Esta 
@@ -628,6 +717,13 @@ $L(M)=L(M_N)$
 \begin{proof}
   Es consecuencia directa del lema anterior y de la definición de $F_N$.
 \end{proof}
+
+\todo{[START] Ejemplo}
+
+TODO
+
+\todo{[END] Ejemplo}
+
 \section{Equivalencias}
 Nuevamente surgen preguntas como la equivalencia entre aut\'omatas 
 deterministas, no deterministas y con transiciones $\vacia$. 
