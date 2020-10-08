@@ -56,6 +56,14 @@
       El cálculo de la épsilon cerradura lo saqué de este [libro](resources/Jfry%20DUlman%20-%20Introduction%20To%20Automata%20Theory,%20Languages,%20And%20Computation%20(2001,%20Addison%20Wrslry,2001)%20-%20libgen.lc.pdf) 
       de las páginas 73-77.
 
+      **Ya hay un ejemplo en las [notas de autómatas del semeste 2020-2](https://sites.google.com/ciencias.unam.mx/aylf/material?authuser=0), 
+      es el archivo `n05aylf202.pdf`.** Así que solo pondré un ejemplo.
+
+      Use la página 78-99[libro](resources/Jfry%20DUlman%20-%20Introduction%20To%20Automata%20Theory,%20Languages,%20And%20Computation%20(2001,%20Addison%20Wrslry,2001)%20-%20libgen.lc.pdf).
+
+* Nota 5
+
+  TODO
 
 
 ### Fuentes

@@ -579,13 +579,13 @@ definida recursivamente como sigue:
 
 \todo{[START] Ejemplo}
 \paragraph{Ejemplo}
-
+\label{anf_epsilon:ejemplo1}
 Consideremos el siguiente AFN con $\vacia$-transiciones que acepta números decimales que consisten de:
 \begin{enumerate}
   \item Un signo opcional \texttt{+} ó \texttt{-},
   \item Una cadena de dígitos,
   \item Un punto decimal, y
-  \item Otra cadena de dígitos. Tanto puede ser ésa cadena, o la cadena (2) puede ser vacía, pero al menor una de las
+  \item Otra cadena de dígitos. Tanto puede ser ésa cadena, o la cadena (2) puede ser vacía, pero al menos una de las
   dos cadenas de dígitos debe ser no vacía.
 \end{enumerate}
 
@@ -620,13 +620,15 @@ $M=\pt{\{q_0, q_1, \ldots, q_5\}, \{\texttt{.}, +, -, 0, 1, \ldots, 0\},\delta, 
 donde $\delta$ está definido por la tabla de transiciones de abajo,
 
 $$
-  \begin{array}[c]{r||l|l}
-                            & 0            & 1                 \\\hline\hline
-    \to \{q_0\}             & \{q_0\}      & \{q_0, q_1\}      \\\hline
-    \{q_0, q_1\}            & \{q_0, q_2\} & \{q_0, q_1, q_2\} \\\hline
-    \circ \{q_0, q_1\}      & \{q_0\}      & \{q_0, q_1\}      \\\hline
-    \circ\{q_0, q_1, q_2\}  & \{q_0, q_2\} & \{q_0, q_1, q_2\} \\
-  \end{array}
+  \begin{array}[c]{l||l|l|l|l}
+        & \vacia  & +, -    & .       & 0,1,\ldots,9 \\\hline\hline
+    q_0 & \{q_1\} & \{q_1\} & \vacio  & \vacio       \\ 
+    q_1 & \vacio  & \vacio  & \{q_2\} & \{q_1, q_4\} \\ 
+    q_2 & \vacio  & \vacio  & \vacio  & \{q_3\}      \\ 
+    q_3 & \{q_5\} & \vacio  & \vacio  & \{q_3\}      \\ 
+    q_4 & \vacio  & \vacio  & \{q_3\} & \vacio       \\ 
+    q_5 & \vacio  & \vacio  & \vacio  & \vacio       \\ 
+    \end{array}
 $$
 
 Calculemos $\dest(q_0, \texttt{5.6})$. Un resumen de los pasos necesitados se harán a continuación:
@@ -641,8 +643,8 @@ Calculemos $\dest(q_0, \texttt{5.6})$. Un resumen de los pasos necesitados se ha
     $\delta(q_0, \texttt{5}) \cup \delta(q_1, \texttt{5}) = \{q_1, q_4\}$.
 
     \item Ahora, la $\vacia$-cerradura de los elementos del conjunto calculado en el paso (1). Tenemos
-    $Cl_{\vacia}(q_1) \cup Cl_{\vacia}(q_4) = \{q_1\} \cup \{q_4\} = \{q_1, q_4\}$. Que es $\dest(q_0, \texttt{5})$.
-    Este patrón de dos pasos se repite para los siguientes dos símbolos.
+    $Cl_{\vacia}(q_1) \cup Cl_{\vacia}(q_4) = \{q_1\} \cup \{q_4\} = \{q_1, q_4\}$. Este conjunto es
+    $\dest(q_0, \texttt{5})$. Este patrón de dos pasos se repite para los siguientes dos símbolos.
   \end{enumerate}
 
   \item Calculemos $\dest(q_0, \texttt{5.})$ de la siguiente manera:
@@ -656,13 +658,13 @@ Calculemos $\dest(q_0, \texttt{5.6})$. Un resumen de los pasos necesitados se ha
   \begin{enumerate}
     \item Primero calculemos
     $\delta(q_2, \texttt{6})\cup\delta(q_3, \texttt{6})\cup\delta(q_5, \texttt{6})=\{q_3\}\cup\{q_3\}\cup\vacio=\{q_3\}$.
-    \item Después, $\dest(q_0, \text{5.6}) = Cl_{\vacia}(q_3) = \{q_3, q_5\}$.
+    \item Después, $\dest(q_0, \texttt{5.6}) = Cl_{\vacia}(q_3) = \{q_3, q_5\}$.
   \end{enumerate}
 
 \end{itemize}
 
-Teniendo así que $\dest(q_0, \texttt{5.6})$ contiene el estado de aceptación $q_5$, así la cadena \texttt{5.6} está en
-el lenguaje de ese AFN$\vacia$.
+Teniendo así que $\dest(q_0, \texttt{5.6})$ contiene el estado de aceptación $q_5$, entonces la cadena \texttt{5.6}
+está en el lenguaje de ese AFN$\vacia$.
 
 \todo{[END] Ejemplo}
 
@@ -686,6 +688,42 @@ asociado a $M$, denotado $M_N$, como \[M_N=\pt{Q,\Sigma,\delta_N,q_0,F_N},\] don
 $F_N=_{def}F$ en caso contrario.
 \ei
 }
+
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo:}
+Consideremos el ejemplo anterior del AFN con $\vacia$-transiciones que acepta números decimales, llamémosle
+$E$[\ref{anf_epsilon:ejemplo1}] y $D$ el AFN el autómata resultante.
+
+\begin{center}
+  \begin{tikzpicture}[node distance=3.5cm]
+    \node[state, initial] (q0) {$\{q_0, q_1\}$};
+    \node[state] (q1) [right of=q0] {$\{q_1\}$};
+    \node[state] (q2) [right of=q1] {$\{q_1, q_4\}$};
+    \node[state, accepting] (q3) [right of=q2] {$\{q_2, q_3, q_5\}$};
+    \node[state] (q4) [below of=q2] {$\{q_2\}$};
+    \node[state, accepting] (q5) [below of=q3] {$\{q_3, q_5\}$};
+  
+    \draw
+        (q0)
+            edge node {$+, -$} (q1)
+            edge [bend left] node {$0,1,\ldots,9$} (q2)
+            edge node {.} (q4)
+        (q1)
+            edge node {$0,1,\ldots,9$} (q2)
+            edge node {.} (q4)
+        (q2)
+            edge [loop above] node {$0,1,\ldots,9$} ( )
+            edge node {.} (q3)
+        (q3)
+            edge node {$0,1,\ldots,9$} (q5)
+        (q4)
+            edge node {$0,1,\ldots,9$} (q5)
+        (q5)
+            edge [loop below] node {$0,1,\ldots,9$} ( );
+  \end{tikzpicture}  
+\end{center}
+
+\todo{[END] Ejemplo}
 
 La equivalencia entre $M$ y $M_N$ se bosqueja a continuación
 
@@ -717,12 +755,6 @@ $L(M)=L(M_N)$
 \begin{proof}
   Es consecuencia directa del lema anterior y de la definición de $F_N$.
 \end{proof}
-
-\todo{[START] Ejemplo}
-
-TODO
-
-\todo{[END] Ejemplo}
 
 \section{Equivalencias}
 Nuevamente surgen preguntas como la equivalencia entre aut\'omatas 
