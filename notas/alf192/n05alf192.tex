@@ -25,8 +25,23 @@
 
 \usepackage{pgf}
 \usepackage{tikz}
-\usetikzlibrary{automata,arrows,trees}
+\usetikzlibrary{automata,arrows}
 \usetikzlibrary{babel}
+\usetikzlibrary{arrows,automata,positioning, calc}
+\tikzset{node distance=2.5cm, % Minimum distance between two nodes. Change if necessary.
+        every state/.style={ % Sets the properties for each state
+            semithick,
+            fill=gray!10},
+        initial text={}, % No label on start arrow
+        double distance=2pt, % Adjust appearance of accept states
+        every edge/.style={ % Sets the properties for each transition
+            draw,
+            ->,>=stealth', % Makes edges directed with bold arrowheads
+            auto,
+            semithick}
+        }
+\usepackage{todonotes} % Para hacer anotaciones, remover cuando ya no tengan anotaciones.
+
 %\pagestyle{fancyplain}
 \input{macrosAyLF}
 
@@ -179,6 +194,191 @@ inicial $q_0$, el cúal se vuelve final, si no lo era en $M_1$.
 Se deja como ejercicio en todos los casos verificar que el autómata recien
 construido efectivamente acepta al lenguaje deseado.
 \end{proof}
+
+\todo{[START] Ejemplo}
+\paragraph{Ejemplo}
+Crear un AFN con $\vacia$-transiciones para la siguiente expresión regular:
+$$ (00+1)^\star(10)^\star $$
+
+\begin{enumerate}
+\item $(\color{blue}0\color{black}0+1)^\star(10)^\star$
+
+\begin{tikzpicture}[node distance=2cm, every node/.style={scale=0.8}]
+  \node[state, initial] (q0) {};
+  \node[state, accepting] (q1) [right of=q0] {};
+
+  \draw
+      (q0)
+          edge node {$0$} (q1);
+\end{tikzpicture}
+
+\item $(\color{blue}00\color{black}+1)^\star(10)^\star$
+
+\begin{tikzpicture}[node distance=2cm, every node/.style={scale=0.8}]
+  \node[state, initial] (q0) {};
+  \node[state] (q1) [right of=q0] {};
+  \node[state] (q2) [right of=q1] {};
+  \node[state, accepting] (q3) [right of=q2] {};
+
+  \draw
+      (q0)
+          edge node {$0$} (q1)
+      (q1)
+          edge node {$\vacia$} (q2)
+      (q2)
+          edge node {$0$} (q3);
+\end{tikzpicture}
+
+\item $(\color{blue}00+1\color{black})^\star(10)^\star$
+
+\begin{tikzpicture}[node distance=2cm, every node/.style={scale=0.8}]
+  \node[state, initial] (q0) {};
+  \node[state] (q1) [right of=q0] {};
+  \node[state, accepting] (q2) [right of=q1] {};
+  \node[state] (q3) [below of=q1] {};
+  \node[state] (q4) [right of=q3] {};
+  \node[state] (q5) [right of=q4] {};
+  \node[state, accepting] (q6) [right of=q5] {};
+
+  \draw
+      (q0)
+          edge node {$\vacia$} (q1)
+          edge node {$\vacia$} (q3)
+      (q1)
+          edge node {$1$} (q2)
+      (q3)
+          edge node {$0$} (q4)
+      (q4)
+          edge node {$\vacia$} (q5)
+      (q5)
+          edge node {$0$} (q6);
+\end{tikzpicture}
+
+\item $\color{blue}(00+1^\star)\color{black}(10)^\star$
+
+\begin{tikzpicture}[node distance=2cm, every node/.style={scale=0.8}]
+  \node[state, initial, accepting] (q7) {};
+  \node[state] (q0) [right of=q7] {};
+  \node[state] (q1) [right of=q0] {};
+  \node[state, accepting] (q2) [right of=q1] {};
+  \node[state] (q3) [below of=q1] {};
+  \node[state] (q4) [right of=q3] {};
+  \node[state] (q5) [right of=q4] {};
+  \node[state, accepting] (q6) [right of=q5] {};
+  
+
+  \draw
+      (q0)
+          edge node {$\vacia$} (q1)
+          edge node {$\vacia$} (q3)
+      (q1)
+          edge node {$1$} (q2)
+      (q2)
+          edge [bend right] node [above] {$\vacia$} (q7)
+      (q3)
+          edge node {$0$} (q4)
+      (q4)
+          edge node {$\vacia$} (q5)
+      (q5)
+          edge node {$0$} (q6)
+      (q6)
+          edge [bend left=40] node {$\vacia$} (q7)
+      (q7)
+        edge node {$\vacia$} (q0);
+\end{tikzpicture}
+
+\item $(00+1)^\star(\color{blue}10\color{black})^\star$
+
+\begin{tikzpicture}[node distance=2cm, every node/.style={scale=0.8}]
+  \node[state, initial] (q0) {};
+  \node[state] (q1) [right of=q0] {};
+  \node[state] (q2) [right of=q1] {};
+  \node[state, accepting] (q3) [right of=q2] {};
+
+  \draw
+      (q0)
+          edge node {$1$} (q1)
+      (q1)
+          edge node {$\vacia$} (q2)
+      (q2)
+          edge node {$0$} (q3);
+\end{tikzpicture}
+
+\item $(00+1)^\star\color{blue}(10)^\star$
+
+\begin{tikzpicture}[node distance=2cm, every node/.style={scale=0.8}]
+  \node[state, initial] (q4) {};
+  \node[state] (q0) [right of=q4] {};
+  \node[state] (q1) [right of=q0] {};
+  \node[state] (q2) [right of=q1] {};
+  \node[state] (q3) [right of=q2] {};
+
+  \draw
+      (q0)
+          edge node {$1$} (q1)
+      (q1)
+          edge node {$\vacia$} (q2)
+      (q2)
+          edge node {$0$} (q3)
+      (q3)
+          edge [bend left] node {$\vacia$} (q4)
+      (q4)
+          edge node {$\vacia$} (q0);
+\end{tikzpicture}
+
+\item $\color{blue}(00+1)^\star(10)^\star$
+
+\begin{tikzpicture}[node distance=2cm, every node/.style={scale=0.8}]
+  \node[state, initial] (q0) {};
+  \node[state] (q1) [right of=q0] {};
+  \node[state] (q2) [right of=q1] {};
+  \node[state] (q3) [right of=q2] {};
+  \node[state] (q4) [below of=q2] {};
+  \node[state] (q5) [right of=q4] {};
+  \node[state] (q6) [right of=q5] {};
+  \node[state] (q7) [right of=q6] {};
+  
+  \node[state, accepting] (q8) [below of=q4] {};
+  \node[state] (q9) [right of=q8] {};
+  \node[state] (q10) [right of=q9] {};
+  \node[state] (q11) [right of=q10] {};
+  \node[state] (q12) [right of=q11] {};
+
+  \draw
+      (q0)
+          edge node {$\vacia$} (q1)
+          edge [bend right] node [left] {$\vacia$} (q8)
+      (q1)
+          edge node {$\vacia$} (q2)
+          edge node {$\vacia$} (q4)
+      (q2)
+          edge node {$1$} (q3)
+      (q3)
+          edge [bend right] node [above] {$\vacia$} (q0)
+      (q4)
+          edge node {$0$} (q5)
+      (q5)
+          edge node {$\vacia$} (q6)
+      (q6)
+          edge node {$0$} (q7)
+      (q7)
+          edge [bend left=40] node {$\vacia$} (q0)
+    
+      (q8)
+          edge node {$\vacia$} (q9)
+      (q9)
+          edge node {$1$} (q10)
+      (q10)
+          edge node {$\vacia$} (q11)
+      (q11)
+          edge node {$0$} (q12)
+      (q12)
+          edge [bend left] node {$\vacia$} (q8);
+\end{tikzpicture}
+
+\end{enumerate}
+
+\todo{[END] Ejemplo}
 
 \subsection{Teorema de An\'alisis de Kleene}
 

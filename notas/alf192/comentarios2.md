@@ -19,12 +19,12 @@
       pues si no es mucha talacha, pero sí pon un ejemplo donde la épsilon cerradura 
       tenga varios estados.
 
-  - [ ] Da ejemplos de la eliminación (def. 7), al menos 2
+  - [x] Da ejemplos de la eliminación (def. 7), al menos 2
 
 
 * Nota 5
 
-  - [ ] 3 ejemplos de construcción usando el teorema de síntesis
+  - [x] 3 ejemplos de construcción usando el teorema de síntesis
 
   - [ ] 3 ejemplos de ER equivalentes al autómata dado mediante la solución del 
       sistema de ecuaciones con el lema de Arden pon al menos 2 que sean AFN.
@@ -63,7 +63,8 @@
 
 * Nota 5
 
-  TODO
+  Solo puse un ejemplo para la parte de construcción del autómata usando el teorema de 
+  síntesis y use [esto](resources/kleene1.pdf).
 
 
 ### Fuentes
@@ -71,3 +72,5 @@
 https://people.cs.clemson.edu/~goddard/texts/theoryOfComputation/3a.pdf
 
 https://www.cse.cuhk.edu.hk/~siuon/csci3130/slides/lec02.pdf
+
+https://www.cs.rit.edu/~jmg/courses/cs380/20041/slides/kleene1.pdf
