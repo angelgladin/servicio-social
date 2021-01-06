@@ -1,0 +1,295 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{amssymb,amsmath,mathrsfs}
+
+\usepackage{import}
+\usepackage{todonotes} % Para hacer anotaciones, remover cuando ya no tengan anotaciones.
+
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+%Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
+  PAPIME PE102117} \\ 
+Nota de Clase X: Listas abtractas y concretas} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{-1 de diciembre de 2020}
+
+\begin{document}
+\maketitle
+
+%% Traducción del libro
+%% Formal Languages and Compilations
+%% Stefano Crespi Reghizzi
+%% Páginas 25-30
+\section{Abstracción lingüística}
+
+Si uno recuerda un lenguaje de programación con el que se está familiarizado, se puede observar que, 
+aunque superficialmente diferentes en sus \textit{palabras reservada} y \textit{separadores}, son
+usualmente bastante similares en un nivel más profundo.
+Cambiando el enfoque de sintaxis concreta a sintaxis abstracta, podemos reducir la desconcertante
+variedad de construcciones del lenguaje a algunas estructuras esenciales. El verbo ``abstraer''
+significa
+\begin{quotation}
+considerar un concepto sin pensar en un ejemplo específico.
+\end{quotation}
+
+Abstrayendo de los caracteres concretos que representan una construcción del lenguaje se hace la
+abstracción lingüistica. Esto es la transformación del lenguaje que remplaza los caracteres
+terminales de un lenguaje concreto con otros caracteres tomados de una alfabeto abstracto.
+Los caracteres abstractos deben ser más simples y adecuados para representar construcciones 
+similares de diferntes lenguajes artificiales\footnote{
+La idea de la abstracción del lenguaje se inspira en la investigación en lingüística con el objetivo
+de descubrir las similitudes subyacentes de los lenguajes humanos, sin tener en cuenta las
+diferencias morfológicas y sintácticas.}.
+
+Mediante este enfoque, las estructuras de sintaxis abstractas de lenguajes artificiales existentes
+son facilmente descritas como composición de algunos paradigmas básicos, mediante operaciones
+estándares del lenguaje: unión, iteración y sustitución. Empezando de un lenguaje abstracto, un
+lenguaje concreto o existente es obtenido por la transformación de inversa, matefóricamente llamada
+recubrimiendo con azúcar sintáctica.
+
+Fabricando un lenguaje en su sintaxis abstracta y sintaxis concreta se compensa en varias maneras.
+Cuando se estudian diferentes lenguajes se obtiene mucho ahorro conceptual. Cuando se diseñan
+compiladores, la abstracción ayuda para la portabilidad entre diferentes lengajes, si las funciones
+del compilador están diseñadas para procesar lo abtracto, en vez de lo concreto, el lenguaje
+construye. Por lo tanto partes de, digamos, el compilador de C puede ser reusado para lenguajes 
+similares como FORTRAN o Pascal.
+
+
+\section{Listas abstractas y concretas}
+
+Una \textit{lista abstracta} contienen un número no acotado de elementos $e$ del mismo tipo. Está
+definido por la expresión regular $e^+$ o $e^\star$, si pueden faltar elementos.
+
+Un elemento por el momento puede ser visto como un caracter terminal, pero en refinamientos
+posteriores, el elemento se puede convertir en una cadena de otro lenguaje formal: pensemos, por
+ejemplo, en una lista de números.
+\begin{quotation}
+Lista con separadores y símbolos que abren/cierran.
+\end{quotation}
+
+En muchos casos concretos, los elementos adyacentes deben ser separados por cadenas llamadas
+\textit{separadores}, $s$ en sintaxis abstracta. Por lo tanto en una lista de números, un separador
+debe delimitar el final de un número y el principio del siguiente.
+
+Una \textit{lista con separadores} es definida por la expresión regular $e(se)^\star$, diciendo que
+el primer elemento puede ser seguido por cero o más pares $se$. La definición equivalente
+$(es)^\star e$ difiere dando evidencia al último elemento.
+
+En muchos casos concretos hay otro requisito, destinado a la legibilidad o el procesamiento por
+computadora: hacer el inicio y final de una lista facilmente reconocible agregando algunos signos
+especiales a sufijos y prefijos: en abstracto, el caracter inicial o la marca de inicio $i$, y el
+caracter final o la marca final $f$.
+
+Listas con separadores y marcas inicial/final son definidas como
+\[
+    ie(se)^*f
+\]
+
+\paragraph{Ejemplo:} Algunas listas concretas
+
+Las listas están en todos lados en los lenguajes, como es mostrado por ejemplos típicos.
+
+Bloque de instrucciones: $\qquad begin\; instr_1;\; instr_2;\; \ldots\; instr_n\; end$
+
+donde $instr$ posiblemente está ahí para asignaciones, go to, sentencia \texttt{if}, sentencia
+\texttt{write}, etc. Los términos abstractos y concretos correspondientes son:
+
+\begin{table}[ht]
+\centering
+    \begin{tabular}{c|c}
+    alfabeto abstracto & alfabeto concreto \\ \hline
+    $i$                & $begin$           \\
+    $e$                & $instr$           \\
+    $s$                & $;$               \\
+    $f$                & $end$              
+    \end{tabular}
+\end{table}
+
+Parámetros de procedimientos: como en
+\[
+    \underbrace{procedure\; WRITE(}_{i}
+    \underbrace{par_1}_{e}
+    \underbrace{,}_{s},
+    par_2,
+    \ldots,
+    par_n
+    \underbrace{)}_{f}
+\]
+
+Una lista vacía de parámetros debe ser legal, como por ejempo $procedure\; WRITE()$, la expresión
+regular se convierte en $i[e(se^\star)]f$.
+
+Definición de arreglo: 
+$
+    \qquad
+    \underbrace{array\; MATRIX'['}_{i}
+    \underbrace{int_1}_{e}
+    \underbrace{,}_{s},
+    int_2,
+    \ldots,
+    int_n
+    \underbrace{']'}_{f}
+$
+
+donde cada $int$ es un intervalo como 10...50.
+
+
+\subsection{Sustitución}
+
+Los ejemplos de arriba muestran la transformación de símbolos concretos a abtractos. Los diseñadores
+de lenguajes encuentran útil trabajar con refinamientos paso a paso, como es hecho en cualquier
+rama de ingeniería, cuando un sistema complejo es dividido en sus componentes, atómico o de otros
+tipos. Para tal fin, se presentan una nueva operación del lenguaje de sustitución, que remplaza un
+caracter terminal del lenguaje denominado como \textit{fuente}, con una sentencia de otro lenguaje
+llamada \textit{objetivo}. Como siempre $\Sigma$ es el alfabeto fuente y $L \subseteq \Sigma^\star$
+el lenguaje fuente. Consideremos una sentencia de $L$ conteniendo una o más ocurrencias de un
+caracter fuente $b$: 
+\[
+    x = a_1 a_2 \ldots a_n
+    \qquad
+    \text{donde para alguna $i$, $a_i = b$}
+\]
+
+Sea $\Delta$ otro alfabeto, llamado objetivo, y $L_b \subseteq\Delta^\star$ sea el
+\textit{lenguaje imagen} de $b$. La \textit{sustitución} del lenguaje $L_b$ para $b$ en una cadena
+$x$ produce un conjunto de cadenas, que es, una lenguaje del alfabeto
+$(\Sigma \setminus \{ b \}) \cup \Delta$, definido como
+\[
+    \{ y \;|\; y = y_1 y_2 \ldots y_n
+    \;\land\;
+    (\texttt{if } a_i \neq b \texttt{ then } y_i = a_i \texttt{ else } y_i \in L_b)\}
+\]
+
+Notemos que todos los caracteres que no sean $b$ no cambian. La sustitución puede ser definida
+en todo el lenguaje fuente, aplicando la operación a cada sentencia objetivo.
+
+\paragraph{Ejemplo:} El ejemplo anterior se retomará
+
+Regresando al caso de lista de parámetros, la sintaxis abstracta es
+\[
+    ie(se)^\star f
+\]
+y las sustituciones a ser aplicadas se muestran a continuación:
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{c|c}
+    caracter abstracto & cadena                                                          \\ \hline
+    $i$                & $L_i = procedure \langle \text{procedure identifier} \rangle ($ \\
+    $e$                & $L_e = \langle \text{parameeter identifier} \rangle$            \\
+    $s$                & $L_s = ,$                                                       \\
+    $f$                & $L_f = )$                                                      
+    \end{tabular}
+\end{table}
+
+Por ejempo, la marca de inicio de $i$ es remplazada con una cadena del lenguaje $L_i$, donde
+\texttt{procedure identifier} tiene que estar de acuerdo con las reglas del lenguaje técnico.
+
+Claramente los lenguajes objetivos de la sustitución deependern en la azucar sintáctica del
+lenguaje concreto al que está destinado.
+
+Cabe notar que las cuatro sustituciones son independientes y pueden ser aplicadas en cualquier
+orden.
+
+\paragraph{Ejemplo:} Identificadores con guiones bajo.
+
+En ciertos lenguajes de programación, los nombres de identificadores nmemoteícos largos pueden ser
+construidos añadiendo cadenas alfanuméricas separas por un guión bajo:
+de ahí que \texttt{LOOP3\_OF\_35} es un identificador válido. Más precisamente la primera cadena
+debe iniciar con una letra, los otros deben contener letras y dígitos, y los guiones adyacentes
+están prohibidos, así como guiones finales.
+
+A primera vista el lenguaje es una lista no vacía de cadenas $s$, separadas por un guión:
+\[
+    s(\_s)^\star 
+\]
+
+Sin embargo, la primera cadea debe ser diferente de las otras y debe ser tomada para ser la marca
+de inicio de una posible lista vacía:
+\[
+    i(\_s)^\star 
+\]
+
+Sustituyendo a $i$ el lenguaje $(A \ldots Z)(A \ldots Z | 0 \ldots 9)^\star$, y a $s$ el lenguaje\\
+$(A \ldots Z)(A \ldots Z | 0 \ldots 9)^+$, la expresión regular final es obtenida.
+
+Este es un ejemplo demasiado simple de diseño de sintaxis por abstracción y refinamiento paso a
+paso, un método que será utilizado ahora y después después de la introducción de gramáticas.
+
+
+\subsection{Listas de precedencia o jerárquicas}
+
+Una constrtucción recurrente es una lista, tal que cada elemento que está en turno es una lista de
+una de tipo diferente. La primera línea está en el nivel 1, la segunda al nivel 2, y así
+sucesivamente. La estructura abtracta presente, llamada lista jerárquica, está resrtringida a
+listas con un número acotado de niveles. El caso en el que los niveles no están acotados es
+estudiado después usando gramáticas, bajo el nombre de estrtucturas anidadas.
+
+Una lista jerárquica es también llamada \textit{lista con precedencias}, porque una lista a nivel
+$k$ limita sus elementos más que a una lista a nivel $k-1$; en otras palabras los elementos en un
+más alto nivel deben ser juntados en una lista, y cada uno se convierte en un elemento al
+siguiente nivel más bajo.
+
+Cada nivel debe tener una marca que abra/cierre y un separador; tales delimitadores son usualmente
+distintos nivel por nivel, para evitar confusiones.
+
+La estructura de la lista jerárquica de niveles $k \geq 2$ es
+
+\begin{align*}
+    list_1 &= i_1 list_2 (s_1 list_2)^\star f_1\\
+    list_2 &= i_2 list_3 (s_2 list_3)^\star f_2\\
+    \ldots\\
+    list_k &= i_k e_k (s_k e_k)^\star f_k
+\end{align*}
+
+Nótese que sólo el último nivel puede contener elementos atómicos. Pero una variación común permite
+que a cualquier nivel $k$ los elementos atómicos $e_k$ ocurran al lado de otro con listas de
+nivel $k+1$. A continuación se presentas algunos ejemplos conretos.
+
+
+\paragraph{Ejemplo:} Dos listas jerárquicas
+
+Bloque de instrucciones \texttt{print}, $WRITE(var_1, var_2, \ldots, var_n)$, es decir, una lista.
+Hay dos niveles:
+\begin{enumerate}
+    \item[Nivel 1:] Lista de instrucciones $instr$, abierta por $begin$, separados por un punto y
+    coma y cerrado por $end$.  
+    \item[Nivel 2:] Lista de variables $var$ separados por una coma, con $i_2 = WRITE($ y $f_2=)$.
+\end{enumerate}
+
+Las expresiones aritméticas no usan paréntesis: los niveles de precedencia determinan de los
+operadores determinan cuantos niveles hay en la lista. Por ejemplo, los operadores $\div$,
+$\times$ y $+$, $-$ están etiquetados en dos niveles y la cadena
+\[
+    3 + \underbrace{5 \times 7 \times 4}_{term_1} - \underbrace{8 \times 2 \div 5}_{term_2} + 8 + 3
+\]
+
+es una lista de dos niveles, sin marcas de apertura ni de cierre. En el nivel uno encontramos una
+lista de términos ($e_1$ = término) separados por los signos $+$ y $-$, es decir, por operadores de
+menor precedencia. En el nivel dos vemos una lista de números, separados por signos de mayor
+precedencia. 
+
+Se puede ir más allá e introducir un tercer nivel con el signo de exponenciación ``$\ast\ast$''
+como separador.
+
+Por supuesto, las estructuras jerárquicas también son omnipresentes en los lenguajes naturales.
+Piense en una lista de sustantivos
+\[ \mathbf{padre,\; madre,\; hijo,\; e\; hija} \]
+
+Aquí podemos observar una diferencia con respecto al paradigma abstracto: el penúltimo elemento
+tiene un separador distinto, posiblemente para advertir al oyente de que ya vamos a acabar de
+hablar. Además, los elementos de la lista pueden enriquecerse con calificadores de segundo nivel,
+como la lista de adjetivos.
+
+En todo tipo de documentos y medios escritos, las listas jerárquicas son extremadamente comunes.
+Por ejemplo, un libro es una lista de capítulos, separados por páginas en blanco, entre la portada
+y la contraportada. Un capítulo es una lista de secciones; una sección, una lista de párrafos, y
+así sucesivamente.
+
+\end{document}
