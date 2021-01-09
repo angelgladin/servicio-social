@@ -1,0 +1,295 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[includeheadfoot,margin=1.3in]{geometry}
+\usepackage{anysize}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{epsfig}
+
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{import}
+\usepackage{comment}
+\usepackage[autostyle=true,spanish=mexican]{csquotes}
+
+\usepackage{todonotes} % Para hacer anotaciones, remover cuando ya no tengan anotaciones.
+\usepackage{url}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows}
+\usetikzlibrary{babel}
+
+\usetikzlibrary{arrows,automata,positioning, calc}
+\tikzset{node distance=2.5cm, % Minimum distance between two nodes. Change if necessary.
+        every state/.style={ % Sets the properties for each state
+            semithick,
+            fill=gray!10},
+        initial text={}, % No label on start arrow
+        double distance=2pt, % Adjust appearance of accept states
+        every edge/.style={ % Sets the properties for each transition
+            draw,
+            ->,>=stealth', % Makes edges directed with bold arrowheads
+            auto,
+            semithick}
+        }
+\input{macrosAyLF}
+
+\title{Aut\'omatas y Lenguajes Formales 2019-II \\ 
+%Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
+Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
+  PAPIME PE102117} \\ 
+Nota de Clase X: Autómatas de divisibilidad} 
+\author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
+Lourdes Gonz\'alez Huesca}
+\date{-1 de diciembre de 2020}
+
+\begin{document}
+\maketitle
+
+%%% 2
+\begin{center}
+  \begin{tikzpicture}
+    \node[state, accepting, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+
+    \draw
+      (q0)
+          edge [loop below] node {0} ( )
+          edge [bend left] node {1} (q1)
+      (q1)
+          edge [bend left] node {0} (q0)
+          edge [loop below] node [below] {1} ( );
+  \end{tikzpicture}
+\end{center}
+
+%%% 3
+\begin{center}
+  \begin{tikzpicture}
+    \node[state, accepting, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [right of=q1] {$q_2$};
+
+    \draw
+      (q0)
+          edge [loop below] node {0} ( )
+          edge [bend left] node {1} (q1)
+      (q1)
+          edge [bend left] node {0} (q2)
+          edge [bend left] node {1} (q0)
+      (q2)
+          edge [bend left] node {0} (q1)
+          edge [loop below] node {1} ( );
+  \end{tikzpicture}
+\end{center}
+
+%%% 4
+\begin{center}
+  \begin{tikzpicture}
+    \node[state, accepting, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+    \node[state] (q2) [below of=q0] {$q_2$};
+    \node[state] (q3) [below of=q1] {$q_3$};
+
+    \draw
+      (q0)
+          edge [loop above] node {0} ( )
+          edge [bend left] node {1} (q1)
+      (q1)
+          edge [bend left] node {0} (q2)
+          edge [bend left] node {1} (q3)
+      (q2)
+          edge [bend left] node {0} (q0)
+          edge [bend left] node {1} (q1)
+      (q3)
+          edge [bend left] node {0} (q2)
+          edge [loop below] node {1} ( );
+  \end{tikzpicture}
+\end{center}
+
+%%% 5
+\begin{center}
+  \begin{tikzpicture}
+    \node[state, accepting, initial] (q0) at (0, 0) {$q_0$};
+    \node[state] (q1) at (0, 4) {$q_1$};
+    \node[state] (q2) at (2, 2) {$q_2$};
+    \node[state] (q3) at (4, 4) {$q_3$};
+    \node[state] (q4) at (4, 0) {$q_4$};
+
+    \draw
+      (q0)
+          edge [loop below] node {0} ( )
+          edge node {1} (q1)
+      (q1)
+          edge node [below] {0} (q2)
+          edge [bend left] node {1} (q3)
+      (q2)
+          edge node {0} (q4)
+          edge node [above] {1} (q0)
+      (q3)
+          edge [bend left] node [above] {0} (q1)
+          edge node {1} (q2)
+      (q4)
+          edge node [right] {0} (q3)
+          edge [loop below] node {1} ( );
+  \end{tikzpicture}
+\end{center}
+
+%%% 6
+\begin{center}
+  \begin{tikzpicture}
+    \node[state, accepting, initial] (q0) at (0, 2) {$q_0$};
+    \node[state] (q1) at (3, 4) {$q_1$};
+    \node[state] (q2) at (6, 4) {$q_2$};
+    \node[state] (q3) at (3, 0) {$q_3$};
+    \node[state] (q4) at (6, 0) {$q_4$};
+    \node[state] (q5) at (9, 2) {$q_5$};
+
+    \draw
+      (q0)
+          edge [loop below] node {0} ( )
+          edge node {1} (q1)
+      (q1)
+          edge node {0} (q2)
+          edge [bend left] node {1} (q3)
+      (q2)
+          edge [bend left] node {0} (q4)
+          edge node {1} (q5)
+      (q3)
+          edge node {0} (q0)
+          edge [bend left] node {1} (q1)
+      (q4)
+          edge [bend left] node {0} (q2)
+          edge node {1} (q3)
+      (q5)
+          edge node {0} (q4)
+          edge [loop below] node {1} ( );
+  \end{tikzpicture}
+\end{center}
+
+%%% 7
+\begin{center}
+    \begin{tikzpicture}
+      \node[state, accepting, initial] (q0) at (0, 0){$q_0$};
+      \node[state] (q1) at (0, 3) {$q_1$};
+      \node[state] (q2) at (3, 6) {$q_2$};
+      \node[state] (q3) at (3, 0) {$q_3$};
+      \node[state] (q4) at (3, 3) {$q_4$};
+      \node[state] (q5) at (6, 3) {$q_5$};
+      \node[state] (q6) at (6, 0) {$q_6$};
+  
+      \draw
+        (q0)
+            edge [loop below] node {0} ( )
+            edge node {1} (q1)
+        (q1)
+            edge node {0} (q2)
+            edge node {1} (q3)
+        (q2)
+            edge [bend left] node {0} (q4)
+            edge node {1} (q5)
+        (q3)
+            edge node [below] {0} (q6)
+            edge node {1} (q0)
+        (q4)
+            edge node {0} (q1)
+            edge [bend left] node {1} (q2)
+        (q5)
+            edge node [above] {0} (q3)
+            edge node {1} (q4)
+        (q6)
+            edge node [right] {0} (q5)
+            edge [loop below] node {1} ( );
+  \end{tikzpicture}
+\end{center}
+
+%%% 8
+\begin{center}
+  \begin{tikzpicture}
+    \node[state, accepting, initial] (q0) at (0, 2) {$q_0$};
+    \node[state] (q1) at (2, 4) {$q_1$};
+    \node[state] (q2) at (5, 2) {$q_2$};
+    \node[state] (q3) at (11, 4) {$q_3$};
+    \node[state] (q4) at (2, 0) {$q_4$};
+    \node[state] (q5) at (8, 2) {$q_5$};
+    \node[state] (q6) at (11, 0) {$q_6$};
+    \node[state] (q7) at (13, 2) {$q_7$};
+
+    \draw
+      (q0)
+          edge [loop below] node {0} ( )
+          edge node {1} (q1)
+      (q1)
+          edge node {0} (q2)
+          edge node {1} (q3)
+      (q2)
+          edge node {0} (q4)
+          edge [bend left] node {1} (q5)
+      (q3)
+          edge node {0} (q6)
+          edge node {1} (q7)
+      (q4)
+          edge node {0} (q0)
+          edge node {1} (q1)
+      (q5)
+          edge [bend left] node {0} (q2)
+          edge node {1} (q3)
+      (q6)
+          edge node {0} (q4)
+          edge node {1} (q5)
+      (q7)
+          edge node {0} (q6)
+          edge [loop below] node {1} ( );
+  \end{tikzpicture}
+\end{center}
+
+%%% 9
+\begin{center}
+  \begin{tikzpicture}
+    \node[state, accepting, initial] (q0) at (4, 10) {$q_0$};
+    \node[state] (q1) at (8, 8) {$q_1$};
+    \node[state] (q2) at (4, 6) {$q_2$};
+    \node[state] (q3) at (8, 0) {$q_3$};
+    \node[state] (q4) at (0, 8) {$q_4$};
+    \node[state] (q5) at (6, 4) {$q_5$};
+    \node[state] (q6) at (0, 0) {$q_6$};
+    \node[state] (q7) at (4, 2) {$q_7$};
+    \node[state] (q8) at (2, 4) {$q_8$};
+
+    \draw
+      (q0)
+          edge [loop below] node {0} ( )
+          edge node {1} (q1)
+      (q1)
+          edge node {0} (q2)
+          edge node {1} (q3)
+      (q2)
+          edge node {0} (q4)
+          edge [bend left] node {1} (q5)
+      (q3)
+          edge node {0} (q6)
+          edge node {1} (q7)
+      (q4)
+          edge node {0} (q8)
+          edge node {1} (q0)
+      (q5)
+          edge node {0} (q1)
+          edge [bend left] node {1} (q2)
+      (q6)
+          edge [bend right] node [below] {0} (q3)
+          edge node {1} (q4)
+      (q7)
+          edge node {0} (q5)
+          edge node {1} (q6)
+      (q8)
+          edge node {0} (q7)
+          edge [loop below] node {1} ( );
+  \end{tikzpicture}
+\end{center}
+
+
+\end{document}
