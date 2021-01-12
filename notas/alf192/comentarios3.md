@@ -1,15 +1,12 @@
 ## Comentarios de Favio
 
-- [ ] Poner ejemplos en notas que faltan.
-
-[TODO]: <> (Enlistar aquí todo lo que haga falta de las notas.)
-
+[TODO]: <> (Poner ejemplos en notas que faltan. Enlistar aquí todo lo que haga falta de las notas.)
 
 - [x] Numeral no. 5 del [plan de trabajo](../../documentos/plan-de-trabajo.pdf), hacer una nota sobre sobre los ejemplos de 
 listas abstractas y concretas del libro [Stefano Crespi](resources/[Stefano_Crespi_Reghizzi]_Formal_languages_and_com(b-ok.cc).pdf) de la 
 secciión 2.4.
 
-* [ ] Numeral no. 4 del [plan de trabajo](../../documentos/plan-de-trabajo.pdf) hacer una nota de eso, explicando los autómatas y luego pasarlo a presentación.
+* [x] Numeral no. 4 del [plan de trabajo](../../documentos/plan-de-trabajo.pdf) hacer una nota de eso, explicando los autómatas y luego pasarlo a presentación.
 
   Puedes empezar con esto usando estas ligas:
 
@@ -34,3 +31,7 @@ secciión 2.4.
 * Del numeral 4 de automatas de divisibilidad ya está la nota lista,
   [pdf](/notas/alf192/revision-pdf/nota-automata-divisivilidad.pdf) y
   [LaTeX](/notas/alf192/nota-automata-divisivilidad.tex).
+
+* Del numeral 4 de automatas de divisibilidad ya está la nota presentación,
+  [pdf](/presentaciones/alfp/presentacion-automata-divisibilidad.pdf) y
+  [LaTeX](/presentaciones/alfp/presentacion-automata-divisibilidad.tex).
