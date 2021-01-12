@@ -6,24 +6,15 @@
 \usepackage[english,spanish]{babel}
 \usepackage{amssymb,amsmath}
 \usepackage{mathrsfs}
-\usepackage{epsfig}
-
-\usepackage{fancyhdr}
-\usepackage{hyperref}
-\usepackage{url}
 
 \usepackage{import}
-\usepackage{comment}
 \usepackage[autostyle=true,spanish=mexican]{csquotes}
 
-\usepackage{todonotes} % Para hacer anotaciones, remover cuando ya no tengan anotaciones.
-\usepackage{url}
+\usepackage{minted}
 
-\usepackage{pgf}
 \usepackage{tikz}
 \usetikzlibrary{automata,arrows}
 \usetikzlibrary{babel}
-
 \usetikzlibrary{arrows,automata,positioning, calc}
 \tikzset{node distance=2.5cm, % Minimum distance between two nodes. Change if necessary.
         every state/.style={ % Sets the properties for each state
@@ -51,23 +42,54 @@ Lourdes Gonz\'alez Huesca}
 \begin{document}
 \maketitle
 
-%%% 2
-\begin{center}
-  \begin{tikzpicture}
-    \node[state, accepting, initial] (q0) {$q_0$};
-    \node[state] (q1) [right of=q0] {$q_1$};
+En el estudio de autómatas finitos deterministas (AFD), una de sus muchas aplicaciones es el
+verificar si dado un número $n$ es divisible o no por un número $k$.
 
-    \draw
-      (q0)
-          edge [loop below] node {0} ( )
-          edge [bend left] node {1} (q1)
-      (q1)
-          edge [bend left] node {0} (q0)
-          edge [loop below] node [below] {1} ( );
-  \end{tikzpicture}
-\end{center}
+Para mayor comodidad, se usará el número $n$ y $k$ codificado en sistema binario (aunque también
+se podría hacer cualquier base $b$). Se construirá un DFA con $k$ estados, donde $k$ es el número
+por el cual se quiere ver si es divisible o no, en donde cada estado tendrá la función de
+transición definida para 0 ó 1.
 
-%%% 3
+Asumamos que cada número es ``leído'' de izquierda a derecha, es decir, el bit más significativo
+(``msb'' \textit{most significative bit} por sus siglas en inglés) es leído primero.
+
+Sea $x$ sea el valor del número binario en algún punto procesando la cadena y sea su residuo $r$
+módulo $d$. Esto significa que $x$ puede ser expresado como combinación lineal como $x = md + r$
+para algún entero $m$. El residuo puede tener valores $0 \leq r < d-1$. Cada unos de estos residuos
+corresponden a los estados del autómata.
+
+Se restringirá el dominio a solo aceptar cadenas no vacías para mayor practicidad.
+
+Para calcular la función de transición verificamos lo siguiente; si se está en un estado $q_i$,
+se ha leído $q_i$ (donde $q_i$ es un número en decimal). Si se lee 0, el nuevo número a leer
+será $2 * q_i$. Si se lee 1, el nuevo número se convierte en $2 * q_i + 1$. El nuevo estado puede
+ser obtenido restando $k$ (en caso de ser mayor que $q_i$) de esos valores
+($2 * q_i$ ó $2 * q_i + 1$) donde $0 \leq q_i < k$.
+
+El estado inicial será $q_0$ y para verficar que si el número ees divisible su estado final (y el
+único) debe ser $q_0$ porque significa que el número ya procesado su residuo fue 0.
+
+Tal autómata (AFD) queda formalmente definido como:
+\begin{itemize}
+  \item $Q = \{ q_i \;|\; 0 \leq i < k \}$
+  \item $\Sigma = \{ 0, 1 \}$
+  \item $\delta (q_i, 0) = q_{2i \mod k}$ y $\delta (q_i, 0) = q_{(2i + 1) \mod k}$
+  \item $F = \{ q_0 \}$
+\end{itemize}
+
+Veamos a través de un ejemplo su construcción y después la verificación de un caso en específico:
+
+\paragraph{Ejemplo:} Verificar si dado un número $n$ es divisible por 3 o no.
+
+Cualquier número puede escrito de la forma $n = 3*x + y$ donde $x$ es el cociente y $y$ el residuo.
+Para 3, hay tres estado en el AFD, cada uno correspondiendo al residuo 0, 1 ó 2. Y para cada estado
+dos transiciones correpondientes a 0 y 1. La función de transición $\delta(q_i, a)$ nos dice que
+leyendo del alfabeto $a$, nos movemos del estado $q_i$ a $q_{i'}$. El estado inicial siempre será
+$q_0$, y el estado final indica en residuo, si el estado final es $q_0$, el número es divisible.
+
+Cabe notar que el último estado es el residuo.
+
+A continuación se muestra el autómata construido,
 \begin{center}
   \begin{tikzpicture}
     \node[state, accepting, initial] (q0) {$q_0$};
@@ -87,7 +109,58 @@ Lourdes Gonz\'alez Huesca}
   \end{tikzpicture}
 \end{center}
 
-%%% 4
+Analicemos por casos;
+\begin{itemize}
+  \item Se está en el estado $q_0$ y se lee \texttt{0}, nos quedamos en el estado $q_0$.
+  \item Se está en el estado $q_0$ y se lee \texttt{1}, nos movemos al estado $q_1$ porque el número
+  formado que es \texttt{1} y en decimal da de residuo 1.
+  \item Se está en el estado $q_1$ y se lee \texttt{0}, nos movemos al estado $q_2$ porque el número
+  formado que es \texttt{10} y en decimal da de residuo 2.
+  \item Se está en el estado $q_1$ y se lee \texttt{1}, nos movemos al estado $q_0$ porque el número
+  formado que es \texttt{11} y en decimal da de residuo 0.
+  \item Se está en el estado $q_2$ y se lee \texttt{0}, nos movemos al estado $q_1$ porque el número
+  formado que es \texttt{100} y en decimal da de residuo 1.
+  \item Se está en el estado $q_2$ y se lee \texttt{1}, nos quedamos al estado $q_2$ porque el
+  número formado que es \texttt{101} y en decimal da de residuo 2.
+\end{itemize}
+
+Quedando la función de transición como:
+\[
+  \begin{array}[c]{c|c|c} 
+    \delta &  0 & 1\\\hline 
+    q_{0} & q_{0} & q_{1}\\\hline 
+    q_{1} & q_{2} & q_{0}\\\hline 
+    q_{2} & q_{1} & q_{2}\\
+  \end{array}  
+\]
+
+Verifiquemos si 4 es divisible por 3: La representación binaria de 6 es \texttt{100}, empezando en
+$q_0$ se sigue que:
+\begin{itemize}
+  \item Estado: $q_0$, se lee \texttt{1}, nuevo estado $q_1$.
+  \item Estado: $q_1$, se lee \texttt{0}, nuevo estado $q_2$.
+  \item Estado: $q_2$, se lee \texttt{0}, nuevo estado $q_1$.
+\end{itemize}
+Como el último estado es $q_1$, por tanto el número 4 tiene de residuo 1 y no es divisible por 3.
+
+
+\paragraph{Autómata para verificar si un número es divisible por 2.}
+\begin{center}
+  \begin{tikzpicture}
+    \node[state, accepting, initial] (q0) {$q_0$};
+    \node[state] (q1) [right of=q0] {$q_1$};
+
+    \draw
+      (q0)
+          edge [loop below] node {0} ( )
+          edge [bend left] node {1} (q1)
+      (q1)
+          edge [bend left] node {0} (q0)
+          edge [loop below] node [below] {1} ( );
+  \end{tikzpicture}
+\end{center}
+
+\paragraph{Autómata para verificar si un número es divisible por 4.}
 \begin{center}
   \begin{tikzpicture}
     \node[state, accepting, initial] (q0) {$q_0$};
@@ -111,7 +184,7 @@ Lourdes Gonz\'alez Huesca}
   \end{tikzpicture}
 \end{center}
 
-%%% 5
+\paragraph{Autómata para verificar si un número es divisible por 5.}
 \begin{center}
   \begin{tikzpicture}
     \node[state, accepting, initial] (q0) at (0, 0) {$q_0$};
@@ -139,7 +212,7 @@ Lourdes Gonz\'alez Huesca}
   \end{tikzpicture}
 \end{center}
 
-%%% 6
+\paragraph{Autómata para verificar si un número es divisible por 6.}
 \begin{center}
   \begin{tikzpicture}
     \node[state, accepting, initial] (q0) at (0, 2) {$q_0$};
@@ -171,7 +244,7 @@ Lourdes Gonz\'alez Huesca}
   \end{tikzpicture}
 \end{center}
 
-%%% 7
+\paragraph{Autómata para verificar si un número es divisible por 7.}
 \begin{center}
     \begin{tikzpicture}
       \node[state, accepting, initial] (q0) at (0, 0){$q_0$};
@@ -207,7 +280,7 @@ Lourdes Gonz\'alez Huesca}
   \end{tikzpicture}
 \end{center}
 
-%%% 8
+\paragraph{Autómata para verificar si un número es divisible por 8.}
 \begin{center}
   \begin{tikzpicture}
     \node[state, accepting, initial] (q0) at (0, 2) {$q_0$};
@@ -247,7 +320,7 @@ Lourdes Gonz\'alez Huesca}
   \end{tikzpicture}
 \end{center}
 
-%%% 9
+\paragraph{Autómata para verificar si un número es divisible por 9.}
 \begin{center}
   \begin{tikzpicture}
     \node[state, accepting, initial] (q0) at (4, 10) {$q_0$};
@@ -291,5 +364,26 @@ Lourdes Gonz\'alez Huesca}
   \end{tikzpicture}
 \end{center}
 
+La pregunta aquí es, ¿se podría hace un programa que construya un autómata que verifique si un
+número $n$ es divisible por un número $k$? Claro que sí.
+
+El siguiente programa es mostrado a continuación\footnote{
+El siguiente programa fue escrito usando \textit{Python} en su versión \texttt{3.8.1}, aunque con
+que sea cualquier posterior a la versión 3 debe de funcionar.
+Su ejecución es de la siguiente manera una vez ya guardado el archivo:\\
+\texttt{\$ python3 dfa-division.py}
+
+Una vez ejecutado, se introducira linea por linea cada número. Primero el número $n$ y acto seguido
+el número $k$. Un ejemplo de dicha ejecución es el siguiente:\\
+\texttt{\$ python3 dfa-division.py}\\
+\texttt{10}\\
+\texttt{6}\\
+Dado como resultado:\\
+\texttt{10 is not divisible by 6 and the remainder is 4}
+}
+
+\pagebreak
+
+\inputminted[linenos]{python}{dfa-division.py}
 
 \end{document}

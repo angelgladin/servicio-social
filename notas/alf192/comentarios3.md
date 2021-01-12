@@ -31,5 +31,6 @@ secciión 2.4.
   [pdf](/notas/alf192/nota-listas-abstractas-y-concretas.pdf) y
   [LaTeX](/notas/alf192/nota-listas-abstractas-y-concretas.tex)
 
-### Fuentes
-
+* Del numeral 4 de automatas de divisibilidad ya está la nota lista,
+  [pdf](/notas/alf192/revision-pdf/nota-automata-divisivilidad.pdf) y
+  [LaTeX](/notas/alf192/nota-automata-divisivilidad.tex).
