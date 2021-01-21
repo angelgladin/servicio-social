@@ -34,10 +34,12 @@
 %Posgrado en Ciencia e Ingeniería de la Computación UNAM \\ 
 Facultad de Ciencias UNAM\footnote{Material elaborado en el marco del proyecto
   PAPIME PE102117} \\ 
-Nota de Clase X: Autómatas de divisibilidad} 
+Nota de Clase: Autómatas de divisibilidad} 
 \author{Favio E. Miranda Perea \and A. Liliana Reyes Cabello \and
-Lourdes Gonz\'alez Huesca}
-\date{-1 de diciembre de 2020}
+Lourdes Gonz\'alez Huesca \and
+Ángel Iván Gladín García
+}
+\date{\today}
 
 \begin{document}
 \maketitle
@@ -46,7 +48,7 @@ En el estudio de autómatas finitos deterministas (AFD), una de sus muchas aplic
 verificar si dado un número $n$ es divisible o no por un número $k$.
 
 Para mayor comodidad, se usará el número $n$ y $k$ codificado en sistema binario (aunque también
-se podría hacer cualquier base $b$). Se construirá un DFA con $k$ estados, donde $k$ es el número
+se podría hacer cualquier base $b$). Se construirá un DFA con $k$ estados, donde $n$ es el número
 por el cual se quiere ver si es divisible o no, en donde cada estado tendrá la función de
 transición definida para 0 ó 1.
 
@@ -61,19 +63,19 @@ corresponden a los estados del autómata.
 Se restringirá el dominio a solo aceptar cadenas no vacías para mayor practicidad.
 
 Para calcular la función de transición verificamos lo siguiente; si se está en un estado $q_i$,
-se ha leído $q_i$ (donde $q_i$ es un número en decimal). Si se lee 0, el nuevo número a leer
-será $2 * q_i$. Si se lee 1, el nuevo número se convierte en $2 * q_i + 1$. El nuevo estado puede
+se ha leído $q_i$. Si se lee \texttt{0}, el nuevo número a leer
+será $2 * q_i$. Si se lee \texttt{1}, el nuevo número se convierte en $2 * q_i + 1$. El nuevo estado puede
 ser obtenido restando $k$ (en caso de ser mayor que $q_i$) de esos valores
 ($2 * q_i$ ó $2 * q_i + 1$) donde $0 \leq q_i < k$.
 
 El estado inicial será $q_0$ y para verficar que si el número ees divisible su estado final (y el
-único) debe ser $q_0$ porque significa que el número ya procesado su residuo fue 0.
+único) debe ser $q_0$ porque significa que el número ya procesado y su residuo fue 0.
 
 Tal autómata (AFD) queda formalmente definido como:
 \begin{itemize}
   \item $Q = \{ q_i \;|\; 0 \leq i < k \}$
   \item $\Sigma = \{ 0, 1 \}$
-  \item $\delta (q_i, 0) = q_{2i \mod k}$ y $\delta (q_i, 0) = q_{(2i + 1) \mod k}$
+  \item $\delta (q_i, 0) = q_{2i \mod k}$ y $\delta (q_i, 1) = q_{(2i + 1) \mod k}$
   \item $F = \{ q_0 \}$
 \end{itemize}
 

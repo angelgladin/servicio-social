@@ -85,10 +85,12 @@
 {Autómatas y Lenguajes Formales}
 \subtitle
 {%Maestría en Ciencia e Ingeniería de la Computación UNAM\\
-  Tema X: Autómatas de divisibilidad}
+  Tema: Autómatas de divisibilidad}
 
 \author[Favio E. Miranda Perea] % (optional, use only with lots of authors)
-{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx}}
+{Dr. Favio Ezequiel Miranda Perea \\ \texttt{favio@ciencias.unam.mx} \\
+\and Ángel Iván Gladín García \\ \texttt{favio@ciencias.unam.mx}
+}
 % - Give the names in the same order as the appear in the paper.
 % - Use the \inst{?} command only if the authors have different
 %   affiliation.
@@ -133,9 +135,8 @@
 
 
   
-\section{Lenguajes Regulares}
+\section{Autómatas de divisibilidad}
 
-%\subsection{Lenguajes Regulares}
 \begin{frame}
 \titulos{Autómatas de divisibilidad}{Motivación}
 En el estudio de autómatas finitos deterministas (AFD), una de sus muchas aplicaciones es el
@@ -147,7 +148,10 @@ se podría hacer cualquier base $b$). Se construirá un DFA con $k$ estados, don
 por el cual se quiere ver si es divisible o no, en donde cada estado tendrá la función de
 transición definida para 0 ó 1. \pause
 
-\espc
+\end{frame}
+
+\begin{frame}
+\titulos{Autómatas de divisibilidad}{Motivación}
 Asumamos que cada número es ``leído'' de izquierda a derecha, es decir, el bit más significativo
 (``msb'' \textit{most significative bit} por sus siglas en inglés) es leído primero.
 \end{frame}
@@ -159,22 +163,27 @@ Sea $x$ sea el valor del número binario en algún punto procesando la cadena y 
 módulo $d$. Esto significa que $x$ puede ser expresado como combinación lineal como $x = md + r$
 para algún entero $m$. El residuo puede tener valores $0 \leq r < d-1$. Cada unos de estos residuos
 corresponden a los estados del autómata. \pause
+\end{frame}
 
-\espc
+\begin{frame}
+\titulos{Autómatas de divisibilidad}{Motivación}
 Se restringirá el dominio a solo aceptar cadenas no vacías para mayor practicidad.
 \end{frame}
 
 \begin{frame}
 \titulos{Autómatas de divisibilidad}{Motivación}
-Para calcular la función de transición verificamos lo siguiente; si se está en un estado $q_i$,
-se ha leído $q_i$ (donde $q_i$ es un número en decimal). Si se lee 0, el nuevo número a leer
+
+\begin{itemize}
+\item Para calcular la función de transición verificamos lo siguiente; si se está en un estado $q_i$,
+se ha leído $q_i$. Si se lee \texttt{0}, el nuevo número a leer
 será $2 * q_i$. Si se lee 1, el nuevo número se convierte en $2 * q_i + 1$. El nuevo estado puede
 ser obtenido restando $k$ (en caso de ser mayor que $q_i$) de esos valores
-($2 * q_i$ ó $2 * q_i + 1$) donde $0 \leq q_i < k$. \pause
+($2 * q_i$ ó $2 * q_i + 1$) donde $0 \leq q_i < k$.
 
-\espc
-El estado inicial será $q_0$ y para verficar que si el número ees divisible su estado final (y el
-único) debe ser $q_0$ porque significa que el número ya procesado su residuo fue 0.
+\item El estado inicial será $q_0$ y para verficar que si el número ees divisible su estado final
+(y el único) debe ser $q_0$ porque significa que el número ya procesado su residuo fue 0.
+\end{itemize}
+
 \end{frame}
 
 \begin{frame}
@@ -184,7 +193,7 @@ Tal autómata (AFD) queda formalmente definido como:
 \begin{itemize}
   \item $Q = \{ q_i \;|\; 0 \leq i < k \}$
   \item $\Sigma = \{ 0, 1 \}$
-  \item $\delta (q_i, 0) = q_{2i \mod k}$ y $\delta (q_i, 0) = q_{(2i + 1) \mod k}$
+  \item $\delta (q_i, 0) = q_{2i \mod k}$ y $\delta (q_i, 1) = q_{(2i + 1) \mod k}$
   \item $F = \{ q_0 \}$
 \end{itemize}\pause
 
@@ -234,7 +243,13 @@ A continuación se muestra el autómata construido,
   \item Se está en el estado $q_0$ y se lee \texttt{1}, nos movemos al estado $q_1$ porque el número
   formado que es \texttt{1} y en decimal da de residuo 1.
   \item Se está en el estado $q_1$ y se lee \texttt{0}, nos movemos al estado $q_2$ porque el número
-  formado que es \texttt{10} y en decimal da de residuo 2.
+  formado que es \texttt{10} y en decimal da de residuo 2.\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\titulos{Verificar si dado un número $n$ es divisible por 3 o no.}{Analicemos por casos}
+\begin{itemize}
   \item Se está en el estado $q_1$ y se lee \texttt{1}, nos movemos al estado $q_0$ porque el número
   formado que es \texttt{11} y en decimal da de residuo 0.
   \item Se está en el estado $q_2$ y se lee \texttt{0}, nos movemos al estado $q_1$ porque el número
